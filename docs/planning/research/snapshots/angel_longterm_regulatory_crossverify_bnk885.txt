@@ -1,0 +1,173 @@
+BNK-885 엔젤·롱텀·규제 역공학 4–6h (2026-07-19T01:30:00Z)
+rotation: 엔젤·롱텀·규제 4–6h — BNK-884(케어포 0–2h·2026-07-19T00:55Z) → ~35분 후
+focus: silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 재확인(PLAN_NOTES #44)
+
+================================================================
+## 1. ogada git 실측 (BNK-884 → BE +1 / FE +1)
+================================================================
+
+### src/backend
+HEAD: c7b6608  (BNK-884 @c88687a → +1 commit)
+subject: fix(v3/SEC-D34): normalize fullwidth-digit excel import amounts instead of dropping row
+ahead_of_test: 772 vs 598d108  (BNK-884 771 → +1)
+WT: CLEAN
+
+diff (c88687a..c7b6608): 4 files +112/-15
+ billing/domain/BankDepositExcelParser.java     | 43 +++++++++++----
+ billing/domain/NhisExcelParser.java            | 41 ++++++++++---
+ billing/domain/BankDepositExcelParserTest.java | 21 ++++++
+ billing/domain/NhisExcelParserTest.java        | 22 ++++++
+
+commit body (verbatim 핵심):
+ "NhisExcelParser.normalizeNumeric and BankDepositExcelParser.parseAmount
+  already strip the fullwidth won sign (￦ U+FFE6) and fullwidth comma
+  (， U+FF0C), but a Korean IME left in fullwidth mode renders the digits
+  themselves in fullwidth form too (０-９ U+FF10-U+FF19), e.g.
+  '￦１，２５０，０００' / '￦７６５，０００'. After stripping ￦ and ， the residual
+  fullwidth digits still failed BigDecimal/Integer parse -> null -> silently
+  dropped a valid claim/deposit row and skewed reconciliation. Add a shared
+  mapFullwidthDigitsToAscii helper (behavior-neutral for ASCII input) applied
+  before the existing separator/marker stripping, completing the
+  fullwidth-currency normalize lineage (FE<->BE SEC-D34 lockstep)."
+ 신규 상수: FULLWIDTH_DIGIT_ZERO='\uFF10', FULLWIDTH_DIGIT_NINE='\uFF19'
+ +2 @Test: shouldNormalizeFullwidthDigitAmount* (NhisExcelParserTest 15→16, BankDepositExcelParserTest 16→17)
+
+### BE inventory (@c7b6608)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (GET231/POST144/PATCH44/PUT13/DELETE10·byte/count-exact IDENTICAL BNK-836→885 = 45차·endpoint 신설 0)
+- @RestController (loose): 81
+- @Test strict (git grep @Test\b): 2402 (BNK-884 2400 → +2 SEC-D34 축8 fullwidth digit 2-parser 회귀)
+- Test.java files: 296 (+1 Tests.java = 297)
+- Flyway: V1–V196 (신규 0)
+
+### src/frontend
+HEAD: ca31864  (BNK-884 @c3a0cac → +1 commit)
+subject: fix(v1.2.1/care-reports): pre-block reversed date range across remaining L02 reports (form polish)
+ahead_of_test: 28 vs b23711f  (BNK-884 27 → +1·tester FF 대기·rev-list 0/28)
+WT: CLEAN
+
+diff (c3a0cac..ca31864): 10 files +317/-33 (5 report page + 5 in-place test)
+ pages/BathHelpReportPage.jsx                | 30 +++
+ pages/BathHelpReportPage.test.jsx           | 40 ++++
+ pages/CareMealExcretionReportPage.jsx       | 42 ++++
+ pages/CareMealExcretionReportPage.test.jsx  | 38 ++++
+ pages/CareNursingServiceReportPage.jsx      | 28 +++
+ pages/CareNursingServiceReportPage.test.jsx | 36 ++++
+ pages/IntensiveExcretionReportPage.jsx      | 30 +++
+ pages/IntensiveExcretionReportPage.test.jsx | 38 ++++
+ pages/PositionChangeReportPage.jsx          | 30 +++
+ pages/PositionChangeReportPage.test.jsx     | 38 ++++
+
+### FE inventory (@ca31864)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (IDENTICAL·product route 무변·form polish only)
+- Page.jsx (prod, excl .test.jsx): 106 (IDENTICAL)
+- FE test files: 542 (227 .test.js + 315 .test.jsx·5개 리포트 .test.jsx in-place 확장·신규 0)
+- 모듈 커버 KPI: 97.41% (28.25/29·진성갭 0)
+
+### merge gate
+FE 28 + BE 772 = 800 (BE-heavy·신규 마이그레이션 0)
+
+================================================================
+## 2. ★★★ SEC-D34 축8 = fullwidth digit ０-９ (U+FF10–U+FF19) [엑셀 포맷 변경 스캔]
+================================================================
+- 문제: 한국 IME 가 전각 모드로 남아 있으면 통화 서식 셀의 숫자 자체가 전각으로 렌더
+  ("￦１，２５０，０００") → ￦(U+FFE6·BNK-883)·，(U+FF0C·BNK-884) strip 후에도 잔존
+  전각 숫자가 BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 왜곡).
+- 해결: 신규 shared helper mapFullwidthDigitsToAscii(０-９→0-9) 를 기존 구분자/마커 strip 전에 적용
+  (ASCII 입력 behavior-neutral·전각 숫자 없으면 동일 참조 반환).
+- SEC-D34 파일/포맷 내성 축 누적 (BNK-885): 축1 통화접미사(BNK-875)·축2 공백그룹(BNK-877)·
+  축3 「일」 접미사(BNK-878)·축4 test-layer(BNK-880)·축5 halfwidth ₩ U+20A9(BNK-881)·
+  축6 fullwidth ￦ U+FFE6(BNK-883)·축7 fullwidth comma ， U+FF0C(BNK-884)·
+  축8 fullwidth digit ０-９ U+FF10-U+FF19(BNK-885·신규) = production 7-축 + test 1-축 = 8-축.
+  매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축. 경쟁 4종 유일 SUPERIOR.
+- "fullwidth-currency normalize lineage" 완성 명시(BNK-881 ₩→883 ￦→884 ，→885 ０-９).
+
+================================================================
+## 3. ★★★ BNK-882/883 예측 「L02 리포트 form-polish 확산」 = FULL DOMAIN ROLLOUT CONFIRMED
+================================================================
+- BNK-882 §882-5/§882-8 예측: shared helper resolveCareReportDateRangeError 가 다른 L02 리포트
+  (BathHelp/BasicVital/PressureUlcer/MealExcretion)로 확산 여지 남김.
+- BNK-883: L02_M11 PatientServiceReportPage 착지(확산 2번째 페이지).
+- BNK-885(본 사이클): FE @ca31864 diff = 나머지 5개 L02 리포트 페이지 일괄 착지:
+  BathHelpReportPage · CareMealExcretionReportPage · CareNursingServiceReportPage ·
+  IntensiveExcretionReportPage · PositionChangeReportPage
+  → 각 페이지 load guard 에 역방향 조회 기간 사전 차단 + 종료일 필드 role="alert"/aria-invalid
+  (WCAG 3.3.1) + 거부된 기간 stale aggregate 초기화(오류 배너-표 정합).
+- 판정: 예측 번복 아님·CONFIRMED·L02 care-report family form-polish DOMAIN-COMPLETE
+  (L02_M12 ServiceSummary → L02_M11 PatientService → +5 = 총 7 리포트 페이지 defense-in-depth).
+- helper 형제: resolveTransportServiceFeeDateRangeError(이동서비스비 계보 20차+·id=2).
+- 경쟁 4종 리포트 form-폴리시 근거 0 → 리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR.
+
+================================================================
+## 4. 규제 백본 재실측 (엔젤·롱텀·규제 focus)
+================================================================
+
+### NHIS #44 (이동서비스비 러-1~4·PLAN_NOTES #44) [기존 URL 재실측]
+canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+= 607차 byte-IDENTICAL (BNK-884 606차 → +1·zero drift)
+verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+→ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)
+  + TransportServiceLog*(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry
+snapshot: nhis_jo44_live_bnk885.html (c886ff1f·byte-IDENTICAL nhis_jo44_live_bnk872~884)
+
+### law 2025-247 (장기요양급여 제공기준·고시) [기존 URL 재실측]
+canonical https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,450B · raw md5 4e0e17393ada6b90b5708089583d329f
+  (DRIFT vs BNK-884 raw 11a5c2ba·전량 cache-buster ?Time= 숫자)
+strip Time=[0-9]* 후 semantic md5: a913639ab52293e3571cfe7e3ca35097
+= 15-cycle strip IDENTICAL (canonical URL admRulSeq=2100000271110 고정)
+snapshot: law_mohw_2025_247_admRulInfoP_live_bnk885.html
+
+### silverangel system_feature (엔젤시스템 공개 기능) [기존 URL 재실측]
+http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+= 11차 byte-IDENTICAL (BNK-859→885)
+transport-axis grep: 이동서비스(0)·배차(0)·GPS(0)·RFID(0)·차량(0)·송영(0) = ALL 0-hit
+→ 엔젤 자체 이동서비스/배차/GPS 모듈 부재 재확인 · ogada Transport 자체 시스템 SUPERIOR
+snapshot: silverangel_system_feature_live_bnk885.html
+
+### longterm 502 (단기보호 수가) [기존 URL 재실측]
+https://longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000502
+HTTP 302 · 0B (session-required redirect stub) · md5 d41d8cd9(empty)
+= 「미확인」 carry (BNK-872 근본 원인 확정 이후 session-required·기능 갭 아님)
+
+### carefor func.php [기존 URL·disk canonical]
+LIVE HTTP 000 timeout(114-cycle+ carry·「미확인」)·disk canonical 6226e6eb/98,328B LOCK
+
+================================================================
+## 5. audit-first HTTP 442 posture 45차 byte/count-exact IDENTICAL
+================================================================
+@c7b6608 grep: GET 231(52.3%)·POST 144(32.6%)·PATCH 44(10.0%)·PUT 13(2.9%)·DELETE 10(2.3%) = 442
+@RestController 81·controller당 5.46 = BNK-836→885 45차 연속 IDENTICAL.
+BE +1(SEC-D34 fullwidth digit production·service-layer)+FE +1(L02 form-polish test/view-only) 후에도
+endpoint 신설 0·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소
+(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+================================================================
+## 6. 가정/예측 번복 재점검 (rules §14·§18)
+================================================================
+- BNK-882/883 예측 「L02 리포트 form-polish 확산」 = FULL DOMAIN ROLLOUT CONFIRMED(번복 아님).
+- BNK-884 M7 본인부담 crosswalk 11/11 PARITY 유지·BNK-880 rowid=21704 라벨 fact 정정 유지.
+- BNK-858 longterm 종료가정 결착 유지·BNK-826 law URL alias 폐기 유지.
+- P3/P4「가정」 candidate 8종(BNK-881 3 + BNK-882 5) carry·진성갭 승격 0·미확인 승격 0.
+- 신규 가정 번복 0·P0~P3 결정 번복 0·KPI promote 0·모듈 97.41% CARRY.
+
+================================================================
+## 7. BNK-884 → BNK-885 delta 요약
+================================================================
+- BE +1(c7b6608·SEC-D34 축8 fullwidth digit ０-９ normalize·ahead 772·@Test 2402)
+- FE +1(ca31864·L02 리포트 form-polish 나머지 5페이지 일괄 착지·ahead 28·FULL DOMAIN ROLLOUT)
+- NHIS #44 607차·law 2025-247 15-cycle strip·silverangel system_feature 11차·transport 0-hit
+- audit-first HTTP 442 45차 byte/count-exact IDENTICAL(endpoint 신설 0)
+- 모듈 97.41% CARRY·merge gate 800(FE 28 + BE 772·BE-heavy)
+- 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·KPI promote 0
+- per-cycle minimum 4종 충족(NHIS #44 607차 재실측 + FE L02 form-polish DOMAIN 워크플로 1블록
+  + COMPETITOR_MATRIX @HEAD 갱신 + BENCHMARK_REPORT §885)
+- 신규 snapshot 4(txt 1 + html 3)·덮어쓰기 0

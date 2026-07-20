@@ -1,0 +1,108 @@
+BNK-916 — 엔젤·롱텀·규제 역공학 4-6h 교차검증 (2026-07-20)
+================================================================
+
+조사일: 2026-07-20T00:10:00Z
+rotation: 엔젤·롱텀·규제 4-6h (BNK-915 케어포 0-2h → ~35분 후 로테이션 복귀)
+초점: silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 (#44)·
+      2026 수가/평가 #27·단기보호(502)·통합재가(610) 고시 교차검증
+
+--- ogada baseline 실측 (2026-07-20T00:10:00Z) ---
+BE develop = 39b7c54de5e26d54b3a2afe5a712deba5a816b67
+  (BNK-915 `@1ae9c50` → +1 commit ADVANCE · `fix(v3/SEC-D41): bound safety check list queries by date window`
+   · ahead 777 vs origin/test=598d108 · WT CLEAN)
+  last: fix(v3/SEC-D41): bound safety check list queries by date window
+FE develop = 18411444ca12c6cc486bb42d2d05fff3f45f9f6a
+  (BNK-915 `@cd0595d` → +1 commit ADVANCE · `fix(v1.2.1/SEC-D41): wire safety list date window and FE pre-block`
+   · ahead 43 vs origin/test=b23711f · tester FF 대기 · WT CLEAN)
+  last: fix(v1.2.1/SEC-D41): wire safety list date window and FE pre-block
+Route 133 (App.jsx <Route\b 132 + <Routes> 1) · Page 106 (*Page.jsx non-test)
+FE test 549 (233 .test.js + 316 .test.jsx · BNK-915 548 → +1 · safetyCheckDateWindow.test.js 신규)
+BE @Test strict 2427 (BNK-915 2423 → +4 · SafetyCheckRecordServiceTest date-window 회귀)
+  @RestController 81 · @Entity 92 · BE Test class 298(+1 Tests.java)
+HTTP 442 (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 · BNK-836→916 **76차** IDENTICAL · 신설 0)
+Flyway V1–V196 · merge gate 820 (FE 43 + BE 777 · BE-heavy) · 모듈 97.41% CARRY
+
+--- 엔젤 silverangel system_feature 배차 축 재실측 ---
+URL: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · SIZE 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+cmp vs silverangel_system_feature_live_bnk909.html = BYTE-IDENTICAL
+cmp vs silverangel_system_feature_live_bnk914.html = BYTE-IDENTICAL
+(canonical carry · bnk897→902→905→909→914→916)
+grep -c -E '이동서비스|배차|GPS|RFID|차량|송영' = 0 (0-hit ALL)
+→ 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인
+→ ogada TransportServiceFeeParityCatalog(RU_1..RU_4 · ONE_WAY_RATIO=0.5)+TransportServiceLog*
+   = 경쟁 4종 유일 full-stack SUPERIOR carry
+
+--- 엔젤 CMS 부가(extraService) 3-method LOCK ---
+URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+HTTP 200 · SIZE 81,637B · md5 f9c5d8773ad0a481be6d7eb4b192d982
+cmp vs silverangel_extraService_live_bnk872.html = BYTE-IDENTICAL (LOCK)
+verbatim 요금:
+  · 월 이용료 : 30,000원 (효성CMS 납부)
+  · 자동이체 : 250원/1 건
+  · 가상계좌 : 300원/1 건
+  · 카드결제 : 별도문의
+  · 가입안내전화 · 효성 CMS 담당자 · 연동정보 입력 필수
+3-method = 자동이체(CMS) / 가상계좌 / 카드결제
+↔ ogada CmsPaymentMethodCatalog 5-method SUPERSET
+  (AUTO_DEBIT_CMS · VIRTUAL_ACCOUNT · CARD · MULTI_ACCOUNT_SETTLEMENT · CASH_RECEIPT)
+  · 벤더 lock-in 월 대행료 0 · G2b SUPERSET carry
+
+--- dual-numbering 지표27 ≠ 필수업무 일련27 (daycareEssentialWork) ---
+URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+HTTP 200 · SIZE 131,664B · md5 c79c1be37f947aab04ab7ba35cc7814d
+cmp vs silverangel_daycareEssentialWork_live_bnk843.html = BYTE-IDENTICAL
+확인(verbatim):
+  · 공단 평가 지표 축: 「주야간보호 27 기능회복훈련」(기능회복훈련 계획/제공/기록 3-row)
+  · 필수업무 일련 축: 「27: 가족과의 소통」(numbered row 26=급여제공역량관리 · 27=가족과의 소통)
+→ G17 dual-numbering guardrail 재확증: 지표27=기능회복훈련 ≠ 일련27=가족과의 소통
+→ ogada FunctionalRecovery / 가족소통(J03·home-newsletter) 분리 유지 · 상수 재조정 불요
+
+--- lcms home ---
+URL: https://www.lcms.or.kr/
+HTTP 200 · SIZE 50,740B · md5 c0c660760e9e5691491ace28f9d15f74
+cmp vs lcms_home_live_bnk837.html = BYTE-IDENTICAL
+cmp vs lcms_home_live_bnk865.html = DIFF (bnk865=50,554B lean/carousel variant)
+→ FULL shell carry · CJ프레시웨이 MOU carousel 미재현(소멸 carry) · core 갭 아님
+
+--- 롱텀 단기보호(502)/통합재가(610) — FULL variant STABLE ---
+[502] https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+HTTP 200 · SIZE 89,171B · md5 a71379de460cc451e9a30f73aa437eec
+= FULL STABLE (BNK-909 FULL 동일 · cmp BYTE-IDENTICAL · var s16; 존재)
+page-title: 「월 한도액 및 급여비용」 · 심층 수가값(단기보호 74,060 canonical) shell 미노출 → 「미확인」carry
+
+[610] https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+HTTP 200 · SIZE 88,408B · md5 6b10f426123b1f827c46ebf420a87772
+= FULL STABLE (BNK-909 FULL 동일 · cmp BYTE-IDENTICAL · var s16; 존재)
+page-title: 「통합재가서비스」 · 월한도 shell 미노출 → 「미확인」carry
+→ bnk905 LEAN ↔ bnk909/916 FULL 오실레이션 재확인 · 문서 위생 signal only · 기능 갭 아님
+
+--- 규제 백본 NHIS #44 제34조 이동서비스비 러-1~4 ---
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+cmp vs nhis_jo44_live_bnk915.html = BYTE-IDENTICAL (**637차** · BNK-915 636차 → +1)
+verbatim ②: 「이동서비스비용은 이용 횟수에 관계없이 1일 1회만 산정하고, 수급자가 이동서비스를 편도만
+  (기관으로 이송 또는 수급자의 거주지로 이송하는 경우) 이용한 경우에는 제1항의 표에 따른
+  ‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다.」
+↔ ogada TransportServiceFeeService(ONE_WAY_RATIO=0.5 HALF_UP · 1일 1회)
+  + TransportDistanceBand(RU_1 5km미만 / RU_2 5~10km / RU_3 10~20km / RU_4 20km이상)
+  + TransportServiceLog* full-stack 1:1 SUPERIOR · 상수 재조정 불요
+
+--- law.go.kr 2025-247 고시 ---
+URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · SIZE 78,450B · raw md5 5e0f0e01f238e3f5853d28cf87a11044 (cache-buster ?Time= DRIFT)
+strip Time=\d+ → Time= semantic md5 = 4d4d8a52a94bcfa3979d8809e9716dd3
+strip vs law_mohw_2025_247_admRulInfoP_live_bnk909.html = IDENTICAL (0-line)
+→ raw DRIFT = cache-buster only · 규제 앵커 재조정 불요 · canonical admRulSeq=2100000271110 고정
+
+--- SEC-D41 dual ADVANCE (안전 점검 date-window) ---
+FE `@1841144`: SafetyRecordDateRangeFilter + safetyCheckDateWindow 상수 · 4 safety pages pre-block
+  · api/services date window wire · +1 test file
+BE `@39b7c54`: SafetyCheckRecordService/Repository list queries date bound · @Test +4
+→ 안전 목록 무제한 조회 방지 · M6 위생·안전 PARITY 유지 · endpoint 신설 0 (HTTP 442 동결)
+
+--- 판정 요약 ---
+신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+HTTP 442 = 76차 IDENTICAL · NHIS #44 = 637차 byte-IDENTICAL
+P3/P4「가정」 candidate 14종 전부 carry · 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+per-cycle minimum 4종 충족 (신규/재실측 증거 URL 8+ · 메뉴/필드/워크플로 2블록 · MATRIX 1행+@HEAD · BENCHMARK §916)

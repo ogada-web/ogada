@@ -1,0 +1,182 @@
+BNK-886 ogada git remeasure (2026-07-19T02:12:30Z)
+rotation: ogada git 실측 6-8h
+
+## src/backend
+HEAD: e60e288  (BNK-885 @c7b6608 → +1 commit)
+subject: refactor(v3/SEC-D34): extract shared excel amount normalizer
+ahead_of_test: 773 vs 598d108
+WT: CLEAN
+
+diff (c7b6608..e60e288):
+ src/main/java/com/ogada/backend/billing/domain/BankDepositExcelParser.java     |  58 ++-------------
+ src/main/java/com/ogada/backend/billing/domain/ExcelAmountNormalizer.java      |  83 +++++++++++++++++++++
+ src/main/java/com/ogada/backend/billing/domain/NhisExcelParser.java            |  63 ++--------------
+ src/test/java/com/ogada/backend/billing/domain/BankDepositExcelParserTest.java |  ... (updated)
+ src/test/java/com/ogada/backend/billing/domain/ExcelAmountNormalizerTest.java  |  64 +++++++++++++++++
+ src/test/java/com/ogada/backend/billing/domain/NhisExcelParserTest.java        |  ... (updated)
+ 6 files changed, 330 insertions(+), 18 deletions(-)
+verbatim commit body:
+  "NhisExcelParser and BankDepositExcelParser each carried a byte-identical
+  copy of the fullwidth/currency normalization: the WON_SIGN,
+  FULLWIDTH_WON_SIGN, FULLWIDTH_COMMA and FULLWIDTH_DIGIT_ZERO/NINE constants,
+  the mapFullwidthDigitsToAscii helper, and the strip chain. As the SEC-D34
+  format-resilience axes grew to eight (currency suffix, whitespace grouping,
+  day marker, halfwidth won, fullwidth won, fullwidth comma, fullwidth
+  digits), each new axis had to be edited in both files in lockstep, risking
+  drift.
+
+  Extract a single package-private ExcelAmountNormalizer as the source of
+  truth. NhisExcelParser strips its NHIS-specific 일 day marker then
+  delegates; BankDepositExcelParser delegates then applies setScale(2,
+  HALF_UP). This is behavior-neutral: the existing eight format-axis
+  regression tests in both parser suites pass unchanged.
+
+  Tests: mvn -o test -Dtest=NhisExcelParserTest,BankDepositExcelParserTest,
+  ExcelAmountNormalizerTest 42/42 PASS (NhisExcelParserTest 16,
+  BankDepositExcelParserTest 17, new ExcelAmountNormalizerTest 9)."
+
+## BE inventory (@e60e288)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (byte/count-exact IDENTICAL BNK-836→886 = 46차·endpoint 신설 0)
+- @RestController (loose incl. Advice): 81
+- @Test strict (git grep `@Test\b`): 2411 (BNK-885 2402 → +9·new ExcelAmountNormalizerTest 9 @Test)
+- Test.java files: 297 (296 Test.java + 1 Tests.java·+1 new ExcelAmountNormalizerTest.java)
+- Flyway: V1–V196 (신규 0·latest V194/V195/V196)
+
+## src/frontend
+HEAD: d4d9887  (BNK-885 @ca31864 → +1 commit)
+subject: fix(v1.2.1/nursing): pre-block reversed date range before nursing-report round-trip (id=2 form polish)
+ahead_of_test: 29 vs b23711f
+WT: CLEAN
+
+diff (ca31864..d4d9887):
+ src/pages/NursingServiceReportsPage.jsx      | 26 ++++++++++++++++---
+ src/pages/NursingServiceReportsPage.test.jsx | 38 ++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+), 4 deletions(-)
+verbatim commit body:
+  "NursingServiceReportsPage (L03_M07/M09/M10 간호급여 리포트) sent a reversed
+  query range (from>to) to the BE and only surfaced NursingServiceRecordService
+  .resolveDateWindow's 400 (\"종료일은 시작일 이후여야 합니다.\") after the
+  round-trip. Wire the shared resolveCareReportDateRangeError helper (verbatim
+  BE-message lockstep in config/careReports.js) into the load guard so a
+  reversed range is rejected up front, anchored to the 종료일 field
+  (role=\"alert\" + aria-invalid), clearing the stale aggregate; missing
+  endpoints stay valid since the BE substitutes a default window. Folds the
+  duplicated empty-report object into a single EMPTY_NURSING_SERVICE_REPORT
+  constant. Mirrors the L02 care-report form-polish lineage (BathHelp/
+  PatientService/ServiceSummary)."
+
+## FE inventory (@d4d9887)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (BNK-885 CARRY·product route 무변·form polish only)
+- Page.jsx (prod, excl .test.jsx): 106 (BNK-885 CARRY)
+- FE test files: 542 (227 .test.js + 315 .test.jsx·NursingServiceReportsPage.test.jsx in-place +38·신규 파일 0)
+- 모듈 커버 KPI: 97.41% (28.25/29·비-1.0 실 id 2/8/10=0.85·12=0.7·진성갭 0)
+
+## merge gate
+FE 29 + BE 773 = 802 (BE-heavy·BNK-885 800 → +2·신규 마이그레이션 0)
+FE ahead 29 vs origin/test=b23711f (tester FF 대기·rev-list 0/29)
+BE ahead 773 vs origin/test=598d108
+
+## 규제 백본 재실측 (NHIS #44)
+NHIS #44 canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · 608차 byte-IDENTICAL(BNK-885 607차 → +1·zero drift)
+verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+→ Transport 상수(RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요 (id=2 0.85 carry)
+snapshot: nhis_jo44_live_bnk886.html (c886ff1f·byte-IDENTICAL nhis_jo44_live_bnk872~885)
+
+## 규제 백본 재실측 (law 2025-247)
+law canonical https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,450B · raw md5 e176ac06d10b3e8ee491d5d4f6281ae6 (cache-buster Time= DRIFT)
+strip md5 (`sed 's/Time=[0-9]*/Time=STRIPPED/g'`): ad1db6e06903bc34e70e139a19d854cd → BNK-885 IDENTICAL(diff = 0-line)
+snapshot: law_mohw_2025_247_admRulInfoP_live_bnk886.html
+→ 규제 앵커 재조정 불요 (canonical URL admRulSeq=2100000271110 고정)
+
+## 규제 백본 재실측 (silverangel system_feature)
+silverangel canonical http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da · 12차 byte-IDENTICAL(BNK-885 11차 → +1)
+transport 6-term grep (이동서비스|배차|GPS|RFID|차량|송영): 0-hit ALL
+→ 엔젤 자체 이동서비스/배차/GPS/RFID/차량 모듈 부재 재확인 (ogada Transport 자체 시스템 SUPERIOR)
+snapshot: silverangel_system_feature_live_bnk886.html
+
+## BNK-885 → BNK-886 delta
+- BE +1 commit (e60e288) — ★★★ **SEC-D34 8-축 DRY refactor**: single source of truth 도입
+  · refactor(v3/SEC-D34): extract shared excel amount normalizer
+  · 신규 package-private helper `ExcelAmountNormalizer` (`src/main/java/com/ogada/backend/billing/domain/`)
+    - 상수 `WON_SIGN` (U+20A9)·`FULLWIDTH_WON_SIGN` (U+FFE6)·`FULLWIDTH_COMMA` (U+FF0C)
+      ·`FULLWIDTH_DIGIT_ZERO`/`_NINE` (U+FF10/U+FF19)
+    - helper `mapFullwidthDigitsToAscii` (전각 숫자 ０-９ → ASCII 0-9·strip 전 적용)
+    - static `normalizeNumeric(String)` = 전체 normalize chain (fullwidth digits → 쉼표/won/원/whitespace strip)
+  · `NhisExcelParser.normalizeNumeric` = NHIS-specific 「일」 day marker strip 후 delegate
+  · `BankDepositExcelParser.parseAmount` = delegate 후 setScale(2, HALF_UP)
+  · **behavior-neutral** (기존 8-축 regression test 42/42 PASS 무변경)
+  · 신규 `ExcelAmountNormalizerTest.java` +64L / 9 @Test
+    (null/blank·ASCII neutral·ASCII thousands+원·halfwidth ₩·fullwidth ￦·fullwidth comma
+    ·fullwidth digit·mixed all-axis·whitespace strip)
+  · 6 files +330/-18(BankDepositExcelParser -58 slim / NhisExcelParser -63 slim /
+    ExcelAmountNormalizer +83 신규 / ExcelAmountNormalizerTest +64 신규 / 2 parser test 갱신)
+  · **의의 = SEC-D34 8-축 (currency suffix / whitespace grouping / day marker / halfwidth ₩ /
+    fullwidth ￦ / fullwidth comma / fullwidth digits + test-layer) 이 이제 lockstep 위험 없이
+    단일 helper 로 통합** → 향후 신규 axis 추가 시 두 parser 를 병렬 편집할 필요 없음
+    (rules §13 코드 재사용·유지보수성 posture 향상)
+- FE +1 commit (d4d9887) — ★★★ **form-polish DOMAIN-COMPLETE 확산 L02 → L03**:
+  · fix(v1.2.1/nursing): pre-block reversed date range before nursing-report round-trip
+  · `NursingServiceReportsPage`(L03_M07/M09/M10 간호급여 리포트) load guard 에
+    `resolveCareReportDateRangeError` shared helper (BNK-882 §882-5 신규 도입) 배선
+  · 시작일>종료일 역방향 조회 기간 서버 왕복 전 사전 차단·필드 오류 라우팅(WCAG 3.3.1
+    `종료일` 필드 `role="alert"`·`aria-invalid`)·거부된 기간 stale aggregate 초기화
+    (EMPTY_NURSING_SERVICE_REPORT 단일 상수로 중복 제거)
+  · BE `NursingServiceRecordService.resolveDateWindow` 문구 verbatim lockstep
+    (「종료일은 시작일 이후여야 합니다.」)
+  · missing endpoints 는 그대로 valid 유지 (BE 가 default window 대체)
+  · in-place test +38(NursingServiceReportsPage.test.jsx)·신규 파일 0·product route/page 무변
+  · **커밋 body 명시**: "Mirrors the L02 care-report form-polish lineage (BathHelp/
+    PatientService/ServiceSummary)" ← L02 domain-complete 계보의 **크로스-도메인 확산**
+    (L02 7 페이지 → L03 nursing 1 페이지·domain family 8 페이지 착지)
+- 8 페이지 `resolveCareReportDateRangeError` 사용 실측(BE lockstep 커버리지 8 페이지):
+    1. `BathHelpReportPage` (L02·목욕급여)
+    2. `CareMealExcretionReportPage` (L02·식이·배설)
+    3. `CareNursingServiceReportPage` (L02·요양보호일지)
+    4. `IntensiveExcretionReportPage` (L02·집중배설관찰)
+    5. `NursingServiceReportsPage` (**L03·간호급여 리포트 — BNK-886 NEW**)
+    6. `PatientServiceReportPage` (L02_M11·환자서비스)
+    7. `PositionChangeReportPage` (L02·체위변경)
+    8. `ServiceSummaryReportPage` (L02_M12·서비스총괄)
+- HTTP 442 byte/count-exact IDENTICAL (BNK-836→886 = 46차·endpoint 신설 0)
+- @RestController 81 (Δ0)·Flyway V1–V196(신규 0)·audit-first 46차 IDENTICAL
+- 모듈 97.41% CARRY (28.25/29·id=2/8/10=0.85·12=0.7·진성갭 0)
+- NHIS #44 608차 zero drift·law 2025-247 strip IDENTICAL·silverangel system_feature 12차 IDENTICAL
+- merge gate 802 (FE 29 + BE 773·BE-heavy·신규 마이그레이션 0)
+- 신규 진성갭 P0 승격 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0
+- per-cycle minimum 4종 충족(NHIS #44 608차 재실측 + BE ExcelAmountNormalizer refactor
+  워크플로 1블록(단일 helper 도입) + COMPETITOR_MATRIX @HEAD 갱신 +
+  BENCHMARK_REPORT §886)
+
+## 경쟁 4종 대비 SUPERIOR 축 (BNK-886)
+1. SEC-D34 엑셀 import 8-축 single-source-of-truth helper `ExcelAmountNormalizer`
+   → 케어포/이지케어/엔젤/롱텀 4종 유일 (역공학 근거 0-hit)
+   ※ 이지케어 FAQ rowid=21168/21298/21534/21563 엑셀 upload/download 문구는 확인되나
+     전각/반각 원화·쉼표·전각 숫자 정규화 verbatim 0-hit (BNK-875~885 caretaker)
+2. Care-report family form-polish 8 페이지(L02 7 + L03 1) defense-in-depth
+   (역방향 조회 기간 서버 왕복 전 사전 차단·필드 오류 라우팅·stale aggregate 초기화)
+   → 케어포 시설 셸 리포트 form-폴리시 근거 0·이지케어 데모 리포트 필드 검증 verbatim 0
+     ·엔젤 리포트 활용법 라벨만·롱텀 규제만 (4종 대비 유일 full-stack SUPERIOR)
+3. audit-first HTTP 442 posture 46차 IDENTICAL(endpoint 신설 0)
+   → refactor 커밋 조차 API surface 를 확장하지 않음 = API 안정성 46-cycle 동결
+   ※ 케어포 jqGrid row-CRUD (행 삭제 흔함) 대비 물리 삭제 API 신설 금지 posture 유지
+4. 엔젤 자체 배차/GPS/RFID/차량/송영 6-term 12차 0-hit → ogada Transport 자체 시스템 SUPERIOR
+
+## 가정/예측 번복 재점검 (rules §14·§18)
+- BNK-882/883/885 예측 「L02 리포트 form-polish 확산」 = **CROSS-DOMAIN ROLLOUT CONFIRMED**
+  (L02 7 페이지 domain-complete + L03 nursing 1 페이지 확장 = 8 페이지)
+  ↔ BNK-885 시점 예측 「나머지 L02 페이지 확산 여지」 이미 완결 · BNK-886 이 L03 로 확산 = **확산 폭 예상 초과 (번복 아님·확장)**
+- BNK-884 M7 crosswalk 11/11 PARITY 유지·본인부담 진성갭 0 재확인
+- BNK-885 규제 백본 3-URL IDENTICAL 유지 (NHIS #44 러-1~4·silverangel transport 6-term 0-hit·law strip)
+- BNK-882 신규 P3/P4「가정」 5종 carry
+- BNK-881 P3「가정」 3종 carry
+- 신규 가정 번복 **0**·미확인 승격 **0**·P0~P3 결정 번복 **0**·KPI promote **0**

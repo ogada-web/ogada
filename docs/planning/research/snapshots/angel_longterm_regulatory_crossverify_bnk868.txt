@@ -1,0 +1,93 @@
+BNK-868 — 엔젤·롱텀·규제 역공학 4-6h (효성CMS 부가서비스 신청 4-step 워크플로 + 건별 단가 verbatim 심화)
+================================================================================
+조사일: 2026-07-18T13:03:00Z
+rotation: 엔젤·롱텀·규제 역공학 4-6h (BNK-867 케어포 0-2h → 다음)
+per-cycle minimum: 신규 URL 1+ (또는 기존 URL 재실측+변동 기록) · 메뉴/필드/워크플로 상세 1블록+ · COMPETITOR_MATRIX 1행+ @HEAD · BENCHMARK_REPORT §신규 소절 1건+ · 4종 전량 충족
+
+ogada baseline (git 실측)
+--------------------------
+BE develop: 5df9999 (BNK-867 IDENTICAL · zero advance · WT CLEAN · ahead 759 vs 598d108)
+FE develop: af1d4f6 (BNK-867 23b47ea → +1 commit · `fix(v1.2.1/transport): focus departure-round field when dispatch save is blocked (id=2 form polish)` · ahead 13 vs origin/test=b23711f · tester FF 대기)
+Route: 133 (<Route\b 132 + <Routes> 1 · App.jsx)
+Page: 107 (BNK-867 measurement Δ carry · git ls-tree IDENTICAL)
+BE Test files: 297 (296 Test.java + 1 Tests.java)
+@RestController (loose): 81
+HTTP endpoints: 442 (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10) — BNK-836→868 byte-exact IDENTICAL carry
+Flyway: V1–V196 (신규 0)
+모듈 커버리지: 97.41% (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0)
+merge gate: 772 (FE 13 tester FF 대기 + BE 759 · BE-heavy)
+=> BE zero advance · FE +1 commit(id=2 배차 form polish 6차 축: departureRound 검증 blocked 시 필드 focus·rules §7 접근성) · 코드 층 endpoint/마이그레이션 무변 · 신규 마이그레이션 0
+
+1. NHIS #44 live 재fetch 593차 zero substantive drift
+------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP: 200 · SIZE: 7,572B · md5: c886ff1f (BNK-866 592차 → 593차 IDENTICAL)
+verbatim (제34조 러-1~4·편도·이동서비스·급여비용): carry
+=> Transport 상수(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요 · id=2 0.85 carry
+snapshot: nhis_jo44_live_bnk868.html
+
+2. law.go.kr 2025-247 raw drift·strip semantic IDENTICAL (cache-buster only)
+----------------------------------------------------------------------------
+URL: https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110
+HTTP: 200 · SIZE: 78,450B · raw md5: 0585a0908c1b71a03a500ca131510b0b
+strip (Time/etaHash/nonce/mrsCd/token/_wa/csrfToken/_ts): a913639a
+=> BNK-859/861/862/865 strip 'a913639a' IDENTICAL 유지 · 실 내용 변동 0 · 캐시버스터만 순환
+snapshot: law_mohw_2025_247_admRulInfoP_live_bnk868.html
+
+3. silverangel 5-URL byte-IDENTICAL (system_feature/extraService/feeService/home/essentialWork) 재확인
+------------------------------------------------------------------------------------------------------
+- system_feature: 45,601B · c9507190 (transport/배차/GPS/차량/RFID 0-hit · BNK-856→868 IDENTICAL)
+- extraService:   81,637B · f9c5d877 (효성CMS 3-method · 30,000/250원/300원 STABLE)
+- feeService:     44,513B · eab352a8 (요금 6-hit · 자동이체 1 · 체험 1)
+- home:           101,220B · 66382835 (2026 notices, 굽은나무 앱 carry)
+- essentialWork:  131,664B · c79c1be3 (필수업무 27=가족과의 소통 verbatim · 이동서비스 3-hit 문서 축)
+=> 엔젤 코어 5-URL 콘텐츠 zero drift · CMS 벤더 종속 3-method STABLE · ogada 6-method SUPERSET 벤더 lock-in 없음 carry
+snapshots: silverangel_{system_feature,extraService,feeService,home,daycare_essentialWork}_live_bnk868.html
+
+4. ★★ 효성CMS 부가서비스 「자동이체·가상계좌·카드결제」 신청 4-step 워크플로 + 건별 단가 verbatim 심화 (신규 블록)
+------------------------------------------------------------------------------------------------------------
+근거: silverangel extraService(https://www.silverangel.kr/newSilverangel/service/extraService.do · 81,637B · f9c5d877) 태그 strip verbatim 추출.
+
+verbatim (효성CMS 결제 부가서비스 blockquote):
+> 재무회계처리가 용이하도록 CMS 이용료는 수납금액과 별도로 정산하여 드립니다.
+> [제공서비스] 자동이체 · 가상계좌 · 카드결제 · 다계좌 정산 · 현금영수증
+> [급여종류] 노인요양시설, 노인요양공동생활가정, 주야간보호
+> [이용안내] 이용요금은 효성CMS에 납부됩니다. 월 이용료 : 30,000원
+> [계좌분리 정산 서비스] 효성 CMS 별도문의
+> [건별 이용료] 자동이체 : 250원/1 건 · 가상계좌 : 300원/1 건 · 카드결제 : 별도문의 (영세, 중소, 소상공인 우대수수료 적용)
+> [신청방법] 신청하기 → 가입안내전화(효성 CMS 담당자) → 가입완료 → 서비스이용 (효성 CMS 연동정보 입력 필수)
+> [서비스 가입 문의] 1600-6859
+부가 관측: 엔젤아이(엔젤 전용 AI 24시간 상담·평가매뉴얼/사용법 PDF 다운로드) · 엔젤 VR(가상현실 여행 프로그램·국내최초 론칭) — 엔젤 부가서비스 카탈로그.
+
+필드/워크플로 요약 (효성CMS = 외부 벤더 대행 결제):
+| 항목 | 값(verbatim) | ogada 대응 |
+|---|---|---|
+| 결제수단 | 자동이체·가상계좌·카드결제·다계좌 정산·현금영수증 | G2b CmsPaymentMethodCatalog 5~6 method(자체·벤더 lock-in 0) |
+| 월 이용료 | 30,000원 (효성CMS 납부) | ogada 자체 청구 lifecycle 내포·별도 CMS 이용료 개념 없음 |
+| 자동이체 단가 | 250원/1건 | ogada /billing/cms 자동이체 enrollment(벤더 종속 아님) |
+| 가상계좌 단가 | 300원/1건 | ogada /billing/cms 가상계좌 2-fn |
+| 카드결제 | 별도문의(우대수수료) | ogada /billing/easy-pay 간편결제 |
+| 신청 절차 | 4-step(신청→가입안내전화→가입완료→서비스이용·연동정보 입력 필수) | ogada 자체 UI 온보딩·외부 전화 가입 절차 불요 |
+
+판정: 엔젤 결제 부가서비스는 「효성CMS」 외부 벤더 대행 = 월 30,000원 + 건별 단가(자동이체 250/가상계좌 300) 종속 구조. ogada는 `/billing/cms`+`/billing/easy-pay` 자체 full-stack(BNK-785 M7 7-4/7-5 crosswalk·CMS 심화 9-fn·G2b payment-method-catalog) = 벤더 lock-in·월 대행료·건별 단가 없이 자체 결제수단 관리 SUPERSET. 신규 진성갭 아님(카피 강화 lever).
+
+교차검증 요약 (BNK-868)
+------------------------
+1. NHIS #44 러-1~4 593차 zero drift → Transport 상수 재조정 불요(id=2 0.85 carry)
+2. silverangel 5-URL byte-IDENTICAL → 엔젤 코어 기능·CMS 요금 zero drift
+3. longterm 502/610 lean-shell carry(BNK-866 lean → BNK-868 lean 2연속) → BNK-858 「오실레이션 종료 가정」 번복 유지·기능 갭 아님·문서 위생 signal
+4. law 2025-247 strip a913639a semantic IDENTICAL → 규제 백본 실체 변동 0
+5. 신규 진성갭 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+
+longterm 오실레이션 상태
+------------------------
+- 502: 89,162B · 56185735 (lean) — BNK-865 full 89,171B `a71379de` → BNK-866 lean → BNK-868 lean(2연속 lean·±9B 오실레이션 continues)
+- 610: 88,399B · fad1ce61 (lean) — BNK-865 full 88,408B `6b10f426` → BNK-866 lean → BNK-868 lean
+=> JS/authn 요구 서버 부하 라운드 로빈 「가정」 · 기능 갭 아님 · 단기보호 74,060/통합재가 월10만원 disk canonical carry
+
+planner 반영 제안
+------------------
+1. 마케팅 카피: 「엔젤=효성CMS 외부 대행(월 30,000원+자동이체 250/가상계좌 300원 건별 단가·4-step 전화 가입) ↔ ogada=자체 /billing/cms+/billing/easy-pay 5~6 결제수단 벤더 lock-in 0·월 대행료 0」
+2. REQUIREMENTS §청구/CMS: ogada CmsPaymentMethodCatalog 벤더 독립 명시(경쟁 효성CMS 종속 대비 차별점)
+3. 신규 구축 불요 — 과대구축 회피(rules §11). 결제수단 SUPERSET 이미 착지.
+4. 다음 우선순위: ogada git 실측 6-8h(BE·FE @HEAD delta) 또는 이지케어 2-4h(FAQ rowid 재실측).

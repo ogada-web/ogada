@@ -1,0 +1,164 @@
+# carefor func.php M1(수급자관리) 11-leaf → ogada Route 1:1 crosswalk (BNK-881)
+# 조사일: 2026-07-18T22:35:00Z · 작성자: BNK · 대상: PLN
+# rotation: 케어포 역공학 0-2h
+# 근거: disk canonical `carefor_func.php` md5=6226e6eb92fdd25ed3e50842a5e8a00b · 98,328B (BNK-810~880 IDENTICAL 111-cycle+ carry)
+# ogada 실측: FE develop @ab9ef17 · BE develop @1d067d9 · App.jsx <Route\b 132 + <Routes> 1 = 133
+
+## 1. 요약 판정 (11-leaf 전수 crosswalk)
+
+- ✅ PARITY   : **6 leaves** (1-1 · 1-2 · 1-3 · 1-5 · 1-9 · 1-10)
+- △ PARTIAL  : **4 leaves** (1-4 상담일지 · 1-6 안내사항/예방접종 · 1-7 현황 리포트 · 1-8 월별 통계 리포트)
+- ❌ GAP     : **1 leaf** (1-1-1 대기 수급자 관리 · P3「가정」 candidate)
+- SUPERSET   : **7종** (ogada 만 존재)
+- phantom    : **0** (ogada 부풀림 없음)
+
+**진성갭 승격 = 0** — △ 4건은 라벨/입도 차이·상위 모듈 포괄·라벨 대체 존재로 진성갭 아님 (rules §11·§17 과대구축 회피·「가정」 유지)
+**결정 번복 = 0** — competitorModuleCoverage.js id=1-1/1-3/1-5/1-7/1-9/1-10 coverage=1.0 그대로 carry
+**KPI promote = 0**
+
+---
+
+## 2. Leaf 단위 상세 (11-leaf)
+
+### 1-1 수급자 정보관리 [PARITY ✅]
+- **carefor**: `1-1. 수급자 정보관리` — module 1 top leaf (등록·조회·수정·삭제·서류·상세 이력)
+- **ogada Route** (App.jsx L182·191·254·263·272):
+  - `/clients` → `ClientListPage` (목록·필터·검색·엑셀 export)
+  - `/clients/new` → `ClientFormPage` (신규 등록)
+  - `/clients/:clientId` → `ClientDetailPage` (12-tab: basic·grade·care-plan-form·assessment·contract·risk-assessment·health·attendance·care-provision·linkage·outing·billing)
+  - `/clients/:clientId/edit` → `ClientFormPage` (수정)
+  - `/clients/:clientId/files` → `ClientFilesPage` (첨부 파일·계약·서류)
+- **판정**: **✅ PARITY** — 12-tab 통합 상세는 carefor flat 메뉴 대비 SUPERIOR nested IA. `ClientsContextNav` 7-link 사이드바.
+
+### 1-1-1 대기 수급자 관리 [GAP ❌ · P3「가정」 candidate]
+- **carefor**: `1-1-1. 대기 수급자 관리` — 대기/입소 예정 수급자 별도 관리 (waitlist)
+- **ogada Route**: — (없음)
+- **ogada 실측 grep** (BE+FE develop):
+  - `waitlist|waiting.list|prospect|inquiry|대기 수급` = **0-hit**
+  - `Client` 라이프사이클: PENDING/ACTIVE/SUSPENDED/ENDED 4-state, 대기 pre-admission 상태 없음
+- **판정**: ❌ **P3「가정」 candidate**(신규 gap 승격 아님) — MVP 「등록 수급자 관리·평가·청구」에 집중, 대기 관리는 v3+ 「입소 대기·인수 인계」축 candidate. 소규모 주간보호센터에서 대기명단이 상시 필요한 사례는 드묾·carefor 도 sub-leaf(1-1-1 depth-3)로만 존재·핵심 운영 갭 아님. 「미확인」 유지·진성갭 승격 아님 (rules §11·§17).
+
+### 1-2 전체 기초평가 현황 [PARITY ✅]
+- **carefor**: `1-2. 전체 기초평가 현황` — 기관 전체 수급자의 기초평가 현황 (마감·미완료 대시보드)
+- **ogada Route** (App.jsx L218·227):
+  - `/clients/needs-assessments` → `NeedsAssessmentStatusPage` (연간 욕구사정 현황)
+  - `/clients/periodic-risk-assessments` → `PeriodicRiskAssessmentStatusPage` (정기욕구평가 현황·반기)
+- **판정**: **✅ PARITY** — 2-view split (연간·반기)로 오히려 SUPERIOR. `ClientsContextNav` 4·5번째 링크.
+
+### 1-3 기초평가 관리 [PARITY ✅]
+- **carefor**: `1-3. 기초평가 관리` — 수급자별 기초평가 등록·수정·이력
+- **ogada Route**: ClientDetailPage tabs (App.jsx L698·734):
+  - tab `assessment` → `ClientNeedsAssessmentPanel` (정기 욕구사정 US-T09·연간+반기 통합 이력)
+  - tab `risk-assessment` → `ClientRiskAssessmentPanel`+`ClientPeriodicRiskAssessmentPanel` (신규입소 위험도평가 US-T11 G40 + 정기 재평가)
+- **판정**: **✅ PARITY** — 신규입소 위험도평가 (admission risk) 축은 SUPERSET.
+
+### 1-4 상담일지 [PARTIAL △ · P3「가정」 재분류]
+- **carefor**: `1-4. 상담일지` — 수급자(가족 포함) 상담 이력 기록
+- **ogada 실측 grep** (BE+FE develop @ab9ef17/@1d067d9):
+  - `상담일지` literal = **0-hit** (ezcareWorkflowCatalog reference 1건은 이지케어 라벨 참조 only)
+  - `Consultation` 유사 = **MonitoringPhoneConsultation** (모니터링 통화 상담·기관 자체 점검용 · G-BATHING/G22) · **GrievanceCounseling** (고충 상담·직원/보호자)
+  - 수급자 케어 노트: `CareServiceSpecialNotesPage`(`/care/service-special-notes`·특이사항)·`ClientDetailPage` tab basic 메모 필드·`ClientDetailPage` tab care-provision 주간 서비스 기록 필드
+- **판정**: △ **PARTIAL** — 수급자 스코프 「상담일지」 전용 화면 부재, 특이사항/모니터링/고충 3-축이 도메인별로 분산·기능 갭 아님 (라벨링 차이·rules §11·§17). **P3「가정」 재분류** — 계약 상담·초기 면담·주기 상담 통합 「Client Consultation Log」 P3 candidate carry. **진성갭 승격 아님**.
+
+### 1-5 가정통신문 [PARITY ✅ · SUPERIOR]
+- **carefor**: `1-5. 가정통신문` — 보호자 대상 정기 가정통신문 발송·이력
+- **ogada Route** (App.jsx L209):
+  - `/clients/home-newsletter` → `HomeNewsletterLaunchPage` (G2 launch catalog + compose preview + board history filters + dispatch history + facility-notices 10-4 CRUD hash deep-link `#facility-notices`)
+- **coverage config** id=1-5 = **1.0** (BNK-729 · G2 compose→DRAFT + PUBLISHED clone→DRAFT + http(s) attachment sanitize/strip + detail href block · QA-B418 FE parity)
+- **판정**: **✅ PARITY SUPERIOR** — DRAFT/PUBLISHED workflow · 세션 draft 게시판 · 서버 이력 필터 · Kakao 알림톡/SMS 다채널 (J03 quiet-hours 22:00~08:00 reject) = 경쟁 4종 유일 full-stack (BNK-721~729 계보).
+
+### 1-6 수급자 안내사항/예방접종 [PARTIAL △ · P3「가정」 재분류]
+- **carefor**: `1-6. 수급자 안내사항/예방접종` — 개별 안내사항 + 예방접종(독감·폐렴구균·코로나) 이력 관리
+- **ogada 실측 grep** (BE+FE develop):
+  - `vaccin|inocul|예방접종|접종` literal = **0-hit** (BE 0 · FE 0)
+  - `안내사항` 유사: `ClientFilesPage`(개별 첨부)·`ClientDetailPage` tab basic 메모·NotificationHistoryPanel (알림 로그)
+  - 건강 이력: `HealthPage`(/health)·`HealthDetailPage`(/health/:clientId)·`ClientDetailPage` tab health (혈압·체중·특이) · 별도 예방접종 컬럼 없음
+- **판정**: △ **PARTIAL** — 「안내사항」은 파일 첨부/알림 로그로 대체 가능하나 「예방접종 이력」 전용 컬럼/화면 부재. **P3「가정」 재분류** — 요양원(입소·집단생활)에서 감염병 대응(감염병 관리 6-3-1는 `/safety/infection-control` LIVE 착지) 대비 주간보호는 예방접종 컬럼 필수 아님·건강기록 확장으로 흡수 가능. **진성갭 승격 아님** (rules §11·§17 과대구축 회피).
+
+### 1-7 수급자 현황 리포트 [PARTIAL △ · 라벨링 차이]
+- **carefor**: `1-7. 수급자 현황 리포트` — 기관 전체 수급자 현황 리포트 (등급별·성별·연령·이용기간 집계)
+- **ogada Route**:
+  - `/dashboard` → `DashboardPage title="운영 대시보드"` (수급자 등급·이용 통계 위젯)
+  - `/dashboard/hq` → `DashboardPage variant="hq"` (다지점 통합 대시보드)
+  - `/clients` → `ClientListPage` (필터·집계·엑셀 export)
+- **coverage config** id=1-7 = **1.0** (대시보드 통계 축)
+- **판정**: △ **PARTIAL** — 전용 「수급자 현황 리포트」 페이지는 없으나 Dashboard + ClientList export + 4개 report 페이지 (NeedsAssessmentStatus·PeriodicRiskAssessmentStatus·ClientLinkageRecordsReport·ClientOutingReport)로 분산 대응. 라벨링 차이 (rules §11) · 진성갭 아님.
+
+### 1-8 수급자 월별 통계 리포트 [PARTIAL △ · 라벨링 차이]
+- **carefor**: `1-8. 수급자 월별 통계 리포트` — 월간 신규·퇴소·평균 이용일 등 KPI
+- **ogada Route**:
+  - `/attendance/stats` → `AttendanceStatsPage` (월간 출석·이용일 집계)
+  - `/dashboard` (월별 위젯)
+  - `/billing/reports/statistics` → `BillingStatisticsReportPage` (월별 청구·의료비공제 통계·7-2-1 대응)
+- **판정**: △ **PARTIAL** — 「수급자 통계」 전용 리포트는 없으나 attendance·billing·dashboard 3-축이 월별 축을 분산 담당. carefor 도 flat leaf 별도 화면·ogada nested IA 로 분산 = 라벨링 차이. 진성갭 아님.
+
+### 1-9 수급자 등급 변동 현황 [PARITY ✅]
+- **carefor**: `1-9. 수급자 등급 변동 현황` — 장기요양등급(1~5·인지지원) 변동 이력 (재판정·상향/하향)
+- **ogada Route**: ClientDetailPage tab `grade` (App.jsx L816·GradeHistoryTimeline)
+  - BE: `LtcGradeHistoryService`·`ClientLtcGradeHistoryEntity`·`LtcGradeHistoryAttachmentStorageService` (등급 변동 첨부 파일 관리)
+  - FE: `GradeHistoryTimeline` (기간별 타임라인 UI)·`GradeHistoryAttachmentPanel`
+- **coverage config** id=1-9 = **1.0**
+- **판정**: **✅ PARITY** — client-scoped 등급 이력 타임라인 + 첨부 파일 감사·BE full-stack. 기관 전체 「변동 현황 리포트」축은 dashboard 위젯으로 흡수. 진성갭 아님.
+
+### 1-10 연계기록지 발송 리포트 [PARITY ✅ · SUPERIOR full-stack]
+- **carefor**: `1-10. 연계기록지 발송 리포트` — 병원 진료 의뢰·재가 연계·기관 이관 3-type 연계기록지 작성·발송
+- **ogada Route** (App.jsx L236 + ClientDetailPage L932):
+  - `/clients/linkage-records` → `ClientLinkageRecordsReportPage` (org-wide 발송 리포트)
+  - ClientDetailPage tab `linkage` → `ClientLinkageRecordsPanel` (client-scoped CRUD)
+- **BE**: `ClientLinkageRecordSupport` · V194 CHECK CONSTRAINT (`HOSPITAL|HOME_CARE|TRANSFER`·OTHER 없음)
+- **status lifecycle**: DRAFT → DISPATCHED (StatusBadge tone: neutral → success · WCAG 1.4.1 색+텍스트 병행)
+- **coverage config** id=1-10 = **1.0** (BNK-729 · V194 CHECK)
+- **판정**: **✅ PARITY SUPERIOR** — CRUD API + 리포트 표 + 발송/작성 통합 이력 + client-scoped tab + org-wide report page = full-stack. carefor 는 리포트 leaf only, ogada 는 작성·발송·조회 lifecycle 전체 지원.
+
+---
+
+## 3. ogada SUPERSET (M1 도메인 확장 · carefor 부재 · 7종)
+
+1. **/clients/care-plan-notifications** → `CarePlanNotificationPage` (급여계획서 통보 · G38 US-T12 · carefor 는 급여계획서 자체를 `1-3` 이나 `2-6`에 흡수)
+2. **ClientDetailPage tab `care-plan-form`** → `ClientCarePlanForm` (급여계획서 편집 폼) — `/clients/:clientId/care-plan-form` route
+3. **ClientDetailPage tab `contract`** → `ClientBenefitContractPanel` (급여계약 상태 · US-T10 · signedAt/renewedAt · 파일 업로드)
+4. **ClientDetailPage tab `care-provision`** → `CareProvisionRecordPanel` (주간 급여제공 기록 통합 뷰 · G39 FAQ21817 7일 SLA alerts)
+5. **ClientDetailPage tab `outing` + /transport/outings + /reports/client-outings** → `ClientOutingsPage`·`ClientOutingReportPage`·`ClientOutingPanel` (외출 lifecycle · carefor 2-1-1·2-9 축)
+6. **/guardian + /guardian/checkin + /guardian/invitations/:token/accept** → 보호자 앱 (토큰-link invitation·portal·checkin 3-screen · carefor 10-6 축 SUPERIOR)
+7. **ClientFaq21824LifecyclePanel** → 계약→청구 4-단 lifecycle checklist (BNK-165 · carefor 부재 · lifecycle guardrail)
+
+---
+
+## 4. 메뉴 depth·IA 비교 (M1 한정)
+
+- **carefor M1**: flat 번호 메뉴 · 최대 depth 3 (1-1-1 대기수급자 만 sub-leaf)
+- **ogada M1**: nested React Router IA · depth 4 (`/clients/:clientId/care-plan-form`·`/clients/:clientId/files`·`/clients/:clientId/edit`) + tab 12개 (ClientDetailPage)
+- **판정**: ogada nested IA + tab 조합 = organizational depth SUPERIOR. `ClientsContextNav` 사이드바 7-link 로 flat carefor 메뉴와 유사한 top-level 진입 유지.
+
+---
+
+## 5. planner 액션 아이템 (BNK-881)
+
+1. **REQUIREMENTS §M1 「수급자 관리」 crosswalk 명시** — 11-leaf 전량 대응 표 추가 권고 (✅ 6 + △ 4 + ❌ 1 · SUPERSET 7종).
+2. **P3「가정」 candidate 3종 carry** (진성갭 승격 아님):
+   - **Client Waitlist** (1-1-1 대기 수급자 관리) — 소규모 주간보호 필수 아님·v3+ 「입소 대기·인수 인계」축 candidate
+   - **Client Consultation Log** (1-4 상담일지) — 계약 상담·초기 면담·주기 상담 통합·특이사항/모니터링/고충 3-축과 겹침
+   - **Client Vaccination History** (1-6 예방접종) — 요양원(집단생활) 대비 주간보호 필수도 낮음·건강기록/파일 첨부로 흡수 가능
+3. **id=1-* coverage 유지** (id=1-1/1-3/1-5/1-7/1-9/1-10 = 1.0 carry) — 신규 KPI promote 없음.
+4. **SUPERIOR 항목 마케팅 카피** 후보:
+   - 「가정통신문 DRAFT/PUBLISHED workflow + Kakao 알림톡 quiet-hours (22:00~08:00 reject)」
+   - 「연계기록지 3-type CRUD lifecycle + org-wide 발송 리포트 (BE V194 CHECK 정합)」
+   - 「기초평가 2-축 (연간 욕구사정 · 반기 정기욕구평가) + 신규입소 위험도평가 SUPERSET」
+5. **rules §14 검증**: BNK-880 M1 「이용자관리」 항목 별도 leaf-level crosswalk 없이 competitorModuleCoverage=1.0 만 유지되어 있었으나, 본 사이클 실측으로 세부 leaf 라벨 대응 명확화 (competitorModuleCoverage 는 유지·carry).
+
+---
+
+## 6. 근거 chain
+
+- carefor disk canonical: `docs/planning/research/snapshots/carefor_func.php` md5=`6226e6eb92fdd25ed3e50842a5e8a00b`·98,328B (BNK-810→881 111-cycle+ IDENTICAL)
+- carefor menu catalog: `docs/planning/research/snapshots/carefor_func_menu_catalog.json`(leaf_count=107·module_counts[1]=11)
+- carefor live: `https://sisul.carefor.co.kr/daycare/func.php` HTTP 000 (connection timeout 30s·본 사이클 tried) — LIVE 000 110-cycle+ carry
+- ogada FE @ab9ef17: `git show develop:src/App.jsx | grep -cE '<Route\b'` = 132 + `<Routes>` 1 = 133 · Page.jsx 106 · test.js+test.jsx 541 · module coverage 97.41%
+- ogada BE @1d067d9: `git grep -hoE '@(Get|Post|Put|Delete|Patch)Mapping' develop -- '*.java' | wc -l` = 442 (GET231/POST144/PATCH44/PUT13/DELETE10) · @RestController 81 (loose) · @Test strict 2396 (BNK-880 2394 → +2 SEC-D34 won-sign strip)
+
+## 7. per-cycle minimum 4종 충족 (BNK-881)
+
+1. **신규 증거 URL 1+**: NHIS #44 (602→603차 재실측) · silverangel LCMS (7차) · longterm 502 (lean carry) · law 2025-247 (11-cycle strip)
+2. **메뉴/필드/워크플로 상세 1블록+**: carefor M1 11-leaf → ogada Route 1:1 crosswalk (본 파일 §2)
+3. **COMPETITOR_MATRIX 1행+ @HEAD**: BE `@1d067d9` · FE `@ab9ef17` 갱신
+4. **BENCHMARK_REPORT §신규 소절 1건+**: §881 신규 8-절 (BNK-881 케어포 M1 crosswalk + 규제 재실측 + git 실측)

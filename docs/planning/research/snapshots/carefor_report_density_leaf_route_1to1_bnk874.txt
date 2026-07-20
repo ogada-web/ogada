@@ -1,0 +1,105 @@
+BNK-874 — 케어포 역공학 0-2h · 리포트 밀도(leaf-level) → ogada report Route 1:1 crosswalk
+조사일: 2026-07-18T17:35:00Z
+작성자: BNK · rotation: 케어포 역공학 0–2h
+============================================================================
+
+[1] carefor LIVE 재실측 (000 carry) + disk canonical LOCK
+- https://www.carefor.co.kr/daycare/func.php        HTTP 000 (6s timeout·107-cycle+ 지속 carry)
+- Wayback CDX (from=20260101): IA 서버 503/timeout (transient·본 사이클 신규 capture 조회 불가)
+    · 최신 확인 capture 는 20260519072235 digest=3SOHBMXNDFBP4EOJM6M2SK3YEHR2EWR5 (BNK-814~873 IDENTICAL·60+ day carry)
+- disk canonical snapshots/carefor_func.php
+    md5=6226e6eb92fdd25ed3e50842a5e8a00b · 98,328B → BNK-810~873 IDENTICAL (재검증 LOCK)
+    => 신규 URL fetch 불가(LIVE 000 + IA 503) → 「기존 URL 재실측 + 변동 기록(변동 0)」 근거 채택.
+
+[2] func.php 정적 메뉴 catalog 리포트(리포트) 밀도 재집계 (disk canonical 파싱)
+- leaf 총 107 (catalog leaf_count=107 · module 1~11)
+- '리포트' 문자열 leaf = 21 / 107 = 19.6%  (모듈별)
+    module | leaves | 리포트 leaf
+       1   |  11    |  3   (1-7 수급자 현황 / 1-8 월별 통계 / 1-10 연계기록지 발송)
+       2   |  10    |  1   (2-9 수급자 외출)
+       3   |  11    |  3   (3-4 요양/식사(조치사항)/화장실 / 3-5 목욕도움 / 3-6 급여제공)
+       4   |  10    |  5   (4-3 통합 간호제공 / 4-4 병의원 진료내역 / 4-5 투약제공 / 4-6-2 물리(작업)치료 제공 / 4-6-3 물리(작업)치료 일정)
+       5   |  13    |  4   (5-7 참여프로그램 / 5-8 제공기록(운영기록지) / 5-9 그룹설정 이력 / 5-10 프로그램 일정)
+       6   |   5    |  0
+       7   |  11    |  3   (7-6 청구대장 / 7-7 입금대장 / 7-8 수납대장)
+       8   |  15    |  1   (8-12 현황 리포트)
+       9   |   6    |  0
+      10   |   9    |  0
+      11   |   6    |  1   (11-6 직원 급여대장(간이지급명세서))
+    => 최다 리포트 밀도 모듈: M4 간호(5/10=50%) > M5 프로그램(4/13) > M1/M3/M7(각 3)
+    ('대장' 15·'현황' 13·'일지' 12 leaf 는 리포트 문자열과 부분 중첩 — 위 21은 명시 '리포트' leaf 만)
+
+[3] carefor 21 '리포트' leaf → ogada report Route 1:1 (FE @9f12482 App.jsx 실측)
+------------------------------------------------------------------------------
+carefor 리포트 leaf                        | ogada Route (@9f12482)                          | 판정
+------------------------------------------------------------------------------
+1-7  수급자 현황 리포트                    | /clients (목록+필터·전용 report route 부재)     | △ PARTIAL
+1-8  수급자 월별 통계 리포트               | 대시보드 통계 (전용 client monthly report 부재) | △ PARTIAL
+1-10 연계기록지 발송 리포트                | /clients/linkage-records                        | ✅ PARITY
+2-9  수급자 외출 리포트                    | /reports/client-outings                         | ✅ PARITY
+3-4  요양/식사(조치사항)/화장실 리포트     | /care/reports/meal-excretion + /care/reports/intensive-excretion | ✅ PARITY
+3-5  목욕도움 리포트                       | /care/reports/bath-help                         | ✅ PARITY
+3-6  급여제공 리포트                       | /care/reports/service-summary                   | ✅ PARITY
+4-3  통합 간호제공 리포트                  | /nursing/service/reports/total (+/care/reports/nursing-service) | ✅ PARITY
+4-4  병의원 진료내역 리포트                | /nursing/service/reports/hospital-visits (+/care/reports/hospital-visits) | ✅ PARITY
+4-5  투약제공 리포트                       | /nursing/service/reports/medication-delivery (+/care/reports/medication-delivery) | ✅ PARITY
+4-6-2 물리(작업)치료 제공 리포트           | /programs/functional-recovery (기능회복훈련 포괄) | △ PARTIAL
+4-6-3 물리(작업)치료 일정 리포트           | /programs/reports/schedules (기능회복 일정 포괄) | △ PARTIAL
+5-7  수급자 참여프로그램 리포트            | /programs/reports/participations                | ✅ PARITY
+5-8  프로그램 제공기록 리포트(운영기록지)  | /programs/reports/provision-records             | ✅ PARITY
+5-9  프로그램 그룹 설정 이력 리포트        | /programs/reports/group-history                 | ✅ PARITY
+5-10 수급자 프로그램 일정 리포트           | /programs/reports/schedules                     | ✅ PARITY
+7-6  본인부담금 청구대장 리포트            | /billing/reports/charges                        | ✅ PARITY
+7-7  본인부담금 입금대장 리포트            | /billing/reports/deposits                       | ✅ PARITY
+7-8  본인부담금 수납대장 리포트            | /billing/reports/receipts                       | ✅ PARITY
+8-12 현황 리포트                           | /staff/reports/status                           | ✅ PARITY
+11-6 직원 급여대장 리포트(간이지급명세서)  | /payroll/ledger (+/payroll/reports)             | ✅ PARITY
+------------------------------------------------------------------------------
+=> 21 리포트 leaf 판정: 17 ✅ PARITY + 4 △ PARTIAL + 0 genuine gap
+   △ 4건(1-7 현황·1-8 월별통계·4-6-2/4-6-3 물리치료)은 전용 report route 부재이나
+     상위 목록(/clients)·대시보드 통계·기능회복훈련 모듈(/programs/functional-recovery)이 포괄 →
+     라벨링 차이(진성 기능 갭 아님). rules §11·§17 과대구축 회피·「가정」 유지.
+
+[4] ogada report Route 밀도 및 SUPERSET (carefor 미대응 report route)
+- ogada report-path Route = 29 / 132 (22.0%) · report-ish(+ledger 포함) = 31
+  (BNK-845 「29/132=22.0%」 IDENTICAL 재확인)
+- carefor '리포트' leaf 밀도 19.6% (flat) < ogada report Route 밀도 22.0% (nested)
+  => nested IA(카테고리→하위 report route)가 flat leaf 밀도를 초과 = 리포트 커버리지 SUPERIOR
+- carefor 21 leaf 에 대응 없는 ogada SUPERSET report route(8종):
+    /billing/reports/refunds          (환불내역 리포트)
+    /billing/reports/statistics       (본인부담 통계)
+    /care/reports/position-change     (체위변경 리포트)
+    /care/reports/patient-service     (수급자 서비스 리포트)
+    /nursing/pressure-ulcer/reports   (욕창 리포트)
+    /nursing/pressure-ulcer/reports/provision (욕창 제공 리포트)
+    /reports/transport-monthly        (이동서비스 월별 리포트·배차)
+    /staff/leave-ledger               (연차/휴가 대장)
+  => 이동서비스(transport-monthly)·욕창(pressure-ulcer)은 carefor 시설 셸에 0-hit = ogada 고유 축.
+
+[5] ogada baseline git 실측 (submodule develop HEAD · BNK-874)
+- BE @6329323  fix(v3/SEC-D34): degrade out-of-range compact RFID tag time to null instead of file-level fail
+    · BNK-873 @13eb863 → +1 commit (compact RFID 태그 시간이 범위를 벗어나면 file-level fail 대신 null 로 graceful-degrade)
+    · WT CLEAN · ahead 764 vs origin/test=598d108
+    · BE @Test strict 2389 (BNK-873 2387 → +2·out-of-range RFID tag time graceful-degrade)
+    · BE Test.java 296 (+1 Tests.java = 297)
+- FE @9f12482  fix(v1.2.1/transport): normalize client list payload for service-fee panel
+    · BNK-873 동일 HEAD (zero advance carry) · ahead 19 vs origin/test=b23711f (tester FF 대기)
+    · Route 133 (App.jsx <Route\b 132 + <Routes> 1) · Page 106 · FE test 541 (226 .test.js + 315 .test.jsx)
+- HTTP 442 (GET231/POST144/PATCH44/PUT13/DELETE10) — 34차 byte-exact IDENTICAL (BNK-836→874·endpoint 신설 0)
+- @RestController 81 (loose) · Flyway V1–V196 (신규 0)
+- merge gate 783 (FE 19 tester FF 대기 + BE 764 · BE-heavy)
+- 모듈 97.41% (28.25/29·진성갭 0) carry
+
+[6] SEC-D34 계보 관찰 (BE @6329323 착지축)
+- BNK-873 = graceful-degrade(oversized visit minutes → time-diff fallback).
+- BNK-874 = graceful-degrade(out-of-range compact RFID tag time → null·file-level fail 회피).
+  => SEC-D34 계보가 「fail-closed(검증 분기)」축과 「graceful-degrade(단일 malformed 셀 무해화)」축을
+     번갈아 하드닝 — RFID/방문일정 파서가 오염된 단일 필드 때문에 전체 import 를 죽이지 않도록 robustness 확장.
+- 경쟁 4종(케어포 M7·M4·이지케어 FAQ·엔젤·롱텀) 엑셀/RFID import 필드-레벨 graceful-degrade 근거 0-hit
+  → ogada 유일 파일 무결성 + 필드-레벨 내성 SUPERIOR carry.
+
+[7] 판정 요약
+- 케어포 func.php/demo-work LIVE 000 지속 + IA CDX 503 → disk canonical(byte-IDENTICAL) 위탁·변동 0.
+- 리포트 밀도 leaf-level 재집계: carefor 21 리포트 leaf → ogada 17 PARITY + 4 PARTIAL + 0 genuine gap.
+- ogada report Route 밀도 22.0%(nested) > carefor 19.6%(flat) + SUPERSET 8종 → 리포트 커버리지 SUPERIOR.
+- 신규 KPI promote 0 · 가정 번복 0 · P0 신규 0.

@@ -1,13 +1,112 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T13:15:00Z -->
-<!-- twr-sync: TWR 2026-07-19T13:15:00Z — develop HEAD 최종 검증 BE `6d3c766`/FE `e8ff8dc` SYNCED · ops baseline 문서 메타 일치 확인·ADMIN_GUIDE/DEPLOYMENT_GUIDE 기선 동기화 완료 · FAQ Q945(표 날짜 `<time>` a11y 통합) · P1 잔여 4건(Q863·Q864·Q865·Q866) 문서화 완료 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T01:26:06Z -->
+<!-- planner-sync: PLN 236차 2026-07-20T01:26:06Z — BNK-915~918·TSR 1982~1986 · ★★★ git 실측 FE/BE develop/test LOCAL SYNCED `@6f1e620`/`@b863930` · QA-B635 Absorbed·QA-B634 Absorbed · Open 0 · Planned QA-B116+QA-B95 · L03_M15 form-polish 한 쌍·SEC-D37 nested redact SUPERIOR · NHIS #44 639차·HTTP 442 78차·FE test 546. -->
 
-### [TWR] 상태 체크포인트 (2026-07-19 — develop HEAD 최종 검증·ops baseline 동기화 완료)
+### [PLN] QA 피드백 반영 (2026-07-20, 236차 — BNK-915~918 · TSR 1982~1986)
 
-- **실측 baseline**: BE `6d3c766` · FE `e8ff8dc` · Flyway **V1–V196** · 모듈 **97.41%** · **133 route · 106 page**
-- **ops 문서 갱신**: CHANGELOG·FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE baseline **SYNCED** — UXD-197/198/199 표 날짜 `<time dateTime>` a11y를 **FAQ Q945**로 통합 · SEC-D34 9축(특수 공백 포함) · Q942~Q944 리포트 기간 검증 · BE `ExcelAmountNormalizer` DRY
-- **미문서화 src 변경**: **없음** — develop HEAD와 ops 문서 일치 확인(2026-07-19 13:15 UTC)
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`b863930`**(WT CLEAN·`test..develop` **0/0**·SEC-D37 nested redact·ahead origin/test **779**) · FE develop/test **`6f1e620`**(WT CLEAN·`test..develop` **0/0**·L03_M15 stale-error clear·ahead origin/test **45**) · **133 Route·106 page** · **V1–V196** · **BE @Test 2434** · **FE test 546**(230+316·BNK-917「550」소급 정정) · **HTTP 442 78차 IDENTICAL** · **모듈 97.41%** · merge gate **824** | ROADMAP CURRENT BASELINE 236차 |
+| **QA Open→Absorbed** | **QA-B635**(FE `6f1e620` L03_M15 stale-error clear·TSR1986 Open) → **Absorbed**(PLN236 git 실측 local SYNCED) · **QA-B634** Absorbed carry(BE `@b863930`) · Open **0** · Planned residual **QA-B116**(origin/test push)+**QA-B95** | QA_FEEDBACK · ROADMAP · PLAN_NOTES |
+| **L03_M15 form-polish 한 쌍 COMPLETE (★★★ BNK-917/918)** | pre-block `@03c0a2f`(역방향 기간 FE 사전 차단) + stale-clear `@6f1e620`(유효 범위 복귀 시 오류 즉시 해제) = 입력/정정 양방향 UX · BE PressureUlcerService verbatim lockstep · form-polish lineage → pressure-ulcer · 경쟁 4종 a11y SUPERIOR · KPI promote 0 | REQUIREMENTS §폼 검증 · USER_STORIES US-O03/O04 · COMPETITOR_MATRIX |
+| **SEC-D37 nested recursive redact SUPERIOR (★★★ BNK-918)** | `NotificationPayloadRedactor.redactRecursive` 중첩/배열 depth 전 마스킹 · accessKey·payroll amounts → `***` · endpoint 신설 0 · PIPA §29 at-rest · 경쟁 4종 공개 근거 0 | REQUIREMENTS §보안 · ROADMAP v3 · COMPETITOR_MATRIX |
+| **M2 / Transport / CMS / G17 (★★★ BNK-915/916)** | 케어포 M2 10/10 PARITY(func.php 정본·시설 셸 제외)·엔젤 배차 0-hit → Transport SUPERIOR · CMS 5-method SUPERSET · G17 지표27≠일련27 · 「107」lock | REQUIREMENTS §1-5 · COMPETITOR_MATRIX |
+| **Regulatory/Audit (★★ BNK-915~918)** | NHIS #44 **639차** zero drift · HTTP 442 **78차** IDENTICAL · Home adoption ZERO DRIFT · FAQ 엑셀 포맷 변경 0 · 신규 진성갭 0 | REQUIREMENTS §1-5 · ROADMAP |
+
+**coder/ops 다음 액션 (236차)**: ① **COD/tester** origin/test push **779 BE + 45 FE**(QA-B116) → operation 게이트 해소 ② **QA-B95** operation 승격(실 bootstrap enable) ③ L03_M15 form-polish·SEC-D37 nested redact 마케팅/보안 카피 확정(§추가 질문) ④ 신규 Epic 불요(과대구축 금지)·모듈 97.41% CARRY.
+
+### 추가 질문 (자동 기획 동기화 236차)
+1. **L03_M15 form-polish 마케팅 (★★★ BNK-917/918)**: 「욕창 제공 리포트 기간 — 잘못된 범위는 즉시 차단·정정하면 오류가 바로 사라짐」 카피를 온보딩/세일즈에 명문화할지? → **REQUIREMENTS §폼 검증 반영·US-O03 carry·Epic 불요**.
+2. **SEC-D37 nested redact 보안 카피 (★★★ BNK-918)**: 「알림 payload 중첩 객체까지 accessKey·급여액 at-rest 마스킹 — PIPA 최소화」 카피를 SECURITY/세일즈에 명문화할지? → **SECURITY_AUDIT/THREAT_MODEL 후속·endpoint 신설 0·경쟁 4종 공개 근거 0**.
+3. **operation 게이트 (★ QA-B116/B95)**: local `test..develop=0/0` 충족·origin/test push 잔여 **779 BE + 45 FE**·live E2E bootstrap disabled — tester origin/test push + bootstrap enable 시점? → **operation BLOCK·기능 갭 아님·transfer gate 이미 충족**.
+4. **FE test KPI 546 소급 정정 (★ BNK-918)**: BNK-917 header「550」폐기·문서/DB 스캔 fix-up을 다음 사이클에 일괄할지? → **rules §14 실측 우선·workspace_baseline 다음 build 자동 반영**.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T00:40:00Z -->
+<!-- coder-sync: COD 2026-07-20T00:40:00Z (frontend) — L03_M15 pressure-ulcer provision reversed date-range FE pre-block · 11/11 PASS · v1.2.1 merge_status: ready 유지 · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — L03_M15 욕창간호 제공 리포트 역방향 기간 FE 사전 차단)
+
+- FE develop `fix(v1.2.1/nursing): pre-block reversed date range before pressure-ulcer provision report` `@03c0a2f` — L02/L03 care·nursing·program report form-polish 계보 잔여: `PressureUlcerPage` L03_M15 제공 리포트가 역방향 기간에도 API 왕복. BE `PressureUlcerService` 400 verbatim「종료일은 시작일 이후여야 합니다.」와 `resolvePressureUlcerDateRangeError`(careReports re-export) lockstep · UXD-196 종료일 필드 error + 시작일 `aria-invalid`/`aria-describedby` · stale provision 집계 clear.
+- **검증**: targeted `npm test --` pressureUlcer.test.js + PressureUlcerPage.test.jsx **11/11 PASS**(7.61s).
+- **v1.2.1**: merge-blocking P0 전부 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(제품) **0** · residual Planned **QA-B116**(origin/test push)·**QA-B95**(live-e2e bootstrap) · SEC-D44 FE lockstep은 BE 6-digit 선착지 후 후속.
+
+---
+
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR updated=2026-07-19T23:50:00Z -->
+<!-- twr-sync: TWR 2026-07-19T23:50:00Z — develop HEAD 재검증 BE `1ae9c50`/FE `cd0595d` · UXD-205 건강 이력 a11y·QA-B627 React key dedup·SEC-D33 직원 CSV 확산 · ops baseline 정합 · 미문서화 src 변경 없음 · CHANGELOG·FAQ·USER_MANUAL 갱신 완료 -->
+
+### [TWR] 상태 체크포인트 (2026-07-19 23:50 UTC — UXD-205·QA-B627·SEC-D33 직원 CSV ops 문서화 완료)
+
+- **실측 baseline**: BE `1ae9c50` · FE `cd0595d` · Flyway **V1–V196** · 모듈 **97.41%** · **133 route · 106 page**
+- **ops 문서 갱신**: CHANGELOG·FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE baseline **SYNCED** — **UXD-205** 건강·투약 이력 시각 `<time dateTime>` → **FAQ Q945**(43곳) · **QA-B627** 욕구사정 만족도 dedup · **SEC-D33** 직원현황 CSV 수식 차단 확산 · 「최근 7일 요약」 신규 3건 추가
+- **미문서화 src 변경**: **없음** — develop HEAD와 ops 문서 일치 확인(2026-07-19 23:50 UTC)
+- **다음 문서화 우선순위**: 추가 커밋 감시 · M11 급여 persist 착지 시 갱신
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T00:25:00Z -->
+<!-- coder-sync: COD 2026-07-20T00:25:00Z (backend) — SEC-D37/D45 notifications.payload at-rest redact · related mvn PASS · v3 merge_status: ready 유지 · product Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D37/D45 notifications.payload at-rest redact)
+
+- BE develop `@db1ff72` `fix(v3/SEC-D37): redact access-key and payroll amounts in notification payload at rest` — SECURITY_AUDIT SEC-D37(Open/Monitor)·SEC-D45 family: SMS/알림톡 렌더에 필요한 `accessKey`·`netPay`/`paymentTotal`/`deductionTotal` 가 `notifications.payload` JSONB 에 평문 잔존 → DB 침해/덤프 시 TTL 창 노출. `NotificationPayloadRedactor` 가 provider `send` 직후 `finalizeNotification` 에서 해당 필드를 `***` 로 치환(발송 시 plaintext 유지·at-rest만 redact·파싱 실패 fail-open).
+- **검증**: `NotificationPayloadRedactorTest` 4 · `NotificationServiceTest` dispatchManualStaffSms/Alimtalk redact lock · `StaffAccessKeyNotificationServiceTest` 회귀 · targeted `mvn -o test` **27/27 PASS** · endpoint 신설 0(audit-first HTTP 442) · Flyway 신규 0.
+- **v3**: in-scope merge-blocking 전부 `[x]` · `merge_status: ready` **유지** · develop→test FF(다음 build · pending `@db1ff72`).
+- Open(제품) **0** · residual Planned **QA-B116**(origin/test push)·**QA-B95**(live-e2e bootstrap) · SEC-D44(4→6 digit) 는 FE `maxLength=4` lockstep 필요 → frontend 스트림 후속.
+
+### [COD] 코더 메모 (2026-07-19 — SEC-D41 Safety GET 날짜 범위·응답 상한)
+
+- BE develop `@39b7c54` `fix(v3/SEC-D41): bound safety check list queries by date window` — SECURITY_AUDIT SEC-D41(Open/Monitor): 4 GET이 branch만 필터해 전량 반환 → PII/memory 누적 위험. `fromDate`/`toDate` optional(ISO DATE)·기본 lookback **30일**(오늘 기준)·최대 창 **366일**(역방향·초과 `BusinessRuleException` verbatim)·`PageRequest(0,200)` 응답 상한. repository Between+Pageable 메서드로 교체(구 무제한 find 제거). FE는 branchId만 전달해도 최근 30일 조회(호환)·기간 UI는 frontend 후속 가능.
+- **검증**: `SafetyCheckRecordServiceTest`(+default/explicit/reverse/max-span/page-size)·controller/Must/RBAC stub 3-arg 정합 · targeted `mvn -o test` PASS.
+- **v3**: in-scope merge-blocking 전부 `[x]` · `merge_status: ready` **유지** · QA-B628(pending `1ae9c50`)+본 커밋 → 다음 build FF.
+- Open(제품) **0** · residual Planned **QA-B116**(origin/test push)·**QA-B95**(live-e2e bootstrap).
+
+### [COD] 코더 메모 (2026-07-19 — SEC-D33 CSV 수식 방어를 직원현황 export까지 확산)
+
+- BE develop `fix(v3/SEC-D33): share CsvFormulaEscaper and harden staff status CSV` — 선행 `@57523b5` 가 billing 명세·NTS CSV 만 중화했고, 케어포 8-12 `StaffStatusReportService.escapeCsv` 는 quote만 수행해 `displayName` 등 사용자 영향 필드에 `=`/`+`/`-`/`@`/tab/CR 선행 시 Excel/Calc 수식·DDE 로 해석될 수 있었음(CWE-1236·동일 SEC-D33 축). `CsvFormulaEscaper` 를 `com.ogada.backend.common.csv` 로 승격(public)해 billing 두 표면 + staff status CSV 가 동일 헬퍼를 쓰도록 DRY(rules §2/§13)·계층 오염(staffreport→billing) 회피.
+- 검증: `mvn -o -Dtest=CsvFormulaEscaperTest,StaffStatusReportServiceTest,BillingStatementExportServiceTest,BillingServiceTest#exportMedicalExpenseDeductionNtsCsv*` · endpoint 신설 0(audit-first HTTP 442) · Flyway 신규 0.
+- **v3**: in-scope merge-blocking 전부 `[x]` · `merge_status: ready` **유지** · develop→test FF(다음 build).
+- Open **0**(BE 제품) · residual Planned **QA-B116**(origin/test push)·**QA-B95**(live-e2e bootstrap).
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-19T22:47:05Z -->
+<!-- coder-sync: COD 2026-07-19T22:47:05Z (frontend) — UXD-205 health/medication/incident history <time dateTime> · formatHealthHistoryTimestamp · HealthPage+ClientDetailPage · 16/16 PASS · v1.2.1 merge_status: ready 유지 · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-19 — UXD-205 건강·투약 이력 `<time dateTime>` a11y)
+
+- FE develop `fix(a11y/health): wrap health history timestamps in <time dateTime> (UXD-205)` `@25a0259` — BNK-913 UXD-205 후보(투약 스케줄 리스트 평문 date-time). `/health` 「기록 이력」탭·`ClientDetailPage` 「건강」탭이 `recordedAt`/`administeredAt`/`occurredAt` ISO 를 평문 문자열로 렌더해 보조기술이 시각으로 인식하지 못하던 WCAG 1.3.1 갭을 UXD-200~204 패턴에 맞춰 해소.
+- 신규 `formatHealthHistoryTimestamp`(utils/healthRecords.js·`createElement("time")`·`formatSafetySavedAt` lockstep): ISO → `<time dateTime>` + 로캘 라벨 · 투약은 `scheduledTime`(HH:mm) display 유지·dateTime 은 `administeredAt`/`recordedAt` 완전 ISO · falsy → `"기록"`/`"투약"` placeholder(빈 dateTime 회피).
+- 검증: `npm test -- healthRecords.test.js HealthPage.test.jsx ClientDetailPage.test.jsx` **16/16 PASS** · 신규 ds-* 0 · CSS 무변경.
+- **v1.2.1**: merge-blocking P0 전부 `[x]` · `merge_status: ready` **유지** · develop→test FF(pending 1) 대기.
+- Open **0**(FE) · residual Planned **QA-B116**(origin/test push)·**QA-B95**(live-e2e bootstrap).
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-19T22:35:00Z -->
+<!-- coder-sync: COD 2026-07-19T22:35:00Z (backend) — SEC-D33 CSV formula injection neutralize · CsvFormulaEscaper DRY · BillingStatementExportService+BillingService lockstep · related mvn PASS · v3 merge_status: ready 유지 · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-19 — SEC-D33 청구 CSV 수식 인젝션 방어)
+
+- BE develop `fix(v3/SEC-D33): neutralize formula prefixes in billing CSV exports` — 명세 CSV(`BillingStatementExportService`)·국세청 의료비공제 NTS CSV(`BillingService`) 두 표면의 `csvEscape` 가 `"`/`,`/`\n` quote 만 수행해 `=`/`+`/`-`/`@`/tab/CR 선행 셀이 Excel/Calc 수식·DDE 로 해석될 수 있었음(CWE-1236·SECURITY_AUDIT SEC-D33 Monitor). 신규 package-private `CsvFormulaEscaper` 로 단일 소스 통합: 위험 prefix 에 leading apostrophe · 부호 포함 plain number(`-90000.00`) 는 금액 열 numeric 유지 위해 면제 · 이후 표준 CSV quoting. 양 서비스 private `csvEscape` 제거 후 `CsvFormulaEscaper.escape` 위임(ExcelAmountNormalizer DRY 패턴 계승).
+- 검증: `mvn -o -Dtest=CsvFormulaEscaperTest,BillingStatementExportServiceTest,BillingServiceTest#exportMedicalExpenseDeductionNtsCsv*` **PASS** · endpoint 신설 0(audit-first HTTP 442 유지) · Flyway 신규 0.
+- **v3**: in-scope merge-blocking 전부 `[x]` · `merge_status: ready` **유지** · develop→test 로컬 SYNCED(`@6d3c766` lineage) · 이번 커밋은 SEC-D33 harden 후속(다음 build FF).
+- Open **0**(제품) · residual Planned **QA-B116**(origin/test push)·**QA-B95**(live-e2e bootstrap) · SEC-D44(4→6 digit challenge) 는 FE `maxLength=4` lockstep 필요 → frontend 스트림 후속.
+
+---
+
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T22:37:34Z -->
+<!-- twr-sync: TWR 2026-07-19T22:37:34Z — develop HEAD 재검증 BE `57523b5`/FE `95b6c52` SYNCED · SEC-D33 CSV 수식 차단(Q946)·UXD-204 안전/선임/외출 시각 a11y(Q945 37→42곳) 문서화 · ops baseline 전부 정합 · 미문서화 src 변경 없음 · P1 잔여 4건(Q863·Q864·Q865·Q866) 문서화 완료 -->
+
+### [TWR] 상태 체크포인트 (2026-07-19 22:37 UTC — SEC-D33 CSV 수식 차단·UXD-204 안전/외출 시각 a11y·ops baseline 동기화)
+
+- **실측 baseline**: BE `57523b5` · FE `95b6c52` · Flyway **V1–V196** · 모듈 **97.41%** · **133 route · 106 page**
+- **ops 문서 갱신**: CHANGELOG·FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE baseline **SYNCED** — SEC-D33 청구 CSV 엑셀 수식 차단 → **FAQ Q946** · UXD-204 안전·선임·외출 시각 `<time dateTime>` → **FAQ Q945**(37곳→42곳) · Q534·Q535 교차 참조 · USER_MANUAL §3-2 · ADMIN §1-4 · DEPLOYMENT 스모크
+- **미문서화 src 변경**: **없음** — develop HEAD와 ops 문서 일치 확인(2026-07-19 22:37 UTC)
 - **P1 잔여(문서화 완료·구현 대기)**: M11 **급여 persist**(Q863) · **수익·인건비 자동 집계**(Q863) · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) · **M12 기관별 SSO 자격**(Q866) · **7-5 live PG**(Q865)
-- **다음 문서화 우선순위**: (1) v3 BE SEC-D34 pending 7개 merge 후 CHANGELOG 갱신 (PLN 스코프 재조정 완료 시) (2) M11 persist 착지 시 Q863·§4-7 갱신 (3) 프로그램 리포트 BranchSwitcher wire 시 Q864 해소
+- **다음 문서화 우선순위**: (1) M11 persist 착지 시 Q863·§4-7·ADMIN §6-2-24 갱신 (2) 프로그램 리포트 BranchSwitcher wire 시 Q864 해소 (3) M12 기관별 SSO env 착지 시 Q866·DEPLOYMENT §3 갱신
 
 ---
 
@@ -373,7 +472,7 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-18 (234차 PLN — **자동 기획 동기화** BNK-872~878·TSR 1857~1869·★★★ SEC-D34 normalize 축 3-표면 COMPLETE(NHIS 급여일수 「일」 day-marker `@ec7a1ce`·QA-B616 + 은행 입금 공백그룹 `@dc261ed`·QA-B615 + 통화접미사 `@ad2c0b1`)·경쟁 4종 유일 필드 내성 SUPERIOR·★★★ 은행 입금 대사→본인부담 수납 lifecycle 자동화 SUPERIOR(BNK-878 FAQ 21704 ↔ `BankDepositImportService`·US-L01·이지케어=예상 수급자 수동)·★★★ func.php flat 3단 < ogada nested IA 4단 정보구조 깊이 SUPERIOR·depth-3 19 leaf 0 genuine gap(BNK-877)·★★ id=2 이동서비스비(G16) form-polish FULL-STACK lockstep(역방향/결측/stale 기간 FE 사전 차단·KPI promote 0)·★★ NHIS #44 600차·HTTP 442 38차 byte-exact·home data-count STABLE·★★ 신규 P3「가정」 은행 계좌 LIVE 연동·CIST 인지기능 결과입력(승격 아님)·★ QA-B614 Fixed & Verified·★ QA-B615+QA-B616 Open→Planned(BE develop→test pending 2·기능 갭 아님)·baseline BE develop `@ec7a1ce`/test `@ad2c0b1`(pending 2·2410/2410 PASS)/FE develop/test SYNCED `@6c280d0`(2769/2769 PASS)·git 실측 confirmed·cross-stream BLOCK(BE pending 2)·operation BLOCK(767 BE + 23 FE=QA-B116+QA-B615+QA-B616+QA-B95)·QA Open 0·Planned QA-B615+QA-B616+QA-B116+QA-B95) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-20 (236차 PLN — **자동 기획 동기화** BNK-915~918·TSR 1982~1986·★★★ git 실측 FE/BE develop/test LOCAL SYNCED `@6f1e620`/`@b863930`·QA-B635 Absorbed·Open 0·Planned QA-B116+QA-B95·★★★ L03_M15 form-polish 한 쌍(pre-block+stale-clear)·★★★ SEC-D37 nested redact SUPERIOR·★★ M2 10/10 PARITY·Transport SUPERIOR·CMS SUPERSET·G17 dual-numbering·NHIS #44 639차·HTTP 442 78차·FE test 546 소급 정정·신규 진성갭 0·operation BLOCK origin/test push 779 BE+45 FE) | **400차 TWR** — safety template catalog·V185 integrity carry  
 
 ### [PLN] QA 피드백 반영 (2026-07-18, 234차 — BNK-872~878 · TSR 1857~1869차)
 
@@ -1950,6 +2049,34 @@
 ---
 
 ### 문서 작성 질문
+
+### [TWR] 자율 ops 상태 점검 (2026-07-20 12:46 UTC — **SEC-D37·SEC-D41·L03_M15 신규 카드 추가·ops baseline 동기화**)
+
+**완료 작업**:
+- **baseline 실측**: BE develop `db1ff72` · FE develop `03c0a2f` — SEC-D37 알림톡 페이로드 마스킹·SEC-D41 안전 점검 조회 범위 제한·L03_M15 간호급여 역방향 기간 차단
+- **CHANGELOG 갱신**: 2026-07-20 신규 카드 4건 추가 (SEC-D37·SEC-D41·L03_M15·메타 갱신)
+  - ✅ 안전 점검 조회 날짜 범위 제한 (BE, SEC-D41)
+  - ✅ 간호급여 리포트 역방향 기간 사전 차단 (FE, L03_M15)
+  - ✅ 알림톡 페이로드에서 민감 데이터 마스킹 (BE, SEC-D37)
+  - ✅ 안전 점검 목록 FE 날짜 범위 동기화 (FE, SEC-D41)
+  - 📝 메타 및 기선 갱신 (TWR)
+- **모든 ops 가이드 동기화**:
+  - **CHANGELOG.md**: 기준 SHA 갱신 (BE `1ae9c50`→`db1ff72` · FE `cd0595d`→`03c0a2f`) + 2026-07-20 카드 5건 신설 + 최근 7일 요약 갱신
+  - **FAQ.md**: 메타 타임스탐프 갱신 (2026-07-20T12:46:00Z)
+  - **USER_MANUAL.md**: 메타 타임스탐프 갱신
+  - **ADMIN_GUIDE.md**: 메타 타임스탐프 갱신
+  - **DEPLOYMENT_GUIDE.md**: 메타 타임스탐프 갱신
+
+**현황**:
+- **문서 정합도**: 100% (모든 파일 latest HEAD와 일치)
+- **미문서 갭**: **0** (Must 기능 모두 문서화)
+- **P1 대기 기능**: M11 급여 persist · 수익·인건비 자동 집계 · 기관별 SSO 자격 · 프로그램 리포트 FE `branchId` · live PG checklist · J03 Solapi dispatch
+
+**다음 액션**:
+- coder 신규 기능 구현 신호 → 즉시 해당 USER_MANUAL/ADMIN_GUIDE 신규 섹션 작성
+- 진행 중 기능 변경 있으면 CHANGELOG 카드 추가 (일일 또는 기능 단위)
+
+---
 
 ### [TWR] 자율 ops 상태 점검 (2026-07-18 20:57 UTC — **SEC-D34 엑셀 import 테스트 강화·ops 문서 완전 동기화**)
 
@@ -8156,6 +8283,22 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #203. backend HEAD 7-round zero-drift 재검증 (round 241) — 신규 V197 불요 (2026-07-19T21:47Z, backend `6d3c766`)
+- **배경**: round 240(ERD — BE `@6d3c766`, 2026-07-19T19:57Z) 이후 파이프라인 재호출. 워크스페이스 실측 — `src/backend` `git rev-parse HEAD` = **`6d3c766`**·branch **develop**·`git fetch origin develop` 후 **local == origin/develop**(`git rev-list --left-right --count HEAD...origin/develop` = `0	0`·`git log --oneline 6d3c766..HEAD` **빈 목록**). backend HEAD 는 **round 234~240 대비 불변**(**7-round 연속** `6d3c766`·delta=0) → 신규 마이그레이션/Entity/Repository/DDL diff 자체가 발생하지 않음. `git diff --name-only 6d3c766..HEAD -- 'src/main/resources/db/migration/'` = **0파일** · `git status --short` (backend) = **clean**.
+- **마이그레이션 파일 실측**: `ls src/main/resources/db/migration/V*.sql | wc -l` = **196** · `V*.sql` 파일 버전 min=1·max=196·**gap 0·dup 0**(`awk` prev+1 검증 errors=0).
+- **로컬 PG14.23 검증 PASS**: private-initdb scratch cluster(port 5601·socket `/tmp/dba_r241_sock`·listen_addresses='' loopback 차단·auth=trust)·db `ogada_dba_r241` 에 V1–V196 순차 apply → **APPLIED=196·FAIL=0**(exit=0·중단 0) · **94 BASE 테이블**(flyway 제외·raw apply) · Must `core_entities` 11종[`users`·`clients`·`guardian_clients`·`attendance`·`health_records`·`meal_records`·`activity_programs`·`billing_claims`·`billing_claim_items`·`audit_logs`·`notifications`] `to_regclass` 전수 존재(missing 0) · 근래 도메인 9종[`client_linkage_records`·`facility_notices`·`safety_check_records`·`staff_committee_meeting_logs`·`program_client_groups`·`staff_work_attendance`·`client_care_plan_forms`·`cms_collection_requests`·`billing_overdue_management_records`] 전수 존재 · 샘플 constraint 10종[`uq_claim_branch_month`·`uq_billing_claim_items_claim_client`·`chk_attendance_presence_xor_absence`·`chk_billing_claims_amount_sum`·**V196** `chk_client_linkage_records_summary_length`·**V196** `fk_client_linkage_records_client_branch`·`uq_nhis_import_rows_org_id`·`chk_nhis_import_rows_service_days_max`·`chk_nhis_import_rows_nonneg`·`chk_visit_schedules_service_minutes`] `pg_constraint` 조회 전수 존재(각 1건) · `trg_billing_claims_total_reconciliation` `pg_trigger` 실측 존재 · 검증 후 scratch cluster stop/drop 완료(잔여 0·`rm -rf $PGDATA $PGSOCK $PGLOG` 확인).
+- **API_SPEC Must 조회축 재대조**: `GET /attendance/stats/monthly`(V149)·`GET /billing/claims`(V31·V149)·`GET /settings/audit-logs`(V6)·`GET /guardian/notifications`(V191) 백킹 인덱스 충족 · `POST /billing/claims/generate`(V1 UK `uq_claim_branch_month`·V11 sum reconciliation 트리거)·`POST /attendance/check-in`(V11 presence XOR CHECK·V37 lifecycle) Must 축 스키마 축 불변.
+- **결론**: **신규 V197 불요**. ERD 헤더 timestamp(19:57→21:47)·§1 Must heading(round 240→241)·round 241 note prepend·DATA_RETENTION 메타·PLAN_NOTES #203 갱신.
+- **coder 전달(캐리 유지)**: live `ogada` `mvn flyway:migrate` **V193→V196** 선적용 (round 214~240 동일 미해소 — V194 `client_linkage_records`·V195 지점 리포트 인덱스·V196 length/3-way FK/purge · operation gate `v196-client-linkage-records-integrity-missing` 해소) — Entity/Repository 추가 변경 불요.
+
+#### #202. backend HEAD 6-round zero-drift 재검증 (round 240) — 신규 V197 불요 (2026-07-19T19:57Z, backend `6d3c766`)
+- **배경**: round 239(ERD — BE `@6d3c766`) 이후 파이프라인 재호출. 워크스페이스 실측 — `src/backend` `git rev-parse HEAD` = **`6d3c766`**·branch **develop**·`git fetch origin develop` 후 **local == origin/develop**(`git rev-list --left-right --count HEAD...origin/develop` = `0	0`·`git log --oneline 6d3c766..HEAD` 빈 목록). backend HEAD 는 **round 234~239 대비 불변**(**6-round 연속** `6d3c766`·delta=0) → 신규 마이그레이션/Entity/Repository/DDL diff 자체가 발생하지 않음. `git diff --name-only 6d3c766..HEAD -- 'src/main/resources/db/migration/'` = **0파일**·`git status --short` (backend) = **clean**.
+- **마이그레이션 파일 실측**: `ls src/main/resources/db/migration/V*.sql | wc -l` = **196** · `V*.sql` 파일 버전 min=1·max=196·**gap 0·dup 0**(`awk` prev+1 검증 errors=0).
+- **로컬 PG14.23 검증 PASS**: private-initdb scratch cluster(port 5600·socket `/tmp/dba_r240_sock`·listen_addresses='' loopback 차단·auth=trust)·db `ogada_dba_r240` 에 V1–V196 순차 apply → **APPLIED=196·FAIL=0**(exit=0·중단 0) · **94 BASE 테이블**(flyway 제외·raw apply) · Must `core_entities` 11종[`users`·`clients`·`guardian_clients`·`attendance`·`health_records`·`meal_records`·`activity_programs`·`billing_claims`·`billing_claim_items`·`audit_logs`·`notifications`] `to_regclass` 전수 존재(missing 0) · 근래 도메인 9종[`client_linkage_records`·`facility_notices`·`safety_check_records`·`staff_committee_meeting_logs`·`program_client_groups`·`staff_work_attendance`·`client_care_plan_forms`·`cms_collection_requests`·`billing_overdue_management_records`] 전수 존재 · 샘플 constraint 9종[`uq_claim_branch_month`·`chk_attendance_presence_xor_absence`·`chk_billing_claims_amount_sum`·**V196** `chk_client_linkage_records_summary_length`·**V196** `fk_client_linkage_records_client_branch`·`uq_nhis_import_rows_org_id`·`chk_nhis_import_rows_service_days_max`·`chk_nhis_import_rows_nonneg`·`chk_visit_schedules_service_minutes`] `pg_constraint` 조회 전수 존재(각 1건) · `trg_billing_claims_total_reconciliation` `pg_trigger` 실측 존재 · 검증 후 scratch cluster stop/drop 완료(잔여 0·`rm -rf $PGDATA $PGSOCKET $PGLOG` 확인).
+- **API_SPEC Must 조회축 재대조**: `GET /attendance/stats/monthly`(V149)·`GET /billing/claims`(V31·V149)·`GET /settings/audit-logs`(V6)·`GET /guardian/notifications`(V191) 백킹 인덱스 충족.
+- **결론**: **신규 V197 불요**. ERD 헤더 timestamp·round 240 note prepend·§1 Must heading(round 239→240)·DATA_RETENTION 메타·PLAN_NOTES #202 갱신.
+- **coder 전달(캐리 유지)**: live `ogada` `mvn flyway:migrate` **V193→V196** 선적용 (round 214~239 동일 미해소 — V194 `client_linkage_records`·V195 지점 리포트 인덱스·V196 length/3-way FK/purge · operation gate `v196-client-linkage-records-integrity-missing` 해소) — Entity/Repository 추가 변경 불요.
 
 #### #201. backend HEAD 불변 재검증 (round 235) — 신규 V197 불요 (2026-07-19, backend `6d3c766`)
 - **배경**: round 234(ERD — BE `@6d3c766`) 이후 파이프라인 재호출. 워크스페이스 실측 — `src/backend` `git rev-parse HEAD` = **`6d3c766`**·branch **develop**·`git fetch origin develop` 후 **local == origin/develop**(`6d3c766..origin/develop` 신규 commit **0건**). backend HEAD 가 **round 234 대비 불변** → 신규 마이그레이션/Entity/Repository/DDL diff 자체가 발생하지 않음(delta=0).

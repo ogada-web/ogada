@@ -1,0 +1,175 @@
+# ezcare_faq21849_cognitive_worksheet_1to1_bnk893.txt
+# BNK-893 | 2026-07-19T08:55:00Z | 이지케어 역공학 2-4h
+# 초점: FAQ rowid=21849 「2026년 4월 인지활동 업데이트 안내」 신규 evidence URL
+#       + ezCare ERP demo shell(/new.ez) DRIFT session-token only 재확인
+#       + G-COGNITIVE-WORKSHEET P3「가정」 candidate deepen (BNK-297 FAQ21781 lineage)
+#
+# === 근거 소스 ===
+# 1. FAQ 21849 (신규 evidence URL — 사이클 최소 산출 #1)
+#    URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21849&type=web
+#    HTTP: 200 · SIZE: 15,603B · md5: b2e4f362ef03c46c953f0b2377ffa041
+#    저장: docs/planning/research/snapshots/ezcare_faq21849_cognitive_worksheet_bnk893.html
+#
+# 2. FAQ 21852 (부수 evidence)
+#    URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21852&type=web
+#    HTTP: 200 · SIZE: 13,383B · md5: 2574083affe4ca227f945525c2fa0df5
+#    저장: docs/planning/research/snapshots/ezcare_faq21852_update_202602_bnk893.html
+#
+# 3. ezCare /new.ez ERP demo shell (기존 URL 재실측)
+#    scripts/ezcare-demo-fetch.sh 로 데모 로그인(oCode=DEMO/admin/g8317) → /new.ez
+#    저장: docs/planning/research/snapshots/ezcare_new_ez_demo.html (138,094B)
+#    이번 사이클 md5: 680ccd955d58c2b208e1a337a186af03 (강제 fetch #2)
+#    직전 committed md5: 414550517cfd7c39ec21a26328fb3bee (138,099B)
+#    → DRIFT session-token+daily-date only (widget id + 오늘의업무 [07월19일] + p_schedule)
+#    → 재strip 후 substantive 본문 verbatim IDENTICAL (top-nav 10 module 동일)
+#
+# 4. ezCare 홈페이지 (기존 URL 재실측·substantive DRIFT 감지)
+#    URL: https://ezcare.easyms.co.kr/
+#    HTTP: 200 · SIZE: 69,238B · md5: 17cf0e5bd748540e4273bd494cc4df41
+#    저장: docs/planning/research/snapshots/ezcare_home_live_bnk893.html
+#    직전 committed BNK-878 snapshot: 69,883B · md5: 96c631a4a2d4f2e9634cb06fa409a445
+#    → substantive DRIFT (customer testimonial rotation·후기 명단 갱신)
+#    → 인천 보경***·울산 행복한노인복지센터·부산 다정재가복지센터·충남 덕***·전북 푸***·서울 늘푸***·부산 부전통합재가복지센터 등 신규 후기 로테이션
+#    → 도입 기관 수·1644-0340 고객센터 verbatim IDENTICAL·가격/모듈 변화 없음
+#
+# 5. ezcare_top_nav_v2.js (기존 URL 재실측·zero drift)
+#    URL: https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428
+#    HTTP: 200 · SIZE: 25,470B · md5: 95286775000f06c8ad13688fcb0d6dbb
+#    → 직전 committed md5 IDENTICAL·nav_top_level 10 module IDENTICAL
+#    → 「1:직원·2:수급자·3:방문일정·4:RFID점검·5:본인부담·6:직원급여·7:재무회계·8:세무/사회보험·9:기관관리·10:기관평가」 = 최신 로그 카달로그(10 module·148 leaf·59 unique PGID) 동결
+#
+# 6. NHIS #44 제34조 (기존 URL 재실측)
+#    URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+#    HTTP: 200 · SIZE: 7,572B · md5: c886ff1fd1d5ca2cb5dc76d30adde8ba
+#    저장: docs/planning/research/snapshots/nhis_jo44_live_bnk893.html
+#    → BNK-892 nhis_jo44_live_bnk892.html 과 `cmp` BYTE-IDENTICAL → **615차 byte-IDENTICAL**
+#
+# === FAQ 21849 verbatim (Korean payload · Korean unicode range 추출) ===
+#
+#   제목: 2026년 4월 인지활동 업데이트 안내
+#   본문: 2026년 4월 신규 학습지 30종이 추가되었습니다.
+#         서비스 이용에 참고하시기 바랍니다.
+#   내역:
+#     · 집행기능 - 추론 영역 (5종)
+#     · 시공간기능 - 지각 기능 영역 (8종)
+#     · 시공간기능 - 시각 영역 (14종)
+#     · 언어기능 - 이해력 영역 (3종)
+#   합계: 5 + 8 + 14 + 3 = 30종
+#   카테고리 sidebar: K001~K012 (직원관리·수급자관리·일정관리·서식출력/설정·본인부담금·모니터링/평가·수당/급여관리·모바일앱·문자발송·재무회계)
+#
+# === 메뉴/필드/워크플로 1블록 상세 (이지케어 인지활동북 도메인 · 사이클 최소 산출 #2) ===
+#
+# ezCare 「인지활동북(Cognitive Activity Book)」 시범 서비스 (BNK-297 FAQ21781 lineage → BNK-893 21849 amount deepen)
+# =====================================================================================
+# 접근: `2.수급자관리 > 서식출력/설정` 카테고리 (K004/K005) · 또는 `9.기관관리 > 서식자료실`
+# 성격: 「인지맞춤형 학습지(worksheet) 낱장 출력」 시범 서비스 (BNK-297 verbatim carry)
+# 콘텐츠 라이브러리 축 (BNK-893 amount evidence — 30종 유니크 신규 학습지 · 2026-04 시점 누적):
+#   ┌────────────┬───────────────────────────────────────┬────────┐
+#   │ 대영역     │ 세부 영역                             │ 신규   │
+#   ├────────────┼───────────────────────────────────────┼────────┤
+#   │ 집행기능   │ 추론                                  │  5종   │
+#   │ 시공간기능 │ 지각 기능                             │  8종   │
+#   │ 시공간기능 │ 시각                                  │ 14종   │
+#   │ 언어기능   │ 이해력                                │  3종   │
+#   └────────────┴───────────────────────────────────────┴────────┘
+#                                                    합계 30종
+# 정본 카테고리 mapping (인지 도메인 taxonomy 추정):
+#   - 집행기능(Executive Function) → 추론·계획·문제해결
+#   - 시공간기능(Visuospatial Function) → 지각·시각(도형/공간/방향)
+#   - 언어기능(Language Function) → 이해력·표현·유창성
+#   - (미확인) 기억기능·주의집중기능·계산기능 등 잔여 도메인은 이번 evidence 무관
+# 확장 로드맵 (BNK-297 verbatim carry): 계획표·표지 등 세부 기능 하반기(2025-H2) 확장 예정
+#
+# === ogada 대응 grep (BE `@6d3c766` · FE `@aab11b2`) ===
+#
+# 인지활동 관련 코드:
+#   - src/backend/src/main/java/com/ogada/backend/programs/domain/CognitiveActivitySkipReason.java (enum·미제공 사유 lifecycle)
+#   - src/backend/.../programs/domain/ProgramType.java (COGNITIVE_ACTIVITY 등 program type)
+#   - src/backend/.../programs/domain/FunctionalRecoveryService.java (인지활동 계획·훈련 서비스)
+#   - src/backend/.../programs/persistence/FunctionalRecoveryPlanEntity.java (인지활동 계획 엔티티)
+#   - src/backend/.../billing/domain/*(cognitive_support_ltc_grade_g9 인지지원등급 G9)
+# 인지활동 「기록」 축: V112/V113 (V112 skipReason·V113 참여 여부 lifecycle) — ogada `@6d3c766` full-stack ✅
+# 인지활동 「계획·훈련」 축: FunctionalRecoveryPlan* — ogada full-stack ✅
+# 인지활동 「등급」 축: 인지지원등급 G9 catalog — ogada full-stack ✅
+#
+# 인지활동 「콘텐츠 라이브러리」 축 (학습지 authoring / 낱장 출력) grep:
+#   git grep 학습지        → 0-hit (ogada 부재)
+#   git grep worksheet    → 0-hit
+#   git grep 인지활동북    → 0-hit
+#   git grep activityBook → 0-hit
+# → ogada 는 인지활동 「기록·계획·등급」 축 3종 ✅ full-stack, 「콘텐츠 authoring/library」 축 부재
+#
+# === 판정 (rules §11 · §17 과대구축 회피) ===
+#
+# G-COGNITIVE-WORKSHEET P3「가정」 candidate (BNK-297 → BNK-893 deepen)
+# 성격: 인지활동 콘텐츠 authoring/library — 운영·청구·규제 core 밖 부가 서비스
+# 근거:
+#   1. 이지케어 정본 FAQ21781 「시범 서비스」·「하반기 확장 예정」 = ezCare 자체도 pilot 단계 (H2 미성숙)
+#   2. NHIS 급여기준·수가 규제 (고시 2025-247·MOHW 2026-126) 어디에도 「학습지 30종」 authoring 강제 조항 부재
+#   3. ogada v1.3 MVP 스코프(REQUIREMENTS §1-5) = 운영·출석·건강·청구·대시보드 core (콘텐츠 라이브러리 out-of-scope)
+#   4. BNK-297 「과대구축 회피」 판정 유지 (BNK-297~892 296차 carry·번복 0)
+# 판정: P3「가정」 carry (승격 0·rules §11 변경 범위 제어 + §17 AI 금지 행동·큰 리팩터링/의존성 확장 회피)
+# 신규 진성갭 판정: 아님 (BNK-297 결정 96 지속)
+#
+# BNK-893 amount evidence (30종·4 도메인)는 P3 candidate 의 「pilot → maturity 궤적」에 대한 fresh data-point:
+# 즉, ezCare 는 pilot 확장(하반기 30종 신규) 궤적 유지 중 → ogada v1.3 스코프 밖 판정은 유효 유지.
+# 만약 향후 (a) NHIS/MOHW 수가·평가지표에 인지활동 콘텐츠 authoring 항목이 신설되거나
+# (b) 주간보호 시장 도입 기관수가 임계 초과 (ezCare 도입 9,338+ 기관 중 「활용률」 evidence 확인)
+# 되면 재분류(P3→P2 승격) 검토. 현시점은 「pilot 확장 단계 evidence carry」.
+#
+# === ezCare /new.ez ERP demo shell DRIFT session-token only 재확인 ===
+#
+# 로그인: POST https://ezcare.easyms.co.kr/page/login.php · oCode=DEMO&User_ID=admin&User_PW=g8317
+# 응답: JSON {"code":"0000"} → 세션 쿠키 발급 → GET /new.ez → HTML shell (138,094B)
+# 셸 title: 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+# 셸 top-nav (10 module verbatim): 1:직원·2:수급자·3:방문일정·4:RFID점검·5:본인부담·6:직원급여·7:재무회계·8:세무/사회보험·9:기관관리·10:기관평가
+# 셸 DRIFT axis (2회 연속 fetch 비교):
+#   axis-A widget id  : EC000010-63502037 (2026-07-18) / -5188957 (fetch#1) / -12564033 (fetch#2)  — random session-scoped
+#   axis-B daily date : 오늘의 업무 [07월18일] → [07월19일]  — solar+lunar cd_ganjee json
+#   axis-C p_schedule : populated (18일 급여지급 반복일정) → null (19일)                          — sample data
+#   axis-D chart canvas id / widget_code: ES000040-…, EP000060-…, widget_code-…                    — orthogonal random id
+# 재strip 후 diff 0-line (substantive UI/menu 무변)
+# → BNK-292 이후 다수 사이클 관찰 pattern verbatim carry: ezCare demo shell = session-token + daily-date + random widget id → substantive body IDENTICAL
+#
+# === ezcare_menu_catalog.json 무변 재확인 ===
+#
+# fetched_at: 2026-07-19T08:49:17Z · module_count 10 · leaf_item_count 148 · unique_pgid_count 59
+# 직전(2026-07-18T02:57:46Z) diff = fetched_at 1-line 만 · 나머지 148 leaf/59 PGID/10 module IDENTICAL
+# → top-nav catalog 148 leaf 정본 동결 (BNK-892 → BNK-893 zero drift)
+#
+# === 경쟁 4종 「인지활동 콘텐츠 authoring」 축 비교 (BNK-893 정합) ===
+#
+# ogada (@aab11b2/@6d3c766)  : 콘텐츠 authoring 축 부재 (기록·계획·등급 3축 ✅)
+# 케어포                     : func.php 정본 grep 「학습지/worksheet/인지활동북」 0-hit (M1~M11 leaf 어디에도 부재)
+# 이지케어 (@ezcare-DEMO)    : 인지활동북 시범 서비스 (H2 확장 예정·2026-04 30종 신규·pilot)
+# 엔젤 silverangel           : silverangel_daycareProgramProvided.do 「인지활동계획(치매)+인지활동세부계획(치매)」 계획 축만 ↔ 콘텐츠 authoring 부재
+# 롱텀 (공단)                : 규제 백본에 콘텐츠 authoring 조항 부재
+# → 이지케어가 경쟁 5종 중 「콘텐츠 authoring」 pilot 유일 (H2 확장 evidence)
+# → BUT: 규제/수가 강제 아님·pilot 성숙 단계 미확인·ogada MVP out-of-scope 유지 정당
+#
+# === COMPETITOR_MATRIX 갱신 대상 (사이클 최소 산출 #3) ===
+#
+# @HEAD SHA 갱신: ogada BE `@6d3c766`/FE `@aab11b2` (BNK-892 동일·zero advance)
+# 신규 row: 
+#   (1) FAQ 21849 「인지활동 30종 신규」 → G-COGNITIVE-WORKSHEET P3 carry deepen
+#   (2) ezCare /new.ez demo shell DRIFT session-token+daily+widget-id only → substantive IDENTICAL
+#   (3) NHIS #44 615차 byte-IDENTICAL
+#   (4) audit-first HTTP 442 53차 byte/count-exact IDENTICAL
+#
+# === BENCHMARK_REPORT.md 신규 §893 소절 (사이클 최소 산출 #4) ===
+#
+# §893-0 baseline · §893-1 FAQ 21849 evidence · §893-2 ezCare demo DRIFT axis · §893-3 NHIS #44 615차
+# §893-4 audit-first 53차 · §893-5 G-COGNITIVE-WORKSHEET carry · §893-6 planner 액션
+#
+# === 판정 요약 (rules §14 · §18) ===
+#
+# 신규 진성갭: 0 (G-COGNITIVE-WORKSHEET P3 carry·BNK-297 결정 96 지속·pilot 확장 evidence 추가)
+# 가정/예측 번복: 0 (콘텐츠 authoring MVP out-of-scope 판정 유지)
+# 미확인 승격: 0 (「pilot 확장 evidence」 는 확인 사실이나 시장 성숙도는 「미확인」)
+# P0~P3 결정 번복: 0
+# KPI promote: 0 (모듈 97.41% carry·Route 133·Page 107·FE test 543·BE Test 298·HTTP 442 53차 IDENTICAL)
+# per-cycle minimum 4종 충족:
+#   [✓] 신규 evidence URL 1건 이상 (FAQ 21849 + 21852 + home DRIFT = 3건)
+#   [✓] 메뉴/필드/워크플로 1블록 (이지케어 인지활동북 30종 4-도메인 taxonomy)
+#   [✓] COMPETITOR_MATRIX @HEAD 4행 이상 갱신
+#   [✓] BENCHMARK_REPORT §893 신규 7-절

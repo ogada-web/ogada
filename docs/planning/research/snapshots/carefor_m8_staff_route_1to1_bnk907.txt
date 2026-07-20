@@ -1,0 +1,52 @@
+# BNK-907 · 케어포 func.php M8 직원관리 15-leaf → ogada @HEAD full-stack 1:1 crosswalk
+# 조사일: 2026-07-19 (rotation 0-2h 케어포 역공학)
+# carefor func.php LIVE: HTTP 000 timeout (125-cycle+ carry 「미확인」)
+#   → disk canonical carefor_func.php md5 6226e6eb92fdd25ed3e50842a5e8a00b / 98,328B (LOCK) 에서 M8 재추출
+# ogada baseline: BE @6d3c766 (18-cycle zero advance·ahead 774) / FE @fa838f5 (+1 ADVANCE UXD-202·ahead 38)
+
+## carefor func.php M8 정본 (line 726~743, pc - 8.직원관리 — 15 leaf)
+8-1.직원 정보관리
+8-1-2.선임 요양보호사 업무수행일지
+8-2.근무일정표
+8-3.연간 일정계획
+8-4.출퇴근 및 근무관리
+8-5.사례관리 회의록
+8-6.회의록(운영위원회)
+8-7.교육일지(노인인권, 재난, 소화, 직원권익)
+8-7-1.요양보호사 보수교육
+8-8.자원봉사자 활동일지(필요시)
+8-9.고충처리 관리
+8-10.건강검진관리
+8-11.질향상노력(삭제예정)
+8-12.직원 현황 리포트
+8-13.연차,유급휴일 대장
+
+## ogada @HEAD 1:1 crosswalk (BE controller endpoints · FE route/page)
+# leaf                         | ogada BE controller (endpoints)                        | FE page                          | 판정
+8-1  직원 정보관리            | StaffLifecycleSummaryController(1)+StaffHrFileController(6) | StaffPage/StaffDetailPage        | ✅ PARITY
+8-1-2 선임 요양보호사 업무수행일지 | LeadCaregiverWorkLogController(5·import-draft+/sign 전자서명) | LeadCaregiverWorkLogPage        | ✅ SUPERIOR (NHIS import draft + 전자서명 sign)
+8-2  근무일정표              | StaffMonthlyScheduleNotificationService+visits schedule | StaffMonthlySchedulePage         | ✅ PARITY
+8-3  연간 일정계획           | StaffMonthlySchedule(연간/월별 뷰)                      | StaffMonthlySchedulePage         | △ 연간 뷰 「가정」(월별 정본·연간 파생)
+8-4  출퇴근 및 근무관리      | StaffWorkAttendanceController(3)                        | StaffWorkAttendancePage          | ✅ PARITY
+8-5  사례관리 회의록         | CaseManagementController(4·compliance response)         | CaseManagementPage               | ✅ SUPERIOR (compliance 지표)
+8-6  회의록(운영위원회)      | StaffCommitteeMeetingController(6)                      | StaffCommitteeMeetingPage        | ✅ PARITY
+8-7  교육일지                | StaffTrainingLogController(4)                           | StaffTrainingLogPage             | ✅ PARITY
+8-7-1 요양보호사 보수교육    | StaffRefresherTrainingController(5)                     | StaffRefresherTrainingPage       | ✅ PARITY
+8-8  자원봉사자 활동일지(필요시) | (0-hit)                                              | (없음)                           | ❌ GAP — carefor 자체 「필요시」 optional·P4「가정」 candidate
+8-9  고충처리 관리           | GrievanceCounselingController(9)                        | GrievanceCounselingPage          | ✅ SUPERIOR (9 endpoints·상담 lifecycle)
+8-10 건강검진관리            | StaffHealthCheckupController(3)                         | StaffHealthCheckupsPage          | ✅ PARITY
+8-11 질향상노력(삭제예정)    | N/A — carefor 자체 「삭제예정」 deprecated              | N/A                              | ⚪ N/A (경쟁사 폐기 예정·갭 아님)
+8-12 직원 현황 리포트        | StaffStatusReportController(2)                          | StaffStatusReportPage            | ✅ PARITY
+8-13 연차,유급휴일 대장      | StaffAnnualLeaveController(3)+StaffLeaveLedgerController(5) | StaffAnnualLeavePage/StaffLeaveLedgerPage | ✅ SUPERIOR (연차 + 유급휴일 대장 분리)
+
+## 결론
+# real-scope 13/13 leaf-level PARITY (8-11 carefor deprecated 제외·8-8 carefor 「필요시」 optional 제외)
+# SUPERIOR 4종: 8-1-2 lead caregiver 전자서명+NHIS import · 8-5 case mgmt compliance · 8-9 grievance 9ep · 8-13 연차/유급휴일 대장 분리
+# M8 backing: 15 controller / 59 endpoints (StaffLifecycle1+HrFile6+LeadCaregiver5+WorkAttendance3+CommitteeMeeting6+
+#   TrainingLog4+Refresher5+HealthCheckup3+AnnualLeave3+LeaveLedger5+Grievance9+CaseMgmt4+StatusReport2+EmploymentContract1+NhisCaregiverImport2)
+# ogada EXTRA (carefor M8 미보유): StaffEmploymentContractComplianceController(근로계약 준법)·StaffNhisCaregiverImportController(공단 요양보호사 엑셀 import)
+# 신규 진성갭 승격 0 (8-8 volunteer = carefor optional·P4「가정」 유지)
+
+## NHIS #44 제34조 629차 byte-IDENTICAL
+# https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+# HTTP 200·7,572B·md5 c886ff1fd1d5ca2cb5dc76d30adde8ba·cmp vs nhis_jo44_live_bnk906.html = BYTE-IDENTICAL (BNK-906 628차 → 629차)

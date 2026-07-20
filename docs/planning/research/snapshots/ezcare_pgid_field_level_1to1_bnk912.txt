@@ -1,0 +1,170 @@
+# BNK-912 · 이지케어 /new.ez PGID 필드-레벨 1:1 crosswalk → ogada @6d3c766 / @2715090
+# 조사일: 2026-07-19T21:35:00Z | source: `./scripts/ezcare-demo-fetch.sh --batch schedule-fix,rfid-list,receipt-list,patient-list`
+# 로그인 code=0000 (oCode=DEMO/User_ID=admin/User_PW=g8317) → 세션 쿠키 → /new.ez?PGID=<id>
+# 목적: agents.yaml `reverse_engineering.priority_targets` — 「이지케어 /new.ez(데모 체험 로그인) · PGID 페이지」 필드 전수 → ogada Entity/Route 대비 갭·차별화·MVP 우선순위 산출
+
+## §0 · 배경 (canonical structure carry)
+
+- ezcare 데모 셸 (`ezcare_new_ez_demo.html`, 138,722B, md5 `808dfe82`) — dynamic session widget-id/business-date/schedule-data 제외한 canonical structure는 BNK-908 HEAD 대비 **byte-identical**(strip md5 `34c99546`). top-nav-v2.js `95286775`/25,470B **BYTE-IDENTICAL LOCK carry**.
+- Menu catalog: 10 top-level module · 148 leaf item · 59 unique PGID (`ezcare_menu_catalog.json`, md5 `343cad40`, `fetched_at` 2026-07-19T21:27:21Z).
+- **NEW insight — 이지케어 데모의 실 워크플로 데이터**: 이번 fetch 에서 `schedule_data.social_worker_schedule`가 admin 계정에 실제 2건 방문일정 노출(2026-07-20 09:00~12:00 김순0→10-DEMO0003, 13:00~16:00 이재0→17-DEMO0007·요양보호사 code=`DEMO220004`·pName=`홍길동0` 마스킹 형식). 데모 계정임에도 스케줄 데이터가 사용되는 것을 확인 = 이지케어 데모는 실 워크플로 재현형.
+
+## §1 · schedule-fix (일정확정) — 방문일정 확정 폼
+
+**PGID**: `schedule-fix` | 149,568B · md5 `91f77a1f`
+**Nav 위치**: no=4 RFID점검 → 「일정확정」 (RFID태그↔공단계획 비교 후 확정)
+**변동**: BNK-798 대비 `open_time` 세션 초 값만 다름(`1784496494` vs `1784217706`) → **canonical structure IDENTICAL**(strip diff 1-line = open_time only).
+
+### form field 전수 (input/select name=)
+
+| 필드 | 타입 | 의미 | ogada `VisitScheduleEntity` 매핑 | 판정 |
+|---|---|---|---|---|
+| `Ym` | input | 년월(YYYYMM) | derived from `visitDate` | ✅ PARITY(정규화 우위) |
+| `sDate` | input | 방문일 | `visitDate` (LocalDate) | ✅ PARITY |
+| `pCode` | input | 수급자 코드(예: `17-DEMO0007`) | `clientId` (Long FK) | ✅ PARITY(FK 우위) |
+| `rowid` | input | 스케줄 레코드 ID | `id` (auto PK) | ✅ PARITY |
+| `confirmNum_a` | input | 확정 번호(NHIS 신청 번호) | — 「가정」 미확인 | △ ASSUMED-GAP |
+| `fixed` | input | 일괄 확정취소 flag | `status`(SCHEDULED/CONFIRMED/CANCELLED) | ✅ PARITY(status enum 우위) |
+| `job_type` | input | 방문요양/방문목욕/방문간호 코드 | `scheduleKind` | ✅ PARITY |
+| `job_pay` | input | 방문건별 급여액(원) | 「가정」 — VisitService.settleBilling 계산? | △ ASSUMED-PARITY |
+| `job_pay_type` | select | 급여 유형(방문요양/목욕/간호/방문간호지시서 등) | `scheduleKind` sub-enum | ✅ PARITY |
+| `job_days` | input | 요일 마스크 | — 「가정」 미확인 | △ ASSUMED-GAP(단회 기준 vs recurring) |
+| `job_time_start` | input | 시작시각 HHMM | `plannedStartTime` (LocalTime) | ✅ PARITY(ISO time 우위) |
+| `job_time_end` | input | 종료시각 HHMM | `plannedEndTime` | ✅ PARITY |
+| `job_time_min` | input | 실 서비스 분 | `serviceMinutes` | ✅ PARITY |
+| `job_location` | input | 방문지 위치명 | 「가정」 — VisitScheduleEntity 미보유 | △ ASSUMED-GAP(재가 방문지 vs 주간보호 시설) |
+| `job_location_code` | input | 방문지 코드 | 미보유 | △ ASSUMED-GAP(재가-only) |
+| `job_address` | input | 방문지 주소 | 미보유(Client 주소로 대체) | △ NOT-GAP(정규화 우위) |
+| `pRate` | select | 감경률(0/40/60%) | Client `copayType` | ✅ PARITY |
+| `pRate_type` | input | 감경사유 타입 | 미보유 | △ ASSUMED-GAP(감경증빙 flow) |
+| `rcp_age` | select | 수급자 연령 | derived from `Client.birthDate` | ✅ PARITY(정규화 우위) |
+| `rcp_sex` | input | 수급자 성별 | `Client.gender` | ✅ PARITY(정규화 우위) |
+| `rcp_grade` | select | LTC 등급 | `Client.ltcGrade` | ✅ PARITY |
+| `memo` | input | 메모 | `notes` | ✅ PARITY |
+| `keyword` | input | 검색 키워드 | 검색 파라미터(엔티티 아님) | ⚪ NOT-APPLICABLE |
+
+**갭 요약**: `confirmNum_a`/`job_days`/`job_location*`/`pRate_type` 4종 = 재가(방문요양) 특화 필드 → ogada 주간보호(daycare-first) 아키텍처에서 **NOT-GAP**(전략 선택). 재가 확장 시 P3 candidate.
+
+## §2 · patient-list (수급자 검색/관리/등록) — 수급자 마스터
+
+**PGID**: `patient-list` | 408,388B · md5 `e5c0cb89`
+**Nav 위치**: no=2 수급자 → 「검색/관리/등록」 (수급자 마스터 CRUD)
+**변동**: BNK-739 대비 2-line drift(모두 마케팅 문구):
+  - 라인 280: 리뷰 팝업 URL 리팩터링(`/page/landing/common/review.html` 800×600 → `/landing/?page=review_v1` 900×1200) = UX 개선 
+  - 라인 2882: **★★★ CMS 자동이체 marketing 문구에서 「이지케어 이용기관 중 1634개(14.5%) 기관은 이미 본인부담금을 자동이체로 수납」 카피 REMOVED** → 「전기, 휴대폰 요금처럼 본인부담금도 자동이체로 수납 처리할 수 있습니다」로 대체 → 구체 지표(14.5%·1634개) 삭제 = 「도입 기관 수 자랑」 → 「기능 설명」 카피 전환. 소급 signal: 도입 지표 감소 가능성「가정」 또는 마케팅 톤 조정.
+
+### form field 전수(중복 제거·주요만) — 20+ input/select name=
+
+| 필드 | 타입 | 의미 | ogada `ClientEntity`/관련 엔티티 매핑 | 판정 |
+|---|---|---|---|---|
+| `code` | input | 수급자 코드(예: `17-DEMO0007`) | `id` PK | ✅ PARITY |
+| `RFID_tagId` | input | **수급자 마스터 RFID 태그 ID** | 미보유(ogada visit-level VisitRfidCareProvision·RfidTransmissionExcelParser) | ⚠ **DIFF**(재가 태그 접근·아래 §2-1 상세) |
+| `dKind` | select | 치매 종류(알츠하이머/혈관성/등) | `Client.ltcGrade`(인지지원등급 포함) — 종류 별도 미보유 | △ ASSUMED-GAP(치매 세분화) |
+| `dLevel` | select | 치매 정도 | `ltcGrade`(1~5+인지지원)에 흡수 | △ NOT-GAP(정규화 우위) |
+| `dKind_ext` | input | 치매 관련 부가 memo | 미보유 | △ ASSUMED-GAP |
+| `birthdate` | input | 생년월일 | `birthDate` (LocalDate) | ✅ PARITY |
+| `address1`/`address2` | input | 주소(도로명+상세) | `Client.address*` (「가정」 확인 필요) | △ ASSUMED-PARITY |
+| `date_contract` | input | 계약체결일 | 「가정」 — Client 미보유 (요양보호사 계약과 다름) | △ ASSUMED-GAP(수급자 서비스 계약 신설 필요) |
+| `date_start`/`date_end` | input | 서비스 시작·종료일 | `ltcCertValidFrom`/`ValidTo`로 근사 | ✅ PARTIAL-PARITY |
+| `family` | input | 가족 관계 | Guardian 엔티티 별도 | ✅ PARITY(정규화 우위) |
+| `familyCare` | input | **가족요양보호사 flag** | 미보유 | △ ASSUMED-GAP(재가-only 개념·주간보호 NOT-APPLICABLE) |
+| `visit-plan` | select | 방문계획 preset(요양·목욕·간호) | 「가정」 — ScheduleTemplate 유사 | △ ASSUMED-GAP(recurring 방문 preset) |
+| `service` | select | 서비스 종류 | scheduleKind enum | ✅ PARITY |
+| `state` | select | 수급자 상태(활동/종결/이관) | 「가정」 — Client `status` (확인 필요) | △ ASSUMED-PARITY |
+| `cash_receipt` | input | 현금영수증 발급 대상 flag | 「가정」 — client cash-receipt profile(BNK-904 §911-2 SUPERIOR carry 존재) | ✅ PARITY(profile 우위) |
+| `bill_Ym`/`bill_rowid` | input | 청구 년월/청구 레코드 링크 | Billing FK | ✅ PARITY(FK 우위) |
+| `add-file[]` | input file | 첨부(케어플랜·서류) | 「가정」 — StorageService 존재하나 client 첨부 UX 확인 필요 | △ ASSUMED-PARTIAL |
+| `dual` | input | 이중 보험 flag(공단+민간) | 미보유 | △ ASSUMED-GAP |
+
+### §2-1 · RFID_tagId 아키텍처 비교 [DIFF · 판단 필요]
+
+- **이지케어**: 수급자 마스터에 `RFID_tagId` **1 필드** 저장 → 수급자 태그 = 방문지(client 댁내) 태그 = 요양보호사 방문 인증 = 방문요양 워크플로 표준(공단 RFID태그 내역 vs 공단계획 비교 후 확정).
+- **ogada**: 수급자 마스터에 rfidTagId 없음 → visit-event(`VisitRfid*`) 에서 `RfidTransmissionExcelParser` + `VisitRfidDiffMatcher` 로 **NHIS import ↔ 실 태그 이벤트** 매칭(엑셀 다운로드·서명 검증·`VisitRfidDispatchCandidateResponse`).
+- **판정**: 두 아키텍처는 **동일 문제(방문 인증)를 다르게 해결**. ezcare 는 static tag ID를 client 에 pin, ogada 는 dynamic tag event를 매칭. 
+  - ezcare 방식 = 태그 재발급 시 대량 update 필요, 데이터 노출 위험(RFID_tagId 평문 저장「가정」).
+  - ogada 방식 = 태그 유연 배정, 감사 로그 자연 스러움, 하지만 client-level RFID 조회 API 부재.
+- **planner 액션**: 재가(방문요양) 지원 확장 시 (P3) — Client 엔티티에 optional `rfidTagId` 필드 도입 검토. 지금은 daycare-first 로 NOT-GAP.
+
+## §3 · receipt-list (본인부담금 현금영수증) — 자동/수동 발행
+
+**PGID**: `receipt-list` | 108,582B · md5 `67d00f9a`
+**Nav 위치**: no=2 수급자 → 「본인부담금 현금영수증」 (발행 내역·발행 정보관리)
+**변동**: BNK-794(2026-07-16) 대비 **byte-IDENTICAL**(canonical strip md5 `35e8c2ba` 동일) — 20-cycle 이상 안정.
+
+### form field 전수
+
+| 필드 | 타입 | 의미 | ogada 매핑 | 판정 |
+|---|---|---|---|---|
+| `BUYER_EMAIL` | input | 구매자 이메일 | 「가정」 CashReceiptIssueService(BNK-77) 있으나 client email 필드 매핑 확인 필요 | △ ASSUMED-PARTIAL |
+| `BUYER_NM` | input | 구매자 이름 | Client.name | ✅ PARITY |
+| `BUYER_TEL` | input | 구매자 전화 | Client.phone 「가정」 | △ ASSUMED-PARITY |
+| `amount` | input | 금액 | CashReceipt.amount | ✅ PARITY |
+| `kind` | input | 발행 종류(소득공제/지출증빙) | 「가정」 — 확인 필요 | △ ASSUMED-PARITY |
+| `Ym`/`eDate` | input | 년월·발행일 | issuanceDate | ✅ PARITY |
+| `keyword` | input | 검색어 | 검색 파라미터 | ⚪ NOT-APPLICABLE |
+
+**요약**: ogada 는 이미 `BillingController.cashReceiptIssuances` + `MedicalExpenseDeductionPanel` + NTS CSV export + CMS/EasyPay 자동 exclusion(BNK-77·904 SUPERIOR 6-종 lineage carry) → 이지케어 발행 form 대비 **정책 밀도 SUPERIOR**.
+
+## §4 · rfid-list — nopage stub [미확인]
+
+**PGID**: `rfid-list` | 93,379B · md5 `1b834410` — 헤더 h2 「페이지를 찾을 수 없습니다.」 확인.
+- 이지케어 menu 4번 RFID점검 아래에 `rfid-list` PGID는 **존재하지 않음** — 실제 nav item URL 은 `schedule-rfid` (RFID태그 내역 ↔ 공단계획 비교) + `/schedule_plan/rfid_compare.html`(팝업 버전) + `schedule-fix` 뿐. `rfid-list` 는 「가정 candidate PGID」였음 → 「미확인」 결과 = nopage stub.
+- **의미**: ezcare 의 RFID 점검은 **단 3개 leaf** — (1) schedule-rfid 비교 (2) rfid_compare 팝업 (3) schedule-fix 확정. 이는 이미 BNK-829/720 등 crosswalk 에 캡처됨.
+
+## §5 · ogada @HEAD 갭 요약 (per-cycle minimum · MVP 우선순위 후보)
+
+**신규 진성갭 0** — 아래 후보는 모두 **주간보호(daycare)-first ogada 아키텍처에서 전략적 NOT-GAP**. 재가(방문요양) 지원 확장 시 재검토:
+
+| 갭 후보 | ezcare 필드 | ogada 상태 | 판정 | 우선순위 |
+|---|---|---|---|---|
+| Client 태그 ID | `RFID_tagId` | visit-event level 매칭 | DIFF-strategy | P4 재가 확장 후 재검토 |
+| 가족요양보호사 flag | `familyCare` | 미보유 | GAP-scope | P4 재가-only |
+| 방문지 별도 주소 | `job_location*` | Client 주소로 대체 | NOT-GAP | ⚪ 정규화 우위 carry |
+| 방문계획 preset | `visit-plan` | 미보유 | GAP-recurring | P3 recurring schedule 신설 시 |
+| 서비스 계약 lifecycle | `date_contract` | ltcCert valid range 근사 | PARTIAL | P3 계약 문서 flow 도입 시 |
+| 감경 사유 타입 | `pRate_type` | 미보유 | GAP-audit | P3 감경증빙 upload flow |
+| 치매 종류 세분화 | `dKind`/`dKind_ext` | ltcGrade 인지지원 흡수 | NOT-GAP | ⚪ 정규화 carry |
+| 이중 보험 flag | `dual` | 미보유 | GAP-scope | P4 |
+
+## §6 · 이지케어 마케팅 지표 drift 분석 (public 카피)
+
+**Homepage adoption counters** (`ezcare_home_live_bnk912.html`, 69,865B, md5 `82b89fca`, cache-buster `?1784496381`):
+
+| 지표 | bnk900 | bnk912 | Δ |
+|---|---|---|---|
+| 방문요양 ERP 시장점유율 | 53.2% | 53.2% | 0 |
+| 이지케어 이용기관 | 9,298개 | 9,298개 | 0 |
+| 재무회계 대행 이용기관 | 4,675개 | 4,675개 | 0 |
+| 월 공단 청구 처리 | 2,353억 원 | 2,353억 원 | 0 |
+| 종사자 급여 처리 | 1,820억 원 | 1,820억 원 | 0 |
+
+**Testimonials rotation**: 20 distinct dates (2009-11-15 ~ 2025-08-05) — bnk900 20 dates(~2018-04-02 ~ 2026-07-10) → **완전 rotation**(중복 0). 사이트가 리뷰 pool 을 랜덤 순환 (지표 아님).
+
+**patient-list CMS 자동이체 marketing 문구 drift (bnk739 → bnk912)**:
+- OLD(bnk739): 「이지케어 이용기관 중 **1634개(14.5%) 기관**은 이미 본인부담금을 자동이체로 수납하고 있습니다.」
+- NEW(bnk912): 「전기, 휴대폰 요금처럼 본인부담금도 자동이체로 수납 처리할 수 있습니다.」
+- **★ signal**: 이지케어가 CMS 자동이체 도입 기관 수(14.5%)를 marketing 에서 제거 → 도입률 하락「가정」 또는 tone-down (전략) → ogada `CmsController`(9ep·multi-account settlement·virtual-account) MVP 우위 재확인.
+
+**Pricing** (`ezcare_price_live_bnk912.html`, 52,025B, md5 `40b6515e`, cache-buster `?1784496381`):
+- vs bnk908(52,025B·`83078397`) = raw diff(cache-buster) / **strip md5 `ab407434` = BYTE-IDENTICAL 콘텐츠** → base 33,000/55,000원·SMS 50/500원·월 tier 10,000~70,000 carry (BNK-908 lineage lock).
+
+## §7 · ogada baseline (2026-07-19T21:35:00Z · git 실측 우선)
+
+- BE develop `6d3c766`(BNK-889→912 **23-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test 2413·@RestController 80·Flyway V1–V196·WT CLEAN)
+- FE develop `2715090`(BNK-910/911 `@2715090` **3-cycle 연속 zero advance**·UXD-203 carry·ahead **39**·tester FF 대기·WT CLEAN)
+- Route **133**(<Route\b 132+<Routes> 1)·Page **106**·FE test **544**(228 .test.js+316 .test.jsx)·HTTP **442**(GET231+POST144+PATCH44+PUT13+DELETE10·**72차** IDENTICAL)·모듈 **97.41%**·merge gate **813**
+
+## §8 · 근거 URL·파일
+
+- `https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix` (HTTP 200 via demo session)
+- `https://ezcare.easyms.co.kr/new.ez?PGID=patient-list` (HTTP 200)
+- `https://ezcare.easyms.co.kr/new.ez?PGID=receipt-list` (HTTP 200)
+- `https://ezcare.easyms.co.kr/new.ez?PGID=rfid-list` (HTTP 200 · nopage stub)
+- `https://ezcare.easyms.co.kr/` (HTTP 200 · adoption counters unchanged)
+- `https://ezcare.easyms.co.kr/index.html?PG=price` (HTTP 200 · pricing unchanged)
+- Disk canonical: `docs/planning/research/snapshots/ezcare_new_ez_pgid_{schedule-fix,patient-list,receipt-list,rfid-list}.html` + `_bnk912.html` 3개 신규
+- ogada BE 실측: `git -C src/backend rev-parse develop` = `6d3c766`
+- ogada FE 실측: `git -C src/frontend rev-parse develop` = `2715090`
+
+---
+BNK-912 종료 · 신규 진성갭 0 · 가정 번복 0 · per-cycle minimum 4종 충족(신규 URL 4·필드 blocked 3·MATRIX 1행+·§912 소절+).

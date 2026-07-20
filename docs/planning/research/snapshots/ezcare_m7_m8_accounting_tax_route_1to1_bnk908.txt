@@ -1,0 +1,86 @@
+# 이지케어 재무회계(M7)·세무/사회보험(M8) → ogada @HEAD 1:1 crosswalk [BNK-908 · 이지케어 역공학 2-4h]
+
+조사일: 2026-07-19T18:48:42Z
+소스: `./scripts/ezcare-demo-fetch.sh --menu-catalog` (DEMO oCode·login code=0000)
+  - title: "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+  - demo shell: ezcare_new_ez_demo.html 138,720B md5 6fce900406bd4916301affa543f3ce76 (세션 토큰만 변동)
+  - top-nav JS: ezcare_top_nav_v2.js 25,470B md5 95286775000f06c8ad13688fcb0d6dbb
+    → cmp vs ezcare_top_nav_v2_bnk778.js = BYTE-IDENTICAL (nav 구조 무변동 carry)
+  - menu catalog: ezcare_menu_catalog.json 10 module / 148 leaf / 59 unique PGID (timestamp-only drift)
+  - 가격: ezcare_price_live_bnk908.html 52,025B md5 83078397ad6dafb421dcadc27f491ff5
+    → vs bnk820 c4d1d7ea = DRIFT(byte 2167 = CSS cache-buster ?1784267051→?1784486969·콘텐츠 IDENTICAL)
+
+ogada baseline (git 실측·2026-07-19):
+  - BE develop = 6d3c766 (BNK-889→908 19-cycle zero advance·WT CLEAN·ahead 774 vs origin/test=598d108·@Test strict 2413·@RestController 81)
+  - FE develop = fa838f5 (BNK-907 동일 HEAD·zero advance·WT CLEAN·ahead 38 vs origin/test=b23711f·Route 133·Page 106)
+
+================================================================================
+§A · 이지케어 nav no=7 「재무회계」 10-leaf 정본 (top-nav-item-V2.js)
+================================================================================
+  7-1  통장내역 조회/입력            /PU.ez?PGID=w4c-bank.statement (popup)
+  7-2  검토요청 답변 입력            (popup·회계법인 검토 회신)
+  7-3  결의서 조회 및 수정           (popup·수입/지출 결의서)
+  7-4  회계장부 출력                 (popup·총계정원장/분개장)
+  7-5  추경보고                      (popup·추가경정예산)
+  7-6  예산보고                      (popup)
+  7-7  결산보고                      (popup)
+  7-8  이전 회계                     /ABook/main.html (popup·레거시 복식부기 엔진)
+  7-9  인증서 재등록                 (popup·공동인증서)
+  → 재무회계 = 복식부기 회계(통장·결의서·장부·예산/결산/추경) + 공동인증서 기반 외부 회계법인 검토 흐름
+
+================================================================================
+§B · 이지케어 nav no=8 「세무/사회보험」 12-leaf 정본
+================================================================================
+  8-1  원천세 신고
+  8-2  퇴직금 계산 및 퇴직소득세 신고
+  8-3  근로소득원천징수부
+  8-4  종사자 취득·상실 현황          (4대보험)
+  8-5  신고요청(취득·상실)
+  8-6  정정신고(취득·상실)
+  8-7  휴·복직 신고
+  8-8  보수총액
+  8-9  기타신고
+  8-10 중도퇴직자 연말정산
+  8-11 연말정산 신고
+  8-12 신고자료 조회
+  → 세무/사회보험 = 원천세·퇴직소득세·연말정산·4대보험 취득/상실/정정 신고 (국세청·공단 전자신고 대행)
+
+================================================================================
+§C · ogada @HEAD crosswalk = 전략적 위임(BPO handoff), 케어포 M12 parity
+================================================================================
+ogada 는 재무회계(M7)·세무/사회보험(M8) 정본 신고 기능을 in-app 으로 구현하지 않고,
+케어포 M12 와 동일하게 외부 BPO(수지파인·「장기요양 재무회계 관리프로그램」)로 위임한다.
+근거: `AccountingBpoSupport.java`
+  - DOCUMENT_CODE = "M12-BPO" · SURFACE_KIND = "ACCOUNTING_BPO_LAUNCH"
+  - PAGE_TITLE = "재무회계 (외부 BPO)" · PORTAL_PRODUCT_NAME = "수지파인"
+  - 안내문: "케어포 M12와 동일하게 수입·지출·결의 등 재무회계는 외부 BPO(수지파인)에서 처리합니다.
+            ogada는 직원 급여(M11)를 in-app으로 제공하고, 재무회계는 포털 진입만 안내합니다."
+  - SSO(OTP) handoff: "비밀번호는 ogada에 저장하지 않으며, 일회용 OTP만 수지파인으로 전달"
+  - SEC-D43 rate limit: actor 10/min · org 30/min (SSO_HANDOFF_DEFAULT_*_RATE_LIMIT_PER_MINUTE)
+
+| 이지케어 leaf | ogada @HEAD 대응 | 판정 |
+|---|---|---|
+| M7 재무회계 10-leaf(통장·결의서·장부·예산/결산/추경) | `AccountingBpoController` GET /api/v1/billing/accounting/bpo-launch (수지파인 포털 launch catalog·@PreAuthorize HQ/BRANCH/SOCIAL) | ⚪ 전략적 위임(NOT-GAP) — 케어포 M12 parity |
+| M7 인증서 재등록·회계법인 검토 | 외부 BPO 포털 내부 처리 | ⚪ 위임 |
+| M8 세무 12-leaf(원천세·퇴직소득세·연말정산·4대보험 신고) | POST /api/v1/billing/accounting/bpo-sso-handoff (일회용 OTP SSO·@PreAuthorize HQ/BRANCH·SEC-D43 rate-limit) | ⚪ 전략적 위임(NOT-GAP) |
+| M8 종사자 취득·상실·보수총액(4대보험 base 데이터) | `StaffPayrollController` in-app 급여(ledger-preview·simple-payment-statement-preview·labor-cost-ratio-preview·retirement-accrual-preview·allowance-deduction-catalog) → BPO 로 급여 base 전달 | ✅ 급여 base in-app + 신고는 위임 |
+
+ogada in-app 커버(M11 직원급여, 이지케어 nav no=6 대응):
+  - `StaffPayrollController` @RequestMapping /api/v1/staff/payroll — 5 endpoint
+    · GET  /allowance-deduction-catalog (9-entry: 3 수당 + 6 공제)
+    · POST /ledger-preview
+    · POST /simple-payment-statement-preview
+    · POST /labor-cost-ratio-preview (LABOR_COST_RATIO_THRESHOLD_PERCENT=60.00)
+    · POST /retirement-accrual-preview (퇴직금 적립·이지케어 6 「퇴직금 적립」 대응)
+
+================================================================================
+§D · 결론 (planner 액션)
+================================================================================
+- 이지케어 M7 재무회계 10-leaf + M8 세무/사회보험 12-leaf = 복식부기 회계 + 전자신고 native 번들.
+- ogada 는 케어포 M12 와 동일 전략: 재무회계·세무는 외부 BPO(수지파인) SSO OTP handoff 로 위임,
+  직원급여(M11)만 in-app. → 진성갭 아님(전략적 위임·NOT-GAP)·경쟁 포지셔닝 결정.
+- 차별화: ogada BPO handoff 는 (1) 비밀번호 미저장·일회용 OTP 만 전달(보안 우위)·(2) SEC-D43 rate limit
+  (actor 10/org 30 per min) 적용 → 자격증명 유출·남용 방어. 이지케어는 in-app 인증서 재등록/직접 신고.
+- 가격: 이지케어 base 33,000원/55,000원 + SMS 50/500원 + 월 10,000/30,000/50,000/70,000 tier
+  (bnk908 재실측·콘텐츠 IDENTICAL·asset version bump only). ogada SaaS 가격 정책 참고자료 carry.
+- 신규 진성갭 0 · P0~P3 결정 번복 0 · 미확인 승격 0.

@@ -1,0 +1,114 @@
+# BNK-914 — 교차검증·갭 우선순위 8h+ (2026-07-19T22:56:00Z)
+# benchmark_researcher(BNK) 역공학 raw 측정 로그
+# rotation: cross-verify·gap-priority — 이전 BNK 가정 번복 여부·미확인 축소·G14·대시보드·v1.3-C·v2 CMS P0/P1 재정렬·신규 공지·엑셀 포맷 변경 스캔
+
+== ogada git 실측 (submodule develop) ==
+backend  develop = 57523b5  fix(v3/SEC-D33): neutralize formula prefixes in billing CSV exports
+  ahead vs origin/test(598d108) = 775
+  BNK-913 @6d3c766 → +1 commit ADVANCE (SEC-D33)
+  @Test strict = 2422 (BNK-913 2413 → +9 · CsvFormulaEscaperTest 7 + BillingService/StatementExport 확장)
+  @RestController = 81 · @Entity = 92
+  HTTP endpoints: GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442
+  Flyway max = V196 (V1–V196)
+  WT CLEAN · BNK-889→913 24-cycle zero advance BROKEN by SEC-D33 +1
+
+frontend develop = 25a0259  fix(a11y/health): wrap health history timestamps in <time dateTime> (UXD-205)
+  ahead vs origin/test(b23711f) = 41
+  BNK-913 @95b6c52 → +1 commit ADVANCE (UXD-205)
+  Route 133 (App.jsx <Route\b 132 + <Routes> 1)
+  Page 106 (*Page.jsx non-test · find + git ls-files 이중 실측 IDENTICAL)
+  FE test 544 (228 .test.js + 316 .test.jsx · UXD-205 in-place +1 healthRecords.test.js expand·신규 page test 0)
+  WT CLEAN · tester FF 대기
+
+== ★ KPI 가정 번복 1 — Page 107→106 재-정정 ==
+BNK-913 §913-3 「Page 106→107 undercount 소급 정정」 → BNK-914 이중 실측(find src/pages *Page.jsx non-test=106 · git ls-files=106) → **106 authoritative**
+TWR 2026-07-19 22:37 「106 page」 정합 · BNK-835 lineage(Page 107→106 재-정정) 재확인
+실 콘텐츠/Route/모듈 무영향 · 문서 위생 only
+
+== UXD-205 diff (25a0259) ==
+  src/utils/healthRecords.js (+27) — formatHealthHistoryTimestamp createElement("time",{dateTime})
+  src/utils/healthRecords.test.js (+23)
+  src/pages/HealthPage.jsx (+22/-) — 기록 이력 recordedAt/administeredAt/occurredAt → helper
+  src/pages/HealthPage.test.jsx (+70)
+  src/pages/ClientDetailPage.jsx (+5) — 건강 탭 동일
+  src/pages/ClientDetailPage.test.jsx (+37)
+  6 files · +175/−9 · npm test 16/16 PASS · 신규 ds-* 0 · CSS 무변경
+  UXD a11y 시리즈: UXD-197~205 = **9-commit** (BNK-903→BNK-914)
+
+== SEC-D33 diff (57523b5) ==
+  CsvFormulaEscaper.java 신규(+87) — =/+/-/@/tab/CR prefix → leading apostrophe · signed numeric 면제
+  BillingStatementExportService + BillingService csvEscape → CsvFormulaEscaper.escape 위임
+  CsvFormulaEscaperTest(+67) + BillingServiceTest(+73) + BillingStatementExportServiceTest(+22)
+  6 files · +254/−27 · endpoint 신설 0 · Flyway 신규 0 · CWE-1236 방어
+  → 경쟁 4종 청구 CSV 수식 인젝션 방어 근거 0(공개) → ogada SUPERIOR「확인」(코드+테스트)
+
+== a11y 차별화 교차검증 (semantic <time dateTime>) ==
+ogada FE JSX:  <time element 189 (non-test 153) · dateTime= attr 152 (non-test 148)
+  + createElement("time") in healthRecords.js + useSafetyServerRecords.js
+competitor snapshots (<time element / datetime= attr):
+  ezcare_new_ez_demo.html                      : 0 / 0
+  silverangel_system_feature_live_bnk909.html  : 0 / 0  (= bnk914 byte-IDENTICAL)
+  carefor_func.php disk canonical              : 0 / 0
+→ 경쟁 3 스냅샷 0-hit ALL CARRY → ogada UXD-197~205 9-commit WCAG 1.3.1 = 경쟁 4종 유일 SUPERIOR
+
+== closed band 6-path LIVE 재확인 (App.jsx @25a0259) ==
+  G14  care-plan-form     path="/clients/:clientId/care-plan-form"  + ClientCarePlanFormPage.jsx LIVE
+  대시보드 dashboard      path="/dashboard" + "/dashboard/hq" + DashboardPage.jsx LIVE
+  v1.3-C service-fees     path="/transport/service-fees" + TransportServiceFeePage.jsx LIVE
+  v2 CMS                  path="/billing/cms" + CmsPage.jsx + CmsEnrollment* LIVE
+  G-LINKAGE               path="/clients/linkage-records" + ClientLinkageRecords* LIVE
+  G2 home-newsletter      path="/clients/home-newsletter" + HomeNewsletterLaunchPage.jsx LIVE
+→ closed band 재오픈 0
+
+== NHIS #44 이동서비스비 재실측 ==
+URL https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7572 · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+cmp vs snapshots/nhis_jo44_live_bnk913.html = BYTE-IDENTICAL (635차 · BNK-913 634차 → +1)
+verbatim 러-1~4 무변 ↔ TransportServiceFeeService(ONE_WAY_RATIO=0.5·1일 1회)+TransportDistanceBand(RU_1..RU_4)
+snapshot 저장: nhis_jo44_live_bnk914.html
+
+== 이지케어 FAQ 엑셀 포맷 변경 스캔 ==
+URL https://ezcare.easyms.co.kr/help/faq.ez
+HTTP 200 · SIZE 80057 · md5 e081b168a67b47671fc8f679777a198e
+rowid unique 233 = IDENTICAL vs bnk901 (added 0 / removed 0)
+엑셀 관련 FAQ title = 2건 ONLY:
+  - 엣지(edge)에서 엑셀파일 다운로드가 안될때 처리방법
+  - 크롬(chrome)에서 엑셀파일 다운로드가 안될때 처리방법
+→ 엑셀 **포맷/양식/컬럼 변경** 시그널 **0** (브라우저 다운로드 이슈만)
+snapshot 저장: ezcare_faq_live_bnk914.html
+
+== 이지케어 Home adoption top-line ==
+URL https://ezcare.easyms.co.kr/
+HTTP 200 · SIZE 69195 · md5 91b5fea083f7b99a70d3958a576810f4
+data-count attrs: 53.2 / 9298 / 4675 / 2353 / 1820 = ZERO DRIFT vs bnk913
+공지/엑셀/포맷 keyword: 공지0·엑셀0·포맷0 · 업데이트3(마케팅 문구 only)
+→ 도입 지표 tone-down 없음 · 신규 공지 0
+snapshot 저장: ezcare_home_live_bnk914.html
+
+== 엔젤 system_feature ==
+URL http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · SIZE 45601 · md5 c950719098eecaf748bbdeea5deb93da
+cmp vs silverangel_system_feature_live_bnk909.html = BYTE-IDENTICAL
+이동서비스/배차/GPS/RFID/차량/송영 6-term 0-hit CARRY
+snapshot 저장: silverangel_system_feature_live_bnk914.html (byte copy)
+
+== P0/P1 재정렬 판정 ==
+P0 신규 진성갭: 0
+closed band 재오픈: 0
+P0~P3 제품 결정 번복: 0 (단 Page KPI 문서 위생 가정 번복 1)
+미확인 승격: 0
+엑셀 포맷 변경 스캔: 0
+P1 잔여(ops/TWR Q863~Q866 · 제품 closed-band 외):
+  Q863 M11 급여 persist · 수익·인건비 자동 집계
+  Q864 프로그램 리포트 FE branchId UI
+  Q865 7-5 live PG
+  Q866 M12 기관별 SSO 자격
+→ ROADMAP·PLAN_NOTES 현행 P1 잔여 유지 · 격상/강등 0
+P3/P4「가정」 candidate 14종(재가 확장 8-필드 포함) 전부 carry
+
+== 판정 ==
+신규 진성갭 0 · closed band 재오픈 0 · P0~P3 제품 결정 번복 0 · 미확인 승격 0
+KPI promote: FE @25a0259 · BE @57523b5 · <time 189 · @Test 2422 · ahead FE41/BE775 · merge gate 816
+가정 번복 1: Page 107→106 (문서 위생)
+HTTP 442 byte/count-exact IDENTICAL = BNK-836→914 74차
+모듈 97.41% CARRY

@@ -1,0 +1,96 @@
+BNK-877 — 케어포 역공학 0-2h · 메뉴 depth(depth-3 N-M-K leaf) → ogada Route 1:1 crosswalk
+조사일: 2026-07-18T19:37:00Z
+작성자: BNK · rotation: 케어포 역공학 0–2h
+============================================================================
+
+[1] carefor LIVE 재실측 (000 carry) + disk canonical LOCK
+- https://www.carefor.co.kr/daycare/func.php        HTTP 000 (12s timeout·108-cycle+ 지속 carry)
+- http://demo-work.carefor.co.kr/                    HTTP 000 (10s timeout·carry)
+- disk canonical snapshots/carefor_func.php
+    md5=6226e6eb92fdd25ed3e50842a5e8a00b · 98,328B → BNK-810~876 IDENTICAL (재검증 LOCK)
+    => 신규 URL fetch 불가(LIVE 000) → 「기존 URL 재실측 + 변동 기록(변동 0)」 근거 채택.
+
+[2] func.php 메뉴 depth 구조 재집계 (disk canonical grep)
+- top-level 모듈(N-): 11 (1직원? no — 1수급자관리 … 11직원급여, 시설 셸)
+- depth-2 leaf (N-M.):        88  (grep `[0-9]+-[0-9]+\.` distinct)
+- depth-3 leaf (N-M-K.):      20 numbering entry / 19 distinct 라벨 (8-1-1↔8-1-2 numbering 변형 1건)
+- depth-4 이상 (N-M-K-L.):    0-hit  => carefor func.php 정적 메뉴 최대 depth = 3 (flat 번호식 트리)
+- 관찰: carefor 는 「모듈→서브→하위」 3단 flat 번호 메뉴가 최심(深). 리포트/간호/프로그램 하위도 3단에서 종료.
+
+[3] ogada Route depth 분포 (FE @171075f App.jsx path 실측·segment 수)
+- depth 1 (/clients):              19
+- depth 2 (/billing/payments):     72
+- depth 3 (/care/reports/bath-help): 33
+- depth 4 (/nursing/service/reports/total): 6
+    · /nursing/service/reports/total · /nursing/service/reports/hospital-visits
+    · /nursing/service/reports/medication-delivery · /nursing/pressure-ulcer/reports/provision
+    · /billing/imports/nhis/:batchId · /guardian/invitations/:token/accept
+- ogada nested React Router IA 최대 depth = 4 (간호/욕창/청구 import 하위)
+  => ogada nested IA(4단) > carefor flat 번호 메뉴(3단) = report·nursing 하위 도메인 조직 깊이 SUPERIOR.
+
+[4] carefor depth-3 (N-M-K) 19 distinct leaf → ogada Route 1:1 (FE @171075f 실측)
+------------------------------------------------------------------------------
+carefor depth-3 leaf                          | ogada Route (@171075f)                          | 판정
+------------------------------------------------------------------------------
+1-1-1  대기 수급자 관리                       | /clients (상태 필터 포괄·전용 waiting route 부재) | △ PARTIAL
+2-1-1  외출 관리                              | /reports/client-outings + /transport/outings    | ✅ PARITY
+3-1-1  통합식사도움기록                       | /care/meal-assistance-records                   | ✅ PARITY
+3-1-2  간호급여 제공기록(바이탈,투약)         | /nursing/vital-checks + /care/reports/medication-delivery | ✅ PARITY
+3-1-3  요양급여 특이사항 관리                 | /care/service-special-notes                     | ✅ PARITY
+3-1-4  식사(간식) 만족도/선호도 조사 및 반영  | /care/meal-preference-surveys                   | ✅ PARITY
+4-1-1  통합 간호관리/바이탈 기록              | /nursing/service + /nursing/vital-checks        | ✅ PARITY
+4-6-1  물리(작업)치료 일정                    | /programs/functional-recovery (기능회복훈련)    | △ PARTIAL
+4-6-2  물리(작업)치료 제공 리포트             | /programs/functional-recovery 포괄 (BNK-874 IDENTICAL) | △ PARTIAL
+4-6-3  물리(작업)치료 일정 리포트             | /programs/reports/schedules 포괄                | △ PARTIAL
+5-1-1  외부강사/자원봉사자 관리               | /programs (강사 명단 포괄·전용 volunteer route 부재) | △ PARTIAL
+5-3-1  프로그램 그룹 관리                     | /programs + /programs/reports/group-history     | ✅ PARITY
+5-5-1  프로그램관리자 업무수행일지            | (전용 route 부재·/staff/lead-caregiver-log 유사축) | △ PARTIAL
+6-3-1  감염병 관리                            | /safety/infection-control                       | ✅ PARITY
+7-2-1  의료비공제(연말정산)                   | MedicalExpenseDeductionPanel (/billing 하위 패널) | ✅ PARITY
+8-1-2  선임 요양보호사 업무수행일지           | /staff/lead-caregiver-log                       | ✅ PARITY
+8-7-1  요양보호사 보수교육                    | /staff/training + /staff/training-logs          | ✅ PARITY
+9-1-1  기초작업 및 기초설정                   | /settings + /organization/settings              | ✅ PARITY
+10-2-1 수가변경안내 발송                      | /clients/care-plan-notifications + /clients/home-newsletter 포괄 | △ PARTIAL
+------------------------------------------------------------------------------
+=> depth-3 19 leaf 판정: 12 ✅ PARITY + 7 △ PARTIAL + 0 genuine gap
+   △ 7건은 전용 route 부재이나 상위 모듈(/clients 상태 필터·/programs/functional-recovery 기능회복·
+     /programs 강사·안내 발송 채널)이 포괄 → 라벨링/nesting 차이(진성 기능 갭 아님).
+   rules §11·§17 과대구축 회피·「가정」 유지. 5-1-1 자원봉사자 전용 관리·5-5-1 프로그램관리자
+   업무일지는 소규모 주간보호 우선순위 낮음·기존 모듈 포괄 종결(진성갭 승격 아님).
+
+[5] ogada baseline git 실측 (submodule develop HEAD · BNK-877)
+- BE @dc261ed  fix(v3/SEC-D34): normalize whitespace-grouped bank deposit amount instead of dropping row
+    · BNK-876 @ad2c0b1 → +1 commit (BankDepositExcelParser +8/-1 + BankDepositExcelParserTest +19·2 files +26/-1)
+    · WT CLEAN · ahead 766 vs origin/test=598d108
+    · BE @Test strict 2391 (BNK-876 2390 → +1·whitespace-grouped bank deposit amount normalize)
+    · BE Test.java 296 (+1 Tests.java = 297)
+- FE @171075f  fix(v1.2.1/transport): reject missing service-fee date range before API round-trip (G16 id=2 form polish)
+    · BNK-876 @3b903c8 → +1 commit (4 files +112/-10: TransportServiceFeePanel.jsx/.test.jsx + transportServiceFee.js/.test.js)
+    · WT CLEAN · ahead 22 vs origin/test=b23711f (tester FF 대기·rev-list 0/22)
+    · Route 133 (App.jsx <Route\b 132 + <Routes> 1) · Page 106 · FE test 541 (226 .test.js + 315 .test.jsx·in-place +112·신규 0)
+- HTTP 442 (GET231/POST144/PATCH44/PUT13/DELETE10) — 37차 byte-exact IDENTICAL (BNK-836→877·endpoint 신설 0)
+- @RestController 81 (loose) · Flyway V1–V196 (신규 0)
+- merge gate 788 (FE 22 tester FF 대기 + BE 766 · BE-heavy)
+- 모듈 97.41% (28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0) carry
+
+[6] SEC-D34 계보 축 관찰 (BE @dc261ed 착지축)
+- BNK-875 = normalize(currency-suffixed NHIS amount/days → 정규화).
+- BNK-877 = normalize(whitespace-grouped bank deposit amount → 정규화·null-drop/row-drop 회피).
+  => SEC-D34 「normalize(단일 malformed/포맷 셀 → 정규화 파싱)」 축이 은행 입금 대사(BankDeposit) 표면까지 확산.
+     공백 그룹핑(예: "1 234 567")된 입금액을 row-drop 하지 않고 정규화 = 재무 대사 robustness 확장.
+- 경쟁 4종(케어포 M7·M4·이지케어 FAQ·엔젤·롱텀) 엑셀/입금 대사 셀 정규화 근거 0-hit
+  → ogada 유일 파일 무결성 + 필드-레벨 내성/정규화 SUPERIOR carry.
+
+[7] NHIS #44 제34조 600차 재실측 (규제 백본)
+- canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · 600차 byte-IDENTICAL(BNK-876 599차 → +1·zero drift)
+- verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+  → Transport 상수(RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요 (id=2 0.85 carry).
+
+[8] 판정 요약
+- 케어포 func.php/demo-work LIVE 000 지속 → disk canonical(byte-IDENTICAL) 위탁·변동 0.
+- 메뉴 depth 재집계: carefor func.php 최대 depth = 3(flat 번호식·depth-3 20 entry/19 distinct)
+  < ogada nested React Router IA 최대 depth = 4(간호/욕창/청구 import 하위 39 route ≥3-deep) = 조직 깊이 SUPERIOR.
+- depth-3 19 leaf → ogada 12 PARITY + 7 PARTIAL + 0 genuine gap.
+- BE @dc261ed SEC-D34 normalize(공백 그룹 입금액) 착지·NHIS #44 600차 zero drift.
+- 신규 KPI promote 0 · 가정 번복 0 · P0 신규 0 · closed band 재오픈 0.

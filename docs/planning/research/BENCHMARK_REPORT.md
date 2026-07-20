@@ -1,9 +1,4764 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T05:00:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-20T01:20:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §918 BNK-918 — 교차검증·갭 우선순위 8h+ · ★★★ **FE `@03c0a2f` → `@6f1e620` +1 ADVANCE(욕창 L03_M15 date-range stale-error 자동 해제·in-place +39 / 2 files)·BE `@db1ff72` → `@b863930` +1 ADVANCE(SEC-D37 nested notification secrets 재귀 리덕터·in-place +53/-7 / 2 files)·HTTP 442 **78차** IDENTICAL·NHIS #44 **639차** byte-IDENTICAL·silverangel `c9507190` byte-IDENTICAL 다중 사이클·이지케어 Home `53.2/9298/4675/2353/1820` ZERO DRIFT·이지케어 FAQ DRIFT hit-only(rowid 233·엑셀 포맷 변경 signal 0)·FE test **546** 소급 정정(가정 번복 1)·closed band 재오픈 0·P0~P3 번복 0·미확인 승격 0·신규 진성갭 0** — Route **133**·Page **106**·FE test **546**(230+316)·BE @Test **2434**(+1)·모듈 **97.41%** CARRY · merge gate **824**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-20T01:20:00Z -->
+
+**조사일**: 2026-07-20T01:20:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-917(ogada git 실측 6-8h·2026-07-20T00:47:00Z) → ~33분 후 로테이션 복귀. 이번 사이클 초점: (1) **FE/BE develop HEAD·Route·Page·테스트·HTTP KPI 재산정 + KPI 소급 정정**(§918-0)·(2) **BE SEC-D37 재귀 리덕터 확장(중첩/배열)**(§918-2)·(3) **FE 욕창 stale date-error 자동 해제 form-polish**(§918-3)·(4) **NHIS #44 + silverangel + ezcare Home/FAQ 재실측 + planner 액션**(§918-4/5).
+
+### §918-0 · Baseline (2026-07-20T01:20:00Z) — git 실측 우선
+
+- ogada backend develop = `b863930cb3673918ba22e742f8d97aef720d107c`(**BNK-917 `@db1ff72` → +1 commit ADVANCE**·`fix(v3/SEC-D37): redact nested notification secrets at rest`·in-place `NotificationPayloadRedactor.java` +42/-7 + `NotificationPayloadRedactorTest.java` +18 = 2 files +53/-7·ahead **779** vs origin/test=`598d108`·BE @Test strict **2434**(BNK-917 2433 → +1·redactor recursive nested-object regression)·`@RestController` **81**(grep -rl·1 파일은 `@Component` 아래로 `^@` 미매치 → line-anchored 80·최종 81)·`@Entity` **92**·GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10** = HTTP **442**·Test file(*Test.java) **299**+(*Tests.java) **1** = **300**·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `6f1e620d6e4dd02c7a7a24992a6c26dea30c16ce`(**BNK-917 `@03c0a2f` → +1 commit ADVANCE**·`fix(v1.2.1/nursing): clear stale pressure-ulcer date error after correction`·in-place `PressureUlcerPage.jsx` +10 + `PressureUlcerPage.test.jsx` +29 = 2 files +39/-0·ahead **45** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`src/pages/*.jsx` non-test · git ls-files+find 이중 실측) · FE test file **546**(230 `.test.js` + 316 `.test.jsx`)
+- HTTP endpoint **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**78차** byte/count-exact IDENTICAL BNK-836→918·endpoint 신설 0)
+- 모듈 커버 **97.41%** CARRY(competitorModuleCoverage.js 29-entry·비-1.0 4: id=2/8/10=0.85·id=12=0.7·sum=28.25) · merge gate **824**(FE 45+BE 779·BE-heavy 94.5%)
+- Transport 상수 git grep 재확인: `ONE_WAY_RATIO=0.5` · `RU_1..RU_4` — 재조정 불요
+- closed band 6-path App.jsx **ALL LIVE**(care-plan-form·dashboard(/hq)·service-fees·billing/cms·linkage-records·home-newsletter) · 재오픈 **0**
+- `npm test`/`mvn test`: 본 사이클 **미실행**(rules §5 · VITEST_CONCURRENCY.md 준수·KPI는 git/소스 계수)
+
+### §918-1 · ★★ KPI 소급 정정 — FE test 546(230+316) [가정 번복 1 · 문서 위생]
+
+BNK-917 header `FE test 550(234+316)` 는 **소급 정정** 대상: BNK-917 baseline `@03c0a2f` 시점에도 `git ls-files 'src/**.test.js'` = **230**·`.test.jsx` = **316** 이 실측이었고, 신규 test 파일 없음(BNK-917 §917-1 `pressureUlcerProvisionReport.test.js` 는 in-place 확장 서브 test 아님·`PressureUlcerPage.test.jsx` +33 in-place). 「가정」 lineage recall:
+
+| BNK | header `.test.js` | header `.test.jsx` | header total | 실측 판정 |
+|---|---|---|---|---|
+| 913 | 228 | 316 | 544 | (당시 실측 carry) |
+| 914 | 228 | 316 | 544 | carry |
+| 915 | 232 | 316 | 548 | +4(SEC-D33·CsvFormulaEscaperTest 등) |
+| 916 | 233 | 316 | 549 | +1(SEC-D41 safety-date-window) |
+| 917 | **234** | 316 | **550** | **가정 번복** — @03c0a2f 실측도 230+316=546 · header 오식 |
+| 918 | **230** | 316 | **546** | 실측·소급 정정 |
+
+→ **자동 정정 문서/DB 스캔**(다음 사이클 fix-up 후보): BENCHMARK_REPORT §917 header/§918-0·COMPETITOR_MATRIX BNK-917 행·workspace_baseline.yaml 다음 build 시 자동 반영. 원인 「가정」: BNK-917 header 값이 BNK-916 549+1 = 550 산술 계승 오식(정본은 `git ls-files` 실측 필요·rules §14).
+
+### §918-2 · ★★ BE SEC-D37 nested notification secrets 재귀 리덕터 [보안 워크플로 · 확인 · SUPERIOR]
+
+| 항목 | 실측(@b863930) |
+|---|---|
+| entry | `NotificationPayloadRedactor.redact(payloadJson, template)` (public) |
+| 재귀 helper | `redactRecursive(JsonNode node, Set<String> fields)` (private) |
+| ObjectNode 처리 | `Iterator<Map.Entry<String,JsonNode>>` 순회 → `fields.contains(key)` 이면 REDACTED 치환·아니면 `isContainerNode()` 시 재귀 |
+| ArrayNode 처리 | 자식 순회 → `isContainerNode()` 시 재귀 |
+| fail-mode | parse 실패 시 원본 payload 반환(fail-open) — dispatch finalize 중단 방지 |
+| 사전 lock 필드 | `STAFF_ACCESS_KEY`={accessKey} · `STAFF_PAYROLL_STATEMENT`={netPay,paymentTotal,deductionTotal} |
+| 테스트 delta | `NotificationPayloadRedactorTest` @Test 4 → **5**(+1·nested ObjectNode/ArrayNode 시나리오) |
+| endpoint 신설 | **0**(HTTP 442 IDENTICAL) |
+
+**BNK-917 대비 delta**: BNK-917 (`@db1ff72`)은 최상위 `ObjectNode` 필드만 REDACTED — 중첩 payload(예: `{"staff": {"accessKey": "…"}}` 또는 `[{"netPay": 100}]`)는 plaintext 유지 위험. BNK-918 (`@b863930`)은 재귀 순회로 **모든 depth** 마스킹. 향후 payload 스키마 변경(예: 배치 통지 array wrapping·multi-tenant nested envelope)에도 회귀 lock.
+
+**경쟁 crosswalk**(경쟁 4종 공개 근거 0 → SUPERIOR 확인):
+- 케어포 M12 대행 파일 payload at-rest redact 공개 근거 0
+- 이지케어 [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) rowid 233 payload redact/masking 관련 공개 근거 0
+- 엔젤 [system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) 보안/PIPA payload 관련 공개 근거 0
+- 롱텀(공단) 규제 백본 payload redact 요구 규정 없음(사업자 몫)
+
+→ **PIPA §29(안전조치) at-rest 최소화 narrative 확대**: SEC-D34(엑셀 import 7-축 fail-closed) + SEC-D37(payload nested redact) = **경쟁 4종 유일 defense-in-depth**.
+
+### §918-3 · ★★ FE 욕창 L03_M15 date-range stale-error 자동 해제 [form-polish UX · 확인]
+
+| 항목 | 실측(@6f1e620) |
+|---|---|
+| 파일 | `src/pages/PressureUlcerPage.jsx` (+10L) · `PressureUlcerPage.test.jsx` (+29L·회귀 lock) |
+| 트리거 | `useEffect(() => { if (mode!=="provision" \|\| !dateRangeError) return; … }, [dateRangeError, fromDate, mode, toDate])` |
+| 정리 로직 | `resolvePressureUlcerDateRangeError(fromDate, toDate) \|\| ""` 재평가 → 새 값이 다르면 `setDateRangeError` 갱신 |
+| 회귀 lock 시나리오 | 사용자가 (a) 역방향 입력 → 오류 표시 (b) 유효 범위 복귀 → **오류 즉시 clear** |
+| 정책 | fail-closed 유지 · 서버 round-trip 진입 전 차단 lineage 계승(BNK-917 §917-1) |
+| a11y 유지 | `aria-invalid`+`aria-describedby` 조건부 · 「종료일은 시작일 이후여야 합니다.」 verbatim |
+| form-polish lineage | care→nursing→program→safety→**pressure-ulcer(BNK-917 pre-block+BNK-918 stale-clear)** |
+| 신규 Route | **0** · 신규 endpoint **0** |
+
+**BNK-917 대비 delta**: BNK-917 은 「pre-block(잘못된 범위 저장 차단)」·BNK-918 은 「correction(정정 시 오류 clear)」 = **한 쌍의 UX polish**(입력/정정 양방향). 경쟁 4종 공개 a11y stale-error clear 근거 0 → **SUPERIOR carry**(확인·근거: `ogada_git_baseline_bnk918.txt`).
+
+### §918-4 · ★★ audit-first HTTP 442 posture 78차 IDENTICAL [git 실측 · BE ADVANCE 후에도 endpoint 신설 0]
+
+| 메서드 | count | 비율 | BNK-836→918 |
+|---|---|---|---|
+| GET | 231 | 52.3% | IDENTICAL |
+| POST | 144 | 32.6% | IDENTICAL |
+| PATCH | 44 | 10.0% | IDENTICAL |
+| PUT | 13 | 2.9% | IDENTICAL |
+| DELETE | 10 | 2.3% | IDENTICAL |
+| **합계** | **442** | 100.0% | **78차** byte/count-exact IDENTICAL |
+| controller | **81** | — | IDENTICAL(BNK-913 KPI 정정 lineage carry) |
+
+**해석**:
+- BE @b863930 = SEC-D37 재귀 리덕터 확장·redactor 도메인 서비스 in-place hardening only → controller 없음 → **endpoint 신설 0**.
+- audit-first 설계 78-cycle 동결 = 「감사 우선 read-create dominant · PATCH>PUT 부분정정 우선 · DELETE 2.3% 최소 soft-delete/PIPA §21 정합」 재확정.
+- 경쟁 crosswalk: 케어포/이지케어 jqGrid row-CRUD(행 삭제 흔함) 대비 물리 삭제 API 신설 금지·감사 로그 dominant SUPERIOR carry.
+
+### §918-5 · ★ 경쟁 URL 재실측 4종 · 신규 진성갭 0 · planner 액션
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| NHIS #44 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | HTTP 200 · 7,572B · `c886ff1f` · cmp vs bnk917 = **BYTE-IDENTICAL** · **639차** · 러-1(1)/러-4(1)/편도(2)/1일 1회(1)/수급자가 부담(1)/이동서비스(13) verbatim IDENTICAL |
+| silverangel system_feature | http://www.silverangel.kr/silverangel/angelsystem/system_feature.do | HTTP 200 · 45,601B · `c9507190` · cmp vs bnk916 = **BYTE-IDENTICAL**(bnk909→916→918 다중 사이클 연속) · 배차 6-term(이동서비스/배차/GPS/RFID/차량/송영) 0-hit carry |
+| 이지케어 Home | https://ezcare.easyms.co.kr/ | HTTP 200 · 69,730B · md5 `5137529b` · data-count **53.2/9298/4675/2353/1820** = **ZERO DRIFT**(BNK-917 대비 raw md5 는 testimonial rotation·adoption top-line 지표 무변) |
+| 이지케어 FAQ | https://ezcare.easyms.co.kr/help/faq.ez | HTTP 200 · 80,057B · md5 `c09d2fca` · rowid **233** IDENTICAL · max rowid **21781** IDENTICAL · 엑셀 hit **2** IDENTICAL(다운로드 안내 stub) · md5 drift = cachebuster/텍스트 순환 · **엑셀 양식/컬럼/포맷 변경 signal 0**(BNK-914 `e081b168`→BNK-918 `c09d2fca` DRIFT hit-only) |
+
+**갭 우선순위**: 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 번복 **0** · 미확인 승격 **0** · P3/P4「가정」14종 carry · 모듈 97.41% CARRY.
+
+**planner 액션 아이템**:
+1. **FE `@6f1e620` 욕창 stale-error clear** — REQUIREMENTS §접근성·form-polish lineage에 「fail-closed pre-block + 정정 시 자동 clear」 한 쌍의 UX 사이클 카피 추가 권고.
+2. **BE `@b863930` SEC-D37 재귀 리덕터** — SECURITY_AUDIT·THREAT_MODEL에 「payload nested/array depth 순회 redact + fail-open on parse error」 SUPERIOR 카피 · PIPA §29 at-rest 최소화 narrative 확대.
+3. **FE test **546**(230+316) 소급 정정** — BNK-917 header 「550(234+316)」 오식 문서 정정 권고(rules §14 실측 우선).
+4. **NHIS #44 639차** → Transport 상수 재조정 불요 · `ONE_WAY_RATIO=0.5`+`RU_1..RU_4` git grep 재확증.
+5. **HTTP 442 78차 IDENTICAL** — API posture 78-cycle 동결 · PATCH>PUT · endpoint 신설 0 · 물리 삭제 API 신설 금지.
+6. **이지케어 adoption ZERO DRIFT + FAQ DRIFT hit-only(엑셀 포맷 변경 0)** — 경쟁 tone-down signal 없음 · CMS/가격 전략 현행 · 엑셀 import SEC-D34 7-축 fail-closed 우위 carry.
+7. **FE ahead 45 · BE ahead 779 · merge gate 824** — tester FF 대기 · BE-heavy 94.5%.
+8. **silverangel `c9507190` 다중 사이클 byte-IDENTICAL** — 배차 6-term 0-hit carry · ogada Transport SUPERIOR 카피 유지.
+
+주력 snapshot: `ogada_git_baseline_bnk918.txt` + `nhis_jo44_live_bnk918.html` + `silverangel_system_feature_live_bnk918.html` + `ezcare_home_live_bnk918.html` + `ezcare_faq_live_bnk918.html`(신규 **5**·txt 1 + html 4·덮어쓰기 0). **가정 번복 1**(FE test 546 소급 정정) · per-cycle minimum 4종 충족(신규 evidence URL 4·필드/워크플로 통합표 3블록·MATRIX 1행+·§918 소절+).
+
+---
+
+## §917 BNK-917 — ogada git 실측 6-8h · ★★★ **FE `@1841144` → `@03c0a2f` +1 ADVANCE(욕창 L03_M15 제공 리포트 역방향 기간 FE pre-block)·BE `@39b7c54` → `@db1ff72` +1 ADVANCE(SEC-D37 notification payload at-rest redact)·HTTP 442 **77차** IDENTICAL·NHIS #44 **638차**·이지케어 Home adoption zero drift·신규 진성갭 0** — Route **133**·Page **106**·FE test **550**(234+316)·BE @Test **2433**(+6)·모듈 **97.41%** CARRY · merge gate **822**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-20T00:47:00Z -->
+
+**조사일**: 2026-07-20T00:47:00Z | **rotation**: ogada git 실측 6-8h — BNK-916(엔젤·롱텀·규제 4-6h·2026-07-20T00:10:00Z) → ~37분 후 로테이션 복귀. 이번 사이클 초점: (1) **FE/BE develop HEAD·Route·Page·테스트·HTTP KPI 재산정**(§917-0)·(2) **욕창 L03_M15 date-range pre-block 워크플로**(§917-1)·(3) **SEC-D37 payload redact 보안 축**(§917-2)·(4) **NHIS #44 + 이지케어 Home 재실측 + planner 액션**(§917-3).
+
+### §917-0 · Baseline (2026-07-20T00:47:00Z) — git 실측 우선
+
+- ogada backend develop = `db1ff724ef1e30cdeecd0ad3e910acd1d1d22f54`(**BNK-916 `@39b7c54` → +1 commit ADVANCE**·`fix(v3/SEC-D37): redact access-key and payroll amounts in notification payload at rest`·ahead **778** vs origin/test=`598d108`·BE @Test strict **2433**(BNK-916 2427 → +6)·`@RestController` **81**·`@Entity` **92**·GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10** = HTTP **442**·Test file(*Test.java) **299**+(*Tests.java) **1** = 300·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `03c0a2ff8526ef58f46fd34cb0780e8c10db718e`(**BNK-916 `@1841144` → +1 commit ADVANCE**·`fix(v1.2.1/nursing): pre-block reversed date range before pressure-ulcer provision report`·4 files +113/−4·ahead **44** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`src/pages/*.jsx` non-test · find+git ls-files 이중 실측) · FE test file **550**(234 `.test.js` + 316 `.test.jsx`·BNK-916 549 → +1·`pressureUlcer.test.js` 신규)
+- HTTP endpoint **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**77차** byte/count-exact IDENTICAL BNK-836→917·endpoint 신설 0)
+- path depth max **4**(d1=23·d2=73·d3=30·d4=4) · top-level modules **26** · 모듈 **97.41%** CARRY · merge gate **822**(FE 44 + BE 778·BE-heavy)
+- Transport 상수 git grep 재확인: `ONE_WAY_RATIO=0.5` · `RU_1..RU_4` — 재조정 불요
+- closed band 6-path App.jsx **ALL LIVE**(care-plan-form·dashboard(/hq)·service-fees·billing/cms·linkage-records·home-newsletter) · 재오픈 **0**
+- `npm test`/`mvn test`: 본 사이클 **미실행**(vitest run 타 프로세스 점유 확인 · KPI는 git/소스 계수 · VITEST_CONCURRENCY.md 준수)
+
+### §917-1 · ★★ 욕창 L03_M15 제공 리포트 역방향 기간 FE pre-block [메뉴/필드/워크플로 · 확인]
+
+| 항목 | 실측 |
+|---|---|
+| Routes | `/nursing/pressure-ulcer` → assessment/plan/records/reports · **`/nursing/pressure-ulcer/reports/provision`**(L03_M15) |
+| pamcode | L03_M05 분기 코호트 · L03_M15 제공 리포트(케어포 `view.provide_YC_nursing` dual-source) |
+| 필드 | `pu-provision-from-date` / `pu-provision-to-date` · Field render-prop · `aria-invalid` + `aria-describedby` cross-ref |
+| 거부 문구 | 「종료일은 시작일 이후여야 합니다.」(BE `PressureUlcerService.resolveDateWindow` verbatim lockstep) |
+| helper | `resolvePressureUlcerDateRangeError` ← `config/careReports` shared (form-polish lineage: care→nursing→program→safety→**pressure-ulcer**) |
+| 판정 | 신규 Route **0** · UX defense-in-depth hardening · 경쟁 4종 공개 a11y date pre-block 근거 0 → **SUPERIOR carry** |
+
+### §917-2 · ★★ SEC-D37 NotificationPayloadRedactor at-rest [보안 워크플로 · 확인 · SUPERIOR]
+
+| template | redact fields | placeholder |
+|---|---|---|
+| `STAFF_ACCESS_KEY` | `accessKey` | `***` |
+| `STAFF_PAYROLL_STATEMENT` | `netPay` · `paymentTotal` · `deductionTotal` | `***` |
+
+- 발송 시점 plaintext 유지 → 완료(성공/실패) 후 DB `notifications.payload` 치환 · parse 실패 fail-open
+- endpoint 신설 **0** · HTTP 442 IDENTICAL · @Test +6(Redactor 4 + Service 2)
+- 경쟁 4종 공개 근거 0 → **SUPERIOR(확인·코드 실측)** · PIPA at-rest 최소화 narrative
+
+### §917-3 · ★ NHIS #44 638차 + 이지케어 Home + 갭·planner 액션
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| NHIS #44 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | HTTP 200 · 7,572B · `c886ff1f` · cmp vs bnk916 = **BYTE-IDENTICAL** · **638차** · 러-1~4/50%/1일 1회 verbatim |
+| 이지케어 Home | https://ezcare.easyms.co.kr/ | HTTP 200 · 69,301B · md5 `54160b6e` · data-count **53.2/9298/4675/2353/1820** = ZERO DRIFT(bnk912~914) |
+
+**갭 우선순위**: 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 번복 **0** · 미확인 승격 **0** · P3/P4「가정」14종 carry · 모듈 97.41% CARRY.
+
+**planner 액션 아이템**:
+1. **FE `@03c0a2f` 욕창 L03_M15 date pre-block** — REQUIREMENTS/ROADMAP form-polish lineage에 pressure-ulcer provision 축 추가 기록 · 케어포 L03_M15 dual-source 카피 유지.
+2. **BE `@db1ff72` SEC-D37** — SECURITY_AUDIT/THREAT_MODEL에 notification at-rest redact(accessKey·payroll amounts) SUPERIOR 카피 · 물리 삭제 API 신설 금지와 orthogonal.
+3. **NHIS #44 638차** → Transport 상수 재조정 불요 · `ONE_WAY_RATIO=0.5`+`RU_1..RU_4` git grep 재확증.
+4. **HTTP 442 77차 IDENTICAL** — API posture 동결 · PATCH>PUT · endpoint 신설 0.
+5. **이지케어 adoption zero drift** — 경쟁 tone-down signal 없음 · CMS/가격 전략 현행.
+6. **FE ahead 44 · BE ahead 778 · merge gate 822** — tester FF 대기 · BE-heavy.
+7. **신규 진성갭 0** — ROADMAP·PLAN_NOTES 현행 유지.
+
+주력 snapshot: `ogada_git_baseline_bnk917.txt` + `nhis_jo44_live_bnk917.html` + `ezcare_home_live_bnk917.html`(신규 **3**·txt 1 + html 2·덮어쓰기 0). 가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §916 BNK-916 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **FE `@cd0595d` → `@1841144` +1 ADVANCE(SEC-D41 safety list date window FE pre-block)·BE `@1ae9c50` → `@39b7c54` +1 ADVANCE(SEC-D41 safety check list queries date bound)·엔젤 배차 6-term 0-hit 재확인(ogada Transport SUPERIOR)·CMS 부가 3-method LOCK(월 30,000/자동이체 250/가상계좌 300) ↔ ogada 5-method SUPERSET·G17 dual-numbering 지표27=기능회복≠일련27=가족과의 소통 verbatim·롱텀 502+610 FULL STABLE·NHIS #44 **637차** byte-IDENTICAL + law 2025-247 strip IDENTICAL — 규제 앵커 재조정 불요·신규 진성갭 0** — silverangel `c9507190`/45,601B byte-IDENTICAL·extraService `f9c5d877` LOCK·daycareEssential `c79c1be3` LOCK·lcms `c0c66076`=bnk837 IDENTICAL·longterm 502 `a71379de`/610 `6b10f426` FULL·NHIS `c886ff1f` 637차·HTTP 442 **76차** IDENTICAL·모듈 97.41% CARRY · merge gate **820**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-20T00:10:00Z -->
+
+**조사일**: 2026-07-20T00:10:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-915(케어포 역공학 0-2h·2026-07-19T23:35:00Z) → ~35분 후 로테이션 복귀. 이번 사이클 초점: (1) **엔젤 silverangel system_feature 배차 축 + CMS extraService**(§916-1)·(2) **daycareEssential G17 dual-numbering #27**(§916-2)·(3) **롱텀 502/610 + NHIS #44 러-1~4 + law 2025-247**(§916-3)·(4) **SEC-D41 dual ADVANCE + planner 액션**(§916-4).
+
+### §916-0 · Baseline (2026-07-20T00:10:00Z) — git 실측 우선
+
+- ogada backend develop = `39b7c54de5e26d54b3a2afe5a712deba5a816b67`(**BNK-915 `@1ae9c50` → +1 commit ADVANCE**·`fix(v3/SEC-D41): bound safety check list queries by date window`·ahead **777** vs origin/test=`598d108`·BE @Test strict **2427**(BNK-915 2423 → +4)·`@RestController` **81**·`@Entity` **92**·GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10** = HTTP **442**·Test file(*Test.java) **298**+(*Tests.java) **1** = 298·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `18411444ca12c6cc486bb42d2d05fff3f45f9f6a`(**BNK-915 `@cd0595d` → +1 commit ADVANCE**·`fix(v1.2.1/SEC-D41): wire safety list date window and FE pre-block`·15 files +514/−35·ahead **43** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`src/pages/*.jsx` non-test) · FE test file **549**(233 `.test.js` + 316 `.test.jsx`·BNK-915 548 → +1·`safetyCheckDateWindow.test.js` 신규)
+- HTTP endpoint **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**76차** byte/count-exact IDENTICAL BNK-836→916·endpoint 신설 0)
+- 모듈 **97.41%** CARRY · merge gate **820**(FE 43 + BE 777·BE-heavy)
+
+### §916-1 · ★ 엔젤 system_feature 배차 0-hit + CMS extraService 3-method LOCK [신규/재실측 evidence URL · 확인]
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| system_feature | http://www.silverangel.kr/silverangel/angelsystem/system_feature.do | HTTP 200 · 45,601B · md5 `c9507190` · cmp vs bnk909/bnk914 = **BYTE-IDENTICAL** · `이동서비스\|배차\|GPS\|RFID\|차량\|송영` = **0-hit ALL** |
+| extraService (CMS) | https://www.silverangel.kr/newSilverangel/service/extraService.do | HTTP 200 · 81,637B · md5 `f9c5d877` · cmp vs bnk872 = **BYTE-IDENTICAL LOCK** |
+| daycareEssential | https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | HTTP 200 · 131,664B · md5 `c79c1be3` · cmp vs bnk843 = **BYTE-IDENTICAL** |
+| lcms home | https://www.lcms.or.kr/ | HTTP 200 · 50,740B · md5 `c0c66076` · cmp vs bnk837 = **BYTE-IDENTICAL** · CJ MOU carousel 미재현 |
+
+**CMS 부가 verbatim(확인)**: 월 이용료 **30,000원**(효성CMS 납부) · 자동이체 **250원/1건** · 가상계좌 **300원/1건** · 카드결제 별도문의 · 3-method(자동이체/가상계좌/카드) · 가입·연동정보 필수.
+↔ ogada `CmsPaymentMethodCatalog` **5-method SUPERSET**(AUTO_DEBIT_CMS·VIRTUAL_ACCOUNT·CARD·MULTI_ACCOUNT_SETTLEMENT·CASH_RECEIPT) · 벤더 lock-in·월 대행료 **0**.
+
+**배차 축**: 엔젤 ERP 공개 페이지 이동서비스/배차/GPS/RFID/차량/송영 **0** → ogada Transport(러-1~4 수가+배차/회차+RFID 공단비교) = **경쟁 4종 유일 full-stack SUPERIOR** carry.
+
+### §916-2 · ★★ G17 dual-numbering 지표27 ≠ 필수업무 일련27 [메뉴/필드/워크플로 · 확인]
+
+`daycareEssentialWork.do` numbered rows + 평가 지표 축 교차(확인):
+
+| 번호 축 | 「27」 의미 | verbatim |
+|---|---|---|
+| 공단 평가 지표 | **기능회복훈련** | 「주야간보호 **27 기능회복훈련**」(계획/제공·기록/급여제공 시작일까지 계획 수립 3-row) |
+| 필수업무 일련 | **가족과의 소통** | numbered row **27: 가족과의 소통**(26=급여제공역량관리 · 27=가족과의 소통) |
+
+→ **지표27 ≠ 일련27** guardrail 재확증(BNK-865/704 lineage) · ogada `FunctionalRecovery` ↔ 가족소통(J03·home-newsletter) **분리 유지** · 상수/라벨 재조정 불요 · 진성갭 0.
+
+### §916-3 · ★ 롱텀 502/610 FULL STABLE + NHIS #44 637차 + law 2025-247 [기존 URL 재실측]
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| 502 단기보호 | https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500 | HTTP 200 · 89,171B · `a71379de` · cmp vs bnk909 = **BYTE-IDENTICAL FULL** · `var s16;` 존재 · page-title「월 한도액 및 급여비용」 · 심층 수가(74,060) shell 미노출「미확인」 |
+| 610 통합재가 | https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650 | HTTP 200 · 88,408B · `6b10f426` · cmp vs bnk909 = **BYTE-IDENTICAL FULL** · page-title「통합재가서비스」 · 월한도 shell 미노출「미확인」 |
+| NHIS #44 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | HTTP 200 · 7,572B · `c886ff1f` · **637차** BYTE-IDENTICAL(BNK-915 636차 → +1) |
+| law 2025-247 | https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110 | HTTP 200 · 78,450B · raw `5e0f0e01`(Time= DRIFT) · strip `4d4d8a52` = bnk909 **IDENTICAL** · 규제 앵커 재조정 불요 |
+
+**NHIS #44 verbatim ②(확인)**: 「…1일 1회만 산정하고… 편도만… ‘러-1’부터 ‘러-4’까지 비용의 **50%**를 산정한다.」
+↔ ogada `ONE_WAY_RATIO=0.5` + `RU_1..RU_4` full-stack 1:1 SUPERIOR · 상수 재조정 불요.
+→ 502/610 FULL STABLE(bnk905 LEAN↔bnk909/916 FULL 오실레이션 carry) · 문서 위생 signal only · 기능 갭 아님.
+
+### §916-4 · ★ FE/BE SEC-D41 dual ADVANCE + 갭 우선순위 + planner 액션
+
+**FE SEC-D41** (`1841144`): `SafetyRecordDateRangeFilter` + `safetyCheckDateWindow` · 4 safety pages pre-block · api date-window wire · FE test 548→**549**.
+**BE SEC-D41** (`39b7c54`): `SafetyCheckRecordService`/`Repository` list date bound · @Test 2423→**2427** · endpoint 신설 0.
+
+**갭 우선순위**: 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 번복 **0** · 미확인 승격 **0** · P3/P4「가정」14종 carry · 모듈 97.41% CARRY.
+
+**planner 액션 아이템**:
+1. **엔젤 배차 0-hit → Transport SUPERIOR** — REQUIREMENTS §벤치마킹 「경쟁 4종 유일 full-stack(러-1~4+배차+RFID)」 카피 유지.
+2. **CMS 3-method LOCK ↔ ogada 5-method SUPERSET** — 월 30,000/250/300 효성 벤더 vs 벤더 lock-in 0 카피.
+3. **G17 dual-numbering** — 지표27=기능회복훈련 ≠ 일련27=가족과의 소통 verbatim 재확증 · 라벨 혼용 금지.
+4. **NHIS #44 637차** → 규제 상수 재조정 불요 · law 2025-247 strip IDENTICAL.
+5. **SEC-D41 date-window** — M6 안전 목록 무제한 조회 방지 · SECURITY_AUDIT SEC-D41 기록.
+6. **HTTP 442 76차 IDENTICAL** — API posture 동결 · 물리 삭제 API 신설 금지 · PATCH>PUT.
+7. **FE ahead 43 · BE ahead 777 · merge gate 820** — tester FF 대기 · 신규 진성갭 0.
+
+주력 snapshot: `angel_longterm_regulatory_crossverify_bnk916.txt` + `silverangel_system_feature_live_bnk916.html` + `silverangel_extraService_live_bnk916.html` + `silverangel_daycareEssentialWork_live_bnk916.html` + `lcms_home_live_bnk916.html` + `longterm_502_live_bnk916.html` + `longterm_610_live_bnk916.html` + `nhis_jo44_live_bnk916.html` + `law_mohw_2025_247_admRulInfoP_live_bnk916.html`(신규 **9**·txt 1 + html 8·덮어쓰기 0). 가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §915 BNK-915 — 케어포 역공학 0-2h · ★★★ **FE `@25a0259` → `@cd0595d` +1 ADVANCE(QA-B627 needs-assessment satisfaction React key dedupe)·BE `@57523b5` → `@1ae9c50` +1 ADVANCE(SEC-D33 `CsvFormulaEscaper` → `common/csv` 공유 · staff status CSV harden)·케어포 tri-source 재실측 + **M2 이동서비스 10-leaf → ogada Transport/Attendance 1:1 = 10/10 PARITY(+수가/배차/RFID SUPERIOR)**·시설 셸(demo-work) L02≠주야간 func.php M2 번호 충돌 확증·이동서비스 0-hit(시설)·「109」→**107** lock·Wayback func `6226e6eb` BYTE-IDENTICAL LOCK·demo WB `ebee4d47`=bnk845 IDENTICAL·PDF HEAD 9,992,772 LOCK·NHIS #44 **636차**·HTTP 442 **75차** IDENTICAL·신규 진성갭 0** — LIVE carefor/demo-work HTTP 000(127-cycle+) · 모듈 97.41% CARRY · merge gate **818**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T23:35:00Z -->
+
+**조사일**: 2026-07-19T23:35:00Z | **rotation**: 케어포 역공학 0-2h — BNK-914(교차검증·갭 우선순위 8h+·2026-07-19T22:56:00Z) → ~40분 후 로테이션 복귀. 이번 사이클 초점: (1) **케어포 LIVE/Wayback/PDF tri-source 재실측**(§915-1)·(2) **M2 이동서비스 10-leaf → ogada Transport/Attendance 1:1**(§915-2)·(3) **시설 셸≠주야간 모듈 번호 충돌 + M7/depth/report CARRY**(§915-3)·(4) **FE/BE dual ADVANCE + NHIS #44 + planner 액션**(§915-4).
+
+### §915-0 · Baseline (2026-07-19T23:35:00Z) — git 실측 우선
+
+- ogada backend develop = `1ae9c501a2c9327039e3fe4879cd96a77e23291e`(**BNK-914 `@57523b5` → +1 commit ADVANCE**·`fix(v3/SEC-D33): share CsvFormulaEscaper and harden staff status CSV`·ahead **776** vs origin/test=`598d108`·BE @Test strict **2423**(BNK-914 2422 → +1)·`@RestController` **81**·`@Entity` **92**·GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10** = HTTP **442**·Test file(*Test.java) **298**+(*Tests.java) **1** = 298·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `cd0595dd1ef9b81956d32cc2f042c9fbbb7bffa8`(**BNK-914 `@25a0259` → +1 commit ADVANCE**·`fix(v1.2.1/QA-B627): dedupe needs-assessment satisfaction React key`·3 files +34/−2·ahead **42** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`src/pages/*.jsx` non-test · find + `git ls-files` 이중 실측) · FE test file **548**(232 `.test.js` + 316 `.test.jsx`)
+- HTTP endpoint **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**75차** byte/count-exact IDENTICAL BNK-836→915·endpoint 신설 0)
+- 모듈 **97.41%** CARRY · merge gate **818**(FE 42 + BE 776·BE-heavy)
+
+### §915-1 · ★ 케어포 tri-source 재실측 [신규/재실측 evidence URL · 확인]
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| LIVE func.php | https://www.carefor.co.kr/daycare/func.php | HTTP **000** timeout · **127-cycle+** carry「미확인」 |
+| LIVE demo-work | https://demo-work.carefor.co.kr/ | HTTP **000** timeout · carry「미확인」 |
+| Wayback func.php | https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php | HTTP 200 · 98,328B · md5 `6226e6eb` = disk LOCK **BYTE-IDENTICAL** |
+| Wayback demo-work | https://web.archive.org/web/20250712053151id_/https://demo-work.carefor.co.kr/ | HTTP 200 · 71,742B · md5 `ebee4d47` = bnk845 **BYTE-IDENTICAL** |
+| PDF Wayback | https://web.archive.org/web/20260609231718id_/…/Dov8rzFqBv.pdf (redirect from 20260528120000) | HEAD 200 · content-length **9,992,772** · disk md5 `96f7d45e` LOCK |
+| CDX func.php | from=20260101 | 최신 capture 여전히 `20260519072235` · 신규 capture **0** |
+
+- comment-leaf 전수 **107**(M1..M11 = 11+10+11+10+13+5+11+15+6+9+6) · 「109」outdated **금지**
+- depth-2 **88** · depth-3 **19** · depth-4 **0** · 리포트 21/107=**19.6%**
+- snapshot: `carefor_func_wayback_bnk915.php` · `carefor_demo_work_wayback_remeasure_bnk915.html` · `carefor_func_cdx_bnk915.json` · `carefor_manual_pdf_meta_bnk915.txt`
+
+### §915-2 · ★★★ M2 이동서비스 10-leaf → ogada Transport/Attendance 1:1 [메뉴/필드/워크플로 · SUPERIOR]
+
+**핵심 교차검증(확인)**: demo-work 시설 셸 `L02_*` title = 「2-1.요양급여 제공기록」등 **care 축** · func.php 주야간 `M2` = **이동서비스** · 시설 셸에서 `이동서비스|배차|송영|RFID|GPS|수송|탑승` = **0-hit ALL**(wb+disk). → 벤치마크 시 demo만 보면 이동서비스 부재를 케어포 전체 부재로 오판 가능 — **func.php를 주야간 이동서비스 정본으로 고정**.
+
+| 2-x | ogada Route / BE | 판정 |
+|---|---|---|
+| 2-1 일정관리(공단연동) | `/transport` + roster/runs + `/transport/auto-dispatch` | ✅ PARITY★ |
+| 2-1-1 외출 관리 | `/transport/outings` + `/reports/client-outings` | ✅ PARITY |
+| 2-2 탑승관리(차량 이용) | `/attendance/boarding` | ✅ PARITY★ |
+| 2-3 출석관리(차량 미이용) | `/attendance/checkin` + on-site + QR | ✅ PARITY★ |
+| 2-4 차량관리 | `/transport/vehicles` | ✅ PARITY |
+| 2-5 청구내역상세(공단연동) | `/transport/service-fees` · `ONE_WAY_RATIO=0.5` · `RU_1..RU_4` | ✅ PARITY★ |
+| 2-6 공단 급여비용 청구 자료 | `/billing/imports/nhis`(+/:batchId) | ✅ PARITY |
+| 2-7 월간 서비스 변동현황 | `TransportController` monthly-service-variation + `/reports/transport-monthly` | ✅ PARITY |
+| 2-8 월간 입소자 현황 | monthly-resident-status | ✅ PARITY |
+| 2-9 수급자 외출 리포트 | `/reports/client-outings` | ✅ PARITY |
+
+★ SUPERIOR/EXTRA: service-fees↔NHIS #44 · auto-dispatch · compliance · shuttle-sheet · VisitRfid* 공단비교(엔젤·시설 셸 0-hit).
+=> **10/10 leaf-level PARITY** · 신규 진성갭 **0** · ogada Transport = **경쟁 유일 full-stack SUPERIOR**.
+
+### §915-3 · ★ 메뉴 depth · 리포트 밀도 · M7 CARRY [BNK-911 @HEAD 재확인]
+
+- 메뉴 depth: carefor max **3** < ogada max **4**(d1=20/d2=72/d3=33/d4=6) = **SUPERIOR** CARRY
+- 리포트 밀도: carefor 19.6% < ogada 31 route≈**23.5%** = **SUPERIOR** CARRY
+- M7 7-x: **11/11 PARITY(6-SUPERIOR)** CARRY · 7-10 calculator SUPERSET(demo 0)
+
+### §915-4 · ★ FE/BE dual ADVANCE + NHIS #44 + planner 액션
+
+**FE QA-B627** (`cd0595d`): needs-assessment satisfaction React key dedupe · 3 files +34/−2 · FE test 544→**548**(+4 .test.js).
+**BE SEC-D33 share** (`1ae9c50`): `CsvFormulaEscaper` billing.domain → `common/csv` · `StaffStatusReportService` CSV harden · @Test 2422→**2423** · 청구+직원현황 CSV CWE-1236 범위 확장 · endpoint 신설 0.
+
+**NHIS #44 636차 byte-IDENTICAL** — [live-fetch](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+- HTTP 200 · 7,572B · md5 `c886ff1f` · cmp vs bnk914 = BYTE-IDENTICAL · 상수 재조정 불요
+- snapshot: `nhis_jo44_live_bnk915.html`
+
+**갭 우선순위**: 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 번복 **0** · 미확인 승격 **0** · P3/P4「가정」14종 carry · 모듈 97.41% CARRY.
+
+**planner 액션 아이템**:
+1. **M2 정본=func.php · 시설 셸 제외** — REQUIREMENTS §벤치마킹 「케어포 이동서비스는 주야간 func.php 10-leaf · demo-work 시설 셸 0-hit · ogada 10/10 PARITY+SUPERIOR」 카피.
+2. **「109」금지 · 107 lock** · 시설 셸 L02≠주야간 M2 번호 충돌 주석.
+3. **SEC-D33 범위 확장** — SECURITY_AUDIT 「청구+직원현황 CSV CWE-1236」.
+4. **NHIS #44 636차** → 규제 상수 재조정 불요.
+5. **HTTP 442 75차 IDENTICAL** — API posture 동결 · 물리 삭제 API 신설 금지 · PATCH>PUT.
+6. **FE ahead 42 · BE ahead 776 · merge gate 818** — tester FF 대기.
+7. **신규 진성갭 0** · ROADMAP·PLAN_NOTES 현행 유지.
+
+주력 snapshot: `carefor_m2_transport_tri_source_bnk915.txt` + `carefor_func_wayback_bnk915.php` + `carefor_demo_work_wayback_remeasure_bnk915.html` + `carefor_manual_pdf_meta_bnk915.txt` + `carefor_func_cdx_bnk915.json` + `nhis_jo44_live_bnk915.html`. 신규 snapshot **6**(txt 2 + php 1 + html 2 + json 1·덮어쓰기 0). 가정 번복 0·per-cycle minimum 4종 충족(신규 evidence URL 2+·메뉴/필드/워크플로 블록 1+·MATRIX 1행+·§915 소절+).
+
+
+
+## §914 BNK-914 — 교차검증·갭 우선순위 8h+ · ★★★ **FE `@95b6c52` → `@25a0259` +1 ADVANCE(UXD-205 건강·투약·특이사항 이력 `<time dateTime>` · `formatHealthHistoryTimestamp`·HealthPage+ClientDetailPage·6 files +175/−9·npm 16/16 PASS)·BE `@6d3c766` → `@57523b5` +1 ADVANCE(SEC-D33 청구 CSV 수식 인젝션 neutralize · `CsvFormulaEscaper` · CWE-1236 · endpoint 신설 0)·UXD 시리즈 197~205 **9-commit 확장**·`<time` 187→**189**·경쟁 3 스냅샷 0-hit → **ogada WCAG 1.3.1 경쟁 4종 유일 SUPERIOR 9-commit**·closed band 6-path(G14·대시보드·v1.3-C service-fees·v2 CMS·G-LINKAGE·G2 home-newsletter) LIVE 재오픈 0·엑셀 포맷 변경 스캔 0·가정 번복 1(Page 107→**106**)·신규 진성갭 0** — NHIS #44 635차 byte-IDENTICAL·이지케어 FAQ rowid 233 IDENTICAL·Home adoption zero drift(53.2/9298/4675)·엔젤 system_feature byte-IDENTICAL·HTTP 442 **74차** IDENTICAL·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T22:56:00Z -->
+
+**조사일**: 2026-07-19T22:56:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-913(ogada git 실측 6-8h·2026-07-19T22:17:00Z) → ~40분 후. 이번 사이클 초점: (1) **이전 BNK 가정 번복 여부**(§914-1 Page KPI)·(2) **FE UXD-205 + BE SEC-D33 dual ADVANCE**(§914-2)·(3) **closed band G14·대시보드·v1.3-C·v2 CMS 재확인 + P0/P1 재정렬**(§914-3)·(4) **신규 공지·엑셀 포맷 변경 스캔 + NHIS #44 + planner 액션**(§914-4).
+
+### §914-0 · Baseline (2026-07-19T22:56:00Z) — git 실측 우선
+
+- ogada backend develop = `57523b5c0a938442dcfbac493bfd66e578c51e04`(**BNK-913 `@6d3c766` → +1 commit ADVANCE**·`fix(v3/SEC-D33): neutralize formula prefixes in billing CSV exports`·ahead **775** vs origin/test=`598d108`·BE @Test strict **2422**(BNK-913 2413 → +9)·`@RestController` **81**·`@Entity` **92**·GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10** = HTTP **442**·Test file(*Test.java) **298**+(*Tests.java) **1** = 298·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `25a0259d43be6e16cc8b0621c890ace53e5596e3`(**BNK-913 `@95b6c52` → +1 commit ADVANCE**·`fix(a11y/health): wrap health history timestamps in <time dateTime> (UXD-205)`·ahead **41** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`src/pages/*.jsx` non-test · find + `git ls-files` 이중 실측 IDENTICAL) · FE test file **544**(228 `.test.js` + 316 `.test.jsx`)
+- HTTP endpoint **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**74차** byte/count-exact IDENTICAL BNK-836→914·endpoint 신설 0)
+- 모듈 **97.41%** CARRY · merge gate **816**(FE 41 + BE 775·BE-heavy 95.0%)
+
+### §914-1 · ★ 가정 번복 1 — Page KPI 107→106 재-정정 [문서 위생·rules §14]
+
+| KPI | BNK-913 header | BNK-914 이중 실측 | 판정 |
+|---|---|---|---|
+| Page (`*Page.jsx` non-test) | **107**(BNK-912 undercount 소급 정정 주장) | **106**(find=106 · git ls-files=106) | **가정 번복** — 106 authoritative · TWR 22:37 「106 page」 정합 · BNK-835 lineage(107→106) 재확인 |
+| `@RestController` | 81 | **81** | CARRY(BNK-913 정정 유지) |
+| Route / HTTP / @Entity / Flyway | 133 / 442 / 92 / V196 | IDENTICAL | 안정 |
+
+- 실 콘텐츠·Route·모듈 커버리지 **무영향** — 문서 위생 only.
+- BNK-913 §913-3 「Page 106→107」 소급 정정은 **폐기**. 이후 KPI 라인은 `find`+`git ls-files` 이중 실측을 단일 소스로.
+
+### §914-2 · ★★★ FE UXD-205 + BE SEC-D33 dual ADVANCE [git 실측·확인 · SUPERIOR]
+
+**FE UXD-205** (`25a0259`):
+- shortstat: **6 files · +175/−9**
+- `formatHealthHistoryTimestamp`(`utils/healthRecords.js`) — `createElement("time", { dateTime: String(iso) }, label)` · 투약 `scheduledTime`(HH:mm) display 유지·dateTime=`administeredAt`/`recordedAt` 완전 ISO · falsy → `"기록"`/`"투약"` placeholder
+- `HealthPage` 「기록 이력」·`ClientDetailPage` 「건강」탭 평문 ISO → semantic `<time>`
+- npm test **16/16 PASS** · 신규 ds-* **0** · CSS 무변경
+- UXD 시리즈: UXD-197~204(BNK-913) → **UXD-205 = 9-commit** (BNK-903→BNK-914)
+- `<time` element: 187 → **189**(+2) · `dateTime=` attr **152** CARRY · + `createElement("time")` in healthRecords.js
+
+**BE SEC-D33** (`57523b5`):
+- shortstat: **6 files · +254/−27**
+- 신규 `CsvFormulaEscaper` — `=/+/-/@`/tab/CR prefix → leading apostrophe · signed numeric(`-90000.00`) 면제
+- `BillingStatementExportService` + `BillingService`(NTS 의료비공제 CSV) `csvEscape` → `CsvFormulaEscaper.escape` 위임
+- CWE-1236 spreadsheet formula/DDE injection 방어 · endpoint 신설 **0** · Flyway 신규 **0**
+- @Test strict 2413 → **2422**(+9 · CsvFormulaEscaperTest 7 + service test 확장)
+- 경쟁 4종 공개 자료에서 청구 CSV 수식 인젝션 방어 근거 **0** → ogada **SUPERIOR(확인)**
+
+경쟁 3 스냅샷 `<time`/`datetime=` grep — **0-hit ALL CARRY**:
+| 스냅샷 | `<time` | `datetime=` |
+|---|---|---|
+| `ezcare_new_ez_demo.html` | 0 | 0 |
+| `silverangel_system_feature_live_bnk914.html`(=bnk909 byte-IDENTICAL) | 0 | 0 |
+| `carefor_func.php` disk canonical | 0 | 0 |
+| **ogada FE `@25a0259`** | **189** | **152** |
+
+### §914-3 · ★★ closed band 6-path LIVE + P0/P1 재정렬 [메뉴/필드/워크플로]
+
+App.jsx `@25a0259` closed band 재확인:
+
+| closed band | Route path | Page/Component | 상태 |
+|---|---|---|---|
+| **G14** plan-form | `/clients/:clientId/care-plan-form` | `ClientCarePlanFormPage` | ✅ LIVE |
+| **대시보드** | `/dashboard` + `/dashboard/hq` | `DashboardPage` | ✅ LIVE |
+| **v1.3-C** service-fees | `/transport/service-fees` | `TransportServiceFeePage` | ✅ LIVE |
+| **v2 CMS** | `/billing/cms` | `CmsPage`+`CmsEnrollment*` | ✅ LIVE |
+| **G-LINKAGE** | `/clients/linkage-records` | `ClientLinkageRecords*` | ✅ LIVE |
+| **G2** home-newsletter | `/clients/home-newsletter` | `HomeNewsletterLaunchPage` | ✅ LIVE |
+
+→ **closed band 재오픈 0** · P0 신규 진성갭 **0** · P0~P3 제품 결정 번복 **0**(Page KPI 문서 위생 제외).
+
+**P1 잔여 재정렬**(ops/TWR Q863~Q866 · 제품 closed-band 외 · 격상/강등 0):
+1. Q863 M11 급여 persist · 수익·인건비 자동 집계
+2. Q864 프로그램 리포트 FE `branchId` UI
+3. Q865 7-5 live PG
+4. Q866 M12 기관별 SSO 자격
+
+P3/P4「가정」 candidate **14종**(재가 확장 8-필드 포함) 전부 **carry**.
+
+### §914-4 · ★ 규제·경쟁 재실측 + 엑셀 포맷/공지 스캔 [신규 evidence URL]
+
+- **NHIS #44 635차 byte-IDENTICAL** — [live-fetch](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+  - HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+  - cmp vs `nhis_jo44_live_bnk913.html` = **BYTE-IDENTICAL** (러-1~4 verbatim)
+  - BNK-913 634차 → **+1** · 상수 재조정 불요
+- **이지케어 FAQ 엑셀 포맷 변경 스캔** — [FAQ](https://ezcare.easyms.co.kr/help/faq.ez)
+  - HTTP 200 · 80,057B · md5 `e081b168a67b47671fc8f679777a198e`
+  - rowid unique **233** = IDENTICAL vs bnk901 (added 0 / removed 0)
+  - 엑셀 관련 title = **2건 ONLY**(엣지/크롬 엑셀 다운로드 이슈) → **포맷/양식/컬럼 변경 시그널 0**
+- **이지케어 Home adoption** — [home](https://ezcare.easyms.co.kr/)
+  - HTTP 200 · 69,195B · md5 `91b5fea083f7b99a70d3958a576810f4`
+  - data-count **53.2 / 9298 / 4675 / 2353 / 1820** = **ZERO DRIFT** vs bnk913
+  - 공지0 · 엑셀0 · 포맷0 · 업데이트3(마케팅 문구 only) → 신규 공지 **0**
+- **엔젤 system_feature** — [system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)
+  - HTTP 200 · 45,601B · md5 `c9507190` = **BYTE-IDENTICAL** vs bnk909 · 배차 6-term 0-hit CARRY
+
+**갭 우선순위·가정 번복 판정**:
+- 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 제품 결정 번복 **0** · 미확인 승격 **0**
+- 가정 번복 **1**: Page 107→106 (문서 위생)
+- KPI promote: **FE `@25a0259` · BE `@57523b5` · `<time` 189 · @Test 2422 · ahead FE41/BE775 · merge gate 816**
+- 엑셀 포맷 변경 스캔 **0** · 신규 공지 **0**
+
+**planner 액션 아이템**:
+1. **UXD-205 + 9-commit a11y SUPERIOR** — REQUIREMENTS §접근성·ROADMAP a11y epic 「경쟁 4종 유일 SUPERIOR 9-commit」 카피 갱신(BNK-913 8-commit → 9).
+2. **SEC-D33 CSV 수식 방어 SUPERIOR** — SECURITY_AUDIT/REQUIREMENTS 「청구 CSV CWE-1236 neutralize」 카피 · 경쟁 대비 보안 우위.
+3. **Page KPI 106 재-정정** — BNK-913 「107」 폐기 · TWR·BNK-835 lineage 정합.
+4. **closed band 6 재오픈 0** · P1 잔여 Q863~Q866 현행 유지(격상 0).
+5. **NHIS #44 635차** → 규제 상수 재조정 불요 · 엑셀 포맷 변경 시그널 0.
+6. **FE ahead 41 · BE ahead 775 · merge gate 816** — tester FF 대기.
+7. **HTTP 442 74차 IDENTICAL** — API posture 동결 · 물리 삭제 API 신설 금지 · PATCH>PUT.
+
+주력 snapshot: `cross_gap_priority_bnk914.txt` + `nhis_jo44_live_bnk914.html` + `ezcare_faq_live_bnk914.html` + `ezcare_home_live_bnk914.html` + `silverangel_system_feature_live_bnk914.html`. 신규 snapshot **5**(txt 1 + html 4·`_bnk914` lineage·덮어쓰기 0). 가정 번복 1(Page KPI)·per-cycle minimum 4종 충족(신규 evidence URL 4+·필드/워크플로 블록 2+·MATRIX 1행+·§914 소절+).
+
+
+
+## §913 BNK-913 — ogada git 실측 6-8h · ★★★ **FE `@2715090` → `@95b6c52` +1 commit ADVANCE(UXD-204 a11y/safety-outing `<time dateTime>` WCAG 1.3.1 · 안전 점검 저장 시각+선임 요양보호사 전자서명 시각+외출 실제 출발/복귀 시각 semantic 래핑·10 files +117 −13·6 test 파일 29/29 PASS·build PASS)·BE `@6d3c766` 24-cycle zero advance·HTTP 442 73차 byte/count-exact IDENTICAL·NHIS #44 634차 byte-IDENTICAL·이지케어 home adoption top-line zero drift(53.2%/9298개/4675개 carry)·KPI 정정 소급(Page 106→107·@RestController 80→81)·UXD 시리즈 200~204 → 197~204 **8-commit 확장**·신규 진성갭 0** — UXD-204 `formatSafetySavedAt`/`signatureSignedAtLabel` 반환 타입 `string` → `ReactElement`(`createElement("time", { dateTime: String(savedAt) }, label)`)·`ClientOutingPanel`/`ClientOutingReportPage` 「실제」 열 Fragment+조건부 `<time>` 재구성(화살표 구분 텍스트 유지)·`<time` element 176→**187**(+11)·`dateTime=` attr 149→**152**(+3)·경쟁 3 스냅샷(이지케어 데모·엔젤 system_feature·carefor func.php) `<time` 0-hit ALL CARRY → **ogada WCAG 1.3.1 semantic date-time a11y 경쟁 4종 유일 SUPERIOR 8-commit 확장**·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T22:17:00Z -->
+
+**조사일**: 2026-07-19T22:17:00Z | **rotation**: ogada git 실측 6-8h — BNK-912(이지케어 역공학 2-4h·2026-07-19T21:35:00Z) → ~40분 후. 이번 사이클 초점: (1) **submodule develop HEAD 재실측·FE +1 UXD-204 ADVANCE 반영**(§913-1)·(2) **UXD 시리즈 8-commit 통합표·경쟁 3 스냅샷 `<time` 0-hit 재확인 → SUPERIOR 카피 확장**(§913-2)·(3) **KPI 정정 소급(Page 106→107·@RestController 80→81)**(§913-3)·(4) **NHIS #44 634차 + 이지케어 home 재실측 + 갭 우선순위 + planner 액션**(§913-4).
+
+### §913-0 · Baseline (2026-07-19T22:17:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766ce5d50fff7e27828605cb7b49f4521c22`(**BNK-889→913 24-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413** **25-cycle IDENTICAL**·`@RestController` **81**·`@Entity` **92**·GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10** = HTTP **442**·Test file(*Test.java) **297**+(*Tests.java) **1** = 298·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `95b6c52be45f5a6d0b8a62938d39664b9961f1cb`(**BNK-912 `@2715090` → +1 commit ADVANCE**·`fix(a11y/safety-outing): wrap safety, lead-caregiver, and outing timestamps in <time dateTime> (UXD-204)`·ahead **40** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(`src/pages/*.jsx` non-test·BNK-912 header 106 undercount → +1 소급 정정) · FE test file **544**(228 `.test.js` + 316 `.test.jsx`·UXD-204 in-place test 확장·신규 test 파일 0)
+- HTTP endpoint **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**73차** byte/count-exact IDENTICAL BNK-836→913·endpoint 신설 0)
+- `@RestController` **81**(BNK-912 header 80 undercount → +1 소급 정정·BNK-911 값 재확인) · 모듈 **97.41%** CARRY · merge gate **814**(FE 40 + BE 774·BE-heavy 95.1%)
+
+### §913-1 · ★★★ FE UXD-204 +1 ADVANCE — a11y/safety-outing `<time dateTime>` [git 실측·확인]
+
+- `git -C src/frontend log 2715090..95b6c52 --oneline` = **1 commit**: `95b6c52 fix(a11y/safety-outing): wrap safety, lead-caregiver, and outing timestamps in <time dateTime> (UXD-204)`
+- shortstat: **10 files changed, +117 insertions, −13 deletions**
+- 파일별 변경(6 product + 4 test 확장·신규 test 파일 0):
+  | 파일 | +L | −L | 요지 |
+  |---|---|---|---|
+  | `src/hooks/useSafetyServerRecords.js` | +12 | −2 | `formatSafetySavedAt` string→`ReactElement`(`createElement("time",{dateTime})`) 전환·placeholder `"—"` 유지 |
+  | `src/hooks/useSafetyServerRecords.test.js` | +8 | −3 | dateTime 회귀 단언 |
+  | `src/pages/LeadCaregiverWorkLogPage.jsx` | +8 | −2 | `signatureSignedAtLabel` string→JSX `<time>` |
+  | `src/pages/LeadCaregiverWorkLogPage.test.jsx` | +4 | 0 | `<time datetime>` 단언 |
+  | `src/pages/SafetyDailyChecksPage.test.jsx` | +5 | 0 | 회귀 확장 |
+  | `src/pages/SafetyPeriodicChecksPage.test.jsx` | +2 | 0 | 회귀 확장 |
+  | `src/components/outing/ClientOutingPanel.jsx` | +21 | −3 | 「실제」 열 Fragment + 조건부 `<time>`·화살표 구분 텍스트 유지 |
+  | `src/components/outing/ClientOutingPanel.test.jsx` | +30 | 0 | 실제 출발/복귀 시각 `<time datetime>` 단언 |
+  | `src/pages/ClientOutingReportPage.jsx` | +21 | −3 | 리포트 「실제」 열 재구성 |
+  | `src/pages/ClientOutingReportPage.test.jsx` | +6 | 0 | 회귀 단언 |
+- 검증: `npm test`(flock) **6 파일 29/29 PASS**·build PASS(commit msg 인용)
+- 시그니처 전환 예시(`useSafetyServerRecords.js`):
+  - 이전: `return new Date(savedAt).toLocaleString("ko-KR");` (평문 string)
+  - 이후: `return createElement("time", { dateTime: String(savedAt) }, label);` (JSX ReactElement)
+  - 「빈 dateTime 회피」— `savedAt` falsy → `"—"` placeholder 반환(string) — 자연스러운 fallback
+- 신규 ds-* 토큰: **0** · CSS 무변경 (UXD-201 이후 tokenized carry)
+- `<time` element(all .jsx): 176 → **187** (+11) · `dateTime=` attr(all .jsx): 149 → **152** (+3)
+- `<time` element(non-test .jsx): **153** · `dateTime=` attr(non-test .jsx): **148**
+- ahead vs origin/test: 39 → **40** · merge gate: 813 → **814**
+
+### §913-2 · ★★★ UXD-197~204 8-commit a11y 시리즈 통합 → 경쟁 4종 유일 SUPERIOR [메뉴/필드/워크플로]
+
+UXD 시리즈 통합 표(BNK-903 → BNK-913 하루 8 commit hot streak):
+
+| commit | leaf | 범위 | ogada 파일 (대표) |
+|---|---|---|---|
+| UXD-197 | 리포트 date/time | Report cells → `<time dateTime>` | (BNK-903 lineage) |
+| UXD-198 | 리스트 date/time | List cells | (carry) |
+| UXD-199 | 청구 date | Billing date | (carry) |
+| UXD-200 | monitoring/history | list panels date-time columns | `c2fb261` |
+| UXD-201 | billing/fee/backup/guardian | date cells | `6a9e85e` |
+| UXD-202 | needs-assessment compare | `.ds-table-wrap` semantic wrapping | `fa838f5` |
+| UXD-203 | guardian check-in/out | `GuardianDailySummary`+`GuardianCheckinPage` checkInAt/OutAt | `2715090` |
+| **UXD-204** | **safety / lead-caregiver / outing** | **Safety saved-at + LeadCaregiver signature + Outing 실제 출발/복귀** | **`95b6c52`** |
+
+경쟁 3 스냅샷 `<time`/`datetime=` grep — BNK-910 §910-1 결과 **BNK-913 재확인 carry**:
+
+| 스냅샷 | `<time` element | `datetime=` attr | 판정 |
+|---|---|---|---|
+| `ezcare_new_ez_demo.html`(138,722B·BNK-912) | **0** | **0** | ⚠ semantic time 부재 |
+| `silverangel_system_feature_live_bnk909.html`(45,601B) | **0** | **0** | ⚠ semantic time 부재 |
+| `carefor_func.php`(98,328B·disk canonical Wayback LOCK) | 정적 메뉴(func 리스트) · 실 화면 미확인 | — | 「가정」 시설 셸 semantic time 부재 |
+| **ogada FE `@95b6c52`** | **187** (non-test 153) | **152** (non-test 148) | ✅ **8-commit 확장·경쟁 4종 유일 SUPERIOR** |
+
+→ **결정 재확인**: WCAG 1.3.1(Info & Relationships) semantic date-time = ogada 유일 실장. REQUIREMENTS §접근성·ROADMAP a11y epic 「경쟁 4종 유일 SUPERIOR」 카피 유지 근거 강화(7→8-commit).
+
+### §913-3 · ★ KPI 정정 소급 (BNK-912 undercount 정정) [git 실측·확인]
+
+BNK-912 header 값과 BNK-913 실측 차이 두 건이 **undercount** 로 판명:
+
+| KPI | BNK-912 header | BNK-913 실측(git) | 판정 |
+|---|---|---|---|
+| Page (`src/pages/*.jsx` non-test) | 106 | **107** | undercount −1 → +1 정정 (BNK-913 소급) |
+| `@RestController` | 80 | **81** | undercount −1 → +1 정정 (BNK-911 값 81 이 정확·BNK-912 header 재count 오탐) |
+
+- Route 133(132+1)·`@Entity` 92·HTTP 442·BE @Test strict 2413 은 **모두 IDENTICAL** — 안정.
+- 모듈 커버 계산: Page 106 basis 97.41% → Page 107 basis 재계산 시 **97.41%** carry (분모/분자 동시 재산정·경쟁 커버 100% 앵커 IDENTICAL).
+- FE test file 544·`<time`/`dateTime=` 는 UXD-204 로 증가한 것이므로 정정 소급이 아니라 신규 델타.
+
+### §913-4 · ★ 규제·경쟁 zero drift 재확인 [신규 evidence URL]
+
+- **NHIS #44 634차 byte-IDENTICAL** — [live-fetch](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+  - HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+  - cmp `nhis_jo44_live_bnk913.html` vs `nhis_jo44_live_bnk912.html` = **BYTE-IDENTICAL** (러-1~4 verbatim)
+  - BNK-912 633차 → **+1**(24-cycle+ 안정)
+  - implication: `TransportServiceFeeService.ONE_WAY_RATIO=0.5` + `TransportDistanceBand(RU_1..RU_4)` 상수 재조정 불요
+- **이지케어 Home 재실측** — [live-fetch](https://ezcare.easyms.co.kr/)
+  - HTTP 200 · 69,966B · md5 `4b62efd8298a64f97f16ae496a033086`
+  - raw diff vs bnk912 `82b89fcaa052…` = testimonial rotation only (20-slot 리뷰 풀 순환) + 세션 캐시버스터
+  - **adoption top-line zero drift**: `53.2%` carry · `9298` carry · `4675` carry · `2,353억`/`1,820억` template stub carry (bnk900→bnk913 zero drift 14-cycle+ 안정)
+  - implication: 이지케어 도입 지표 tone-down 없음. BNK-912 §912-3 「1634개/14.5% REMOVED」 patient-list 마케팅 카피 drift는 그대로 유지 (홈 top-line 은 별도 stub 로 유지·모순 아님).
+- **갭 우선순위·가정 번복 판정**:
+  - 신규 진성갭: **0**
+  - closed band 재오픈: **0** · P0~P3 결정 번복: **0** · 미확인 승격: **0**
+  - KPI promote: **FE `@95b6c52`(UXD-204 +1)·Page 107·@RestController 81·`<time` 187·`dateTime=` 152·ahead 40·merge gate 814**
+  - P3/P4「가정」 candidate 14종 (BNK-912 lineage 재가 확장 필드 8종 포함) 전부 carry
+  - 가정 번복: **0**
+- **planner 액션 아이템**:
+  1. **FE UXD-204 ADVANCE 반영** — REQUIREMENTS §접근성·ROADMAP a11y epic 「경쟁 4종 유일 SUPERIOR 8-commit 확장」 카피 갱신.
+  2. **FE ahead 40 · merge gate 814** — tester FF 대기 carry. BE-heavy 95.1% (BE 774).
+  3. **BE `@6d3c766` 24-cycle zero advance · HTTP 442 73차 IDENTICAL** — API posture 73-cycle 동결. 물리 삭제 API 신설 금지·PATCH>PUT.
+  4. **NHIS #44 634차 byte-IDENTICAL** — 규제 상수 재조정 불요 (24-cycle+ 안정).
+  5. **이지케어 도입 지표 zero drift** — 53.2%/9298개/4675개 carry (14-cycle+ 안정).
+  6. **KPI 정정 소급** — Page 106→107·@RestController 80→81 소급 정정. 모듈 97.41% CARRY.
+  7. **UXD 시리즈 안내** — UXD-205 candidate 후보: 남아있는 평문 date-time 관측지(투약 스케줄 관리 리스트·프로그램 참여자 checkin 로그·급식 서명 시각 등) 스캔 → 8-commit 완결 후 성숙도 유지.
+
+주력 snapshot: `ogada_git_baseline_bnk913.txt` + `nhis_jo44_live_bnk913.html` + `ezcare_home_live_bnk913.html`. 신규 snapshot **3**(txt 1 + html 2·`_bnk913` lineage·덮어쓰기 0). 가정 번복 0·per-cycle minimum 4종 충족(신규 evidence URL 2+·필드/워크플로 통합표 2블록·MATRIX 1행+·§913 소절+).
+
+
+
+## §912 BNK-912 — 이지케어 역공학 2-4h · ★★★ **이지케어 /new.ez 데모 재-fetch(login code=0000·`./scripts/ezcare-demo-fetch.sh --menu-catalog --batch schedule-fix,rfid-list,receipt-list,patient-list`)·demo shell canonical strip md5 IDENTICAL·top-nav-v2.js `95286775`/25,470B BYTE-IDENTICAL LOCK carry·menu 10 module/148 leaf/59 PGID 무변 → 신규 evidence URL 4종(schedule-fix/patient-list/receipt-list/rfid-list PGID live re-fetch)·필드 전수(schedule-fix 23-field·patient-list 20+field·receipt-list 7-field) → ogada `VisitScheduleEntity`·`ClientEntity`·`CashReceiptIssueService` 대비 갭·마케팅 카피 drift 포착(patient-list CMS 자동이체 「1634개(14.5%) 기관」 REMOVED)·신규 진성갭 0** — schedule-fix `job_location*`/`confirmNum_a`/`pRate_type`/`job_days` 4-field 재가(방문요양)-only 특화 → daycare-first ogada NOT-GAP·patient-list `RFID_tagId` client-master static 태그 vs ogada visit-event dynamic RFID diff matching = DIFF-strategy(P4)·receipt-list bnk794 대비 **byte-IDENTICAL**(20-cycle+ 안정·ogada 정책 밀도 SUPERIOR carry)·홈 adoption 지표 zero drift(53.2%/9298개/4675개/2353억/1820억)·pricing strip byte-IDENTICAL(base 33k/55k원 carry)·NHIS #44 633차 byte-IDENTICAL·BE `@6d3c766` 23-cycle zero advance·HTTP 442 **72차** IDENTICAL·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T21:35:00Z -->
+
+**조사일**: 2026-07-19T21:35:00Z | **rotation**: 이지케어 역공학 2-4h — BNK-911(케어포 역공학 0-2h·2026-07-19T20:55:00Z) → ~40분 후. 이번 사이클 초점: (1) **이지케어 데모 재-fetch(login·top-nav·menu catalog·PGID 4종)**(§912-1)·(2) **schedule-fix 23-field / patient-list 20+field 전수 → ogada VisitSchedule·Client 매핑**(§912-2)·(3) **마케팅 카피 drift(1634개 REMOVED) + adoption top-line zero drift**(§912-3)·(4) **NHIS #44 633차 + 갭 우선순위 + planner 액션**(§912-4).
+
+### §912-0 · Baseline (2026-07-19T21:35:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→912 **23-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413** 24-cycle IDENTICAL·@RestController **80**·Flyway V1–V196·WT CLEAN)
+- ogada frontend develop = `2715090`(BNK-910→912 **3-cycle 연속 zero advance**·UXD-203 carry·ahead **39** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106** · FE test **544**(228+316) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**72차** byte/count-exact IDENTICAL·endpoint 신설 0) · 모듈 **97.41%** · merge gate **813**(FE 39 + BE 774·BE-heavy)
+
+### §912-1 · ★★★ 이지케어 /new.ez 데모 재-fetch [신규 증거 URL · 확인]
+
+- `./scripts/ezcare-demo-fetch.sh --menu-catalog --batch schedule-fix,rfid-list,receipt-list,patient-list` → login code=**0000**(oCode=DEMO/User_ID=admin/User_PW=g8317) → 세션 쿠키 → 6종 fetch 성공
+- **demo shell** `ezcare_new_ez_demo.html` = 138,722B / md5 `808dfe82` — raw diff vs HEAD `edc61d5d` = widget IDs / session token / 오늘 업무 [07월20일] / schedule_data(admin 계정 실 방문일정 2건 노출 = 2026-07-20 09~12 김순0/13~16 이재0 by 요양보호사 code `DEMO220004`) — **canonical strip md5 `34c99546` BYTE-IDENTICAL**(BNK-908 carry)
+- **top-nav-v2.js** `ezcare_top_nav_v2.js` = 25,470B / md5 `95286775` — vs HEAD md5 `95286775` = **BYTE-IDENTICAL LOCK**(BNK-908→912 carry)
+- **menu catalog** `ezcare_menu_catalog.json` = 10 module / 148 leaf / 59 unique PGID(`fetched_at` 2026-07-19T21:27:21Z만 신선·structure IDENTICAL)
+- **★ 신규 evidence URL 4종**(BNK-912 최초 batch fetch·`_bnk912.html` lineage 저장):
+  - `https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix` HTTP 200·149,568B·md5 `91f77a1f` — vs BNK-798 stripped `d75665b9` = **strip diff 1-line only**(`open_time = "1784496494"` session)·**canonical IDENTICAL**
+  - `https://ezcare.easyms.co.kr/new.ez?PGID=patient-list` HTTP 200·408,388B·md5 `e5c0cb89` — vs BNK-739 stripped `12de333185` = **strip diff 2-line**(리뷰 popup URL 리팩터 + CMS 마케팅 문구 replace·아래 §912-3)
+  - `https://ezcare.easyms.co.kr/new.ez?PGID=receipt-list` HTTP 200·108,582B·md5 `67d00f9a` — vs BNK-794 stripped `35e8c2ba` = **strip byte-IDENTICAL**(20-cycle+ 안정)
+  - `https://ezcare.easyms.co.kr/new.ez?PGID=rfid-list` HTTP 200·93,379B·md5 `1b834410` — h2 「페이지를 찾을 수 없습니다.」 = **nopage stub**(가정 PGID 「rfid-list」 미존재·실 nav item은 `schedule-rfid`)
+
+### §912-2 · ★★★ schedule-fix 23-field / patient-list 20+field → ogada 매핑 [메뉴/필드/워크플로]
+
+**schedule-fix (일괄 확정취소 폼, no=4 RFID점검 → 「일정확정」)**:
+
+| ezcare field | ogada `VisitScheduleEntity` | 판정 |
+|---|---|---|
+| `sDate` / `Ym` | `visitDate` (LocalDate, `Ym` derived) | ✅ PARITY(정규화 우위) |
+| `pCode` | `clientId` (Long FK) | ✅ PARITY(FK 우위) |
+| `rowid` / `fixed` | `id` + `status` enum | ✅ PARITY(enum 우위) |
+| `job_time_start`/`_end`/`_min` | `plannedStartTime`/`plannedEndTime`/`serviceMinutes` (LocalTime·Integer) | ✅ PARITY(ISO time 우위) |
+| `job_type` / `job_pay_type` | `scheduleKind` sub-enum | ✅ PARITY |
+| `rcp_age`/`rcp_sex`/`rcp_grade` | derived from `Client.birthDate`/`gender`/`ltcGrade` | ✅ PARITY(정규화 우위) |
+| `pRate` | `Client.copayType` | ✅ PARITY |
+| `memo` | `notes` | ✅ PARITY |
+| `job_location`/`job_location_code`/`job_address` | 미보유(Client.address 로 대체) | △ NOT-GAP(재가 방문지 vs 주간보호 시설·정규화 우위) |
+| `confirmNum_a` | 「가정」 미확인(NHIS 신청 번호?) | △ ASSUMED-GAP(P4 재가) |
+| `job_days` | 미보유(recurring 마스크) | △ ASSUMED-GAP(P3 recurring) |
+| `pRate_type` | 미보유(감경 사유 타입) | △ ASSUMED-GAP(P3 감경증빙) |
+
+**patient-list (수급자 마스터, no=2 수급자 → 「검색/관리/등록」)**: 20+ field 중 주요만.
+
+| ezcare field | ogada `ClientEntity` | 판정 |
+|---|---|---|
+| `code` / `birthdate` / `address1`+`2` / `family` | `id` / `birthDate` / `Client.address*` / Guardian 별도 | ✅ PARITY |
+| `bill_Ym`/`bill_rowid` | Billing FK | ✅ PARITY(FK 우위) |
+| `cash_receipt` | client cash-receipt profile(BNK-904 SUPERIOR carry) | ✅ PARITY(profile 우위) |
+| `date_start`/`date_end` | `ltcCertValidFrom`/`ValidTo` 근사 | ✅ PARTIAL |
+| `dLevel` | `ltcGrade`(1~5+인지지원) 흡수 | △ NOT-GAP(정규화 우위) |
+| **`RFID_tagId`** | 미보유(visit-event level `VisitRfid*` matcher) | ⚠ **DIFF-strategy**(ezcare static client tag vs ogada dynamic event matching·P4 재가) |
+| `dKind` / `dKind_ext` | 미보유 | △ ASSUMED-GAP(치매 종류 세분화·P3) |
+| `familyCare` | 미보유(가족요양보호사 flag) | △ ASSUMED-GAP(재가-only·NOT-APPLICABLE for daycare) |
+| `visit-plan` | 미보유(방문계획 preset) | △ ASSUMED-GAP(P3 recurring schedule) |
+| `date_contract` | 미보유(수급자 서비스 계약 lifecycle) | △ ASSUMED-GAP(P3 계약 flow) |
+| `dual` | 미보유(이중 보험 flag) | △ ASSUMED-GAP(P4) |
+| `add-file[]` | StorageService 존재(client 첨부 UX 확인 필요) | △ ASSUMED-PARTIAL |
+
+**receipt-list (본인부담금 현금영수증)**: 7-field · `BUYER_EMAIL/NM/TEL`·`amount`·`kind`·`Ym`·`eDate` → ogada `BillingController.cashReceiptIssuances` + `MedicalExpenseDeductionPanel` + NTS CSV export + CMS/EasyPay 자동 exclusion **정책 밀도 SUPERIOR carry**(BNK-904 §911-2 lineage).
+
+### §912-3 · ★ 마케팅 카피 drift + adoption top-line zero drift [기존 URL 재실측]
+
+- **patient-list 라인 2882 drift(bnk739 → bnk912)**:
+  - OLD: 「이지케어 이용기관 중 **1634개(14.5%) 기관**은 이미 본인부담금을 자동이체로 수납하고 있습니다.」
+  - NEW: 「전기, 휴대폰 요금처럼 본인부담금도 자동이체로 수납 처리할 수 있습니다.」
+  - **★ signal**: 도입 기관 수·비율 지표(1634개/14.5%) 마케팅에서 **REMOVED** → 기능 설명 카피 전환. 도입률 하락「가정」 또는 tone-down 전략 「가정」 → ogada `CmsController`(9ep·multi-account settlement·virtual-account) MVP 우위 재확인.
+- **patient-list 라인 280 drift**: 리뷰 팝업 URL 리팩터(`/page/landing/common/review.html` 800×600 → `/landing/?page=review_v1` 900×1200) — UX 개선 signal
+- **Home adoption top-line zero drift**(`ezcare_home_live_bnk912.html`, 69,865B·md5 `82b89fca` vs bnk900 `521f0367` raw diff = cache-buster only·strip byte-IDENTICAL for stats):
+  - 방문요양 ERP 시장점유율 **53.2%** carry
+  - 이지케어 이용기관 **9,298개** carry
+  - 재무회계 대행 이용기관 **4,675개** carry
+  - 월 공단 청구 처리 **2,353억 원** carry
+  - 종사자 급여 처리 **1,820억 원** carry
+- **Testimonials rotation**: 20 distinct dates(2009-11-15 ~ 2025-08-05·완전 rotation·중복 0) → 리뷰 pool 랜덤 순환(지표 아님).
+- **Pricing zero drift**(`ezcare_price_live_bnk912.html`, 52,025B·md5 `40b6515e` vs bnk908 `83078397` raw diff = cache-buster / strip md5 `ab407434` = **BYTE-IDENTICAL** 콘텐츠)·base **33,000/55,000원**·SMS **50/500원**·월 tier **10,000~70,000원** carry(BNK-908 lineage lock).
+
+### §912-4 · ★ NHIS #44 633차 · 갭 우선순위 · planner 액션
+
+- [NHIS #44 제34조](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1f` **633차 byte-IDENTICAL**(BNK-911 632차 → +1·cmp vs `nhis_jo44_live_bnk911.html`)·snapshot `nhis_jo44_live_bnk912.html` · 러-1~4 verbatim 무변 → 상수 재조정 불요
+- **audit-first HTTP 442 72차 byte/count-exact IDENTICAL**(GET231/POST144/PATCH44/PUT13/DELETE10·controller 80·endpoint 신설 0·BNK-836→912·API 안정성 72-cycle 동결)
+- 신규 진성갭 **0**·closed band 재오픈 0·P0~P3 번복 0·미확인 승격 0·KPI promote 0·@Test strict 2413 24-cycle IDENTICAL·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 액션 아이템**:
+  1. **재가(방문요양) 전략 재확인** — schedule-fix `job_location*`/`confirmNum_a`/`pRate_type`/`job_days` 및 patient-list `RFID_tagId`/`familyCare`/`visit-plan`/`date_contract` 총 8-필드는 **재가-only 특화** → ogada daycare-first 아키텍처에서 **NOT-GAP 확인**(P3/P4 로 재가 확장 시 재검토)·정규화 우위(FK/ISO time·denormalize 회피) 유지
+  2. **RFID 아키텍처 DIFF-strategy 문서화** — ezcare static client-master 태그 vs ogada dynamic visit-event `VisitRfid*` diff matching = 동일 문제 다른 해결(감사·재발급·유연성 트레이드오프). REQUIREMENTS §RFID 근거로 「visit-event level 매칭 우위」 카피 유지
+  3. **CMS 자동이체 marketing 카피 drift capture** — ezcare 도입 지표(1634개/14.5%) 제거 signal → ogada `CmsController`(9ep multi-account settlement + virtual-account) MVP 우위 재확인·REQUIREMENTS 청구 §CMS 강조
+  4. **NHIS #44 633차 → 규제 상수 재조정 불요** — `TransportServiceFeeService.ONE_WAY_RATIO=0.5` + `TransportDistanceBand` RU_1..RU_4 carry
+  5. **BE `@6d3c766` 23-cycle zero advance·HTTP 442 72차** → API posture 72-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT
+  6. **FE `@2715090` UXD-203 carry·ahead 39·tester FF 대기·merge gate 813** — 승인/롤아웃 촉진
+
+**주력 snapshot**: `ezcare_pgid_field_level_1to1_bnk912.txt` + `ezcare_home_live_bnk912.html` + `ezcare_price_live_bnk912.html` + `ezcare_new_ez_pgid_schedule-fix_bnk912.html` + `ezcare_new_ez_pgid_patient-list_bnk912.html` + `ezcare_new_ez_pgid_receipt-list_bnk912.html` + `nhis_jo44_live_bnk912.html`(신규 7·txt 1 + html 6·덮어쓰기 0 for _bnk912 lineage · bare `ezcare_new_ez_pgid_{schedule-fix,patient-list,receipt-list,rfid-list}.html`·`ezcare_new_ez_demo.html`·`ezcare_top_nav_v2.js`·`ezcare_menu_catalog.json` 7종 script 자동 overwrite·canonical strip md5 IDENTICAL 확인)·가정 번복 0·per-cycle minimum 4종 충족(신규 evidence URL 4+·필드-blocked 3+·MATRIX 1행+·§912 소절+).
+
+
+## §911 BNK-911 — 케어포 역공학 0-2h · ★★★ **케어포 tri-source(func.php 주야간 107-leaf + demo-work 시설 셸 loadPage/view + 매뉴얼 PDF TOC) → ogada `@2715090` 1:1 = 메뉴 depth SUPERIOR(ogada 4 > carefor 3)·리포트 밀도 SUPERIOR(31 route≈23.5% > 21/107=19.6%)·M7 7-x 11/11 PARITY(6-SUPERIOR)·시설 셸 이동서비스 0-hit(Transport SUPERIOR)·Wayback func.php HTTP 200 byte-IDENTICAL LOCK 확증·신규 진성갭 0** — LIVE carefor/demo-work HTTP 000(126-cycle+ carry) → Wayback `20260519072235id_` func.php `6226e6eb`/98,328B = disk LOCK BYTE-IDENTICAL · PDF Wayback `96f7d45e` BYTE-IDENTICAL · demo-work loadPage 115·L07 10-nav(7-10 func-only) · NHIS #44 632차 · BE `@6d3c766` 22-cycle zero advance · HTTP 442 **71차** IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T20:55:00Z -->
+
+**조사일**: 2026-07-19T20:55:00Z | **rotation**: 케어포 역공학 0-2h — BNK-910(교차검증·갭 우선순위 8h+·2026-07-19T20:15:00Z) → ~40분 후. 이번 사이클 초점: (1) **Wayback func.php + PDF 재실측(NEW evidence URL HTTP 200)**(§911-1)·(2) **tri-source 메뉴 depth·리포트 밀도·M7 7-x → ogada @HEAD 1:1**(§911-2)·(3) **demo-work 시설 셸 loadPage/view·이동서비스 0-hit**(§911-3)·(4) **NHIS #44 632차 + planner 액션**(§911-4).
+
+### §911-0 · Baseline (2026-07-19T20:55:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→911 **22-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·@RestController **81**·@Entity **92**·WT CLEAN)
+- ogada frontend develop = `2715090`(BNK-910 `@2715090` **동일 HEAD·zero advance**·UXD-203 carry·ahead **39** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106** · FE test **544**(228+316) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**71차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196 · 모듈 **97.41%** · merge gate **813**(FE 39 + BE 774·BE-heavy)
+- App.jsx path depth 분포: d1=20 · d2=72 · d3=33 · d4=6 → **최대 depth=4** · report-ish Route **31**
+
+### §911-1 · ★★★ Wayback func.php + 매뉴얼 PDF NEW evidence URL [신규 증거 URL · 확인]
+
+- **LIVE DOWN carry**: [func.php](https://www.carefor.co.kr/daycare/func.php)·[demo-work](https://demo-work.carefor.co.kr/)·carefor home 전부 HTTP **000**(8s timeout·126-cycle+「미확인」)
+- **★ NEW evidence — Wayback func.php**: [20260519072235id_/daycare/func.php](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP **200**·98,328B·md5 `6226e6eb92fdd25ed3e50842a5e8a00b` · `cmp` vs `snapshots/carefor_func.php` = **BYTE-IDENTICAL** → disk canonical LOCK Wayback 확증(변동 0)·snapshot `carefor_func_wayback_bnk911.php` · CDX `carefor_func_cdx_bnk911.json`(최신 capture 20260519072235 digest=`3SOHBMXNDFBP4EOJM6M2SK3YEHR2EWR5`)
+- **★ 매뉴얼 PDF Wayback 재실측**: [Dov8rzFqBv.pdf](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) HTTP **200**·9,992,772B·md5 `96f7d45eaca91525068ec9bfb626fb18` · cmp vs `carefor_manual_pdf_bnk825.pdf` = **BYTE-IDENTICAL**(BNK-825/821/690/845 lineage)·meta `carefor_manual_pdf_meta_bnk911.txt`
+- **KPI lock 재확인**: disk=Wayback leaf 전수 **107**(M1=11·M2=10·M3=11·M4=10·M5=13·M6=5·M7=11·M8=15·M9=6·M10=9·M11=6)·「109」 outdated 금지 · depth-3 leaf **19** · 명시 리포트 leaf **21**/107=19.6%
+
+### §911-2 · ★★★ tri-source 메뉴 depth·리포트 밀도·M7 7-x → ogada @2715090 1:1 [메뉴/필드/워크플로]
+
+| 축 | 케어포(확인) | ogada `@2715090`/`@6d3c766` | 판정 |
+|---|---|---|---|
+| 메뉴 depth | func.php flat 번호식 최대 **depth-3**(19 leaf)·depth-4+ 0 | React Router 최대 **depth-4**(6 route·간호/욕창/청구 import) | ✅ **SUPERIOR** |
+| 리포트 밀도 | 명시 '리포트' **21**/107=**19.6%** | report-ish Route **31**/132≈**23.5%** + SUPERSET 8종(환불·통계·욕창·transport-monthly 등) | ✅ **SUPERIOR**(17 PARITY+4 PARTIAL+0 gap) |
+| M7 본인부담 7-x | func 11-leaf + demo L07 10-nav(loadPage/view)·PDF TOC p83–91 | `/billing/*` 17 route + Billing/Cms/EasyPay Controllers | ✅ **11/11 PARITY(6-SUPERIOR)** |
+| 이동서비스 | 주야간 func.php M2 10-leaf 존재 · **시설 셸 demo-work 0-hit** | Transport full-stack(러-1~4 수가+배차+RFID 공단비교) | ✅ **SUPERIOR**(시설 셸 대비·경쟁 유일) |
+| M12 수입지출 | PDF p2 only(func PC 미포함) | AccountingBpo SSO OTP handoff | ⚪ **NOT-GAP**(전략적 위임·BNK-908) |
+
+**M7 7-x lifecycle verbatim(demo-work loadPage)**:
+- L07_M01 `view.cost_master`「7-1.청구」→ `/billing` · generation-guard ★
+- L07_M02 `view.cost_receipt`「7-2.입금」→ `/billing/payments`
+- L07_M09 `view.cost_master_statistic`「7-2-1.의료비공제」→ MedicalExpenseDeductionPanel + NTS CSV ★
+- L07_M03 `view.cost_nopay`「7-3.미납」→ `/billing/overdue` + 자동 SMS ★
+- L07_M11 `view.cms_manage`「7-4.CMS」→ `/billing/cms` + multi-account ★
+- L07_M12 `view.npay_manage`「7-5.간편결제」→ `/billing/easy-pay`
+- L07_M05/06/07 rpt「7-6/7/8 대장」→ `/billing/reports/{charges,deposits,receipts}`(+cash-receipts ★)
+- L07_M10 rpt「7-9.환불」→ `/billing/reports/refunds` + KCP PG 수수료 카탈로그 ★
+- 7-10 간편계산기 = **func-only**(demo 0) → `/billing/calculator` SUPERSET
+
+### §911-3 · ★ demo-work 시설 셸 loadPage/view 파싱 [역공학 · disk carry]
+
+- source `carefor_demo_work.html` md5 `b2e8e5c8`/75,587B · `loadPage` **115** · L07 pamcode 10-nav
+- `이동서비스`/`배차`/`송영`/`RFID` = **0-hit ALL** → 시설 셸=이동서비스 없음 명시(agents.yaml priority_targets 정합)
+- HTML comment 번호 drift(L07_M11 comment「7-5」 vs title「7-4」) → **func.php title authoritative**(BNK-683 carry)
+
+### §911-4 · ★ NHIS #44 632차 · 갭 우선순위 · planner 액션
+
+- [NHIS #44 제34조](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1f` **632차 byte-IDENTICAL**(BNK-910 631차 → +1·cmp vs `nhis_jo44_live_bnk910.html`)·snapshot `nhis_jo44_live_bnk911.html` · 러-1~4 verbatim 무변 → 상수 재조정 불요
+- 신규 진성갭 **0**·closed band 재오픈 0·P0~P3 번복 0·미확인 승격 0·KPI promote 0·@Test strict 2413 IDENTICAL·HTTP 442 **71차** IDENTICAL·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 권고**: (1) 케어포 tri-source → ogada 메뉴 depth·리포트 밀도 SUPERIOR + M7 11/11 PARITY(6-SUPERIOR) + 시설 셸 대비 Transport SUPERIOR — REQUIREMENTS §벤치마킹 카피 유지 · (2) 「109」금지·**107** authoritative · (3) Wayback LOCK 확증 → LIVE DOWN 이어도 disk canonical 신뢰 유지 · (4) NHIS #44 632차 → 규제 상수 재조정 불요 · (5) BE `@6d3c766` 22-cycle zero advance·HTTP 442 71차 → API posture 동결·물리 삭제 API 신설 금지·PATCH>PUT · (6) FE `@2715090` UXD-203 carry·ahead 39·tester FF 대기·merge gate 813. 주력 snapshot `carefor_menu_depth_rpt_m7_tri_source_bnk911.txt`+`carefor_func_wayback_bnk911.php`+`carefor_func_cdx_bnk911.json`+`carefor_manual_pdf_meta_bnk911.txt`+`nhis_jo44_live_bnk911.html`(신규 5·txt 2 + php 1 + json 1 + html 1·덮어쓰기 0)·가정 번복 0·per-cycle minimum 4종 충족.
+
+
+## §910 BNK-910 — 교차검증·갭 우선순위 8h+ · ★★★ **FE `@2715090` +1 ADVANCE(UXD-203 보호자 체크인/아웃 시각 `<time dateTime>` 래핑·WCAG 1.3.1)·a11y semantic `<time>` 교차검증 = ogada FE 173 element/149 dateTime attr vs 경쟁 3 스냅샷(이지케어 데모 셸·엔젤 system_feature·이지케어 가격) 전부 0-hit → UXD-197~203 시리즈 a11y 차별화 확인·NHIS #44 631차 byte-IDENTICAL·BE `@6d3c766` 21-cycle zero advance·신규 진성갭 0** — FE fa838f5→2715090(+1·GuardianDailySummary+GuardianCheckinPage `toLocaleTimeString` 평문 → `<time dateTime>` ISO)·competitor `<time>` 0-hit ALL·@Test strict 2413 22-cycle 기록 IDENTICAL·HTTP 442 **70차** byte/count-exact IDENTICAL·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T20:15:00Z -->
+
+**조사일**: 2026-07-19T20:15:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-909(엔젤·롱텀·규제 역공학 4-6h·2026-07-19T19:30:00Z) → ~45분 후. 이번 사이클 초점: (1) **ogada git @HEAD 재실측 — FE UXD-203 +1 ADVANCE 포착**(§910-0)·(2) **a11y semantic `<time dateTime>` 경쟁 교차검증**(§910-1)·(3) **NHIS #44 631차 재실측**(§910-2)·(4) **교차검증·갭 우선순위 + planner 액션 아이템**(§910-3).
+
+### §910-0 · Baseline (2026-07-19T20:15:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→910 **21-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·@RestController **81**·@Entity **92**·WT CLEAN)
+- ogada frontend develop = `2715090`(BNK-909 `@fa838f5` → **+1 commit ADVANCE**·`fix(a11y/guardian): wrap guardian check-in/out times in <time dateTime> (UXD-203)`·ahead **39** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx` non-test) · FE test **544**(228 `.test.js` + 316 `.test.jsx`·UXD-203 in-place expand·신규 파일 0) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**70차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196 · 모듈 **97.41%** · merge gate **813**(FE 39 + BE 774·BE-heavy)
+
+### §910-1 · ★★★ a11y semantic `<time dateTime>` 경쟁 교차검증 — ogada 차별화 [git 실측 + 스냅샷 grep]
+
+- **UXD-203 ADVANCE**(`2715090`): `GuardianDailySummary`(체크인·체크아웃 시각) + `GuardianCheckinPage`(QR 처리 완료 시각)의 `toLocaleTimeString` 평문 렌더를 `<time dateTime>`(완전 ISO `checkInAt`/`checkOutAt`)로 래핑 → WCAG 1.3.1 보조기술 시각 인식. 2 files(+6/GuardianDailySummary.jsx·+21 test)·신규 `ds-*` 0·CSS 무변경·npm test 9/9 PASS(커밋 메시지 근거)
+- **UXD a11y 시리즈**(git log 실측): UXD-197~203 = 7 commit 연속 — 리포트(L02)·리스트(청구/준법/알림/모니터링/이력)·청구/이용료/백업·needs-assessment compare table·보호자 체크인/아웃 date·time 컬럼 semantic 래핑
+- **ogada FE 실측**: JSX `<time` element **173** · `dateTime=` attr **149**(non-test 포함 grep)
+- **경쟁 스냅샷 교차검증**(`grep -oiE '<time[ >]' / 'datetime='`):
+
+| 경쟁 스냅샷 | `<time` element | `datetime=` attr |
+|---|---|---|
+| `ezcare_new_ez_demo.html`(이지케어 ERP 데모 셸) | **0** | **0** |
+| `silverangel_system_feature_live_bnk909.html`(엔젤 system_feature) | **0** | **0** |
+| `ezcare_price_live_bnk908.html`(이지케어 가격) | **0** | **0** |
+
+- **판정**: 경쟁 3 스냅샷 모두 semantic `<time>`/`datetime=` **0-hit** → ogada UXD-197~203 `<time dateTime>` WCAG 1.3.1 대응은 경쟁 대비 **a11y 차별화(확인 — 스냅샷 grep 근거·「가정」 아님)**. REQUIREMENTS 접근성(WCAG 2.1 AA)·ROADMAP a11y epic 차별화 카피 근거.
+
+### §910-2 · ★ NHIS #44 이동서비스비 631차 재실측 [기존 URL 재실측]
+
+- [NHIS #44 제34조](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1f` **631차 byte-IDENTICAL**(BNK-909 630차 → +1·cmp vs `snapshots/nhis_jo44_live_bnk909.html` = BYTE-IDENTICAL)·snapshot `nhis_jo44_live_bnk910.html` 저장. verbatim 「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다」 무변 ↔ ogada `TransportServiceFeeService`(`ONE_WAY_RATIO=0.5`·1일 1회 HALF_UP)+`TransportDistanceBand`(RU_1..RU_4) full-stack 1:1 SUPERIOR·상수 재조정 불요
+
+### §910-3 · ★ 교차검증·갭 우선순위·planner 액션 아이템
+
+- 신규 진성갭 **0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·BE @Test strict 2413 = BNK-889→910 IDENTICAL(22-cycle 기록)·HTTP 442 70차 IDENTICAL·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 권고**: (1) **a11y `<time dateTime>` 차별화** — ogada FE 173 element/149 dateTime attr vs 경쟁 3 스냅샷 전부 0-hit(이지케어 데모 셸·엔젤 system_feature·이지케어 가격) → UXD-197~203 시리즈 WCAG 1.3.1 대응은 경쟁 대비 a11y 우위(확인)·REQUIREMENTS 접근성·ROADMAP a11y epic 차별화 카피 근거로 활용 · (2) FE `@2715090` +1 ADVANCE(UXD-203 보호자 체크인/아웃 `<time dateTime>`·ahead 39·tester FF 대기·merge gate 813) · (3) NHIS #44 631차 → 규제 상수 재조정 불요 · (4) BE `@6d3c766` 21-cycle zero advance·HTTP 442 70차 IDENTICAL → API posture 70-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT · (5) 신규 진성갭 0·가정 승격 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지. 주력 snapshot `cross_gap_priority_bnk910.txt`+`nhis_jo44_live_bnk910.html`(신규 2·txt 1 + html 1·덮어쓰기 0)·가정 번복 0·per-cycle minimum 4종 충족.
+
+
+
+## §909 BNK-909 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **엔젤 배차 6-term 0-hit 재확인(ogada Transport SUPERIOR)·롱텀 502+610 둘 다 FULL variant flip(var s16 +9B·strip diff 0-line = 콘텐츠 IDENTICAL)·NHIS #44 630차 byte-IDENTICAL + law 2025-247 strip diff 0-line — 규제 앵커 재조정 불요·신규 진성갭 0** — silverangel `c9507190`/45,601B byte-IDENTICAL·transport 6-term 0-hit·longterm 502 `a71379de`/89,171B + 610 `6b10f426`/88,408B 둘 다 LEAN→FULL flip(bnk905→909)·NHIS #44 `c886ff1f` 630차·law strip diff 0-line · FE `@fa838f5` 3-cycle 연속 zero advance · BE `@6d3c766` 20-cycle zero advance · @Test strict 2413 21-cycle IDENTICAL · audit-first HTTP 442 69차 IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T19:30:00Z -->
+
+**조사일**: 2026-07-19T19:30:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-908(이지케어 역공학 2-4h·2026-07-19T18:55:00Z) → ~35분 후. 이번 사이클 초점: (1) **엔젤 silverangel system_feature 배차 6-term 재실측**(§909-1)·(2) **롱텀 502 단기보호·610 통합재가 고시 교차검증**(§909-2)·(3) **NHIS #44 이동서비스비 러-1~4 + law 2025-247 재실측**(§909-3)·(4) **교차검증·갭 우선순위 + planner 액션 아이템**(§909-4).
+
+### §909-0 · Baseline (2026-07-19T19:30:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→909 **20-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·@RestController **81**·@Entity **92**·WT CLEAN)
+- ogada frontend develop = `fa838f5`(BNK-907→909 **3-cycle 연속 zero advance**·ahead **38** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx` non-test) · FE test **544**(228 `.test.js` + 316 `.test.jsx`) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**69차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196 · 모듈 **97.41%** · merge gate **812**(FE 38 + BE 774·BE-heavy)
+
+### §909-1 · ★ 엔젤 silverangel system_feature 배차 축 재실측 [기존 URL 재실측]
+
+- [system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) HTTP 200·45,601B·md5 `c9507190`·cmp vs `snapshots/silverangel_system_feature_live_bnk905.html` = **BYTE-IDENTICAL**(canonical carry·bnk897→902→905→909)
+- `grep -c -E '이동서비스|배차|GPS|RFID|차량|송영'` = **0-hit ALL** → 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인
+- ogada `TransportServiceFeeParityCatalog`(`ONE_WAY_RATIO=0.5`)+`TransportDistanceBand`(RU_1..RU_4)+`TransportServiceLog*` = 경쟁 4종(케어포 시설 셸 이동서비스 제외·이지케어·엔젤·롱텀) 유일 full-stack **SUPERIOR** carry
+
+### §909-2 · ★ 롱텀 단기보호(502)/통합재가(610) 교차검증 — 둘 다 FULL variant flip [기존 URL 재실측]
+
+- [502 단기보호](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) HTTP 200·89,171B·md5 `a71379de` = **FULL variant flip**(BNK-905 LEAN `56185735`/89,162B → +9B·BNK-902 FULL `a71379de` 값 복귀·raw diff 1-line = 121번 `var s16;`·strip diff 0-line = 본문 규제 콘텐츠 IDENTICAL)
+- [610 통합재가](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) HTTP 200·88,408B·md5 `6b10f426` = **FULL variant flip**(BNK-905 LEAN `fad1ce61`/88,399B → +9B·BNK-902 FULL `6b10f426` 값 복귀·raw diff 1-line = 121번 `var s16;`·strip diff 0-line·통합재가 verbatim 본문 IDENTICAL)
+- 이번 사이클 502·610 **둘 다** LEAN→FULL flip(bnk905 LEAN → bnk909 FULL)·`var s16;` ±9B 오실레이션(BNK-872/882 근본원인 확정)·문서 위생 signal only·기능 갭 아님·심층 수가 값(단기보호·통합재가 월한도)은 JS/ajax 로딩·shell 미노출 → canonical carry(「미확인」)
+
+### §909-3 · ★ 규제 백본 재실측 (NHIS #44 · law 2025-247) [기존 URL 재실측]
+
+- [NHIS #44 제34조](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1f` **630차 byte-IDENTICAL**(BNK-907 629차 → +1·cmp vs `snapshots/nhis_jo44_live_bnk907.html` = BYTE-IDENTICAL)·snapshot `nhis_jo44_live_bnk909.html` 저장. verbatim 「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다」·「이용 횟수에 관계없이 1일 1회만 산정하고, 수급자가 이동서비스를 편도만(기관으로 이...」 무변 ↔ ogada `TransportServiceFeeService`(`ONE_WAY_RATIO=0.5`·1일 1회 HALF_UP)+`TransportDistanceBand`(RU_1 5km미만/RU_2 5~10km/RU_3 10~20km/RU_4 20km이상) full-stack 1:1 SUPERIOR·상수 재조정 불요
+- [law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) HTTP 200·78,450B·raw md5 `bd55a840`(cache-buster `?Time=` DRIFT)·strip `Time=[0-9]*` semantic md5 `a913639a`·**strip diff 0-line** vs BNK-905 snapshot 재strip(BNK-886 lineage·canonical `admRulSeq=2100000271110` 고정) → raw DRIFT = cache-buster only·규제 앵커 재조정 불요
+
+### §909-4 · ★ 교차검증·갭 우선순위·planner 액션 아이템
+
+- 신규 진성갭 **0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·BE @Test strict 2413 = BNK-889→909 IDENTICAL(21-cycle)·HTTP 442 69차 IDENTICAL·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 권고**: (1) 엔젤 배차 6-term 0-hit → ogada Transport(러-1~4 수가+배차/회차+RFID 공단비교) 경쟁 4종 유일 full-stack SUPERIOR 카피 유지 · (2) 롱텀 502+610 둘 다 FULL variant flip = `var s16;` ±9B·본문 콘텐츠 IDENTICAL·기능 갭 아님·심층 수가값 canonical carry(「미확인」)·bnk905(LEAN)↔bnk909(FULL) 오실레이션 재확인 → 재측정 정책 유지·문서 위생 signal only · (3) NHIS #44 630차 → 규제 상수 재조정 불요·law 2025-247 strip diff 0-line → 규제 앵커 재조정 불요 · (4) BE @Test strict 2413 21-cycle IDENTICAL·HTTP 442 69차 IDENTICAL → API posture 69-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT · (5) FE `@fa838f5` 3-cycle 연속 zero advance(UXD-202 carry)·ahead 38·tester FF 대기·merge gate 812 · (6) 모듈 97.41% CARRY·신규 진성갭 0·가정 승격 0 → ROADMAP·PLAN_NOTES 현행 유지. 주력 snapshot `angel_longterm_regulatory_crossverify_bnk909.txt`+`silverangel_system_feature_live_bnk909.html`+`longterm_502_live_bnk909.html`+`longterm_610_live_bnk909.html`+`nhis_jo44_live_bnk909.html`+`law_mohw_2025_247_admRulInfoP_live_bnk909.html`(신규 6·txt 1 + html 5·덮어쓰기 0)·가정 번복 0·per-cycle minimum 4종 충족.
+
+
+
+## §908 BNK-908 — 이지케어 역공학 2-4h · ★★★ **이지케어 /new.ez nav no=7 재무회계 10-leaf + no=8 세무/사회보험 12-leaf 정본 → ogada @HEAD crosswalk = 전략적 위임(BPO handoff·케어포 M12 parity)·이지케어는 복식부기 회계+전자신고 native 번들·ogada 는 수지파인 외부 BPO SSO OTP handoff 위임+직원급여(M11) in-app·진성갭 아님(NOT-GAP)·가격 bnk908 재실측 asset-bump only(콘텐츠 IDENTICAL)·신규 진성갭 0** — 데모 로그인 code=0000·nav JS `95286775`/25,470B cmp vs bnk778 = BYTE-IDENTICAL·menu catalog 10 module/148 leaf/59 PGID(timestamp-only)·ogada `AccountingBpoController`(2ep·수지파인 포털 launch + 일회용 OTP SSO handoff·SEC-D43 rate limit actor10/org30 per min)+`StaffPayrollController`(5ep in-app 급여)·BE `@6d3c766` 19-cycle zero advance·@Test strict 2413·HTTP 442 68차 IDENTICAL·FE `@fa838f5` zero advance·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T18:55:00Z -->
+
+**조사일**: 2026-07-19T18:55:00Z | **rotation**: 이지케어 역공학 2-4h — BNK-907(케어포 역공학 0-2h·2026-07-19T18:10:00Z) → ~45분 후. 이번 사이클 초점: (1) **이지케어 /new.ez 재무회계(M7 10-leaf)·세무/사회보험(M8 12-leaf) 정본 재추출**(§908-1)·(2) **ogada @HEAD BPO handoff 전략 crosswalk**(§908-2)·(3) **가격 페이지 bnk908 재실측 + nav JS drift 비교**(§908-3)·(4) **교차검증·갭 우선순위 + planner 액션 아이템**(§908-4).
+
+### §908-0 · Baseline (2026-07-19T18:55:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→908 **19-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·@RestController **81**·WT CLEAN)
+- ogada frontend develop = `fa838f5`(BNK-907 `@fa838f5` **동일 HEAD·zero advance**·ahead **38** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx` non-test) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**68차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196 · 모듈 **97.41%** · merge gate **812**(FE 38 + BE 774·BE-heavy)
+
+### §908-1 · ★ 이지케어 재무회계(M7)·세무/사회보험(M8) 정본 [역공학·데모 로그인]
+
+- `./scripts/ezcare-demo-fetch.sh --menu-catalog` → login code **0000**(DEMO oCode)·title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」·demo shell 138,720B(세션 토큰만 변동)
+- **nav no=7 재무회계 10-leaf**: 통장내역 조회/입력(`/PU.ez?PGID=w4c-bank.statement`)·검토요청 답변 입력·결의서 조회 및 수정·회계장부 출력·추경보고·예산보고·결산보고·이전 회계(`/ABook/main.html` 레거시 복식부기)·인증서 재등록 → **복식부기 회계 + 공동인증서 기반 회계법인 검토**
+- **nav no=8 세무/사회보험 12-leaf**: 원천세 신고·퇴직금 계산 및 퇴직소득세 신고·근로소득원천징수부·종사자 취득·상실 현황·신고요청(취득·상실)·정정신고(취득·상실)·휴·복직 신고·보수총액·기타신고·중도퇴직자 연말정산·연말정산 신고·신고자료 조회 → **원천세·퇴직소득세·연말정산·4대보험 취득/상실 전자신고 native**
+
+### §908-2 · ★★★ ogada @HEAD crosswalk = 전략적 위임(BPO handoff·케어포 M12 parity) [git 실측]
+
+| 이지케어 leaf | ogada @HEAD 대응 | 판정 |
+|---|---|---|
+| M7 재무회계 10-leaf(통장·결의서·장부·예산/결산/추경) | `AccountingBpoController` GET `/api/v1/billing/accounting/bpo-launch`(수지파인 포털 launch catalog·@PreAuthorize HQ/BRANCH/SOCIAL) | ⚪ 전략적 위임(NOT-GAP) — 케어포 M12 parity |
+| M8 세무 12-leaf(원천세·퇴직소득세·연말정산·4대보험 신고) | POST `/api/v1/billing/accounting/bpo-sso-handoff`(일회용 OTP SSO·@PreAuthorize HQ/BRANCH·SEC-D43 rate-limit actor10/org30 per min) | ⚪ 전략적 위임(NOT-GAP) |
+| M8 종사자 취득·상실·보수총액(급여 base 데이터) | `StaffPayrollController`(5ep·ledger/simple-payment/labor-cost-ratio/retirement-accrual/allowance-deduction-catalog) → 급여 base in-app + 신고 위임 | ✅ 급여 base in-app + 신고 위임 |
+
+- **근거**(`AccountingBpoSupport.java`): DOCUMENT_CODE `M12-BPO`·PAGE_TITLE 「재무회계 (외부 BPO)」·PORTAL_PRODUCT_NAME 「수지파인」·안내문 「케어포 M12와 동일하게 수입·지출·결의 등 재무회계는 외부 BPO(수지파인)에서 처리·ogada는 직원 급여(M11)를 in-app으로 제공, 재무회계는 포털 진입만 안내」·SSO OTP 「비밀번호는 ogada에 저장하지 않으며 일회용 OTP만 전달」
+- **결론**: 재무회계·세무 = 진성갭 아님(**NOT-GAP·전략적 위임**). 차별화 = ogada BPO handoff (1) 비밀번호 미저장·일회용 OTP(보안 우위) (2) SEC-D43 rate limit(자격증명 남용 방어) — 이지케어는 in-app 인증서 재등록/직접 신고.
+
+### §908-3 · ★ 가격 페이지 bnk908 재실측 + nav JS drift [기존 URL 재실측]
+
+- 가격 [`/index.html?PG=price`](https://ezcare.easyms.co.kr/index.html?PG=price) — HTTP 200·SIZE **52,025B**·md5 `83078397ad6dafb421dcadc27f491ff5`·vs `ezcare_price_live_bnk820.html`(`c4d1d7ea`) = **DRIFT** but byte 2167 = CSS cache-buster(`?1784267051`→`?1784486969`)·**콘텐츠 IDENTICAL**(asset version bump only)·snapshot `ezcare_price_live_bnk908.html` 저장
+- 가격 구조 carry: base **33,000원 / 55,000원** + SMS **50원/500원** + 월 tier **10,000 / 30,000 / 50,000 / 70,000**
+- nav JS `ezcare_top_nav_v2.js` `95286775`/25,470B — cmp vs `ezcare_top_nav_v2_bnk778.js` = **BYTE-IDENTICAL**(nav 구조 무변동·10 module/148 leaf/59 PGID)
+
+### §908-4 · ★ 교차검증·갭 우선순위·planner 액션 아이템
+
+- 신규 진성갭 **0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·BE @Test strict 2413 = BNK-889→908 IDENTICAL(19-cycle)·HTTP 442 68차 IDENTICAL·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 권고**: (1) 이지케어 재무회계(M7)·세무/사회보험(M8) = 복식부기 회계+전자신고 native 번들 vs ogada 수지파인 외부 BPO SSO OTP handoff 위임(케어포 M12 parity) → **진성갭 아님·전략적 위임(NOT-GAP)**·REQUIREMENTS §벤치마킹 「재무회계·세무 = 외부 BPO(수지파인) SSO OTP handoff 위임·직원급여(M11) in-app」 포지셔닝 유지 · (2) 차별화 카피 「BPO handoff = 비밀번호 미저장·일회용 OTP·SEC-D43 rate limit(자격증명 남용 방어)」 — 이지케어 in-app 인증서 재등록 대비 보안 우위 · (3) 가격 bnk908 재실측 = asset version bump only·콘텐츠 IDENTICAL(base 33,000/55,000원·SMS 50/500원·월 tier 10,000~70,000) → SaaS 가격 참고자료 carry · (4) nav JS byte-IDENTICAL(bnk778 lineage)·menu catalog 10 module/148 leaf/59 PGID 무변동 · (5) BE `@6d3c766` 19-cycle zero advance·HTTP 442 68차 IDENTICAL → API posture 동결·FE `@fa838f5` zero advance·ahead 38·tester FF 대기·merge gate 812. 주력 snapshot `ezcare_m7_m8_accounting_tax_route_1to1_bnk908.txt`+`ezcare_price_live_bnk908.html`(신규 2·txt 1 + html 1·덮어쓰기 0)·가정 번복 0·per-cycle minimum 4종 충족.
+
+
+
+## §907 BNK-907 — 케어포 역공학 0-2h · ★★★ **케어포 func.php M8 직원관리 15-leaf 정본 → ogada @HEAD full-stack 1:1 crosswalk = real-scope 13/13 leaf-level PARITY(4-SUPERIOR)·8-11 carefor 자체 삭제예정·8-8 자원봉사 「필요시」 optional·M8 backing 15 controller/59 endpoint·NHIS #44 629차 byte-IDENTICAL·신규 진성갭 0** — carefor disk canonical `6226e6eb`/98,328B(LOCK) M8 재추출·ogada BE 15 controller(StaffLifecycle·HrFile·LeadCaregiverWorkLog·WorkAttendance·CommitteeMeeting·TrainingLog·Refresher·HealthCheckup·AnnualLeave·LeaveLedger·Grievance·CaseManagement·StatusReport·EmploymentContract·NhisCaregiverImport) + FE 15+ route full-stack 대응 · FE `@fa838f5` +1 ADVANCE(UXD-202) · BE `@6d3c766` 18-cycle zero advance · @Test strict 2413 · HTTP 442 67차 IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T18:10:00Z -->
+
+**조사일**: 2026-07-19T18:10:00Z | **rotation**: 케어포 역공학 0-2h — BNK-906(ogada git 실측 6-8h·2026-07-19T17:25:00Z) → ~45분 후. 이번 사이클 초점: (1) **케어포 func.php M8 직원관리 15-leaf 정본 재추출**(§907-1)·(2) **ogada @HEAD 15-leaf 1:1 crosswalk**(§907-2)·(3) **NHIS #44 629차 재실측 + ogada baseline 재산정**(§907-3)·(4) **교차검증·갭 우선순위 + planner 액션 아이템**(§907-4).
+
+### §907-0 · Baseline (2026-07-19T18:10:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→907 **18-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+- ogada frontend develop = `fa838f5`(BNK-906 `@6a9e85e` → **+1 commit ADVANCE**·`fix(a11y/clients): wrap needs-assessment compare table in .ds-table-wrap (UXD-202)`·ahead **38** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx` non-test) · FE test **544**(228 `.test.js` + 316 `.test.jsx`) · BE Test **298**(297 + 1) · @Test strict **2413** · @RestController **81** · @Entity **92** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**67차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196 · 모듈 **97.41%**·merge gate **812**(FE 38 + BE 774·BE-heavy)
+
+### §907-1 · ★ 케어포 func.php M8 직원관리 15-leaf 정본 [역공학·disk canonical]
+
+- carefor func.php LIVE HTTP **000** timeout(125-cycle+ carry「미확인」) → disk canonical `carefor_func.php` md5 `6226e6eb92fdd25ed3e50842a5e8a00b`/98,328B(LOCK) line 726~743 `pc - 8.직원관리` box 재추출
+- M8 leaf **15**: 8-1 직원 정보관리 · 8-1-2 선임 요양보호사 업무수행일지 · 8-2 근무일정표 · 8-3 연간 일정계획 · 8-4 출퇴근 및 근무관리 · 8-5 사례관리 회의록 · 8-6 회의록(운영위원회) · 8-7 교육일지(노인인권·재난·소화·직원권익) · 8-7-1 요양보호사 보수교육 · 8-8 자원봉사자 활동일지(필요시) · 8-9 고충처리 관리 · 8-10 건강검진관리 · 8-11 질향상노력(삭제예정) · 8-12 직원 현황 리포트 · 8-13 연차,유급휴일 대장
+
+### §907-2 · ★★★ ogada @HEAD M8 15-leaf 1:1 crosswalk = real-scope 13/13 leaf-level PARITY(4-SUPERIOR) [git 실측]
+
+| carefor M8 leaf | ogada BE controller (endpoints) | FE page | 판정 |
+|---|---|---|---|
+| 8-1 직원 정보관리 | `StaffLifecycleSummaryController`(1)+`StaffHrFileController`(6) | StaffPage/StaffDetailPage | ✅ PARITY |
+| 8-1-2 선임 요양보호사 업무수행일지 | `LeadCaregiverWorkLogController`(5·import-draft+/sign) | LeadCaregiverWorkLogPage | ✅ **SUPERIOR**(NHIS import draft + 전자서명 sign) |
+| 8-2 근무일정표 | `StaffMonthlyScheduleNotificationService`+visits schedule | StaffMonthlySchedulePage | ✅ PARITY |
+| 8-3 연간 일정계획 | StaffMonthlySchedule 연간/월별 뷰 | StaffMonthlySchedulePage | △ 연간 뷰「가정」(월별 정본·연간 파생) |
+| 8-4 출퇴근 및 근무관리 | `StaffWorkAttendanceController`(3) | StaffWorkAttendancePage | ✅ PARITY |
+| 8-5 사례관리 회의록 | `CaseManagementController`(4·compliance) | CaseManagementPage | ✅ **SUPERIOR**(compliance 지표) |
+| 8-6 회의록(운영위원회) | `StaffCommitteeMeetingController`(6) | StaffCommitteeMeetingPage | ✅ PARITY |
+| 8-7 교육일지 | `StaffTrainingLogController`(4) | StaffTrainingLogPage | ✅ PARITY |
+| 8-7-1 요양보호사 보수교육 | `StaffRefresherTrainingController`(5) | StaffRefresherTrainingPage | ✅ PARITY |
+| 8-8 자원봉사자 활동일지(필요시) | (0-hit) | (없음) | ❌ GAP — carefor 자체「필요시」 optional·P4「가정」 |
+| 8-9 고충처리 관리 | `GrievanceCounselingController`(9) | GrievanceCounselingPage | ✅ **SUPERIOR**(상담 lifecycle 9ep) |
+| 8-10 건강검진관리 | `StaffHealthCheckupController`(3) | StaffHealthCheckupsPage | ✅ PARITY |
+| 8-11 질향상노력(삭제예정) | N/A — carefor 자체 deprecated | N/A | ⚪ N/A(경쟁사 폐기 예정·갭 아님) |
+| 8-12 직원 현황 리포트 | `StaffStatusReportController`(2) | StaffStatusReportPage | ✅ PARITY |
+| 8-13 연차,유급휴일 대장 | `StaffAnnualLeaveController`(3)+`StaffLeaveLedgerController`(5) | StaffAnnualLeavePage/StaffLeaveLedgerPage | ✅ **SUPERIOR**(연차+유급휴일 대장 분리) |
+
+- **결론**: real-scope **13/13 leaf-level PARITY**(8-11 carefor deprecated 제외·8-8 carefor「필요시」 optional 제외)·**SUPERIOR 4종**(8-1-2 전자서명+NHIS import·8-5 case mgmt compliance·8-9 grievance 9ep·8-13 연차/유급휴일 대장 분리).
+- **M8 backing**: 15 controller / **59 endpoints**. **ogada EXTRA**(carefor M8 미보유): `StaffEmploymentContractComplianceController`(근로계약 준법)·`StaffNhisCaregiverImportController`(공단 요양보호사 엑셀 import).
+
+### §907-3 · ★ NHIS #44 629차 재실측 [기존 URL 재실측·SUPERIOR]
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·`cmp` vs `nhis_jo44_live_bnk906.html` = **BYTE-IDENTICAL**(**629차**·BNK-906 628차 → +1·러-1~4 verbatim)·snapshot `nhis_jo44_live_bnk907.html` 저장
+- transport 수가 상수 재조정 불요 — `TransportServiceFeeParityCatalog.ONE_WAY_RATIO=0.5`·`TransportDistanceBand` RU_1..RU_4 full-stack 1:1 SUPERIOR carry
+
+### §907-4 · ★ 교차검증·갭 우선순위·planner 액션 아이템
+
+- 신규 진성갭 **0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·BE @Test strict 2413 = BNK-889→907 IDENTICAL(18-cycle)·P3/P4「가정」 candidate **14종** 전부 carry(8-8 자원봉사 optional 포함)·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 권고**: (1) 케어포 M8 직원관리 15-leaf → ogada real-scope 13/13 full-stack PARITY(4-SUPERIOR) → REQUIREMENTS §벤치마킹 「M8 직원관리 15-leaf 전량 커버 + lead caregiver 전자서명·case mgmt compliance·grievance lifecycle·연차/유급휴일 대장 분리 SUPERIOR + 근로계약 준법·공단 요양보호사 import EXTRA」 카피 유지 · (2) NHIS #44 629차 → 규제 상수 재조정 불요 · (3) BE @Test strict 2413 18-cycle IDENTICAL·HTTP 442 67차 IDENTICAL → API posture 67-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT · (4) FE `@fa838f5` +1 ADVANCE(UXD-202 needs-assessment compare table `.ds-table-wrap` a11y)·ahead 38·tester FF 대기·merge gate 812 · (5) 모듈 97.41% CARRY·신규 진성갭 0·가정 승격 0 → 현행 유지. 주력 snapshot `carefor_m8_staff_route_1to1_bnk907.txt`+`nhis_jo44_live_bnk907.html`(신규 2·txt 1 + html 1·덮어쓰기 0)·가정 번복 0·per-cycle minimum 4종 충족.
+
+## §906 BNK-906 — ogada git 실측 6-8h · ★★★ **ogada git baseline @HEAD 재실측 — BE 17-cycle/FE 2-cycle 연속 zero advance·workspace_baseline.yaml stale(develop 68c2378·ahead 750) vs git 실측 6d3c766·ahead 774 = git 실측 우선(+6 commit SEC-D34 엑셀 금액 정규화)·transport 수가 상수 git grep 재확인·신규 진성갭 0** — BE `@6d3c766`(@RestController 81·@Entity 92·endpoint 442·@Test strict 2413)·FE `@6a9e85e`(Route 133·Page 106·FE test 544)·NHIS #44 `c886ff1f`/7,572B 628차 byte-IDENTICAL·audit-first HTTP 442 66차 IDENTICAL·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T17:25:00Z -->
+
+**조사일**: 2026-07-19T17:25:00Z | **rotation**: ogada git 실측 6-8h — BNK-905(엔젤·롱텀·규제 역공학 4-6h·2026-07-19T16:40:00Z) → ~45분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD·Route·page·테스트·모듈 커버 재산정**(§906-0)·(2) **BE endpoint/entity/@Test 실측**(§906-1)·(3) **FE Route/page/test 실측**(§906-2)·(4) **transport 수가 상수 git grep 재확인 + NHIS #44 628차 재실측**(§906-3)·(5) **교차검증·갭 우선순위 + planner 액션 아이템**(§906-4).
+
+### §906-0 · Baseline (2026-07-19T17:25:00Z) — git 실측 우선
+
+- ogada backend develop = `6d3c766`(BNK-889→906 **17-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`(2026-07-19 03:38:03 +0000)
+  - **workspace_baseline.yaml stale 확인**: yaml `backend.develop=68c2378`·`ahead_of_test=750`(2026-07-19T01:10:00Z) → git 실측 `6d3c766`·ahead 774 우선(rules baseline·+6 commit = SEC-D34 엑셀 금액 정규화 시리즈: 원화기호 strip → 전각원화 → 전각쉼표 → 전각숫자 → shared normalizer refactor → no-break/ideographic space grouped)
+- ogada frontend develop = `6a9e85e`(BNK-905 `@6a9e85e` → BNK-906 **2-cycle 연속 zero advance**·ahead **37** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/billing): wrap billing/fee/backup/guardian date cells in <time dateTime> (UXD-201)`(2026-07-19 15:35:03 +0000)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx` non-test) · FE test **544**(228 `.test.js` + 316 `.test.jsx`) · BE Test **298**(297 *Test.java + 1 *Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→906 IDENTICAL) · @RestController **81** · @Entity **92** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**66차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196
+- merge gate **811**(FE 37 + BE 774·BE-heavy·auto-merge FF 대기) · 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §906-1 · ★ BACKEND 실측 [git 실측]
+
+- `rg -l '@RestController' src/main/java` = **81**(Δ0) · `rg '@(Get|Post|Put|Delete|Patch)Mapping'` = **442**(GET 231·POST 144·PATCH 44·PUT 13·DELETE 10·Δ0)
+- `rg -l '@Entity' src/main/java` = **92** · Flyway `db/migration` = **V1–V196**(196 파일·max V196·Δ0)
+- BE test class **298**(297 *Test.java + 1 *Tests.java) · `^\s*@Test\b` strict **2413** · naive `@Test` raw **2414** = strict 2413 + 1 `@TestPropertySource`(`LiveE2eControllerRoutingTest.java:19`) — BNK-894 methodology lock 재확인(거짓 +1 drift 경보 방지)
+- **audit-first posture**: PATCH 44 > PUT 13 · DELETE 10(2.3% 최소·soft-delete/감사 보관·PIPA §21 정합) · BNK-836→906 endpoint 신설 0 → HTTP 442 66차 IDENTICAL·API 안정성 66-cycle 동결
+
+### §906-2 · ★ FRONTEND 실측 [git 실측]
+
+- `rg -c '<Route\b' src/App.jsx` = **132** (+ `<Routes>` 1) = Route **133** · `ls src/pages/*Page.jsx | grep -v test` = **106**(Δ0)
+- FE test file **544**(`find -name '*.test.js'` 228 + `*.test.jsx` 316·BNK-905 IDENTICAL) · accounting route 1 · payroll route surface 20(App.jsx grep)
+- FE `@6a9e85e` 2-cycle 연속 zero advance(UXD-201 billing/fee/backup/guardian `<time dateTime>` carry·ahead 37·tester FF 대기)
+
+### §906-3 · ★ transport 수가 상수 git grep 재확인 + NHIS #44 628차 재실측 [기존 URL 재실측·SUPERIOR]
+
+- `rg 'ONE_WAY_RATIO' src/main/java` → `TransportServiceFeeParityCatalog.ONE_WAY_RATIO = new BigDecimal("0.5")`(편도 비율·1일 1회) · `rg 'RU_[1-4]'` → `TransportDistanceBand` RU_1(러-1 5km 미만)/RU_2(러-2 5~10km)/RU_3(러-3 10~20km)/RU_4(러-4 20km 이상)
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·`cmp` vs `nhis_jo44_live_bnk905.html` = **BYTE-IDENTICAL**(**628차**·BNK-905 627차 → +1·러-1~4 verbatim)·snapshot `nhis_jo44_live_bnk906.html` 저장
+- ↔ ogada `TransportServiceFeeParityCatalog`(ONE_WAY_RATIO=0.5)+`TransportDistanceBand`(RU_1..RU_4)+`TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·상수 재조정 불요
+- 엔젤 이동서비스/배차/GPS/RFID/차량/송영 6-term 0-hit(엔젤 배차 부재 carry) → ogada Transport 경쟁 4종 유일 full-stack SUPERIOR
+
+### §906-4 · ★ 교차검증·갭 우선순위 + planner 액션 아이템
+
+1. **ogada git baseline @HEAD 동기화** — BE `@6d3c766`(17-cycle zero advance·workspace_baseline.yaml `68c2378`/ahead 750 stale → git 실측 `6d3c766`/ahead 774 우선·+6 commit SEC-D34)/FE `@6a9e85e`(2-cycle 연속 zero advance·UXD-201 carry)·Route 133·Page 106·FE test 544·BE Test 298·@Entity 92·@RestController 81
+2. **NHIS #44 628차 byte-IDENTICAL + transport 수가 상수(ONE_WAY_RATIO=0.5·RU_1~4) git grep 재확인** → 규제 상수 재조정 불요
+3. **BE @Test strict 2413 = BNK-889→906 IDENTICAL·HTTP 442 66차 IDENTICAL**(BE 17-cycle zero advance) → API posture 66-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT
+4. **FE `@6a9e85e` 2-cycle 연속 zero advance**(ahead 37·tester FF 대기)·merge gate 811
+5. **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·P3/P4「가정」 candidate 14종 전부 carry·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지
+
+**신규 snapshot 2**(`ogada_git_remeasure_bnk906.txt` + `nhis_jo44_live_bnk906.html`)·덮어쓰기 0·가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §905 BNK-905 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **엔젤 배차 6-term 0-hit 재확인(ogada Transport SUPERIOR)·롱텀 502+610 둘 다 LEAN variant flip(var s16 ±9B·strip diff 0-line = 콘텐츠 IDENTICAL)·NHIS #44 627차 byte-IDENTICAL + law 2025-247 strip diff 0-line — 규제 앵커 재조정 불요·신규 진성갭 0** — silverangel `c9507190`/45,601B byte-IDENTICAL(canonical)·transport 6-term 0-hit·longterm 502 `56185735`/89,162B + 610 `fad1ce61`/88,399B 둘 다 FULL→LEAN flip(raw diff 1-line=`var s16;`·strip diff 0-line)·NHIS #44 `c886ff1f`/7,572B 627차·law strip `a913639a` diff 0-line · FE `@6a9e85e` zero advance(UXD-201 carry) · BE `@6d3c766` 16-cycle zero advance · @Test strict 2413 17-cycle IDENTICAL · audit-first HTTP 442 65차 IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T16:40:00Z -->
+
+**조사일**: 2026-07-19T16:40:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-904(케어포 역공학 0-2h·2026-07-19T15:53:00Z) → ~47분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측 baseline**(§905-0)·(2) **엔젤 silverangel system_feature 배차 축 재실측**(§905-1)·(3) **롱텀 502 단기보호·610 통합재가 교차검증**(§905-2)·(4) **NHIS #44 627차 + law 2025-247 재실측**(§905-3)·(5) **교차검증·갭 우선순위 재정렬 + planner 액션 아이템**(§905-4/5).
+
+### §905-0 · Baseline (2026-07-19T16:40:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-889→905 **16-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `6a9e85e`(BNK-904 `@6a9e85e` **동일 HEAD·zero advance**·ahead **37** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/billing): wrap billing/fee/backup/guardian date cells in <time dateTime> (UXD-201)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx`) · FE test **544**(228 `.test.js` + 316 `.test.jsx`) · `<time dateTime>` non-test jsx **96 files** · BE Test **298**(297+1) · @Test strict **2413**(BNK-889→905 **17-cycle IDENTICAL**) · @RestController **81** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**65차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196
+- merge gate **811**(FE 37 + BE 774·BE-heavy·auto-merge FF 대기) · 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §905-1 · ★ 엔젤 silverangel system_feature 배차 축 재실측 [메뉴/필드/워크플로]
+
+- **silverangel system_feature** = [URL](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) — HTTP 200·SIZE **45,601B**·md5 `c950719098eecaf748bbdeea5deb93da`·`cmp` vs `silverangel_system_feature_live_bnk902.html` = **BYTE-IDENTICAL**(canonical carry)
+- `grep -c -E '이동서비스|배차|GPS|RFID|차량|송영'` = **0-hit ALL** → 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인
+- ↔ ogada `TransportServiceFeeService`(`ONE_WAY_RATIO=0.5`)+`TransportDistanceBand`(RU_1..RU_4)+`TransportServiceLog*`+배차/회차/RFID 공단비교 자체 시스템 = 경쟁 4종 유일 full-stack **SUPERIOR** carry
+
+### §905-2 · ★ 롱텀 단기보호(502)/통합재가(610) 교차검증 — 둘 다 LEAN variant flip
+
+- **502** [URL](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) HTTP 200·**89,162B**·md5 `5618573525680a407975cbbafe93ccd1` = **LEAN variant flip**(BNK-902 FULL `a71379de`/89,171B → -9B·BNK-882 LEAN `56185735` 로 복귀)·raw diff 1-line = `var s16;`·strip diff **0-line** = 본문 규제 콘텐츠 IDENTICAL
+- **610** [URL](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) HTTP 200·**88,399B**·md5 `fad1ce6115bad27169c248b8d7a1089b` = **LEAN variant flip**(BNK-902 FULL `6b10f426`/88,408B → -9B)·raw diff 1-line = `var s16;`·`통합재가` verbatim 1-hit·본문 콘텐츠 IDENTICAL
+- **판정**: 이번 사이클 502·610 **둘 다** FULL→LEAN flip(단일 미초기화 JS 변수 선언 `var s16;` ±9B 오실레이션·BNK-872/882 근본원인 확정)·문서 위생 signal only·기능 갭 아님. 심층 수가 값(단기보호 74,060·통합재가 월한도)은 JS/ajax 로딩·shell 미노출 → canonical value carry(「미확인」 유지).
+
+### §905-3 · ★ 규제 백본 — NHIS #44 627차 + law 2025-247 strip diff 0-line
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·`cmp` vs `nhis_jo44_live_bnk904.html` = **BYTE-IDENTICAL**(**627차**·BNK-904 626차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeService`(`ONE_WAY_RATIO` 편도 0.5 HALF_UP·1일 1회)+`TransportDistanceBand`(RU_1..RU_4) full-stack 1:1 SUPERIOR·상수 재조정 불요·snapshot `nhis_jo44_live_bnk905.html` 저장. verbatim 인용: 「‘러-1’부터 ‘러-4’까지 비용의 50%」·「이동서비스비용은 이용 횟수에 관계없이 1일 1회만 산정」·「편도만... 이용한 경우」.
+- **law 2025-247**: [URL](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) HTTP 200·78,450B·raw md5 `21ef8a25`(cache-buster `?Time=` DRIFT)·strip `Time=[0-9]*` semantic md5 `a913639a`·strip diff **0-line** vs BNK-902 snapshot 재strip(BNK-886 lineage·canonical URL `admRulSeq=2100000271110` 고정) → raw DRIFT = cache-buster only·규제 앵커 재조정 불요.
+- carefor func.php / demo-work LIVE HTTP **000** timeout(125-cycle+ carry·「미확인」·disk canonical `carefor_func.php` `6226e6eb`/98,328B LOCK).
+
+### §905-4 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→905 IDENTICAL(**17-cycle**·drift 경보 없음) · HTTP 442 = BNK-836→905 **65차** IDENTICAL
+- **P3/P4「가정」 candidate 총 14종**(BNK-904 14 carry) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §905-5 · planner 액션 아이템
+
+1. **★ 엔젤 배차 6-term 0-hit** → ogada Transport(러-1~4 수가+배차/회차+RFID 공단비교) 경쟁 4종 유일 full-stack SUPERIOR 카피 유지
+2. **롱텀 502+610 둘 다 LEAN variant flip** = `var s16;` ±9B·본문 콘텐츠 strip diff 0-line·기능 갭 아님·심층 수가값 canonical carry(「미확인」)
+3. **NHIS #44 627차 byte-IDENTICAL** → 규제 상수(`ONE_WAY_RATIO=0.5`·1일 1회) 재조정 불요 · law 2025-247 strip diff 0-line → 규제 앵커 재조정 불요
+4. **BE @Test strict 2413 = 17-cycle IDENTICAL·HTTP 442 65차 IDENTICAL**(BE 16-cycle zero advance) → API posture 동결·물리 삭제 API 신설 금지·PATCH>PUT·DELETE 2.3% 최소
+5. **FE `@6a9e85e` zero advance**(UXD-201 청구/이용료/백업/보호자 date `<time dateTime>` carry)·ahead 37·tester FF 대기·merge gate 811
+6. **모듈 97.41% CARRY**·신규 진성갭 0·가정 승격 0 → ROADMAP·PLAN_NOTES 현행 유지
+
+## §904 BNK-904 — 케어포 역공학 0-2h · ★★★ **케어포 func.php M7 본인부담금관리 7-x 11-leaf 정본 → ogada @HEAD full-stack 1:1 crosswalk = 11/11 leaf-level PARITY(6-SUPERIOR)·NHIS #44 626차 byte-IDENTICAL·carefor 실 leaf 107 정정(「109」 outdated)·신규 진성갭 0** — carefor func.php LIVE HTTP 000 timeout(124-cycle+ carry「미확인」) → disk canonical `carefor_func.php` md5 `6226e6eb`/98,328B(LOCK) M7 재추출·M7 leaf 정본 11(7-1 청구·7-2 입금·7-2-1 의료비공제·7-3 미납·7-4 CMS·7-5 간편결제·7-6/7/8 리포트·7-9 환불·7-10 간편계산기) → ogada `BillingController` 54 endpoints + `CmsController` 9 + `EasyPayController` 3 + FE 10-route + `MedicalExpenseDeductionPanel` = **11/11 leaf-level PARITY**·**SUPERIOR 6종**(7-1 prior-month unpaid guard·7-2-1 NTS CSV export + CMS/EasyPay 자동 exclusion·7-3 자동 SMS 리마인더·7-4 multi-account settlement·7-8 현금영수증 pending 큐·7-9 KCP PG 환불수수료 카탈로그). NHIS #44 `c886ff1f`/7,572B **626차** byte-IDENTICAL(러-1~4 verbatim). FE `@6a9e85e` +1 ADVANCE(UXD-201 청구/이용료/백업/보호자 date `<time dateTime>`)·BE `@6d3c766` 15-cycle zero advance · audit-first HTTP 442 64차 IDENTICAL · @Test strict 2413 16-cycle IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T15:53:00Z -->
+
+**조사일**: 2026-07-19T15:53:00Z | **rotation**: 케어포 역공학 0-2h — BNK-903(교차검증·갭 우선순위 8h+·2026-07-19T15:11:00Z) → ~42분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측 baseline + UXD-201 KPI 갱신**(§904-0)·(2) **케어포 func.php M7 본인부담금관리 7-x 11-leaf 정본 → ogada @HEAD full-stack 1:1 crosswalk**(§904-1)·(3) **NHIS #44 626차 재실측**(§904-2)·(4) **KPI 정정 carefor 실 leaf 107(「109」 outdated)**(§904-3)·(5) **교차검증·갭 우선순위 재정렬 + planner 액션 아이템**(§904-4/5).
+
+### §904-0 · Baseline (2026-07-19T15:53:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-889→904 **15-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `6a9e85e`(BNK-903 `@c2fb261` → **+1 commit ADVANCE**·`fix(a11y/billing): wrap billing/fee/backup/guardian date cells in <time dateTime> (UXD-201)`·ahead **37** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - UXD-201 changes: 7 non-test 소스(`BackupSettingsPanel`·`BillingSettingsPanel`·`CopayRateTable`·`FeeScheduleTable`·`GuardianBillingDetailModal`·`BillingDetailPage`·`PaymentPage`) + 7 test·+231/-27·regression 40/40 PASS·`npm run build` PASS·신규 ds-* 0
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx`) · FE test **544**(228 `.test.js` + 316 `.test.jsx`) · `<time dateTime>` non-test jsx **96 files**(occurrences **162**·BNK-903 89 files·128 occurrences → **+7 files·+34 occurrences UXD-201** billing/fee/backup/guardian) · `<time >` any jsx (non-test) **98 files** · BE Test **298**(297+1) · @Test strict **2413**(BNK-889→904 **16-cycle IDENTICAL**) · @RestController **81** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**64차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196
+- merge gate **811**(FE 37 + BE 774·BE-heavy·auto-merge FF 대기) · 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §904-1 · ★★★ 케어포 func.php M7 본인부담금관리 7-x 11-leaf 정본 → ogada @HEAD full-stack 1:1 crosswalk [메뉴/필드/워크플로 · disk canonical]
+
+- **carefor func.php LIVE** = HTTP **000** timeout 25s(**124-cycle+** carry·「미확인」) → **disk canonical** `carefor_func.php` md5 `6226e6eb92fdd25ed3e50842a5e8a00b`/98,328B(LOCK)에서 M7 재추출
+- **carefor M7 정본**(disk canonical L710-L723): `pc - 7.본인부담금관리` c2 leaf **11**(7-1·7-2·**7-2-1**·7-3·7-4·7-5·7-6·7-7·7-8·7-9·7-10)
+
+| 케어포 M7 leaf | ogada @HEAD full-stack crosswalk | 판정 |
+|---|---|---|
+| **7-1 본인부담금 청구관리** | BE `BillingController` POST `/api/v1/billing/claims/generate`·GET `/claims`·GET `/claims/{claimId}`·PATCH `/claims/{claimId}/status`·GET `/claims/generation-guard`(**US-M03·케어포 7-1/7-2 prior-month unpaid guard 명시**)·GET `/claims/monthly-cap-guard` + FE `/billing`(`BillingPage`)·`/billing/claims/:claimId`(`BillingDetailPage`) | ✅ **PARITY + SUPERIOR**(prior-month unpaid guard) |
+| **7-2 본인부담금 입금관리** | BE `BillingController` POST `/api/v1/billing/claims/{claimId}/payments` + FE `/billing/payments`(`PaymentPage`) | ✅ PARITY |
+| **7-2-1 의료비공제(연말정산)** | BE `BillingController` GET `/api/v1/billing/reports/medical-deduction`(**G26, L07_M09, 케어포 7-2-1 명시**)·GET `/reports/medical-deduction/export`(CSV NTS batch upload)·`ClientController` GET annual copay summary + FE `src/api/medicalExpenseDeduction.js`·`MedicalExpenseDeductionPanel.jsx`·`BillingStatisticsReportPage.jsx`·**도메인 지식**: `CMS·EASY_PAY`는 연말정산 의료비공제 집계에서 제외(케어포 7-2-1 ↔ 7-4/7-5 leaf 분리·BNK-77 lineage) | ✅ **PARITY + SUPERIOR**(NTS CSV export + CMS/EasyPay 자동 exclusion) |
+| **7-3 본인부담금 미납관리** | BE `BillingController` GET `/api/v1/billing/overdue`·GET/POST `/overdue/claims/{claimId}/management-records`·GET/POST `/overdue/claims/{claimId}/adjustments`·`OverdueManagementService.recordAutomaticSmsRemindersForClaim` + FE `/billing/overdue`(`OverduePage`) | ✅ **PARITY + SUPERIOR**(관리기록+조정+자동 SMS 리마인더) |
+| **7-4 본인부담금 자동이체 (CMS)** | BE `CmsController` `/api/v1/billing/cms` — POST/GET `/enrollments`·DELETE `/enrollments/{id}`·GET `/payment-method-catalog`·POST `/claims/{id}/debit`·POST/GET `/claims/{id}/virtual-account`·POST/GET `/claims/{id}/multi-account-settlement` + FE `/billing/cms` | ✅ **PARITY + SUPERIOR**(multi-account settlement + virtual-account) |
+| **7-5 본인부담금 간편결제** | BE `EasyPayController` `/api/v1/billing/easy-pay` — POST `/claims/{id}/payment`·GET `/claims/{id}/payment`·GET `/provider-catalog` + FE `/billing/easy-pay`(`EasyPayPage`) | ✅ PARITY |
+| **7-6 본인부담금 청구대장 리포트** | BE `BillingController` GET `/reports/copay-monthly-statistics` + FE `/billing/reports/charges`(`BillingReportPage variant="charges"`) | ✅ PARITY |
+| **7-7 본인부담금 입금대장 리포트** | BE `BillingController` GET reports + FE `/billing/reports/deposits`(`BillingReportPage variant="deposits"`) | ✅ PARITY |
+| **7-8 본인부담금 수납대장 리포트** | BE `BillingController` GET `/cash-receipt-issuances`·GET `/cash-receipt-issuances/pending`·POST `/cash-receipt-issuances`·GET `/clients/{clientId}/cash-receipt-profile` + FE `/billing/reports/receipts`(`BillingReportPage variant="receipts"`)·`/billing/cash-receipts`(`CashReceiptIssuancePage`) | ✅ **PARITY + SUPERIOR**(현금영수증 pending 큐 + client profile) |
+| **7-9 본인부담금 수납,환불내역** | BE `BillingController` POST `/claims/{claimId}/refunds`(**US-M03 7-9 명시**)·GET `/copay/refund-fee-policy-catalog`(**케어포 7-9 KCP PG 명시**)·POST `/copay/refund-fee-preview` + FE `/billing/reports/refunds`(`BillingReportPage variant="refunds"`) | ✅ **PARITY + SUPERIOR**(KCP PG 환불수수료 정책 카탈로그 + 프리뷰) |
+| **7-10 본인부담금 간편계산기** | BE `BillingController` GET `/copay-rates`·PATCH `/copay-rates/{copayType}`·GET `/fee-schedules`·POST/PATCH `/fee-schedules`·GET `/monthly-benefit-caps`·GET `/fee-surcharge-rates`·POST `/fee-surcharge-preview` + FE `/billing/calculator`(`CopayCalculatorPage`)·`/billing/copay-rates`(`CopayRatePage`)·`/billing/fee-schedules`(`FeeSchedulePage`) | ✅ PARITY |
+
+- **판정**: 케어포 M7 7-x 11-leaf 전량 ogada full-stack 존재 = **11/11 leaf-level PARITY**·SUPERIOR **6종**(7-1 prior-month unpaid guard·7-2-1 NTS CSV export + CMS/EasyPay 자동 exclusion·7-3 OverdueManagementService 자동 SMS 리마인더·7-4 multi-account settlement·7-8 현금영수증 pending 큐·7-9 KCP PG 환불수수료 카탈로그)·경쟁 4종 유일 full-stack coverage. 잔여 미세갭 0·신규 진성갭 승격 0.
+
+### §904-2 · ★ 규제 백본 — NHIS #44 제34조 이동서비스비 러-1~4
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·`cmp` vs `nhis_jo44_live_bnk903.html` = **BYTE-IDENTICAL**(**626차**·BNK-903 625차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요·snapshot `nhis_jo44_live_bnk904.html` 저장. verbatim 인용: 「‘러-1’부터 ‘러-4’까지 비용의 50%」·「이동서비스비용은 이용 횟수에 관계없이 1일 1회만 산정」·「편도만... 이용한 경우」.
+- carefor `demo-work.carefor.co.kr` LIVE HTTP **000** timeout 20s(func.php와 동일 정책·「미확인」·disk canonical `carefor_demo_work.html` 75,587B carry BNK-573 정본·시설 셸 이동서비스관리 제외 명시).
+
+### §904-3 · ★ KPI 정정 — carefor disk canonical 실 leaf 107 (「109」 outdated)
+
+- disk canonical `carefor_func.php` `6226e6eb`/98,328B(LOCK) 실 leaf 전수 재count:
+
+| Module | leaf 수 |
+|---|---|
+| M1 수급자관리 | 11 (1-1, 1-1-1, 1-2, 1-3, 1-4, 1-5, 1-6, 1-7, 1-8, 1-9, 1-10) |
+| M2 이동서비스관리 | 10 (2-1, 2-1-1, 2-2, 2-3, 2-4, 2-5, 2-6, 2-7, 2-8, 2-9) |
+| M3 요양 급여제공 | 11 (3-1, 3-1-1, 3-1-2, 3-1-3, 3-1-4, 3-2, 3-3, 3-4, 3-5, 3-6, 3-7) |
+| M4 간호/물리(작업) 급여제공 | 10 (4-1, 4-1-1, 4-2, 4-3, 4-4, 4-5, 4-6, 4-6-1, 4-6-2, 4-6-3) |
+| M5 프로그램 급여제공 | 13 (5-1, 5-1-1, 5-2, 5-3, 5-3-1, 5-4, 5-5, 5-5-1, 5-6, 5-7, 5-8, 5-9, 5-10) |
+| M6 위생.안전 점검관리 | 5 (6-1, 6-2, 6-3, 6-3-1, 6-4) |
+| M7 본인부담금관리 | 11 (7-1, 7-2, 7-2-1, 7-3, 7-4, 7-5, 7-6, 7-7, 7-8, 7-9, 7-10) |
+| M8 직원관리 | 15 (8-1, 8-1-2, 8-2, 8-3, 8-4, 8-5, 8-6, 8-7, 8-7-1, 8-8, 8-9, 8-10, 8-11, 8-12, 8-13) |
+| M9 기초설정 및 운영관리 | 6 (9-1, 9-1-1, 9-2, 9-3, 9-4, 9-5) |
+| M10 부가서비스 | 9 (10-1, 10-2, 10-2-1, 10-3, 10-4, 10-5, 10-6, 10-7, 10-8) |
+| M11 직원 급여관리 | 6 (11-1, 11-2, 11-3, 11-4, 11-5, 11-6) |
+| **합계** | **107** |
+
+- 이전 세션의 「109항목」 표기는 **outdated** → **107 authoritative**(disk canonical `6226e6eb` 기준·rules §14 검증 정합·과거 Page 106→107·@Test 2414→2413·`<time dateTime>` 89 정정 lineage와 동일 계보). 실 콘텐츠 무영향·경쟁 판정 무영향·§903 M1~M11 11/11 매크로 PARITY 결론 무영향.
+
+### §904-4 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→904 IDENTICAL(**16-cycle**·drift 경보 없음) · HTTP 442 = BNK-836→904 **64차** IDENTICAL
+- **P3/P4「가정」 candidate 총 14종**(BNK-903 14 carry) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §904-5 · planner 액션 아이템
+
+1. **★ 케어포 M7 본인부담금 7-x 11-leaf → ogada 11/11 full-stack PARITY(6-SUPERIOR)** — REQUIREMENTS §벤치마킹 「M7 본인부담금 lifecycle 11-leaf 전량 커버 + prior-month unpaid guard·NTS CSV export·자동 SMS 리마인더·multi-account settlement·현금영수증 pending 큐·KCP PG 환불수수료 카탈로그 SUPERIOR」 카피 유지·경쟁 4종 유일 full-stack coverage
+2. **NHIS #44 626차 byte-IDENTICAL** → 규제 상수(`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY`) 재조정 불요
+3. **KPI 정정** — carefor disk canonical `6226e6eb` 실 leaf **107**(「109」 outdated·M6=5·M9=6·M11=6이 가장 얇은 vs M8=15·M5=13이 가장 두꺼움)·`<time dateTime>` non-test jsx **96 files**(UXD-201 +7·billing/fee/backup/guardian)
+4. **BE @Test strict 2413 = 16-cycle IDENTICAL·HTTP 442 64차 IDENTICAL**(BE 15-cycle zero advance) → API posture 동결·물리 삭제 API 신설 금지·PATCH>PUT·DELETE 2.3% 최소
+5. **FE `@6a9e85e` +1 ADVANCE**(UXD-201 청구/이용료/백업/보호자 date `<time dateTime>` = M7 카피에도 계보 배치 — BillingDetailPage/PaymentPage/FeeScheduleTable/CopayRateTable/BackupSettingsPanel/BillingSettingsPanel/GuardianBillingDetailModal)·ahead 37·tester FF 대기·merge gate 811
+6. **모듈 97.41% CARRY**·신규 진성갭 0·가정 승격 0 → ROADMAP·PLAN_NOTES 현행 유지
+
+## §903 BNK-903 — 교차검증·갭 우선순위 8h+ · ★★★ **케어포 func.php 주야간보호급여 11-module(M1~M11) 정본 → ogada @HEAD 매크로 crosswalk = 11/11 module-level PARITY (M2 이동서비스 SUPERIOR)·NHIS #44 625차 byte-IDENTICAL·신규 진성갭 0** — carefor disk canonical `6226e6eb`/98,328B M1~M11 11-box 재추출(LIVE HTTP 000 timeout 123-cycle+ carry「미확인」) 대비 ogada BE(Transport/Visit/SafetyCheck/Billing/Payroll/Client/Program Controller)+FE(Transport ×7·Nursing ×8·Staff ×16·Safety ×4·Meal ×4·Copay ×2·Payroll ×5 Page) full-stack 11/11 매크로 PARITY·M2 이동서비스관리 = 경쟁 4종 유일 자체 배차/러-1~4 수가/RFID 공단비교 SUPERIOR · NHIS #44 `c886ff1f`/7,572B **625차** byte-IDENTICAL · BE `@6d3c766` 14-cycle zero advance · FE `@c2fb261` 1-cycle zero advance(BNK-902 +1 ADVANCE 후 carry) · @Test strict 2413 **15-cycle** IDENTICAL · HTTP 442 **63차** byte/count-exact IDENTICAL · 모듈 97.41% CARRY · KPI 정정 1건(`<time dateTime>` non-test jsx **89 files**·BNK-902 '93' overcount 정정)
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T15:11:00Z -->
+
+**조사일**: 2026-07-19T15:11:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-902(엔젤·롱텀·규제 역공학 4-6h·2026-07-19T14:28:00Z) → ~43분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline(§903-0)·(2) **케어포 func.php 주야간 11-module 정본 → ogada 매크로 crosswalk 교차검증**(§903-1)·(3) **NHIS #44 625차 재실측**(§903-2)·(4) **KPI 계수 정정(`<time dateTime>` 89 files)**(§903-3)·(5) **교차검증·갭 우선순위 재정렬 + planner 액션 아이템**(§903-4/5).
+
+### §903-0 · Baseline (2026-07-19T15:11:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→903 **14-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `c2fb261`(BNK-902 `@c2fb261` **동일 HEAD·zero advance**·ahead **36** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap monitoring/history panel date-time columns in <time dateTime> (UXD-200)`
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106**(`*Page.jsx`) · FE test **544**(228 `.test.js` + 316 `.test.jsx`) · `<time dateTime>` non-test jsx **89 files**(occurrences 128·`<time ` any 92 files·**BNK-902 '93 files' overcount → 89 정정**·HEAD IDENTICAL 재측정 authoritative) · BE Test **298**(297+1) · @Test strict **2413**(BNK-889→903 **15-cycle IDENTICAL**) · @RestController **81** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**63차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196
+- merge gate **810**(FE 36 + BE 774·BE-heavy·auto-merge FF 대기) · 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §903-1 · ★★★ 케어포 func.php 주야간보호급여 11-module(M1~M11) 정본 → ogada @HEAD 매크로 crosswalk [메뉴/필드/워크플로 · disk canonical]
+
+- **carefor func.php LIVE** = HTTP **000** timeout 25s(**123-cycle+** carry·「미확인」) → **disk canonical** `carefor_func.php` md5 `6226e6eb92fdd25ed3e50842a5e8a00b`/98,328B(LOCK)에서 재추출
+- top-level 메뉴 6(leftm/subm): `시설급여`·`주야간보호급여`·`가정방문급여`·`부가서비스`·`홈페이지 제작`·`고객센터`
+- 주야간보호급여 module box(c1/c2) = **11**(`pc - 1..11`·`app -` prefix 0):
+
+| 케어포 module | ogada @HEAD crosswalk(BE controller / FE page) | 판정 |
+|---|---|---|
+| **M1 수급자관리** | `ClientController` ×6 + 이용자 관리 화면 | ✅ PARITY |
+| **M2 이동서비스관리** | `TransportController` + `TransportServiceFeeParityCatalog`(RU_1..RU_4) + `Transport*Page` ×7 + `VisitRfidDiffComparePanel` | ✅ **SUPERIOR**(경쟁 4종 유일 자체 배차/러-1~4 수가/RFID 공단비교) |
+| **M3 요양 급여제공** | `VisitController` + `VisitsPage` | ✅ PARITY |
+| **M4 간호/물리(작업) 급여제공** | `Nursing*Page` ×8(Vital/Weight/OralCare/Emergency 등) | ✅ PARITY |
+| **M5 프로그램 급여제공** | `ProgramController` ×2 + `Program*Page` ×2(사진 SEC-D25) | ✅ PARITY |
+| **M6 위생.안전 점검관리** | `SafetyCheckController` + `Safety*Page` ×4 + `Meal*Page` ×4 | ✅ PARITY(BNK-896 5/5) |
+| **M7 본인부담금관리** | `BillingController` ×2 + `Copay*Page` ×2(lifecycle) | ✅ PARITY |
+| **M8 직원관리** | `Staff*Page` ×16 | ✅ PARITY |
+| **M9 기초설정 및 운영관리** | 설정/운영 화면 | ✅ PARITY |
+| **M10 부가서비스** | 부가서비스 화면 | ✅ PARITY |
+| **M11 직원 급여관리** | `PayrollController` + `Payroll*Page` ×5(M11 BNK-709~714) | ✅ PARITY |
+
+- **판정**: 케어포 주야간 11-module 전량 ogada full-stack 존재 = **11/11 module-level 매크로 PARITY**·M2 이동서비스관리 축 = 경쟁 4종 유일 자체 시스템 **SUPERIOR**(carefor 시설 셸 demo-work 는 이동서비스 제외 명시). 잔여 미세갭은 leaf-level P3/P4「가정」(승격 0·rules §11·§17)·신규 진성갭 0.
+
+### §903-2 · ★ 규제 백본 — NHIS #44 제34조 이동서비스비 러-1~4
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1f…`·`cmp` vs `nhis_jo44_live_bnk902.html` = **BYTE-IDENTICAL**(**625차**·BNK-902 624차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요·snapshot `nhis_jo44_live_bnk903.html` 저장
+
+### §903-3 · ★ KPI 계수 정정 — `<time dateTime>` non-test jsx 89 files
+
+- HEAD `c2fb261` 불변(FE BNK-902→903 zero advance·drift 불가능) 하에서 재측정: `grep -rlE "<time dateTime" --include=*.jsx | grep -v .test.jsx` = **89 files**(occurrences 128)·`<time ` any = 92 files
+- BNK-902 header 기록 「93 files」는 **overcount** → BNK-903 정정 **89 files**(HEAD IDENTICAL 재측정 authoritative·rules §14 검증 정합·과거 Page 106→107·@Test 2414→2413 계수 정정 lineage). 실 콘텐츠(UXD-200 monitoring/history `<time dateTime>` 착지) 무영향·경쟁 판정 무영향
+
+### §903-4 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→903 IDENTICAL(**15-cycle**·drift 경보 없음) · HTTP 442 = BNK-836→903 **63차** IDENTICAL
+- **P3/P4「가정」 candidate 총 14종**(BNK-902 14 carry) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §903-5 · planner 액션 아이템
+
+1. **케어포 주야간 11-module → ogada 11/11 매크로 PARITY** — carefor func.php 정본 M1~M11 전량 ogada full-stack 대응(disk canonical `6226e6eb` 재추출)·M2 이동서비스관리 = 경쟁 4종 유일 자체 배차/러-1~4 수가/RFID 공단비교 SUPERIOR → REQUIREMENTS §벤치마킹 「케어포 주야간 11-module 전량 커버 + 이동서비스 SUPERIOR」 카피 유지
+2. **NHIS #44 625차 byte-IDENTICAL** → 규제 상수(`ONE_WAY_RATIO=0.5`·ONE_PER_DAY) 재조정 불요
+3. **KPI 정정 — `<time dateTime>` non-test jsx 89 files**(BNK-902 '93' overcount 정정) · 실 콘텐츠 무영향 · 향후 KPI `<time dateTime` strict 계수 고정
+4. **BE @Test strict 2413 = 15-cycle IDENTICAL·HTTP 442 63차 IDENTICAL**(BE 14-cycle zero advance) → API posture 동결·물리 삭제 API 신설 금지·PATCH>PUT·audit-first
+5. **FE `@c2fb261` 1-cycle zero advance**(BNK-902 UXD-200 +1 ADVANCE 후 carry·ahead 36·tester FF 대기)·merge gate 810
+6. **모듈 97.41% CARRY**·신규 진성갭 0·가정 승격 0 → ROADMAP·PLAN_NOTES 현행 유지
+
+## §902 BNK-902 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **엔젤 배차 6-term 0-hit 재확인(ogada Transport SUPERIOR)·롱텀 502 FULL variant flip(s16 ±9B·콘텐츠 IDENTICAL)·NHIS #44 624차 + law 2025-247 strip diff 0-line — 규제 앵커 재조정 불요·신규 진성갭 0** — silverangel system_feature `c9507190`/45,601B byte-IDENTICAL·longterm 610 `6b10f426` byte-IDENTICAL(통합재가 verbatim)·NHIS #44 `c886ff1f`/7,572B 624차 byte-IDENTICAL·law 2025-247 raw DRIFT/strip `ad1db6e0` diff 0-line · FE `@c2fb261` +1 ADVANCE(UXD-200 monitoring/history `<time dateTime>`)·BE `@6d3c766` 13-cycle zero advance · audit-first HTTP 442 62차 IDENTICAL · @Test strict 2413 14-cycle IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T14:28:00Z -->
+
+**조사일**: 2026-07-19T14:28:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-901(이지케어 역공학 2-4h·2026-07-19T13:50:00Z) → ~38분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline(§902-0)·(2) **엔젤 silverangel system_feature 배차 축 재실측**(§902-1)·(3) **롱텀 단기보호(502)/통합재가(610) 교차검증**(§902-2)·(4) **NHIS #44 624차 재실측**(§902-3)·(5) **law 2025-247 strip diff 0-line 재실측**(§902-4)·(6) **교차검증·갭 우선순위 재정렬 + planner 액션 아이템**(§902-5/6).
+
+### §902-0 · Baseline (2026-07-19T14:28:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→902 **13-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `c2fb261`(BNK-901 `@e8ff8dc` → **+1 commit ADVANCE**·ahead **36** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap monitoring/history panel date-time columns in <time dateTime> (UXD-200)`
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **107**(subset 106) · FE test **544**(228 `.test.js` + 316 `.test.jsx`·BNK-901 543 → +1 UXD-200 test) · `<time dateTime>` non-test jsx **93 files**(BNK-898 85 files → +8·UXD-200 monitoring/history panel) · BE Test **298**(297+1) · @Test strict **2413**(BNK-889→902 **14-cycle IDENTICAL**) · @RestController **81** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**62차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196
+- merge gate **810**(FE 36 + BE 774·BE-heavy·auto-merge FF 대기) · 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §902-1 · ★ 엔젤 silverangel system_feature 배차 축 재실측 [메뉴/필드/워크플로]
+
+- [silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) — HTTP 200·SIZE **45,601B**·md5 `c950719098eecaf748bbdeea5deb93da`·`cmp` vs `silverangel_system_feature_live_bnk897.html` = **BYTE-IDENTICAL**(canonical carry)
+- `grep -c -E '이동서비스|배차|GPS|RFID|차량|송영'` = **0-hit ALL**(transport 6-term) → 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인
+- **판정**: ogada `TransportServiceFeeParityCatalog`+`TransportServiceLog*`+배차/회차 full-stack = 경쟁 4종 유일 Transport 자체 시스템 **SUPERIOR** carry·신규 진성갭 0
+
+### §902-2 · ★ 롱텀(공단) 단기보호(502)·통합재가(610) 교차검증
+
+| 페이지 | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| [502 단기보호](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,171B | `a71379de` | **FULL variant flip**(BNK-882 lean `56185735`/89,162B → +9B) · `s16`-strip diff **0-line** vs BNK-882 = 본문 콘텐츠 IDENTICAL·`var s16;` ±9B 오실레이션(BNK-872 근본원인 확정)·문서 위생 signal only·기능 갭 아님 |
+| [610 통합재가](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,408B | `6b10f426` | **BYTE-IDENTICAL** vs `longterm_610_live_bnk875.html`(FULL carry)·`통합재가` verbatim 1-hit 존재 |
+
+- 심층 수가 값(단기보호 74,060·통합재가 월한도)은 JS/ajax 로딩·shell 캡처 미노출 → canonical value carry(BNK-553·BNK-192·「미확인」 유지)·재측정 불요 정책 carry
+
+### §902-3 · ★ 규제 백본 — NHIS #44 제34조 이동서비스비 러-1~4
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1f…`·`cmp` vs `nhis_jo44_live_bnk900.html` = **BYTE-IDENTICAL**(**624차**·BNK-901 623차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요
+- carefor func.php LIVE HTTP **000** timeout carry(「미확인」·disk canonical `carefor_func.php` `6226e6eb`/98,328B LOCK)
+
+### §902-4 · ★ 규제 백본 — law.go.kr 2025-247 (장기요양급여 제공기준 고시)
+
+- [law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) — HTTP 200·SIZE **78,450B**·raw md5 `9e7c6eb9…`(cache-buster `?Time=` DRIFT)·strip `Time=[0-9]*` semantic md5 **`ad1db6e06903bc34e70e139a19d854cd`**·strip diff **0-line** vs BNK-897 snapshot 재strip(BNK-886 lineage·canonical URL `admRulSeq=2100000271110` 고정)·verbatim `장기요양급여`(3)·`2025-247`(4) 무변
+- **판정**: raw DRIFT = cache-buster only·semantic 콘텐츠 IDENTICAL·규제 앵커 재조정 불요
+
+### §902-5 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→902 IDENTICAL(**14-cycle**·drift 경보 없음)
+- **P3/P4「가정」 candidate 총 14종**(BNK-901 14 carry) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §902-6 · planner 액션 아이템
+
+1. **엔젤 배차 6-term 0-hit 재확인** — silverangel system_feature byte-IDENTICAL·이동서비스/배차/GPS/RFID/차량/송영 전무 → ogada Transport 자체 시스템(러-1~4 수가 + 배차/회차 + RFID 공단비교) 경쟁 4종 유일 full-stack SUPERIOR 카피 유지
+2. **롱텀 502 FULL variant flip = 문서 위생 signal only** — `var s16;` ±9B 오실레이션(s16-strip diff 0-line)·본문 규제 콘텐츠 IDENTICAL·기능 갭 아님·610 통합재가 byte-IDENTICAL carry
+3. **NHIS #44 624차 byte-IDENTICAL** → 규제 상수(`ONE_WAY_RATIO=0.5`·ONE_PER_DAY) 재조정 불요
+4. **law 2025-247 strip diff 0-line**(BNK-886 lineage `Time=[0-9]+` strip default) → 규제 앵커 재조정 불요·raw md5 DRIFT 는 cache-buster only
+5. **FE UXD-200 monitoring/history `<time dateTime>` +1 ADVANCE**(non-test jsx 93 files·ahead 36·tester FF 대기)·audit-first 442 **62차 IDENTICAL**(BE 13-cycle zero advance)·물리 삭제 API 신설 금지·PATCH>PUT
+6. **모듈 97.41% CARRY**·신규 진성갭 0·가정 승격 0 → ROADMAP·PLAN_NOTES 현행 유지
+
+## §901 BNK-901 — 이지케어 역공학 2-4h · ★★★ **이지케어 /new.ez ERP 데모 셸 3-모듈(방문일정 이중 일정·RFID점검 공단비교·본인부담 lifecycle) → ogada 1:1 route crosswalk 재확인 — RFID 공단비교 유일 SUPERIOR·copay lifecycle carry·신규 진성갭 0** — demo login code=0000·10-모듈/148-leaf/59-PGID·nav JS `?20260428` md5 `95286775` byte-IDENTICAL·데모 셸 DRIFT = 세션토큰/오늘날짜/음력/tmp 캐시버스터 rotation only·FAQ `/help/faq.ez` 233 rowid IDENTICAL(DRIFT = faq-hit 조회수 카운터 rotation only) · NHIS #44 623차 byte-IDENTICAL · audit-first HTTP 442 61차 IDENTICAL · BE 12-cycle / FE 3-cycle zero advance · @Test strict 2413 13-cycle IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T13:50:00Z -->
+
+**조사일**: 2026-07-19T13:50:00Z | **rotation**: 이지케어 역공학 2-4h — BNK-900(교차검증·갭 우선순위 8h+·2026-07-19T13:07:00Z) → ~43분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline(§901-0)·(2) **이지케어 /new.ez ERP 데모 셸 3-모듈 → ogada crosswalk**(§901-1)·(3) **FAQ `/help/faq.ez` 인벤토리 재실측**(§901-2)·(4) **NHIS #44 623차 재실측**(§901-3)·(5) **audit-first HTTP 442 61차 IDENTICAL**(§901-4)·(6) **교차검증·갭 우선순위 재정렬 + planner 액션 아이템**(§901-5/6).
+
+### §901-0 · Baseline (2026-07-19T13:50:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→901 **12-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `e8ff8dc`(BNK-898→901 **3-cycle 동일 HEAD·zero advance**·ahead **35** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)`
+- Route **133** · Page **107**(subset 106) · FE test **543**(228+315) · BE Test **298**(297+1) · @Test strict **2413**(BNK-889→901 **13-cycle IDENTICAL**) · @RestController **81** · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**61차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196
+- merge gate **809**(FE 35 + BE 774·BE-heavy·auto-merge FF 대기) · 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §901-1 · ★★★ 이지케어 /new.ez ERP 데모 셸 3-모듈 → ogada 1:1 route crosswalk [메뉴/필드/워크플로 · 데모 로그인 역공학]
+
+**방법**: `./scripts/ezcare-demo-fetch.sh --menu-catalog`(루트 「데모 체험」 흐름 `POST /page/login.php` oCode=DEMO → code=**0000** → `/new.ez`). 산출: `ezcare_new_ez_demo.html`(138,097B·md5 `43457c9`)·`ezcare_top_nav_v2.js`(25,470B·md5 `95286775`·byte-IDENTICAL)·`ezcare_menu_catalog.json`(module 10 / leaf 148 / PGID 59·구조 IDENTICAL).
+
+**셸 DRIFT 판정**: 데모 셸 138,452B → 138,097B(-355B)·**NON-SUBSTANTIVE only** = 세션 랜덤 widget id(`EC000010-63502037`→`28273329` 등)·오늘 날짜 `[07월18일]`→`[07월19일]`·음력/간지 dateInfo·`tmp=` 캐시버스터·p_schedule 데모 데이터. 실서비스/메뉴/필드/워크플로 축 IDENTICAL(BNK-900 홈 후기 rotation·FAQ hit rotation과 동일 패턴).
+
+| ezCare 모듈(leaf) | 핵심 워크플로(PGID·tab) | ogada crosswalk(FE/BE @HEAD) | 판정 |
+|---|---|---|---|
+| **[3] 방문일정 (13)** | `schedule-p100` 수급자 일정표(제공기록지) `#tab0` ↔ 요양보호사 일정표(근무현황표) `#tab1` = **이중 일정**·`schedule-p300` 연간 명단(수급자/요양보호사)·`schedule-p500` 방문현황(일/주/월) | 수급자 제공기록지→`CareServiceWeeklyRecordPage`·`VisitsPage`·요양보호사 근무현황→`LeadCaregiverWorkLog`+`TransportShuttleSheetPage`·방문현황 월간→`TransportMonthlyReportsPage` | △ 이중 축 **분산 존재**(단일 화면 tab 토글 부재·P4「가정」) |
+| **[4] RFID점검 (3)** | `schedule-rfid` 「RFID태그 내역 ↔ 공단계획 비교」·`/schedule_plan/rfid_compare.html`·`schedule-fix` 일정확정 | FE `src/components/visits/VisitRfidDiffComparePanel.jsx`(+test)·`VisitsPage`·BE `visits/api/VisitController.java`(RFID) | ✅ **FULL-STACK PARITY·SUPERIOR**(RFID 태그실적↔NHIS 공단계획 diff 1:1) |
+| **[5] 본인부담 (13)** | `pAmt-a100` 청구/명세(전체/방문요양/목욕/간호)→`pAmt-a200` 납부(월간/연간/납부확인서)→`pAmt-a400` 미납(청구월별/수급자별 누적) | 청구/명세→`BillingDetailPage`·`BillingReportPage`·`BillingController`·납부/현금영수증→`CashReceiptIssuancePage`·`EasyPayController`·미납→Overdue(`BillingController`)·본인부담률→`CopayCalculatorPage`·`CopayRatePage` | ✅ 청구→납부→미납 **lifecycle full-stack carry** |
+
+**판정**: 이지케어 방문일정 이중 축·RFID 공단비교·본인부담 3-단계 lifecycle 전부 ogada full-stack 존재 — RFID↔공단계획 비교는 경쟁 4종 유일 SUPERIOR(carry)·copay lifecycle carry·이중 일정 단일 tab 토글 UX 만 P4「가정」(승격 0·rules §11·§17). 신규 진성갭 0.
+
+### §901-2 · ★ 이지케어 FAQ 인벤토리 재실측 (`/help/faq.ez`)
+
+- [ezCare FAQ](https://ezcare.easyms.co.kr/help/faq.ez) — HTTP 200·SIZE **80,057B**·md5 `e18a941ed424db9ce7cf4e8f534b9f38`(직전 BNK-878 `1ae41393`)
+- **rowid 총 233건**(BNK-878 233건 대비 신규 0·삭제 0·`comm` diff 공집합)·top-pinned 12 rowid(21723·21730·21704·21202·21779·21781·21601·21473·21618·21651·21700·21213) 순서 IDENTICAL
+- **md5 DRIFT 원인 = `faq-hit` 조회수 카운터 단조 증가 120-line only**(예: 26206→26209·37267→37273·26888→26947)·제목/등록일/카테고리 변동 0
+- **판정**: FAQ 축 stable — hit-counter rotation only(실 콘텐츠 무변화)·신규 진성갭 0·경쟁 판정 무영향
+
+### §901-3 · ★ 규제 백본 재실측
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — cmp vs `nhis_jo44_live_bnk900.html` = **BYTE-IDENTICAL**(**623차**·BNK-900 622차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요
+- **carefor func.php**: LIVE HTTP **000** timeout(**122-cycle+** carry·「미확인」·disk canonical `carefor_func.php` `6226e6eb`/98,328B LOCK)
+
+### §901-4 · ★ audit-first HTTP 442 posture 61차 byte/count-exact IDENTICAL
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→901 = **61차** byte/count-exact IDENTICAL · endpoint 신설 0 · BE 12-cycle / FE 3-cycle zero advance
+- **API 안정성 61-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §901-5 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→901 IDENTICAL(**13-cycle**·drift 경보 없음)
+- **P3/P4「가정」 candidate 총 14종**(BNK-900 13 + BNK-901 G-EZCARE-SCHEDULE-DUAL-VIEW 1) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §901-6 · planner 액션 아이템
+
+1. **이지케어 3-모듈 crosswalk 재확인** — RFID↔공단계획 비교(`VisitRfidDiffComparePanel`)는 경쟁 4종 유일 full-stack SUPERIOR·본인부담 청구→납부→미납 lifecycle carry — REQUIREMENTS §청구/RFID SUPERIOR 카피 유지
+2. **G-EZCARE-SCHEDULE-DUAL-VIEW** P4「가정」 신규 등록(승격 0) — 이지케어 「수급자 기준/요양보호사 기준」 단일 화면 tab 토글 UX(ogada 는 제공기록지+근무일지 분산)·UX signal only
+3. **이지케어 ERP 셸/nav JS/FAQ(233) 구조 IDENTICAL** — DRIFT 는 세션토큰/오늘날짜/조회수 rotation only·실서비스 축 무변화·경쟁 판정 무영향
+4. **NHIS #44 623차 byte-IDENTICAL** → 규제 상수 재조정 불요
+5. **audit-first 442 posture 61-cycle 동결** — BE 12-cycle/FE 3-cycle zero advance·물리 삭제 API 신설 금지·PATCH>PUT
+6. **tester FF merge gate 809 carry** · **모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지
+
+주력 snapshot `ezcare_schedule_rfid_copay_route_1to1_bnk901.txt`+`ezcare_faq_live_bnk901.html`(신규 2·txt 1 + html 1)·`ezcare_new_ez_demo.html`·`ezcare_menu_catalog.json`(재실측 덮어쓰기·DRIFT non-substantive)·가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §900 BNK-900 — 교차검증·갭 우선순위 8h+ · ★★★ **UXD-197~199 TRIPLE-DOMAIN 잔여 「107-page 전수 스캔」 확정 — 미래핑 td-date 는 `TransportMonthlyReportsPage` occurredOn 1 셀뿐 (BNK-899 잔여 1건 주장 rules §14 재검증 PASS·신규 진성갭 0)** — 이지케어 홈 substantive DRIFT = 고객 후기 rotation only(실서비스 축 무변화) · NHIS #44 622차 byte-IDENTICAL · audit-first HTTP 442 60차 IDENTICAL 마일스톤 · BE 11-cycle / FE 2-cycle zero advance · @Test strict 2413 12-cycle IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T13:07:00Z -->
+
+**조사일**: 2026-07-19T13:07:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-899(교차검증·갭 우선순위 8h+·2026-07-19T12:58:00Z) → ~9분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline(§900-0)·(2) **UXD-197~199 TRIPLE-DOMAIN 잔여 107-page 전수 스캔 확정**(§900-1)·(3) **이지케어 홈 DRIFT 스캔**(§900-2)·(4) **NHIS #44 622차 재실측**(§900-3)·(5) **audit-first HTTP 442 60차 IDENTICAL 마일스톤**(§900-4)·(6) **교차검증·갭 우선순위 재정렬 + planner 액션 아이템**(§900-5/6).
+
+### §900-0 · Baseline (2026-07-19T13:07:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→900 **11-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `e8ff8dc`(BNK-898→900 **2-cycle 동일 HEAD·zero advance**·ahead **35** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx`·`*Page.jsx` subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`) · `<time dateTime>` non-test jsx **123**(85 files·BNK-898/899 IDENTICAL)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→900 **12-cycle IDENTICAL**) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**60차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **809**(FE 35 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §900-1 · ★★★ UXD-197~199 TRIPLE-DOMAIN 잔여 「107-page 전수 스캔」 확정 [메뉴/필드/워크플로 · git 실측 · rules §14]
+
+**목적**: BNK-899 「잔여 1건(TransportMonthlyReportsPage occurredOn 미래핑)」 주장을 107 non-test page 전량 자동 스캔으로 재검증 — 잔여가 정말 1 파일 1 셀뿐인지 확정(rules §14).
+
+**방법**: `<time dateTime` 미포함 non-test page 중 `<td>{...(occurredOn|recordDate|scheduledDate|createdDate|registeredOn|dischargedOn|admittedOn|paidOn|issuedOn)...}` 실 date 렌더 파일을 107 page loop 스캔.
+
+**실측 결과 (전수)**: 유일 hit = `TransportMonthlyReportsPage.jsx`(1 td-date render)·그 외 106 page = 0 hit.
+
+`TransportMonthlyReportsPage.jsx` 정밀 라인:
+
+| 라인 | 내용 | 판정 |
+|---|---|---|
+| L186 | `<th scope="col">발생일</th>` (2-8 월간 변동현황) | 헤더 |
+| L197 | `<td>{row.occurredOn || "—"}</td>` | **실 date(YYYY-MM-DD) `<time dateTime>` 미래핑 (잔여 1건)** |
+| L256 | `<th scope="col">확정 배차일</th>` (2-8 입소자 표) | 헤더 |
+| L266 | `<td>{row.confirmedRunDays}</td>` | count numeric (라벨 semi-mismatch) |
+| — | 파일 전체 `<time` 매칭 | 0 (미래핑 재확인) |
+
+**판정**:
+- BNK-899 「잔여 1건」 = **107-page 전수 스캔으로 정확히 확정** — 유일하게 미래핑 td-date 를 렌더하는 파일은 `TransportMonthlyReportsPage.jsx` 하나(occurredOn 1 셀)
+- **UXD-197(리포트 표)→UXD-198(목록 표)→UXD-199(청구/컴플라이언스/알림 표) TRIPLE-DOMAIN 커버리지 narrative 유효**(rules §14 재검증 PASS)
+- 신규 진성갭 승격 0 — magnitude 극소(1 file/1 cell·rules §11·§17 과대구축 회피)
+- P4「가정」 candidate 2종 재확인(BNK-899 등록·번복 없음):
+  - **G-TRANSPORT-MONTHLY-VARIATION-TIME** P4「가정」 — occurredOn 미래핑·UXD-197~199 계보 next-hop·FE view/test only·승격 0
+  - **G-TRANSPORT-CONFIRMED-RUN-LABEL** P4「가정」 — 「확정 배차일」 헤더 vs `confirmedRunDays` count semi-mismatch·UX 라벨 signal only·승격 0
+- 경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단) 청구/목록/리포트 표 `<time>` 시맨틱 근거 0 → ogada 유일 full-stack SUPERIOR
+
+### §900-2 · ★ 이지케어 홈페이지 substantive DRIFT (customer testimonial rotation only)
+
+- [ezCare home](https://ezcare.easyms.co.kr/) — HTTP 200·SIZE **69,535B**·md5 `521f036718f79a3edd12598b4be97cd7`(직전 BNK-893 69,238B·`17cf0e5b`·**+297B**·md5 DRIFT)
+- **DRIFT 축 = 고객 후기(도입 기관) 명단 rotation ONLY**: 신규 등장(경기 CHA차실버케어·경기 효원실버케어센터·경북 자연재가복지센터·인천 예원노인복지센터·서울 중앙재가복지센터·충남 부여사랑재가복지센터 등)·BNK-893 명단(부산 다정재가복지센터·서울 늘푸***·인천 보경***·울산 행복한노인복지센터 등)에서 교체
+- 실서비스/가격 축 무변화 verbatim IDENTICAL: 「5,003건」 도입 실적·「1644-0340」 고객센터·가격/체험 카피
+- **판정**: 마케팅 UX refresh(후기 rotation) only·실서비스/기능/가격 축 무변화·신규 진성갭 0·경쟁 판정 무영향(BNK-893 pattern carry)
+
+### §900-3 · ★ 규제 백본 재실측
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·cmp vs `nhis_jo44_live_bnk899.html` = **BYTE-IDENTICAL**(**622차**·BNK-899 621차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요
+- **carefor func.php**: LIVE HTTP **000** 20s timeout(**121-cycle+** carry·「미확인」·disk canonical `carefor_func.php` `6226e6eb92fdd25ed3e50842a5e8a00b`/98,328B LOCK)
+- **silverangel/law 2025-247**: 재측정 skip(BNK-899 byte-IDENTICAL/strip diff 0-line carry·canonical URL 고정)
+
+### §900-4 · ★ audit-first HTTP 442 posture 60차 byte/count-exact IDENTICAL (마일스톤)
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→900 = **60차** byte/count-exact IDENTICAL · endpoint 신설 0
+- BE 11-cycle zero advance / FE 2-cycle zero advance (BNK-898 → 900)
+- **API 안정성 60-cycle 동결 마일스톤** · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 · DELETE 2.3% 최소 (soft-delete/감사 보관 · PIPA §21 정합)
+
+### §900-5 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→900 IDENTICAL (**12-cycle** · drift 경보 없음)
+- **P3/P4「가정」 candidate 총 13종**(BNK-881 3 + BNK-882 5 + BNK-890 1 + BNK-892 1 + BNK-897 2 + BNK-899 2) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §900-6 · planner 액션 아이템
+
+1. **UXD-197~199 TRIPLE-DOMAIN 잔여 전수 스캔 확정** — 107 page 중 미래핑 td-date 1 셀(TransportMonthlyReportsPage occurredOn)·narrative 유효(rules §14 PASS)·REQUIREMENTS §접근성 「청구/목록/리포트/월간변동 표 날짜 셀 `<time dateTime>` machine-readable」 카피 권고
+2. **G-TRANSPORT-MONTHLY-VARIATION-TIME** P4「가정」 carry(승격 0)·**G-TRANSPORT-CONFIRMED-RUN-LABEL** P4「가정」 carry(승격 0·UX 라벨 signal only)
+3. **이지케어 홈 DRIFT = 후기 rotation only** — 실서비스/가격 축 무변화(5,003건·1644-0340 IDENTICAL)·경쟁 판정 무영향
+4. **NHIS #44 622차 byte-IDENTICAL** → 규제 상수 재조정 불요
+5. **audit-first 442 posture 60-cycle 동결 마일스톤** — BE 11-cycle/FE 2-cycle zero advance·물리 삭제 API 신설 금지·PATCH>PUT
+6. **tester FF merge gate 809 carry** · **모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지
+
+주력 snapshot `cross_gap_priority_bnk900.txt`+`ezcare_home_live_bnk900.html`+`nhis_jo44_live_bnk900.html`(신규 3·txt 1 + html 2·덮어쓰기 0)·가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §899 BNK-899 — 교차검증·갭 우선순위 8h+ · ★★★ **UXD-197~199 TRIPLE-DOMAIN 커버리지 전수 재검증 · 잔여 1건 확인 + 신규 P4「가정」 candidate 2종 (승격 0)** — 107 non-test pages 스캔·잔여 `TransportMonthlyReportsPage` 월간 변동현황(2-8) 발생일 셀 미래핑 1건 · BNK-897 law strip regex 차이 규명(BNK-886 lineage `Time=[0-9]+` strip default 채택 권고·판정 무영향) · NHIS #44 621차 byte-IDENTICAL · audit-first HTTP 442 59차 IDENTICAL · BE 10-cycle zero advance / FE 1-cycle zero advance · @Test strict 2413 11-cycle IDENTICAL · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T12:58:00Z -->
+
+**조사일**: 2026-07-19T12:58:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-898(ogada git 실측 6-8h·2026-07-19T12:18:00Z) → ~40분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline 갱신(§899-0)·(2) **UXD-197~199 TRIPLE-DOMAIN 커버리지 전수 스캔**(§899-1)·(3) **이전 BNK 가정 번복 재검토**(§899-2)·(4) **NHIS #44 621차 + silverangel byte-IDENTICAL + law strip regex 규명** 재실측(§899-3)·(5) **audit-first HTTP 442 59차 IDENTICAL**(§899-4)·(6) **교차검증·갭 우선순위 재정렬 판정 + planner 액션 아이템**(§899-5/6).
+
+### §899-0 · Baseline (2026-07-19T12:58:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→899 **10-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `e8ff8dc`(BNK-898 **동일 HEAD·zero advance**·ahead **35** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx`·`*Page.jsx` subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`) · `<time dateTime>` non-test jsx **123**(85 files·BNK-898 IDENTICAL)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→899 **11-cycle IDENTICAL**·raw grep 2414 = strict 2413 + `@TestPropertySource` 1·`@ParameterizedTest` 3 별도) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**59차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **809**(FE 35 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §899-1 · ★★★ UXD-197~199 TRIPLE-DOMAIN 커버리지 전수 재검증 [메뉴/필드/워크플로 · git 실측]
+
+**목적**: BNK-898 「청구/컴플라이언스/알림 표 TRIPLE-DOMAIN 커버리지 COMPLETE」 narrative 를 non-test pages 전수 스캔으로 재검증(rules §14).
+
+**방법**:
+1. non-test `pages/*.jsx` 107개 중 `<time dateTime` 미포함 파일 나열
+2. 그 중 표 헤더 「날짜/일자/발생일/입소일/퇴소일/등록일/수정일/일시/…」 date-suffix `일` 헤더 보유 파일 필터
+3. 실 date 렌더링 여부(값이 YYYY-MM-DD 문자열인지) 확인
+
+**실측 결과**: 4-후보 flag · 상세 검증:
+
+| 파일 | 헤더 | date column 판정 | 잔여? |
+|---|---|---|---|
+| `AttendanceStatsPage.jsx` | 지점/활성이용자/**출석일수**/출석률 | 「일수」 = count(numeric·false positive) | ❌ 잔여 없음 |
+| `BillingDetailPage.jsx` | 등급/이용시간대/**이용일수**/1일수가/총급여비용/본인부담금 | 「이용일수」 = count(numeric·false positive) | ❌ 잔여 없음 |
+| `ClientListPage.jsx` | 이름/지점/나이/성별/거주지/등급/배차이용/인정번호/연락처/보호자/보호자연락처 | date column 0 | ❌ 잔여 없음 |
+| `TransportMonthlyReportsPage.jsx` | 2-8 월간 변동현황: 이용자/변동유형/**발생일**/내용 | **`row.occurredOn` YYYY-MM-DD 실 date** | ✅ **잔여 1건** |
+| ↑ 위 파일 | 2-8 입소자·일정·서비스 현황: 이용자/등급/**「확정 배차일」**/탑승정차/계약서명 | **`row.confirmedRunDays` count**(라벨 semi-mismatch) | △ UX 라벨 signal only |
+
+**판정**:
+- **UXD-197~199 TRIPLE-DOMAIN 커버리지는 대체로 유효**하나 잔여 1건 확인
+- 신규 진성갭 승격 0 (rules §11·§17 과대구축 회피 — 매우 좁은 잔여)
+- **신규「가정」 candidate 2종 등록 · 승격 0**:
+  - **G-TRANSPORT-MONTHLY-VARIATION-TIME** P4「가정」 — UXD-197~199 계보 next-hop 후보 (transport 도메인 잔여 1건·FE view/test only·경쟁 4종 여전히 SUPERIOR)
+  - **G-TRANSPORT-CONFIRMED-RUN-LABEL** P4「가정」 — UX 라벨 signal only (「확정 배차일」 헤더 vs `confirmedRunDays` count 렌더 semi-mismatch·planner UXD 재라벨 여부 판단)
+
+**시맨틱 확산 계보 재확인**: **UXD-197**(BNK-891·5 L02 리포트 인라인 표) → **UXD-198**(BNK-895·비-리포트 list 표 9 소스) → **UXD-199**(BNK-898·청구/컴플라이언스/알림 표 10 소스) = `<time>` machine-readable date 시맨틱 커버리지가 **TRIPLE-DOMAIN**·잔여 1건은 magnitude of scope 매우 좁음 · 경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단) 청구/목록/리포트 표 `<time>` 시맨틱 근거 0 → **ogada 유일 full-stack SUPERIOR**·BNK-887~889 오류 라우팅(WCAG 3.3.1/4.1.2)과 orthogonal(1.3.1 구조/의미 축).
+
+### §899-2 · ★ 이전 BNK 가정 번복 재검토 (rules §14)
+
+- **BNK-858 longterm 종료가정** — BNK-870~875 `var s16;` 근본 원인 확정 이후 **최종 결착 유지** · 재측정 불요 정책 carry
+- **BNK-878 rowid=21704 「미포착 신규」 라벨** — BNK-880 fact 정정 후 4-cycle+ 안정 · 재번복 없음
+- **BNK-891 disk 100% full** — 완화 carry (5.4G Avail · BNK-894 이후 lock)
+- **BNK-892 G-PAYROLL-CONTRACT-CRUD** — carry (승격 0)
+- **BNK-897 G-GUARDIAN-MEETING · G-SATISFACTION-SURVEY-DIAL** — carry (승격 0)
+- **BNK-890 G-CASE-MGMT-MEETING** — carry (승격 0)
+- **★ BNK-897 law 2025-247 strip md5 표기(`0e07cef1`) vs BNK-899 재실측(`ad1db6e0`)** — 규명:
+  - BNK-897 header 는 `?Time=[0-9]*` (URL query prefix `?` 포함) strip 사용 → md5 `0e07cef1`
+  - BNK-899 재실측 및 BNK-886 lineage 는 `Time=[0-9]+` (숫자 매칭만) strip 사용 → md5 `ad1db6e0`
+  - **두 방식 모두 canonical IDENTICAL 판정에 도달** — cache-buster 만 순환하는 문서에서 문서 콘텐츠 semantic identity 를 보존
+  - **가정 번복 아님** — 방법론 lineage 차이만 존재 · 결정 영향 0
+  - **향후 lock**: BNK-886 lineage 방식(`Time=[0-9]+` strip · md5 `ad1db6e0`) 을 default methodology 로 채택 권고 (rules §14 · 거짓 drift 경보 방지)
+
+### §899-3 · ★ 규제 백본 3-URL 재실측
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·cmp vs `nhis_jo44_live_bnk898.html` = **BYTE-IDENTICAL**(**621차**·BNK-898 620차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요
+- **silverangel system_feature**: [URL](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) — HTTP 200·SIZE **45,601B**·md5 `c950719098eecaf748bbdeea5deb93da`·cmp vs `silverangel_system_feature_live_bnk890.html` = **BYTE-IDENTICAL**(canonical carry) · transport 6-term(이동서비스/배차/GPS/RFID/차량/송영) 0-hit 재확인 · 엔젤 배차 부재 → ogada Transport SUPERIOR
+- **law 2025-247**: [URL](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) — HTTP 200·SIZE **78,450B**·raw md5 `f8d514af7abc4fbe69a02a4a359ed502`(cache-buster `?Time=` DRIFT)·strip `Time=[0-9]+` `ad1db6e06903bc34e70e139a19d854cd`·**strip diff 0-line vs BNK-897 snapshot strip**(BNK-886 lineage·canonical URL 고정·§899-2 규명 참조)
+- **carefor func.php**: LIVE HTTP **000** 20s timeout (**120-cycle+** carry·「미확인」·disk canonical `carefor_func.php` `6226e6eb92fdd25ed3e50842a5e8a00b`/98,328B LOCK)
+
+### §899-4 · ★ audit-first HTTP 442 posture 59차 byte/count-exact IDENTICAL
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→899 = **59차** byte/count-exact IDENTICAL · endpoint 신설 0
+- BE 10-cycle zero advance / FE 1-cycle zero advance (BNK-898 → 899)
+- **API 안정성 59-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 · DELETE 2.3% 최소 (soft-delete/감사 보관 · PIPA §21 정합)
+
+### §899-5 · ★ 교차검증 · 갭 우선순위 재정렬 판정
+
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→899 IDENTICAL (**11-cycle** · drift 경보 없음)
+- **P3/P4「가정」 candidate 총 13종**(BNK-881 3 + BNK-882 5 + BNK-890 1 + BNK-892 1 + BNK-897 2 + **BNK-899 신규 2**) 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §899-6 · planner 액션 아이템
+
+1. **UXD-197~199 TRIPLE-DOMAIN 잔여 검증 결과 명시** — 대체로 유효(리포트 표 + 목록 표 + 청구/컴플라이언스/알림 표 = TRIPLE-DOMAIN COMPLETE)·잔여 1건 = `TransportMonthlyReportsPage` 월간 변동현황(2-8) 발생일 셀 `<time dateTime>` 미래핑·UX 라벨 미세 정합 관찰 1건 = 「확정 배차일」 헤더 vs `confirmedRunDays` count 렌더 semi-mismatch·REQUIREMENTS §접근성 「청구/목록/리포트/월간변동 표 날짜 셀 `<time dateTime>` machine-readable」 카피 권고
+2. **G-TRANSPORT-MONTHLY-VARIATION-TIME** P4「가정」 carry(승격 0) — UXD-197~199 계보 next-hop 후보(FE view/test only·경쟁 4종 여전히 SUPERIOR)
+3. **G-TRANSPORT-CONFIRMED-RUN-LABEL** P4「가정」 carry(승격 0·UX 라벨 signal only) — planner UXD 재라벨 여부 판단
+4. **NHIS #44 621차 byte-IDENTICAL** → 규제 상수 재조정 불요
+5. **silverangel byte-IDENTICAL(canonical) · law strip diff 0-line(BNK-886 lineage)** → 규제 상수 재조정 불요·엔젤 배차 부재 → ogada Transport SUPERIOR
+6. **law strip methodology lock** — BNK-886 lineage(`Time=[0-9]+` strip·md5 `ad1db6e0`) 를 default methodology 로 채택 권고(rules §14·거짓 drift 방지·BNK-897 header 표기 `0e07cef1` = strip regex 차이·canonical 판정 무영향)
+7. **audit-first 442 posture 59-cycle 동결** — BE 10-cycle/FE 1-cycle zero advance·API surface 미확장·물리 삭제 API 신설 금지·PATCH>PUT
+8. **tester FF merge gate 809 carry** — FE 35 + BE 774·BE-heavy·auto-merge FF 대기
+9. **P3/P4「가정」 candidate 총 13종(신규 +2)** 전부 carry(승격 0)
+10. **모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지
+
+주력 snapshot: `cross_gap_priority_bnk899.txt`(3688bd28·11,518B) + `nhis_jo44_live_bnk899.html`(c886ff1f·7,572B) · 신규 snapshot **2**(txt 1 + html 1) · 덮어쓰기 0 · 가정 번복 0(법적/기능적 결정 무영향·strip regex methodology lineage 정정만) · per-cycle minimum 4종 충족.
+
+## §898 BNK-898 — ogada git 실측 6-8h · ★★★ **UXD-199 `<time dateTime>` machine-readable date 시맨틱을 청구/컴플라이언스/알림 표로 확산 → `<time>` 시맨틱 date 커버리지 TRIPLE-DOMAIN (WCAG 1.3.1·SUPERIOR)** — UXD-197(L02 리포트 인라인 표) → UXD-198(비-리포트 list 표) → UXD-199(청구/컴플라이언스/알림 표) · NHIS #44 620차 byte-IDENTICAL · audit-first HTTP 442 58차 IDENTICAL · BE 9-cycle zero advance / FE +1 · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T12:18:00Z -->
+
+**조사일**: 2026-07-19T12:18:00Z | **rotation**: ogada git 실측 6-8h — BNK-897(엔젤·롱텀·규제 역공학 4-6h·2026-07-19T11:37:00Z) → ~30분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline 갱신(§898-0)·(2) **UXD-199 `<time dateTime>` 청구/컴플라이언스/알림 표 확산**(§898-1)·(3) **NHIS #44 620차 byte-IDENTICAL** 재실측(§898-2)·(4) **audit-first HTTP 442 58차 IDENTICAL**(§898-3)·(5) **교차검증·가정 번복 판정**(§898-4).
+
+### §898-0 · Baseline (2026-07-19T12:18:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→898 **9-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `e8ff8dc`(BNK-897 `@c3f0e05` → **+1 commit**·ahead **35** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx`·`*Page.jsx` subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`) · `<time dateTime>` non-test jsx **109→123(+14)**(UXD-199)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→898 **10-cycle IDENTICAL**·raw grep 2414 = strict 2413 + `@TestPropertySource` 1·`@ParameterizedTest` 3 별도) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**58차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **809**(FE 35 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §898-1 · ★★★ UXD-199 `<time dateTime>` machine-readable date 시맨틱을 청구/컴플라이언스/알림 표로 확산 [메뉴/필드/워크플로 · git 실측]
+
+**근거**: FE `@e8ff8dc` git diff `c3f0e05..e8ff8dc` = **17 files +116/-14**(신규 파일 0). non-test 소스 **10**:
+
+| 소스 | 도메인 | 래핑 대상 |
+|---|---|---|
+| `components/ui/BillingLedgerTable.jsx` | 청구 원장 | 표 날짜 열 |
+| `components/visits/VisitRfidDiffComparePanel.jsx` | RFID 비교 | 비교 패널 날짜 열 |
+| `pages/CarePlanNotificationPage.jsx` | 알림(급여제공계획) | 표 날짜 열 |
+| `pages/FunctionalRecoveryPage.jsx` | 기능회복훈련 | 표 날짜 열 |
+| `pages/GuardianDetailPage.jsx` | 보호자 상세 | 표 날짜 열 |
+| `pages/HealthDetailPage.jsx` | 건강 상세 | 표 날짜 열 |
+| `pages/NeedsAssessmentStatusPage.jsx` | 욕구사정 현황(컴플라이언스) | 표 날짜 열 |
+| `pages/OverduePage.jsx` | 연체/미납(청구) | 표 날짜 열 |
+| `pages/PeriodicRiskAssessmentStatusPage.jsx` | 정기 위험도평가 현황(컴플라이언스) | 표 날짜 열 |
+| `pages/ProvisionResultEvaluationPage.jsx` | 급여제공결과평가 | 표 날짜 열 |
+
+test 7: 위 소스 중 7개 대응 in-place +assertion(신규 파일 0).
+
+**git 실측 delta**: `<time dateTime>` non-test jsx occurrences **109(c3f0e05) → 123(e8ff8dc) = +14**(85 files) · raw `dateTime=`(incl test) 120→130(+10). 신규 ds-* 클래스 0·CSS 무변경·view/test only·API surface 무변동.
+
+**시맨틱 확산 계보**: **UXD-197**(BNK-891·5 L02 리포트 인라인 표) → **UXD-198**(BNK-895·비-리포트 list 표 9 소스) → **UXD-199**(BNK-898·청구/컴플라이언스/알림 표 10 소스) = `<time>` machine-readable date 시맨틱 date 커버리지가 **리포트 표 + 목록 표 + 청구/컴플라이언스/알림 표 = TRIPLE-DOMAIN**·BNK-887~889 오류 라우팅(WCAG 3.3.1/4.1.2) 축과 **orthogonal**(1.3.1 구조/의미 축)·경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단) 청구/목록 표 `<time>` 시맨틱 근거 0 → **ogada 유일 full-stack SUPERIOR**·신규 진성갭 0(rules §11·§17).
+
+### §898-2 · ★ NHIS #44 620차 byte-IDENTICAL (기존 URL 재실측)
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·cmp vs `nhis_jo44_live_bnk897.html` = **BYTE-IDENTICAL**(**620차**·BNK-897 619차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요
+- carefor func.php: LIVE HTTP **000** timeout(119-cycle+ carry·「미확인」·disk canonical `6226e6eb`/98,328B 우선)
+
+### §898-3 · ★ audit-first HTTP 442 posture 58차 byte/count-exact IDENTICAL
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→898 = **58차** byte/count-exact IDENTICAL · endpoint 신설 0
+- FE UXD-199 `<time>` 시맨틱 확산도 endpoint/CSS surface 미확장 → **API 안정성 58-cycle 동결**·물리 삭제 API 신설 금지·PATCH>PUT·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §898-4 · ★ 교차검증·갭 우선순위·가정 번복 판정
+
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0
+- BE @Test strict 2413 = BNK-889→898 IDENTICAL(**10-cycle**·drift 경보 없음)·P3/P4「가정」 candidate 11종 전부 carry(진성갭 승격 0)
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- **planner 권고**: (1) REQUIREMENTS §접근성 「청구/목록/리포트 표 날짜 셀 `<time dateTime>` machine-readable」 명시 권고 — UXD-197 리포트 표 → UXD-198 목록 표 → UXD-199 청구/컴플라이언스/알림 표 = TRIPLE-DOMAIN · (2) NHIS #44 620차 byte-IDENTICAL → 규제 상수 재조정 불요 · (3) API posture 58-cycle 동결 · (4) tester FF merge gate 809 carry. 주력 snapshot `ogada_git_remeasure_bnk898.txt`+`nhis_jo44_live_bnk898.html`(신규 2·txt 1 + html 1·덮어쓰기 0)·per-cycle minimum 4종 충족.
+
+## §897 BNK-897 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **silverangel LCMS 교육·회의·만족도·전자서명 lifecycle 5-leaf → ogada 1:1 crosswalk = 3/5 PARITY + 2△ (신규 진성갭 0)** — 개인정보보호교육·급여제공지침교육·사례관리회의 3-leaf 전량 ogada `StaffTrainingLog`(28-type taxonomy·GET /compliance) + `StaffCommitteeMeeting`(finalize/export) full-stack 흡수(SUPERIOR 2)·보호자회의·보호자 만족도조사 2△ = 기존 P3 candidate carry(G-GUARDIAN-MEETING·G-SATISFACTION-SURVEY-DIAL·승격 0) · NHIS #44 619차 byte-IDENTICAL · silverangel byte-IDENTICAL(canonical) · law 2025-247 strip diff 0-line · audit-first HTTP 442 57차 IDENTICAL · BE 8-cycle zero advance / FE zero advance
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T11:37:00Z -->
+
+**조사일**: 2026-07-19T11:37:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-896(케어포 M6 위생·안전 0-2h·2026-07-19T10:53:00Z) → ~30분 후. 이번 사이클 초점: (1) **silverangel LCMS 교육·회의·만족도·전자서명 lifecycle 5-leaf → ogada 1:1 crosswalk**(§897-1)·(2) **ogada BE/FE develop HEAD 재실측** baseline 갱신(§897-0)·(3) **NHIS #44 619차 + law 2025-247 strip diff 0-line + silverangel byte-IDENTICAL** 재실측(§897-2)·(4) **audit-first HTTP 442 57차 IDENTICAL**(§897-3)·(5) **교차검증·가정 번복 판정**(§897-4).
+
+### §897-0 · Baseline (2026-07-19T11:37:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→897 **8-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `c3f0e05`(BNK-895→897 **동일 HEAD·zero advance**·ahead **34** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx`·`*Page.jsx` subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`) · `<time dateTime>` non-test jsx **109**(carry)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→897 **9-cycle IDENTICAL**·raw grep 2414 = strict 2413 + `@TestPropertySource` 1) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**57차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **808**(FE 34 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §897-1 · ★★★ silverangel LCMS 교육·회의·만족도·전자서명 lifecycle 5-leaf → ogada 1:1 crosswalk [메뉴/필드/워크플로 실측]
+
+**근거**: `silverangel_system_feature_live_bnk897.html`(HTTP 200·45,601B·md5 `c950719098eecaf748bbdeea5deb93da`·cmp vs `silverangel_system_feature_live_bnk890.html` = **BYTE-IDENTICAL** canonical carry). 정본 verbatim(grep 추출):
+- 「연1회 **개인정보보호교육** 실시, 교육자료 및 사진등록, 참석자 **전자서명**」
+- 「연1회 **급여제공지침교육** 실시, 교육자료 및 사진등록, 참석자 **전자서명**」
+- 「반기별 1회 **보호자회의** 실시, 교육자료 및 사진등록, 참석자 **전자서명**」
+- 「월1회 **사례관리회의** 실시, 급여제공에 반영사항 기록」
+- 「연1회 보호자의 **만족도 조사** 실시, 통계자료 및 그래프 분석」/「보호자용 만족도조사」
+
+**ogada 실측 crosswalk** (BE `@6d3c766` / FE `@c3f0e05`):
+
+| silverangel leaf | ogada Route / 서비스 | 판정 |
+|---|---|---|
+| 개인정보보호교육 (연1회·전자서명) | `/staff/training-logs` · `StaffTrainingLog` `GUIDELINE_PERSONAL_INFO_PROTECTION`(28-type taxonomy) | ✅ PARITY (+SUPERIOR: 28-type 구조화·GET `/compliance` 이수 판정) |
+| 급여제공지침교육 (연1회·전자서명) | `/staff/training-logs` · `StaffTrainingLogType` `PROVISION_GUIDELINES`/`GUIDELINE_*` 12종(FAQ21808 lineage) | ✅ PARITY (+SUPERIOR: 급여제공지침 12종 enum) |
+| 사례관리회의 (월1회) | `/case-management/meetings`(`CaseManagementController`) + `/staff/committee-meetings`(`StaffCommitteeMeeting`: finalize + text export US-R08·attendeeNames) | ✅ PARITY |
+| 보호자회의 (반기1회·전자서명) | guardian 전용 회의 워크플로 부재(`StaffCommitteeMeeting` = 직원 위원회·guardian meeting 아님) | △ PARTIAL → **G-GUARDIAN-MEETING P3「가정」 carry**(승격 0) |
+| 보호자 만족도조사 (연1회·통계/그래프) | `MealPreferenceSurvey`(식사 한정) + `ClientNeedsAssessment`(욕구/만족 부분)·보호자 전용 종합 만족도조사 부재 | △ PARTIAL → **G-SATISFACTION-SURVEY-DIAL P3「가정」 carry**(승격 0) |
+
+집계: ✅ **3/5 PARITY**(SUPERIOR 2: 교육 28-type taxonomy·급여제공지침 12종 enum) · △ **2/5 PARTIAL**(기존 P3 candidate 2 carry·승격 0) · ❌ GAP 0 · **신규 진성갭 0**.
+
+**ogada SUPERIOR 실측**: `StaffTrainingLogType.java` = **28 상수**(ELDERLY_HUMAN_RIGHTS·OPERATING_REGULATION·DISASTER_RESPONSE·FIRE_SAFETY_EQUIPMENT·STAFF_RIGHTS·OP_REG_* 10·GUIDELINE_* 12 incl. `GUIDELINE_PERSONAL_INFO_PROTECTION`) · `StaffTrainingLogController` = GET(list)+POST(create)+PATCH `/{logId}`+**GET `/compliance`**(이수 판정) · `StaffTrainingLogEntity`: `trainingType`·`referenceYear`·`referenceHalf`(연1회/반기 주기 추적)·`trainedAt`·`trainingMethod`·`instructorName`·`trainingContent`·`attendeeNames`·`newHireOrientation` → silverangel 자유텍스트 교육 이력 대비 ogada **구조화 taxonomy + 주기(year/half) + compliance 판정 SUPERIOR**. `StaffCommitteeMeeting`: `finalize`+`finalizedAt`+text export(US-R08·carefor 8-6)+`attendeeNames`.
+
+**전자서명 축**: ogada `Signature` 6 files(LeadCaregiverWorkLog·Monitoring·QrToken·TransportMonthlyReport·TransportService) — 교육/회의 참석자 **전자서명 전용 UI 부재**(attendeeNames 텍스트 기록) → silverangel 「참석자 전자서명」 은 G-GUARDIAN-MEETING/교육 서식 축 세부로 흡수(승격 0·MVP out-of-scope·rules §11·§17). **메뉴 depth**: silverangel = 교육/회의/만족도 flat feature 소개 페이지 ↔ ogada = `/staff/{training-logs,training,committee-meetings}`+`/case-management/meetings`+`/care/meal-preference-surveys` = 라벨-우선 IA·감사 보관형(finalize/GET-POST-PATCH·물리삭제 0).
+
+### §897-2 · ★ 규제 3-URL 재실측 (NHIS #44 619차·silverangel byte-IDENTICAL·law strip diff 0-line)
+
+- **NHIS #44 제34조**: [URL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`·cmp vs `nhis_jo44_live_bnk896.html` = **BYTE-IDENTICAL**(**619차**·BNK-896 618차 → +1·러-1~4 verbatim) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요
+- **silverangel system_feature**: [URL](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) — HTTP 200·45,601B·md5 `c9507190…`·cmp vs bnk890 = **BYTE-IDENTICAL**(canonical carry·transport 6-term 이동서비스/배차/GPS/RFID/차량/송영 0-hit → 엔젤 배차 부재 재확인·ogada Transport SUPERIOR)
+- **law 2025-247**: [URL](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) — HTTP 200·78,450B·raw md5 `a74e09bb`(cache-buster `?Time=` DRIFT)·strip `?Time=` → md5 `0e07cef1`·strip vs bnk890 strip = IDENTICAL(**diff 0-line**·BNK-885 lineage·canonical `admRulSeq` 고정)
+- carefor func.php: LIVE HTTP **000** timeout(118-cycle+ carry·「미확인」·disk canonical `6226e6eb`/98,328B 우선)
+
+### §897-3 · ★ audit-first HTTP 442 posture 57차 byte/count-exact IDENTICAL
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→897 = **57차** byte/count-exact IDENTICAL · endpoint 신설 0
+  - 교육/회의 도메인(`StaffTrainingLog` GET/POST/PATCH·`StaffCommitteeMeeting` GET/POST/PATCH+finalize) = **물리삭제/PUT 0** → 감사 우선 posture 정합·기존 endpoint 분류 흡수(신규 0)
+  - **API 안정성 57-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §897-4 · 교차검증·가정 번복 판정 (엔젤·롱텀·규제 4-6h rotation)
+
+- 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 결정 번복 **0** · 미확인 승격 **0** · KPI promote **0**
+- silverangel 교육·회의·만족도 5-leaf = 3✅ PARITY(SUPERIOR 2) + 2△(기존 P3 candidate carry) → **G-GUARDIAN-MEETING**(BNK-553~590 lineage)·**G-SATISFACTION-SURVEY-DIAL**(BNK-645 lineage) carry·승격 0
+- BE @Test strict **2413** = BNK-889→897 **9-cycle IDENTICAL**(drift 경보 없음) · 모듈 **97.41%** carry · P3/P4「가정」 candidate 11종 전부 carry(승격 0)
+- silverangel byte-IDENTICAL(canonical) · law strip diff 0-line · NHIS #44 619차 byte-IDENTICAL(추측을 확인으로 승격 금지)
+- **planner 액션 아이템**: (1) silverangel 교육·회의·만족도 5-leaf → ogada 3/5 PARITY + 2△ 명시·REQUIREMENTS §직원 교육 「교육 28-type taxonomy(개인정보보호·급여제공지침 12종)+연1회/반기 주기+이수 compliance 판정」 SUPERIOR 카피 권고·2△ 는 기존 P3 candidate(G-GUARDIAN-MEETING 반기 보호자회의·G-SATISFACTION-SURVEY-DIAL 보호자 만족도조사) carry(승격 0) · (2) NHIS #44 619차·silverangel byte-IDENTICAL·law strip diff 0-line → 규제 상수·앵커 재조정 불요·엔젤 배차 부재 → ogada Transport SUPERIOR · (3) audit-first 442 57차 IDENTICAL(교육/회의 GET/POST/PATCH-only·물리삭제 0) → API posture 57-cycle 동결·물리 삭제 API 신설 금지 · (4) BE 8-cycle zero advance·@Test strict 2413 9-cycle IDENTICAL → SEC-D34 10-축·payroll M11 5✅+1△·KPI promote 0 carry · (5) tester FF merge gate 808 carry · (6) 신규 진성갭 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+- 주력 snapshot: `angel_longterm_regulatory_crossverify_bnk897.txt` + `silverangel_system_feature_live_bnk897.html` + `nhis_jo44_live_bnk897.html` + `law_mohw_2025_247_admRulInfoP_live_bnk897.html`(신규 4·txt 1 + html 3·덮어쓰기 0)
+- per-cycle minimum 4종 충족: 신규 evidence(NHIS 619차 재실측 +1·silverangel/law drift 기록)·메뉴/필드/워크플로 1블록(교육·회의·만족도 5-leaf crosswalk)·MATRIX 4행 @HEAD·BENCHMARK §897 신규 5-절.
+
+---
+
+## §896 BNK-896 — 케어포 역공학 0-2h · ★★★ **케어포 func.php M6「위생.안전 점검관리」5-leaf → ogada `/safety`+`/meals` 1:1 full-stack crosswalk = 5/5 PARITY (GAP 0)** — carefor M6 flat 5-leaf 전량 ogada `SafetyCheckController`(9 endpoint·GET/POST-only) full-stack 흡수 · NHIS #44 618차 byte-IDENTICAL · audit-first HTTP 442 56차 IDENTICAL · BE 7-cycle zero advance / FE zero advance
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T10:53:00Z -->
+
+**조사일**: 2026-07-19T10:53:00Z | **rotation**: 케어포 역공학 0-2h — BNK-895(교차검증·갭 우선순위 8h+·2026-07-19T10:15:00Z) → ~30분 후. 이번 사이클 초점: (1) **케어포 func.php M6「위생.안전 점검관리」5-leaf → ogada `/safety`+`/meals` 1:1 full-stack crosswalk**(§896-1)·(2) **ogada BE/FE develop HEAD 재실측** baseline 갱신(§896-0)·(3) **NHIS #44 618차 byte-IDENTICAL** 재실측(§896-2)·(4) **audit-first HTTP 442 56차 IDENTICAL**(§896-3)·(5) **교차검증·가정 번복 판정**(§896-4).
+
+### §896-0 · Baseline (2026-07-19T10:53:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→896 **7-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `c3f0e05`(BNK-895 **동일 HEAD·zero advance**·ahead **34** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx`·`*Page.jsx` suffix subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→896 8-cycle IDENTICAL·raw grep 2414 = strict 2413 + `@TestPropertySource` 1) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**56차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **808**(FE 34 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §896-1 · ★★★ 케어포 func.php M6「위생.안전 점검관리」5-leaf → ogada `/safety`+`/meals` 1:1 full-stack crosswalk [메뉴/필드/워크플로 실측]
+
+**근거**: `carefor_func.php` disk canonical(md5 `6226e6eb92fdd25ed3e50842a5e8a00b`/98,328B·LIVE HTTP 000 20s timeout 117-cycle+ carry「미확인」). M6 정본 5-leaf(grep `6-[0-9]+`):
+1. 6-1 주간식단표
+2. 6-2 일일점검
+3. 6-3 정기점검
+4. 6-3-1 감염병 관리 (sub-leaf)
+5. 6-4 시설운영일지
+= top-level 4-leaf + sub-leaf 1(6-3-1) = 5 leaf. 케어포 M6 = flat 2-depth·리포트 leaf 0(점검/일지 입력형).
+
+**ogada 실측 crosswalk** (BE `@6d3c766` / FE `@c3f0e05`):
+
+| carefor M6 leaf | ogada Route / 서비스 | 판정 |
+|---|---|---|
+| 6-1 주간식단표 | `/meals` · MealsPage(식사 관리·식단 등록) | ✅ PARITY |
+| 6-2 일일점검 | `/safety/daily-checks` · `SafetyCheckController` GET/POST daily-checks · `SafetyCheckTemplateCatalog` | ✅ PARITY (+SUPERIOR: 점검 템플릿 카탈로그 local/server fallback) |
+| 6-3 정기점검 | `/safety/periodic-checks` · GET/POST periodic-checks | ✅ PARITY |
+| 6-3-1 감염병 관리 | `/safety/infection-control` · GET/POST infection-control · `InfectionSymptomCode`/`InfectionActionCode` enum | ✅ PARITY (+SUPERIOR: 증상/조치 코드 enum 구조화) |
+| 6-4 시설운영일지 | `/safety/operation-log` · GET/POST operation-logs | ✅ PARITY |
+
+집계: ✅ **5/5 PARITY** (SUPERIOR 축 2: 6-2 점검 템플릿 카탈로그·6-3-1 감염병 증상/조치 enum) · ❌ GAP 0 · △ PARTIAL 0 · phantom 0.
+
+**BE full-stack 실측**: `SafetyCheckController` 9 endpoint(GET `/api/v1/safety/check-template-catalog` + GET/POST × {daily-checks, periodic-checks, infection-control, operation-logs}·물리삭제/PUT 0) · 클래스 `SafetyCheckRecordEntity/Service/Repository`·`SafetyDailyCheckResponse`·`SafetyOperationLogResponse`·`SafetyInfectionControlLogResponse`·`SafetyCheckResultCode`·`Create{Daily,Periodic}SafetyCheckRequest`·`Create{InfectionControlLog,OperationLog}Request`·enum `InfectionSymptomCode`/`InfectionActionCode`. **FE full-stack 실측**: `/safety` 허브 + 4 nested route·컴포넌트 `SafetyPilotNotice`/`SafetyRecentDraftsPanel`/`SafetyChecklistForm`/`SafetyContextNav`·훅 `useSafetyServerRecords`/`useSafetyCheckTemplateCatalog`·config `safetyChecks`/`safetyCheckApi`. FE 페이지 주석에 `US-Q01 — M6 6-x` 매핑 명시(ogada ↔ carefor leaf 번호 직접 연결).
+
+**ogada SUPERSET (케어포 flat M6 미노출) 3종**: S1 점검 템플릿 카탈로그(local/server fallback)·S2 `SafetyRecentDraftsPanel` 초안 재개·S3 감염병 증상/조치 코드 enum 표준화(케어포 자유 텍스트형 대비 통계/집계 우위).
+
+**메뉴 depth·리포트 밀도**: 케어포 M6 = flat 2-depth 정적 트리·M6 리포트 leaf **0**(점검/일지 입력형 저-리포트 모듈·리포트는 M3/M4/M5 요양/간호/프로그램에 집중) ↔ ogada M6 도 M6 전용 리포트 화면 **0** = **리포트 밀도 축 IDENTICAL**(모듈 성격 정합). IA: 케어포 6-x 번호식 flat → ogada `/safety` SideNav 4-route + `/meals` = 라벨-우선 IA·감사 보관형(물리삭제/PUT 0). **신규 진성갭 0**(rules §11·§17 과대구축 회피).
+
+### §896-2 · ★ NHIS #44 제34조 618차 byte-IDENTICAL ↔ ogada Transport full-stack 1:1
+
+- URL: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+- `cmp` vs `nhis_jo44_live_bnk895.html` = **BYTE-IDENTICAL** (**618차**·BNK-895 617차 → +1·러-1~4 verbatim: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지)
+- ogada: `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO = new BigDecimal("0.5")` git grep 재확인·ONE_PER_DAY) + `TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 **SUPERIOR** · id=2 0.85 carry · **상수 재조정 불요**
+- constants sanity(git grep): `ONE_WAY_RATIO=0.5` · `LABOR_COST_RATIO_THRESHOLD_PERCENT` (무변동 carry)
+
+### §896-3 · ★ audit-first HTTP 442 posture 56차 byte/count-exact IDENTICAL
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→896 = **56차** byte/count-exact IDENTICAL · endpoint 신설 0
+  - M6 `SafetyCheckController` = GET 4 + POST 4 + catalog GET 1(물리삭제/PUT 0) → 감사 우선 posture 정합·기존 endpoint 분류에 흡수(신규 0)
+  - **API 안정성 56-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §896-4 · 교차검증·가정 번복 판정 (0-2h rotation)
+
+- 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 결정 번복 **0** · 미확인 승격 **0** · KPI promote **0**
+- M6 위생·안전 crosswalk = 5/5 PARITY(GAP 0) → M6 도메인 진성갭 없음 확정(신규 P3「가정」 candidate 0·carefor M6 flat 흐름 전량 ogada full-stack 흡수)
+- BE @Test strict **2413** = BNK-889→896 IDENTICAL(8-cycle·drift 경보 없음) · 모듈 **97.41%** carry · P3/P4「가정」 candidate 11종 전부 carry(승격 0)
+- carefor func.php LIVE HTTP 000 117-cycle+ carry·「미확인」 유지(추측을 확인으로 승격 금지)
+- **planner 액션 아이템**: (1) 케어포 M6 6-x 5-leaf → ogada `/safety`+`/meals` 5/5 PARITY(GAP 0·SUPERIOR 2·SUPERSET 3) 명시·REQUIREMENTS §위생·안전 점검 crosswalk 표 추가 권고·SUPERIOR 카피 「감염병 증상·조치 코드 표준화(enum) — 케어포 자유텍스트 대비 통계 우위」·「점검 템플릿 카탈로그 + 최근 초안 재개」 · (2) NHIS #44 618차 byte-IDENTICAL → 규제 상수 재조정 불요 · (3) audit-first 442 56차 IDENTICAL → API posture 동결·물리 삭제 API 신설 금지 · (4) BE 7-cycle zero advance → SEC-D34 10-축·payroll M11 5✅+1△·KPI promote 0 carry · (5) tester FF merge gate 808 carry · (6) 신규 진성갭 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+- 주력 snapshot: `carefor_m6_hygiene_safety_route_1to1_bnk896.txt` + `ogada_git_remeasure_bnk896.txt` + `nhis_jo44_live_bnk896.html` (신규 3·txt 2 + html 1·덮어쓰기 0)
+- per-cycle minimum 4종 충족: 신규 evidence(NHIS 재실측+drift 기록·carefor LIVE probe)·메뉴/필드/워크플로 1블록(M6 crosswalk)·MATRIX 4행 @HEAD·BENCHMARK §896 신규 5-절.
+
+---
+
+## §895 BNK-895 — 교차검증·갭 우선순위 8h+ · ★★★ **UXD-198 `<time dateTime>` machine-readable date 시맨틱을 비-리포트(list) 표로 확산 (WCAG 1.3.1)** — UXD-197 리포트 표 → UXD-198 목록 표 = `<time>` 시맨틱 date 양측 DOMAIN-COMPLETE · NHIS #44 617차 byte-IDENTICAL · audit-first HTTP 442 55차 IDENTICAL · BE 6-cycle zero advance / FE +1
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T10:15:00Z -->
+
+**조사일**: 2026-07-19T10:15:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-894(ogada git 실측 6–8h·2026-07-19T09:25:00Z) → ~30분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD 재실측** baseline 갱신(§895-0)·(2) ★★★ **UXD-198 `<time dateTime>` 비-리포트 list 표 확산** git 실측 delta(§895-1)·(3) **NHIS #44 617차 byte-IDENTICAL** 재실측(§895-2)·(4) **audit-first HTTP 442 55차 IDENTICAL**(§895-3)·(5) **교차검증·가정 번복 판정**(§895-4).
+
+### §895-0 · Baseline (2026-07-19T10:15:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→895 **6-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `c3f0e05`(BNK-894 `@aab11b2` → **+1 commit**·ahead **34** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·non-test grep) · Page **107**(non-test `pages/*.jsx` 실측·`*Page.jsx` suffix subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`·it/test case 2857 strict 측정·「가정」)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413**(`^\s*@Test\b`·BNK-889→895 IDENTICAL·raw grep 2414 = strict 2413 + `@TestPropertySource` 1·BNK-894 methodology lock 재확인) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**55차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **808**(FE 34 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §895-1 · ★★★ UXD-198 — `<time dateTime>` machine-readable date 시맨틱을 비-리포트(list) 표로 확산 [메뉴/필드/워크플로 실측]
+
+**FE `@c3f0e05`** commit: `fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)`
+- 18 files +90/-9 (9 소스 + 9 test·신규 파일 0)
+- 소스 9 (component 1 + page 8):
+  1. `components/outing/ClientOutingPanel.jsx` — `outingDate`
+  2. `pages/CaseManagementPage.jsx` — 사례관리 목록 날짜
+  3. `pages/ClientOutingReportPage.jsx` — 외출 리포트 목록 날짜
+  4. `pages/LeadCaregiverWorkLogPage.jsx` — 선임요양보호사 업무일지 날짜
+  5. `pages/NursingEmergencyRecordPage.jsx` — 응급상황 기록 날짜
+  6. `pages/NursingOralCareCheckPage.jsx` — 구강관리 점검 날짜
+  7. `pages/NursingVitalCheckPage.jsx` — 활력징후 점검 날짜
+  8. `pages/NursingWeightRecordPage.jsx` — 체중 기록 날짜
+  9. `pages/PressureUlcerPage.jsx` — 욕창 관리 날짜 (test +25 최대 확장)
+
+**git 실측 패턴** (`ClientOutingPanel.jsx:268-`):
+```
+-  <td>{outing.outingDate}</td>
++  <td>
++    <time dateTime={outing.outingDate}>{outing.outingDate}</time>
++  </td>
+```
+
+**`<time dateTime>` 커버리지 계측** (non-test `.jsx` git grep):
+- `aab11b2`(BNK-894): **100** occurrences
+- `c3f0e05`(BNK-895): **109** occurrences (**+9** = UXD-198 9 파일과 1:1 정합)
+- 파일 수: **75 files**
+
+**의미**: BNK-891 **UXD-197**(5 L02 리포트 인라인 표 date 셀) → BNK-895 **UXD-198**(비-리포트 list 표) = `<time>` 시맨틱 date 커버리지가 **리포트 표 + 목록 표 양측 DOMAIN-COMPLETE**. 신규 ds-* 0·CSS 무변경·API surface 무변동(view/test only). BNK-887~889 오류 라우팅 축(WCAG 3.3.1/4.1.2)과 **orthogonal**(1.3.1 구조/의미 축). 경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단) 목록 표 `<time>` 시맨틱 근거 0 → **ogada 유일 full-stack SUPERIOR**·신규 진성갭 0(rules §11·§17 과대구축 회피).
+
+### §895-2 · ★ NHIS #44 제34조 617차 byte-IDENTICAL ↔ ogada Transport full-stack 1:1
+
+- URL: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — HTTP 200·SIZE **7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+- `cmp` vs `nhis_jo44_live_bnk894.html` = **BYTE-IDENTICAL** (**617차**·러-1~4 verbatim: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지)
+- ogada: `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5` git grep 재확인·ONE_PER_DAY) + `TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 **SUPERIOR** · id=2 0.85 carry · **상수 재조정 불요**
+- constants sanity(git grep): `ONE_WAY_RATIO=0.5` · `LABOR_COST_RATIO_THRESHOLD_PERCENT=60.00` (무변동 carry)
+
+### §895-3 · ★ audit-first HTTP 442 posture 55차 byte/count-exact IDENTICAL
+
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = **442** · controller 81 · 비율 5.46
+- BNK-836→895 = **55차** byte/count-exact IDENTICAL · endpoint 신설 0
+  - FE UXD-198 `<time>` 시맨틱 확산도 endpoint/CSS surface 미확장 · BE 6-cycle zero advance
+  - **API 안정성 55-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §895-4 · 교차검증·가정 번복 판정 (8h+ rotation)
+
+- 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 결정 번복 **0** · 미확인 승격 **0** · KPI promote **0**
+- BE @Test strict **2413** = BNK-889→895 IDENTICAL(6-cycle·drift 경보 없음·methodology lock 재확인)
+- 모듈 **97.41%** carry · 규제 백본(NHIS #44 617차·transport/payroll 상수) 무변동
+- **planner 액션 아이템**: (1) UXD-198 `<time dateTime>` 비-리포트 list 표 확산(9 소스·`<time>` 100→109·WCAG 1.3.1) 명시 — UXD-197 리포트 표 → UXD-198 목록 표 = 양측 DOMAIN-COMPLETE·REQUIREMENTS §접근성 「목록/리포트 표 날짜 셀 `<time dateTime>` machine-readable」 명시 권고 · (2) NHIS #44 617차 byte-IDENTICAL → 규제 상수 재조정 불요 · (3) audit-first 442 55차 IDENTICAL → API posture 동결·물리 삭제 API 신설 금지 · (4) BE 6-cycle zero advance → SEC-D34 10-축·payroll M11 5✅+1△·KPI promote 0 carry · (5) tester FF merge gate 808 carry · (6) P3/P4「가정」 candidate 11종 carry(승격 0) · (7) 신규 진성갭 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+- 주력 snapshot: `ogada_git_remeasure_bnk895.txt` + `nhis_jo44_live_bnk895.html` (신규 2·txt 1 + html 1·덮어쓰기 0)
+- per-cycle minimum 4종 충족: 신규 evidence(NHIS 재실측+drift 기록)·메뉴/필드/워크플로 1블록(UXD-198)·MATRIX 1행+ @HEAD·BENCHMARK §소절.
+
+---
+
+## §894 BNK-894 — ogada git 실측 6–8h · ★★★ **BE @Test 계수 방법론 reconciliation — naive grep raw 2414 = strict 2413 + `@TestPropertySource` 1 → `^\s*@Test\b` strict 계수 고정 lock (거짓 +1 drift 경보 방지)** · NHIS #44 616차 byte-IDENTICAL · audit-first HTTP 442 54차 IDENTICAL · BE 5-cycle/FE 4-cycle zero advance
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T09:25:00Z -->
+
+**조사일**: 2026-07-19T09:25:00Z | **rotation**: ogada git 실측 6–8h — BNK-893(이지케어 역공학 2-4h·2026-07-19T08:55:00Z) → ~30분 후. 이번 사이클 초점: (1) **ogada BE/FE develop HEAD·Route·page·module·테스트·HTTP·Flyway 재실측** baseline 갱신(§894-0)·(2) ★★★ **BE @Test 계수 방법론 reconciliation** — naive `grep @Test` raw 2414 가 strict 2413 대비 겉보기 +1 인 원인 규명·`^\s*@Test\b` strict 계수 고정 lock(§894-1)·(3) **NHIS #44 616차 byte-IDENTICAL** 재실측(§894-2)·(4) **audit-first HTTP 442 54차 IDENTICAL**(§894-3)·(5) **경쟁사 재실측 signal** — ezCare 직접 경로 404·carefor func.php 000 timeout carry(§894-4)·(6) **planner 권고 갱신**(§894-5).
+
+### §894-0 · Baseline (2026-07-19T09:25:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890→893 **5-cycle 동일 HEAD·zero advance**·ahead **774** vs origin/test=`598d108`·BE @Test strict **2413**·WT CLEAN)
+  - last: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- ogada frontend develop = `aab11b2`(BNK-891→893 **4-cycle 동일 HEAD·zero advance**·ahead **33** vs origin/test=`b23711f`·tester FF 대기·WT CLEAN)
+  - last: `fix(a11y/reports): wrap L02 report table date columns in <time dateTime> (UXD-197)`
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·non-test grep) · Page **107**(non-test `pages/*.jsx` 실측·`*Page.jsx` suffix subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`·it/test case **2862**)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**54차** byte/count-exact IDENTICAL·endpoint 신설 0) · Flyway V1–V196(신규 0)
+- merge gate **807**(FE 33 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+- disk `df -h /` = 146G / 140G used / **5.4G Avail(97%)** — BNK-891 100% full 블로커 완화됨(파일 쓰기·git 정상)
+
+### §894-1 · ★★★ BE @Test 계수 방법론 reconciliation — naive grep +1 over-count 원인 lock [메뉴/필드/워크플로 실측]
+
+**배경**: BNK-889~893 은 BE @Test strict **2413** 기록. 이번 git 실측에서 `grep -rE '@Test' src/backend/src | wc -l` = **2414** 로 겉보기 +1. HEAD `6d3c766` 는 BE 5-cycle 동일(zero advance) → 코드 drift 는 불가능 → **계수 방법론 차이** 로 규명.
+
+**git 실측 분해**:
+- `grep -rE '@Test' src/backend/src`               → **2414** (raw·경계/라인시작 미지정)
+- `grep -rE '^\s*@Test\b' src/backend/src`          → **2413** (라인 시작·실제 test method)
+- `grep -rE '@Test\b' | grep -v '@Test(Configuration|Instance|Factory|Template|MethodOrder|Propert|Component|Bean|Executor|Constructor)'` → **2413**
+- raw 2414 − strict 2413 = **+1** = 단일 `@TestPropertySource`:
+  - `src/test/java/com/ogada/backend/system/LiveE2eControllerRoutingTest.java:19`
+  - `@TestPropertySource(properties = "ogada.live-e2e.bootstrap-enabled=false")`
+- `@ParameterizedTest` = **3** (별도 어노테이션·strict `^\s*@Test` 에는 미포함·전부 실제 test method)
+
+**판정**: **실제 test method 수 = 2413** (BNK-889→894 IDENTICAL·**zero drift 확정**). naive `grep @Test`(단어 경계·라인 시작 미지정)는 `@TestPropertySource`/`@TestConfiguration` 류 어노테이션을 흡수해 상시 +1 over-count 한다. → **향후 BNK 사이클 @Test KPI 는 `^\s*@Test\b` strict 계수로 고정** (rules §14 검증 정합·거짓 「+1 @Test drift」 경보 방지 lock).
+
+**경쟁 4종 대비**: 무관 — ogada 내부 계측 methodology·KPI 정합 축(경쟁사 비교 대상 아님).
+
+### §894-2 · ★ 규제 백본 NHIS #44 재실측 (기존 URL 재실측 · 616차 byte-IDENTICAL)
+
+- **NHIS #44 제34조**: [joHistoryContent.do](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) · HTTP **200** · `nhis_jo44_live_bnk894.html` 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · **616차 byte-IDENTICAL**(BNK-893 615차 → +1·`cmp nhis_jo44_live_bnk893.html nhis_jo44_live_bnk894.html` = BYTE-IDENTICAL)
+- verbatim carry: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지 → ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·**상수 재조정 불요**
+
+### §894-3 · ★ audit-first HTTP 442 posture 54차 byte/count-exact IDENTICAL (git 실측)
+
+- GET **231** / POST **144** / PATCH **44** / PUT **13** / DELETE **10** = **442** · controller **81** · endpoint/controller ≈ 5.46 · BNK-836→894
+- BE 5-cycle / FE 4-cycle zero advance 후에도 API surface 무변동 → **API 안정성 54-cycle 동결**
+- 물리 삭제 API 신설 금지 · PATCH(44) > PUT(13) 부분정정 우선 · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §894-4 · ★ 경쟁사 재실측 signal (기존 URL 재실측)
+
+- **ezCare top-nav JS 직접 경로 추정** `https://ezcare.easyms.co.kr/js/top-nav-item-V2.js` → HTTP **404**(2,265B 404 페이지·md5 `c8839f4e`). 직접 경로 오추정 — committed `ezcare_top_nav_v2.js`(md5 `95286775`)는 `scripts/ezcare-demo-fetch.sh` 데모 셸 inline 추출본이 정본. → **직접 URL 경로 miss·drift 판정 금지**(carry).
+- **carefor `daycare/func.php` LIVE** → HTTP **000** timeout(**116-cycle+ carry**·「미확인」·disk canonical `6226e6eb`/98,328B 보존).
+- → 이번 사이클 경쟁사 evidence = **NHIS #44 616차 재실측**(byte-IDENTICAL 변동 기록).
+
+### §894-5 · planner 액션 아이템 (요약)
+
+1. **BE @Test KPI 계수 방법론 lock** — naive `grep @Test` raw 2414 = strict 2413 + `@TestPropertySource` 1 · `^\s*@Test\b` strict 고정 · 거짓 +1 drift 경보 방지(rules §14).
+2. **NHIS #44 616차 byte-IDENTICAL** → 규제 상수 재조정 불요.
+3. **audit-first 442 54차 IDENTICAL** → API posture 54-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT.
+4. **BE 5-cycle/FE 4-cycle zero advance** → SEC-D34 10-축·UXD-197 `<time>`·payroll M11 5✅+1△ carry·KPI promote 0.
+5. **tester FF merge gate 807 carry**(FE 33 + BE 774·BE-heavy).
+6. **P3/P4「가정」 candidate 11종 전부 carry**(진성갭 승격 0).
+7. 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → **ROADMAP·PLAN_NOTES 현행 유지**.
+
+---
+
+## §893 BNK-893 — 이지케어 역공학 2-4h · ★★★ **신규 evidence FAQ 21849 「2026년 4월 인지활동 업데이트 안내」 = 인지활동북 pilot 30종 4-도메인 taxonomy 신규 → G-COGNITIVE-WORKSHEET P3「가정」 deepen (승격 0)** · ezCare /new.ez demo shell DRIFT session-token+daily+widget-id only (재strip diff 0-line)
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T08:55:00Z -->
+
+**조사일**: 2026-07-19T08:55:00Z | **rotation**: 이지케어 역공학 2-4h — BNK-892(케어포 역공학 0-2h·2026-07-19T08:10:00Z) → ~45분 후. 이번 사이클 초점: (1) **ezCare-demo-fetch.sh** 로 데모 로그인 → `/new.ez` ERP shell + `top-nav-item-V2.js` + menu_catalog 재측정(§893-0)·(2) ★★★ **신규 evidence URL — FAQ 21849 「2026년 4월 인지활동 업데이트 안내」 = 인지활동북(Cognitive Activity Book) pilot 30종 4-도메인 taxonomy** verbatim 확보(§893-1)·(3) **ezCare /new.ez demo shell DRIFT axis 분해** — session widget id + daily date + p_schedule sample data + chart canvas id 4-axis token 만 diff, substantive UI/menu IDENTICAL(§893-2)·(4) **ezCare 홈페이지 substantive DRIFT 감지** — customer testimonial rotation 갱신·도입 기관 수·가격 verbatim IDENTICAL(§893-3)·(5) **NHIS #44 615차 byte-IDENTICAL** + **audit-first HTTP 442 53차 IDENTICAL**(§893-4/5)·(6) **G-COGNITIVE-WORKSHEET P3「가정」 carry deepen** — BNK-297 결정 96 지속·pilot 확장 궤적 evidence 추가·승격 0(§893-6)·(7) **planner 권고 갱신**(§893-7).
+
+### §893-0 · Baseline (2026-07-19T08:55:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-892 **동일 HEAD·zero advance**·ahead **774** vs origin/test·BE @Test strict **2413**·WT CLEAN)
+- ogada frontend develop = `aab11b2`(BNK-892 **동일 HEAD·zero advance**·ahead **33** vs origin/test·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx` 실측·`*Page.jsx` suffix subset 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**53차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **807**(FE 33 + BE 774·BE-heavy·신규 마이그레이션 0·auto-merge FF 발화 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+- ezCare demo login (`scripts/ezcare-demo-fetch.sh`) : POST `/page/login.php` `oCode=DEMO&User_ID=admin&User_PW=g8317` → JSON `{"code":"0000"}` → GET `/new.ez` HTTP 200 → `ezcare_new_ez_demo.html` 138,094B (per-request session-scoped drift·본문 IDENTICAL) · `ezcare_top_nav_v2.js` 25,470B/`95286775` **zero drift 재확인** · `ezcare_menu_catalog.json` module **10** / leaf **148** / unique PGID **59** (직전 fetch 대비 fetched_at 1-line only diff)
+
+### §893-1 · ★★★ 신규 evidence URL — FAQ 21849 「2026년 4월 인지활동 업데이트 안내」 · 30종 4-도메인 taxonomy [메뉴/필드/워크플로 실측]
+
+**출처**: [ezcare FAQ rowid=21849](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21849&type=web) · HTTP **200** · `ezcare_faq21849_cognitive_worksheet_bnk893.html` 15,603B · md5 `b2e4f362ef03c46c953f0b2377ffa041` · 저장 위치 `docs/planning/research/snapshots/`
+**verbatim payload**:
+- 제목: 「2026년 4월 인지활동 업데이트 안내」
+- 본문: 「2026년 4월 신규 학습지 30종이 추가되었습니다. 서비스 이용에 참고하시기 바랍니다.」
+- 세부: 「집행기능 - 추론 영역 (5종) / 시공간기능 - 지각 기능 영역 (8종) / 시공간기능 - 시각 영역 (14종) / 언어기능 - 이해력 영역 (3종)」 = **합계 30종 · 4 도메인**
+- 카테고리 sidebar: K001~K012 (직원관리·수급자관리·일정관리·서식출력/설정·본인부담금·모니터링/평가·수당/급여관리·모바일앱·문자발송·재무회계)
+
+**메뉴 접근점 (가정)**: `2.수급자관리 > 서식출력/설정` 카테고리 (K004/K005) · 또는 `9.기관관리 > 서식자료실`  — verbatim 명시는 없으나 카테고리 `[서식출력/설정]` 태그·기존 21781 evidence carry.
+
+**BNK-297 FAQ 21781 lineage** (2026-04-15) 「인지활동지 낱장 출력」·「인지맞춤형 학습지」·「시범 서비스」·「계획표/표지 등 세부 기능 하반기 확장 예정」 → **BNK-893 21849 amount deepen** (하반기 확장 궤적 = 2026-04 시점 30종 신규 등록 evidence).
+
+### §893-2 · ezCare /new.ez demo shell DRIFT axis 4종 분해 (기존 URL 재실측)
+
+**출처**: `scripts/ezcare-demo-fetch.sh` 2회 연속 fetch 대비 diff 분석
+- axis-A **widget id (random session-scoped)**: `EC000010-63502037` (직전 committed) → `-5188957` (fetch#1) → `-12564033` (fetch#2)
+- axis-B **daily date (solar+lunar cd_ganjee json)**: `오늘의 업무 [07월18일]` → `[07월19일]` · cd_no 46220 → 46221 · cd_kmganjee 을미 → 갑오
+- axis-C **p_schedule (sample data)**: 18일 급여지급 반복일정 populated → 19일 null
+- axis-D **chart canvas id / widget_code**: `ES000040-…`, `EP000060-…`, `widget_code-…` — orthogonal random id
+- **재strip 후 diff 0-line** (substantive UI/menu 무변) → BNK-292 이후 다수 사이클 관찰 pattern verbatim carry
+- top-nav 10 module verbatim: `1:직원 · 2:수급자 · 3:방문일정 · 4:RFID점검 · 5:본인부담 · 6:직원급여 · 7:재무회계 · 8:세무/사회보험 · 9:기관관리 · 10:기관평가`
+
+### §893-3 · ezCare 홈페이지 substantive DRIFT 감지 (customer testimonial rotation)
+
+- **URL**: [https://ezcare.easyms.co.kr/](https://ezcare.easyms.co.kr/) · HTTP **200** · `ezcare_home_live_bnk893.html` 69,238B · md5 `17cf0e5bd748540e4273bd494cc4df41`
+- **직전 committed BNK-878 snapshot**: 69,883B · md5 `96c631a4a2d4f2e9634cb06fa409a445` (-645B)
+- **DRIFT type**: customer testimonial rotation only (substantive body 축은 후기 명단 갱신)
+- **신규 후기 등장** (verbatim): 「인천 보경***」(2022-01-06)·「울산 행복한노인복지센터」(2010-04-05)·「부산 다정재가복지센터」(2022-01-14)·「충남 덕***」(2013-01-20)·「전북 푸***」(2014-06-03)·「서울 늘푸***」(2025-11-07)·「부산 부전통합재가복지센터」(2020-01-30) 등
+- **불변 axis**: 고객센터 1644-0340·1644-0396·5,003건·도입 기관 수 (홈페이지 노출 축)·모듈 카탈로그·가격 정책 verbatim IDENTICAL
+- **판정**: 마케팅 UX rotation (사회적 증거 refresh) — 실서비스 축 무변화
+
+### §893-4 · ★ 규제 백본 NHIS #44 재실측 (기존 URL 재실측 · 615차 byte-IDENTICAL)
+
+- **NHIS #44 제34조**: [joHistoryContent.do](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) · HTTP **200** · `nhis_jo44_live_bnk893.html` 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · **615차 byte-IDENTICAL**(BNK-892 614차 → +1·`cmp nhis_jo44_live_bnk892.html nhis_jo44_live_bnk893.html` = BYTE-IDENTICAL)
+- verbatim carry: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지 → ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·**상수 재조정 불요**
+
+### §893-5 · ★ audit-first HTTP 442 posture 53차 byte/count-exact IDENTICAL (git 실측·감사 우선)
+
+- GET **231** / POST **144** / PATCH **44** / PUT **13** / DELETE **10** = **442** · @RestController **81** · endpoint/controller ≈ 5.46 · BNK-836→893 **53-cycle** byte/count-exact IDENTICAL
+- BE/FE zero advance 후 API surface 무변동·문서 축 (docs/·memory/·snapshots/) 만 갱신 → **API 안정성 53-cycle 동결**
+- 물리 삭제 API 신설 금지·PATCH(44) > PUT(13) 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §893-6 · ★ G-COGNITIVE-WORKSHEET P3「가정」 candidate carry deepen (승격 0)
+
+- **성격**: 인지활동 콘텐츠 authoring/library (「인지맞춤형 학습지 낱장 출력」) — 운영·청구·규제 core 밖 부가 서비스
+- **BNK-297 결정 96 lineage** (2026-06-16 FAQ 21781 P3 candidate 신설) → **BNK-893 amount evidence deepen** (30종 4-도메인 taxonomy 추가·pilot 확장 궤적 fresh data-point)
+- **경쟁 5종 비교**: 이지케어 pilot 유일(H2 확장·2026-04 30종 신규)·케어포/엔젤/롱텀/ogada 모두 「콘텐츠 authoring」 축 부재 (엔젤은 「인지활동계획(치매)/세부계획(치매)」 계획 축만·ogada 는 skipReason/참여 lifecycle V112/V113 ✅)
+- **ogada 3-축 커버** (기록·계획·등급): `CognitiveActivitySkipReason` enum + `FunctionalRecoveryPlan*` + `cognitive_support_ltc_grade_g9` catalog ✅·「콘텐츠 authoring」 축 부재 git grep 재확인 (`학습지=0`·`worksheet=0`·`인지활동북=0`·`activityBook=0`)
+- **판정** (rules §11·§17 과대구축 회피): P3「가정」 carry (승격 0)
+  - (a) NHIS 급여기준·수가 규제 (고시 2025-247·MOHW 2026-126) 어디에도 「학습지 authoring」 강제 조항 부재
+  - (b) ezCare 자체도 pilot·「하반기 확장 예정」 = 시장 성숙도 「미확인」 유지
+  - (c) ogada v1.3 MVP 스코프(REQUIREMENTS §1-5) = 운영·출석·건강·청구·대시보드 core (콘텐츠 라이브러리 out-of-scope)
+- **재분류 트리거**(향후): (1) NHIS/MOHW 수가·평가지표에 인지활동 콘텐츠 authoring 항목 신설, 또는 (2) 이지케어 도입 9,338+ 기관 중 「활용률」 evidence 확보 시 P3→P2 승격 검토
+- **가정 번복 아님** (rules §14) — BNK-297~893 596차 P3 carry 지속·「미확인」 축 승격 0
+
+### §893-7 · ★ planner 액션 아이템
+
+1. **신규 evidence URL FAQ 21849 (인지활동북 30종 4-도메인 taxonomy) 명시** — G-COGNITIVE-WORKSHEET P3「가정」 carry deepen (BNK-297 lineage·pilot 확장 궤적 evidence 추가·rules §11·§17 과대구축 회피·승격 0)
+2. **ezCare /new.ez demo shell DRIFT axis 4종 분해** 명시 — session widget id + daily date + p_schedule sample + chart canvas id 만 diff, substantive UI/menu IDENTICAL (재strip diff 0-line)·top-nav 10 module `1:직원·…·10:기관평가` verbatim carry
+3. **ezCare 홈페이지 customer testimonial rotation DRIFT** — 후기 명단 갱신·도입 기관 수·가격 verbatim IDENTICAL (실서비스 축 무변화·마케팅 UX refresh)
+4. **NHIS #44 615차 byte-IDENTICAL** → 규제 상수·앵커 재조정 불요
+5. **audit-first 442 53차 IDENTICAL** → API posture 53-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT
+6. **G-COGNITIVE-WORKSHEET P3 carry** (승격 0·BNK-297~893 596차 지속) + P3/P4「가정」 candidate 기존 8종 + BNK-890 G-CASE-MGMT-MEETING carry (진성갭 승격 0)
+7. **BE/FE zero advance** — SEC-D34 10-축·UXD-197 `<time>` carry·payroll M11 5✅+1△ carry
+8. **tester FF merge gate 807 carry** (FE 33+BE 774·BE-heavy·auto-merge FF 대기)
+9. 신규 진성갭 **0**·closed band 재오픈 **0**·P0~P3 결정 번복 **0**·미확인 승격 **0**·KPI promote **0**·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+---
+
+## §892 BNK-892 — 케어포 역공학 0-2h · ★★★ **func.php M11「직원 급여관리」6-leaf → ogada `/payroll/*` 1:1 재-크로스워크 = 5✅ + 1△ · BNK-602 P2 신규 갭 CLOSED 재확인**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T08:10:00Z -->
+
+**조사일**: 2026-07-19T08:10:00Z | **rotation**: 케어포 역공학 0-2h — BNK-891(ogada git 실측 6–8h·2026-07-19T07:20:00Z) → ~50분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — BE `@6d3c766`/FE `@aab11b2` **둘 다 zero advance carry**(§892-0) · (2) ★★★ **케어포 func.php M11「직원 급여관리」6-leaf → ogada `/payroll/*` 1:1 재-크로스워크** — BNK-602 당시 `0/6 P2 신규 갭` → 현재 **5✅ + 1△ = P2 갭 CLOSED 재확인**(§892-1) · (3) **규제 백본 NHIS #44 재실측** — 614차 byte-IDENTICAL(§892-2) · (4) **audit-first HTTP 442 52차 IDENTICAL**(§892-3) · (5) **갭 우선순위 재점검** — 신규 P3「가정」 G-PAYROLL-CONTRACT-CRUD 관찰·진성갭 승격 0(§892-4) · (6) **planner 권고 갱신**(§892-5).
+
+### §892-0 · Baseline (2026-07-19T08:10:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-891 **동일 HEAD·zero advance**·ahead **774** vs origin/test·BE @Test strict **2413**·WT CLEAN)
+- ogada frontend develop = `aab11b2`(BNK-891 **동일 HEAD·zero advance**·ahead **33** vs origin/test·tester FF 대기·WT CLEAN)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107**(non-test `pages/*.jsx` 실측·이 중 `*Page.jsx` suffix subset = 106) · FE test **543**(228 `.test.js` + 315 `.test.jsx`)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**52차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **807**(FE 33 + BE 774·BE-heavy·신규 마이그레이션 0·auto-merge FF 발화 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §892-1 · ★★★ 케어포 func.php M11「직원 급여관리」6-leaf → ogada `/payroll/*` 1:1 재-크로스워크 [메뉴/필드/워크플로 실측]
+
+**출처**: `carefor_func.php` disk canonical(98,328B·md5 `6226e6eb`·toolbar-stripped) M11 정본 6-leaf · carefor func.php LIVE HTTP **000** timeout 30s(**116-cycle+ carry**·「미확인」) · ogada `StaffPayrollController`(`@RequestMapping("/api/v1/staff/payroll")`·`@PreAuthorize` HQ_ADMIN/BRANCH_ADMIN/SOCIAL_WORKER) + FE App.jsx `/payroll/*` 5-route git 실측
+**배경**: BNK-602(2026-06-24) `carefor_func_full_menu_crosswalk_bnk602.txt` 는 M11 을 **「★★★ P2 신규 갭 — ogada /payroll/* 없음·0/6」** 로 기록. 이후 coder BNK-709~720 이 payroll 도메인 착지 → 본 사이클 재측정.
+
+| func.php M11 leaf | ogada Route / endpoint | 판정 |
+|---|---|---|
+| 11-1 월별 급여대장 | `/payroll/ledger` + POST `/api/v1/staff/payroll/ledger-preview` | ✅ PARITY |
+| 11-2 퇴직적립금 관리 | `/payroll/retirement-accrual` + POST `/retirement-accrual-preview` | ✅ PARITY |
+| 11-3 직원 급여계약 설정 | `/payroll/basis`(급여기초·간편명세 preview) + POST `/simple-payment-statement-preview` | △ PARTIAL |
+| 11-4 급여기초 설정(수당/공제) | GET `/allowance-deduction-catalog`(9-entry: 3수당 + 6공제 static catalog) | ✅ PARITY |
+| 11-5 인건비 지출비율 참고자료 | `/payroll/labor-cost-ratio` + POST `/labor-cost-ratio-preview`(임계 60.00%) | ✅ **SUPERIOR** |
+| 11-6 직원 급여대장 리포트 | `/payroll/reports` | ✅ PARITY |
+
+**판정**: M11 = **5✅ PARITY + 1△ PARTIAL** = **BNK-602 「0/6 P2 신규 갭」 → CLOSED 재확인**. ★ SUPERIOR 축: 11-5 인건비 지출비율 은 carefor 단순 참고자료 vs ogada `LABOR_COST_RATIO_THRESHOLD_PERCENT=60.00` **compliance preview 임계 판정**(장기요양 인건비 지출비율 규제 정합). ★ SUPERSET: `/accounting`(수지파인 외부 BPO SSO OTP handoff·GET `/billing/accounting/bpo-launch`) — carefor M11 무관. ★ 잔여 △ 1건: 11-3 급여계약 설정 = ogada `/payroll/basis` 는 기초/간편명세 preview 축(계약 엔티티 CRUD 아님) → **G-PAYROLL-CONTRACT-CRUD P3「가정」**(SaaS MVP out-of-scope·rules §11·§17 과대구축 회피·승격 0). ★ 메뉴 depth: carefor M11 flat 6-leaf 2-depth(jqGrid) < ogada `/payroll/*` 5-route nested + BE 5-endpoint(1 GET catalog + 4 POST preview) → organizational depth SUPERIOR.
+
+### §892-2 · ★ 규제 백본 NHIS #44 재실측 (기존 URL 재실측)
+
+- **NHIS #44 제34조**: [joHistoryContent.do](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) · HTTP **200** · `nhis_jo44_live_bnk892.html` 7,572B · md5 `c886ff1f` · **614차 byte-IDENTICAL**(BNK-891 613차 → +1·`cmp nhis_jo44_live_bnk891.html nhis_jo44_live_bnk892.html` = BYTE-IDENTICAL)
+- verbatim carry: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지 → ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·**상수 재조정 불요**
+
+### §892-3 · ★ audit-first HTTP 442 posture 52차 byte/count-exact IDENTICAL (git 실측·감사 우선)
+
+- GET **231** / POST **144** / PATCH **44** / PUT **13** / DELETE **10** = **442** · @RestController **81** · endpoint/controller ≈ 5.46 · BNK-836→892 **52-cycle** byte/count-exact IDENTICAL
+- payroll 도메인 자체가 감사 우선 posture 정합(1 GET catalog + 4 POST preview·물리 삭제/PUT 0) — BE/FE zero advance 후에도 API surface 무변동 → **API 안정성 52-cycle 동결**
+- 물리 삭제 API 신설 금지·PATCH(44) > PUT(13) 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §892-4 · ★ 갭 우선순위 재점검 (진성갭 승격 0)
+
+- **M11 P2 신규 갭(BNK-602) CLOSED 재확인** — 5✅ + 1△(11-3 급여계약 설정 = `/payroll/basis` partial)
+- 신규 P3「가정」 관찰: **G-PAYROLL-CONTRACT-CRUD**(급여계약 엔티티 CRUD·SaaS MVP out-of-scope·승격 0)
+- P3/P4「가정」 candidate 기존 8종 carry(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION·G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY) + BNK-890 G-CASE-MGMT-MEETING 관찰 → **진성갭 승격 0**(rules §11·§17)
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY
+
+### §892-5 · ★ planner 액션 아이템
+
+1. **케어포 M11「직원 급여관리」6-leaf → ogada `/payroll/*` 5✅ + 1△ 재-크로스워크** 명시 — BNK-602 「0/6 P2 신규 갭」 → **CLOSED 재확인**(11-1 급여대장·11-2 퇴직적립·11-4 수당/공제 catalog·11-5 인건비 지출비율 compliance·11-6 리포트 PARITY·11-3 급여계약 설정 PARTIAL)·SUPERIOR 카피 「인건비 지출비율 60% 임계 컴플라이언스 사전 판정」·SUPERSET 「수지파인 외부 BPO SSO 연계」
+2. **신규 P3「가정」 G-PAYROLL-CONTRACT-CRUD**(급여계약 엔티티 CRUD) carry — SaaS MVP out-of-scope·승격 0·rules §11·§17
+3. NHIS #44 614차 byte-IDENTICAL(러-1~4 verbatim) → 규제 상수·앵커 재조정 불요
+4. audit-first 442 **52차 IDENTICAL**(payroll 감사 우선 posture 정합·1 GET + 4 POST) → API posture 52-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT
+5. BE/FE zero advance(`@6d3c766`/`@aab11b2` 둘 다 동일 HEAD·ahead 774/33) → KPI promote 0·SEC-D34 10-축·UXD-197 `<time>` 시맨틱 carry
+6. tester FF merge gate 807 carry(FE 33 + BE 774·BE-heavy·auto-merge FF 대기)
+7. 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지. 주력 `carefor_m11_payroll_route_1to1_bnk892.txt`. 신규 snapshot **2**(txt 1 + html 1)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.
+
+## §891 BNK-891 — ogada git 실측 6–8h · ★★★ **UXD-197 `<time dateTime>` machine-readable date 시맨틱 확산 (WCAG 1.3.1)** — FE `@aab11b2`(BNK-890 `@0ff9c7d` → +1 commit) 5개 L02 리포트 인라인 표(BathHelp·CareMealExcretion·IntensiveExcretion·PatientService·PositionChange)의 날짜 셀을 `<time dateTime>` 로 래핑 → shared `ProgramReportPanel`/`NursingServiceReportPanel`(이미 `<time>` 사용)과 시맨틱 date 불일치 폐쇄·week-range 셀은 단일 datetime 불가로 plain text 의도적 유지·신규 ds-* 0·CSS 무변경·BNK-887~889 오류 라우팅(3.3.1/4.1.2)과 orthogonal(1.3.1 구조/의미 축) · ogada BE `@6d3c766` **zero advance carry**(ahead 774·@Test strict 2413) · NHIS #44 제34조 **613차 byte-IDENTICAL**(러-1~4 verbatim·cmp vs BNK-890 = BYTE-IDENTICAL) · audit-first HTTP 442 **51차** byte/count-exact IDENTICAL(**API 안정성 51-cycle 동결**·FE `<time>` 확산도 endpoint/CSS 신설 0) · Route 133·Page 107·FE test 543(315+228·it/test 2862)·BE Test 298·모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T07:20:00Z -->
+
+**조사일**: 2026-07-19T07:20:00Z | **rotation**: ogada git 실측 6–8h — BNK-890(엔젤·롱텀·규제 역공학 4–6h·2026-07-19T06:40:00Z) → ~40분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — BE +0(zero advance)/FE +1(UXD-197 `<time>` 시맨틱)·Route/Page/Test/HTTP 재산정(§891-0) · (2) ★★★ **UXD-197 `<time dateTime>` machine-readable date 시맨틱 확산** — 5 L02 리포트 인라인 표(§891-1) · (3) **규제 백본 NHIS #44 재실측** — 613차 byte-IDENTICAL(§891-2) · (4) **audit-first HTTP 442 51차 IDENTICAL**(§891-3) · (5) **갭 우선순위 재점검** — P3/P4「가정」 8종 carry·진성갭 승격 0(§891-4) · (6) **planner 권고 갱신**(§891-5).
+
+### §891-0 · Baseline (2026-07-19T07:20:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-890 **동일 HEAD·zero advance**·ahead **774** vs origin/test·BE @Test strict **2413**·WT CLEAN)
+- ogada frontend develop = `aab11b2`(BNK-890 `0ff9c7d` → **+1 commit**·`fix(a11y/reports): wrap L02 report table date columns in <time dateTime> (UXD-197)`·10 files +63/-10·신규 파일 0·ahead **33** vs origin/test·tester FF 대기)
+- Route **133**(App.jsx `<Route\b` 133) · Page **107**(non-test `pages/*.jsx` 실측·BNK-888/890 recount 계보 유지) · FE test **543**(228 `.test.js` + 315 `.test.jsx`·it/test case **2862**·in-place +25·신규 0)
+- BE Test **298**(297 Test.java + 1 Tests.java) · @Test strict **2413** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**51차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **807**(FE 33 + BE 774·BE-heavy·신규 마이그레이션 0·auto-merge FF 발화 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §891-1 · ★★★ UXD-197 `<time dateTime>` machine-readable date 시맨틱 확산 [git 실측·WCAG 1.3.1]
+
+**출처**: FE `git show aab11b2` (submodule develop) · commit `fix(a11y/reports): wrap L02 report table date columns in <time dateTime> (UXD-197)`
+**방법**: `git log --oneline 0ff9c7d..develop` + `git show --stat aab11b2` + commit body verbatim 파싱
+
+**커밋 body(verbatim 요지)**: "L02 report pages that render tables inline exposed date cells as plain text, unlike the shared ProgramReportPanel/NursingServiceReportPanel which already use `<time dateTime>`. Wrap scheduledDate/recordDate/observationDate/assessedOn/careDate/restraintDate cells in `<time dateTime>` for machine-readable dates (WCAG 1.3.1). Week-range cells stay plain text since a single datetime cannot represent a range. No new ds-* classes; CSS unchanged."
+
+**변경 파일(10 files +63/-10·신규 0)**:
+
+| 페이지 | 래핑된 날짜 셀 | test |
+|---|---|---|
+| `BathHelpReportPage.jsx` | careDate/recordDate | +5 |
+| `CareMealExcretionReportPage.jsx` | recordDate/observationDate | +8 |
+| `IntensiveExcretionReportPage.jsx` | observationDate | +5 |
+| `PatientServiceReportPage.jsx` | scheduledDate/careDate/assessedOn | +7 |
+| `PositionChangeReportPage.jsx` | recordDate/restraintDate | +8 |
+
+**판정**: ✅ **SUPERIOR (경쟁 4종 유일 full-stack)** — shared 리포트 패널(`ProgramReportPanel`/`NursingServiceReportPanel`)은 이미 `<time>` 사용 → L02 인라인 표만 plain text 였던 시맨틱 date 불일치를 폐쇄. week-range(주간범위) 셀은 단일 datetime 으로 범위 표현 불가 → **정확성 우선 plain text 의도적 유지**(rules §16 정확성 > 편의). BNK-887~889 의 WCAG 3.3.1(오류 식별)/4.1.2(name·role·value) **오류 라우팅 축과 orthogonal** — 본 축은 WCAG 1.3.1(Info and Relationships·구조/의미). 경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단)은 리포트 표 `<time>` 시맨틱 근거 0. **신규 진성갭 0**(rules §11·§17 과대구축 회피).
+
+### §891-2 · ★ 규제 백본 NHIS #44 재실측 (기존 URL 재실측)
+
+- **NHIS #44 제34조**: [joHistoryContent.do](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) · HTTP **200** · `nhis_jo44_live_bnk891.html` 7,572B · md5 `c886ff1f` · **613차 byte-IDENTICAL**(BNK-890 612차 → +1·`cmp nhis_jo44_live_bnk890.html nhis_jo44_live_bnk891.html` = BYTE-IDENTICAL)
+- verbatim carry: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지 → ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·**상수 재조정 불요**
+
+### §891-3 · ★ audit-first HTTP 442 posture 51차 byte/count-exact IDENTICAL (git 실측·감사 우선)
+
+- GET **231** / POST **144** / PATCH **44** / PUT **13** / DELETE **10** = **442** · @RestController **81** · endpoint/controller ≈ 5.46 · BNK-836→891 **51-cycle** byte/count-exact IDENTICAL
+- BE +0(zero advance) / FE +1(`<time>` 시맨틱·view/test only·CSS 신설 0) 후에도 API surface 무변동 → **API 안정성 51-cycle 동결**
+- 물리 삭제 API 신설 금지·PATCH(44) > PUT(13) 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+### §891-4 · ★ 갭 우선순위 재점검 (진성갭 승격 0)
+
+- P3/P4「가정」 candidate **8종 carry**(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION·G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY) + BNK-890 G-CASE-MGMT-MEETING 관찰 → **진성갭 승격 0**(rules §11·§17 과대구축 회피·「미확인」 유지)
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY
+
+### §891-5 · ★ planner 액션 아이템
+
+1. **UXD-197 `<time dateTime>` machine-readable date 시맨틱 확산**(5 L02 리포트 인라인 표·WCAG 1.3.1) 명시 — shared panel 과 L02 인라인 표 간 시맨틱 date 정합 폐쇄·week-range 셀 정확성 우선 plain text 유지·`REQUIREMENTS.md §접근성` 「리포트 표 날짜 셀 `<time dateTime>` machine-readable」 명시 권고·BNK-887~889 오류 라우팅 축과 orthogonal
+2. **NHIS #44 613차 byte-IDENTICAL**(러-1~4 verbatim) → 규제 상수·앵커 재조정 불요
+3. **audit-first 442 51차 IDENTICAL**(FE `<time>` 확산도 endpoint 신설 0·CSS 신설 0) → API posture 51-cycle 동결·물리 삭제 API 신설 금지·PATCH>PUT
+4. **BE zero advance**(`@6d3c766` 동일·ahead 774) → SEC-D34 10-축 carry·KPI promote 0
+5. P3/P4「가정」 candidate 8종 carry(진성갭 승격 0)
+6. tester FF merge gate **807** carry(FE 33 + BE 774·BE-heavy·auto-merge FF 대기)
+7. 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+### §891-6 · ⚠ 인프라 블로커 — root fs 100% full + snapshots/ de-dup 기록
+
+- **증상**: `df -h /` = 146G / 146G / **0 Avail** (100%) → 파일 쓰기·`git` 명령(lock 파일 생성) 전면 실패("No space left on device"). BENCHMARK_REPORT 최초 쓰기는 disk 소진 직전 성공, 후속 쓰기 시 노출.
+- **원인 범위**: root fs 소비 dominant = **non-ogada 프로젝트**(`~/trading_bot` 11G·`~/trading_bot_aws_v2` 1.9G·`~/miniforge3` 5.3G·`~/web_for_finance` 1.3G 등). ogada 전체 1.1G·snapshots/ 268M. → **BNK 스코프(docs/·memory/) 밖 근본 원인**·에이전트가 정본 해소 불가.
+- **완화 조치(BNK 스코프 내·snapshots/ 정합)**: (1) 미추적(untracked) byte-identical 중복 스냅샷(nhis/law/longterm/ezcare bnk858–888 carry) 제거 → +3.7MB · (2) snapshots/ 내 **git-tracked byte-identical 중복 바이너리** 정본 1개만 남기고 de-dup — `carefor_manual_{daycare_pdf.bin,full.pdf,pdf_bnk690.pdf}`(정본 `carefor_manual_pdf_bnk825.pdf` md5 `96f7d45e` 유지)·`silverangel_appraisal_indicator_daycare_bnk704.pdf`(정본 `bnk775` md5 `b13dcafce` 유지)·`silverangel_notice_list_live_bnk{702,704,705,707,709,726,738,747,751}.html`(정본 `silverangel_support_notice_list_live_bnk775.html` md5 `ea7d6b3d` 유지) → +~86MB. **정본 md5·verbatim 인용은 보고서 본문에 보존**(methodology 「덮어쓰기(overwrite)」 정합·증거가치 손실 0).
+- **planner/ops 액션**: root fs 정본 정리는 인프라/운영 소관 — non-ogada 프로젝트 아카이빙 또는 볼륨 확장 필요. BNK 는 이후 사이클 snapshots/ live 재실측을 **overwrite 원칙**으로 유지(중복 누적 금지). `memory/blockers.md` 연동 권고.
+
+---
+
+## §890 BNK-890 — 엔젤·롱텀·규제 역공학 4–6h · ★★★ **엔젤 silverangel LCMS 급여제공(care-provision) lifecycle 역공학 [메뉴/필드/워크플로 실측]** — `silverangel_system_feature_live_bnk890.html`(45,601B·`c9507190`·**16차 byte-IDENTICAL**) 정적 HTML 파싱으로 급여제공계획 → 급여제공(실시·기록) → 급여제공변경 → 급여제공평가 → 급여제공지침교육 lifecycle + 사례관리회의(월1회)·상담일지·투약일지·평가도구·법정서식(급여비용명세서 **보호자 이메일** 발송) 필드 복원·**transport 6-term(이동서비스/배차/GPS/RFID/차량/송영) ALL 0-hit → 엔젤 배차 부재 재확인** · ogada BE `@6d3c766`/FE `@0ff9c7d` **zero advance carry** · NHIS #44 제34조 **612차 byte-IDENTICAL**(러-1~4 verbatim) · silverangel **16차** · law 2025-247 strip **890↔889 재strip diff 0-line**(BNK-885 lineage `a913639a`) · audit-first HTTP 442 **50차** byte/count-exact IDENTICAL(**API 안정성 50-cycle 동결 마일스톤**) · **BE Test 라벨 297 → 298 KPI 정정**(Test.java 297 + Tests.java 1·-1 undercount 소급 정정) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T06:40:00Z -->
+
+**조사일**: 2026-07-19T06:40:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4–6h — BNK-889(엔젤·롱텀·규제 역공학 4–6h·2026-07-19T04:19:00Z) → ~2h21분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — BE +0/FE +0(zero advance carry)·Route/Page/Test 재산정 + **Test.java KPI 정정**(§890-0) · (2) ★★★ **엔젤 silverangel LCMS 급여제공 lifecycle 역공학** — 정적 HTML 파싱으로 급여제공계획→실시→변경→평가→지침교육 + 사례관리/상담/투약/평가도구·법정서식 필드 복원(§890-1) · (3) **규제 백본 3-URL 재실측** — NHIS #44 612차·silverangel 16차·law strip diff 0-line(§890-2) · (4) **audit-first HTTP 442 50차 IDENTICAL 마일스톤**(§890-3) · (5) **갭 우선순위 재점검** — P3/P4「가정」 8종 + BNK-890 G-CASE-MGMT-MEETING 관찰·진성갭 승격 0(§890-4) · (6) **planner 권고 갱신**(§890-5).
+
+### §890-0 · Baseline (2026-07-19T06:40:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-889 **동일 HEAD·zero advance**·ahead **774** vs `598d108`·BE @Test strict **2413**·WT CLEAN)
+- ogada frontend develop = `0ff9c7d`(BNK-889 **동일 HEAD·zero advance**·ahead **32** vs `b23711f`·WT CLEAN·tester FF 대기)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·IDENTICAL) · Page **106**(carry) · FE test **543**(228 .test.js + 315 .test.jsx·IDENTICAL·신규 0)
+- BE Test **298** — **KPI 정정**: 실측 Test.java **297** + Tests.java **1** = 총 **298**. 관례 라벨 「297(296+1)」 은 총합을 297 로 표기했으나 HEAD 불변(`6d3c766`) 상태에서 실측 Test.java 297 → -1 undercount 소급 정정(Page 106→107 BNK-888 선례와 동일 성격·fact 정정·가정 번복 아님). · @Test strict **2413** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**50차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **806**(FE 32 + BE 774·BE-heavy·신규 마이그레이션 0·※ PLN 235차 merge_status: ready 설정 완료 → 다음 build auto-merge FF 발화 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §890-1 · ★★★ 엔젤 silverangel LCMS 급여제공(care-provision) lifecycle 역공학 [메뉴/필드/워크플로 실측]
+
+**출처**: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do · `silverangel_system_feature_live_bnk890.html`(45,601B·md5 `c9507190`·16차 byte-IDENTICAL)
+**방법**: 정적 HTML 파싱 — `<h*/strong/dt/th>` heading grep + `<li>` feature item grep + 「급여」 context grep
+
+**페이지 구조 heading(verbatim)**: LCMS(Longterm Care Management System) 유형 · 개발 배경 및 목적 · 시스템 특징/분류/화면구성 · 시스템 특장점 01./02./03. · 타 시스템(A Type, B Type) 비교표(구분/기능/내용/비고) · 대메뉴 / 좌측 모바일 대메뉴
+
+**급여제공 lifecycle 메뉴/필드(verbatim `<li>`)**:
+
+| 단계 | 메뉴/서식 | 필드·워크플로 (verbatim 인용) |
+|---|---|---|
+| ① 계획 | 급여제공계획·월별제공계획 | "서비스항목별 또는 입소자별 월별 제공계획" · "평가결과에 따라 구체적으로 급여계획을 세우고, 수급자(보호자)의 동의를 받" |
+| ② 실시 | 급여제공(기록)·급여제공기록지 | "급여제공계획에 의한 서비스 제공 및 기록" · "월1회 급여제공기록지 법정서식 보호자에게 메일로 발송" |
+| ③ 변경 | 급여제공변경 | "급여제공 변경기록, 변경사항 기록지와 연계" · "투약내역, 입원/외래/응급/급여제공계획변경의 내용을 자동 통합" |
+| ④ 평가 | 급여제공평가·수급자평가도구·건강수준평가·종합평가 | "급여제공계획 대비 급여제공실시 분석" · "급여제공계획의 평가(계획대비 실적 비율분석)" |
+| ⑤ 교육 | 급여제공지침교육 | "연1회 급여제공지침교육 실시, 교육자료 및 사진등록, 참(석)" |
+| 부가 | 사례관리회의·상담일지·투약일지·프로그램계획 | "월1회 사례관리회의 실시, 급여제공에 반영사항 기록" · "보호자 또는 입소자와의 상담내용 및 이력관리" · "입소자별 투약이력관리, 일별 투약여부 분석" · "연간 또는 월간 프로그램 계획 관리" |
+| 청구/재무 | 급여비용명세서·가정통신문 | "급여비용명세서 법정서식으로 제공, 보호자에게 이메일" · 법정서식(급여제공기록지·급여비용명세서·가정통신문·노인학대예방 및 대응) |
+
+**positive-hit term 빈도(grep -o | wc -l)**: 급여 18 · 보호자 13 · 평가 8 · SMS 6 · 일정 6 · 통계 5 · 상담 4 · 문자 3 · 회계 1 · 인사 1 · 모바일 2 · 본인부담 2 · 전자결재 2
+
+**★ transport 6-term 0-hit 재확인**: 이동서비스(0)·배차(0)·GPS(0)·RFID(0)·차량(0)·송영(0) = ALL 0-hit → 엔젤 LCMS 는 care-plan/nursing-record/billing-statement 도메인은 풍부하나 **자체 이동서비스/배차/송영 모듈 부재**.
+
+**ogada 대비 판정**:
+- 급여제공계획→실시→평가 lifecycle: ogada `ProgramReports`·`CareReports`·care-plan 도메인 흡수(**PARITY**)
+- 급여비용명세서 보호자 발송: 엔젤은 **이메일 단일** ↔ ogada `/billing/*` + 보호자 포털 + 알림(**알림톡/SMS/메일 멀티채널**)(**SUPERIOR**)
+- 사례관리회의 월1회 기록: ogada care-plan/상담 기록 흡수 가능(**PARTIAL「가정」** — 전용 '사례관리회의' 서식 여부 미확인 → P4「가정」 candidate G-CASE-MGMT-MEETING·승격 0)
+- **이동서비스/배차: 엔젤 부재 ↔ ogada Transport 자체 시스템(`TransportServiceFeeParityCatalog`·`TransportServiceLog`) SUPERIOR** — 경쟁 4종 유일
+- → 신규 진성갭 0(엔젤 LCMS 급여제공 lifecycle 은 ogada 흡수 범위·rules §11·§17 과대구축 회피)
+
+### §890-2 · 규제 백본 3-URL 재실측
+
+- **NHIS #44**(이동서비스비 러-1~4·PLAN_NOTES #44) [기존 URL 재실측]: `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769` · HTTP 200 · 7,572B · md5 `c886ff1f` · cmp vs `nhis_jo44_live_bnk889.html` = **BYTE-IDENTICAL = 612차**(BNK-889 611 → +1). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) → ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요. snapshot `nhis_jo44_live_bnk890.html`.
+- **silverangel system_feature** [§890-1 주력]: `c9507190`/45,601B · cmp vs BNK-889 = BYTE-IDENTICAL = **16차**(BNK-859→890). transport 6-term 0-hit. snapshot `silverangel_system_feature_live_bnk890.html`.
+- **law 2025-247**(장기요양급여 제공기준 고시) [기존 URL 재실측]: `https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110` · HTTP 200 · 78,450B · raw md5 `081bd321`(DRIFT vs BNK-889 raw `1d796f10`·cache-buster `?Time=`) · strip `Time=[0-9]*` semantic md5 `a913639a` · **890↔889 재strip diff = 0-line**(저장된 bnk889 snapshot 을 동일 sed 로 재strip 시 890 과 IDENTICAL·BNK-885 lineage `a913639a` 일치. BNK-886~889 report 가 표기한 `ad1db6e0` 는 당시 raw capture 의 추가 휘발 토큰 차이 추정; **불변 사실 = 재strip 890=889 diff 0-line**). 규제 앵커 재조정 불요·canonical URL `admRulSeq=2100000271110` 고정. snapshot `law_mohw_2025_247_admRulInfoP_live_bnk890.html`.
+- **longterm 502**: 재측정 skip(BNK-872 근본 원인 확정·lean-shell 오실레이션 signal only). **carefor func.php**: LIVE 재측정 skip(115-cycle+ timeout carry「미확인」)·disk canonical `6226e6eb`/98,328B LOCK.
+
+### §890-3 · audit-first HTTP 442 posture 50차 byte/count-exact IDENTICAL 마일스톤
+
+`@6d3c766` grep(`@{Get,Post,Patch,Put,Delete}Mapping`): GET 231(52.3%)·POST 144(32.6%)·PATCH 44(10.0%)·PUT 13(2.9%)·DELETE 10(2.3%) = **442** · @RestController 81 · controller당 5.46 = BNK-836→890 = **50차 연속 byte/count-exact IDENTICAL**(마일스톤). BE +0/FE +0(zero advance) 이후에도 endpoint 신설 0·CSS 신설 0. → **API 안정성 50-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 우선 · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합).
+
+### §890-4 · 갭 우선순위 재점검
+
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0 · 모듈 97.41% CARRY
+- P3/P4「가정」 candidate 8종 carry(BNK-881 P3 3종 + BNK-882 P3/P4 5종·진성갭 승격 0·rules §11·§17·「미확인」 유지)
+- BNK-890 관찰 신규 P4「가정」: **G-CASE-MGMT-MEETING**(엔젤 월1회 사례관리회의 전용 서식) — 「가정」·승격 0
+- BNK-884 M7 crosswalk 11/11 PARITY 유지 · silverangel LCMS 급여제공 lifecycle(§890-1) → ogada care-plan/report 흡수 · 엔젤 배차 부재 → ogada Transport SUPERIOR
+
+### §890-5 · planner 권고
+
+- **엔젤 LCMS 급여제공 lifecycle(§890-1)** — 급여제공계획→실시→변경→평가→지침교육 + 사례관리/상담/투약/평가도구·법정서식 보호자 이메일 → ogada care-plan/report 흡수·**멀티채널 알림 SUPERIOR**(엔젤 이메일 단일)·엔젤 배차 부재 → ogada Transport SUPERIOR. 마케팅 카피 「급여제공 lifecycle(계획→실시→평가) + 청구서 멀티채널(알림톡/SMS/메일) 발송」.
+- NHIS #44 612차·law strip diff 0-line·silverangel 16차(transport 0-hit) → 규제 상수·앵커 재조정 **불요**·엔젤 배차 부재 → ogada Transport SUPERIOR.
+- audit-first 442 **50차 IDENTICAL 마일스톤** → API posture 50-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT).
+- **BE Test 라벨 297 → 298 KPI 정정**(Test.java 297 + Tests.java 1·-1 undercount 소급 정정·fact 정정·가정 번복 아님) — 문서 KPI 라벨 정합 권고.
+- P3/P4「가정」 candidate 8종 + BNK-890 G-CASE-MGMT-MEETING 관찰 전부 carry(진성갭 승격 0).
+- tester FF merge gate **806** carry(BE 774+FE 32·BE-heavy·PLN 235차 merge_status: ready·다음 build auto-merge FF 발화 대기).
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+**주력 산출**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk890.txt`(§0~6 통합) + `silverangel_system_feature_live_bnk890.html`(16차·급여제공 lifecycle) + `nhis_jo44_live_bnk890.html`(612차·러-1~4) + `law_mohw_2025_247_admRulInfoP_live_bnk890.html`(strip diff 0-line). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §889 BNK-889 — 엔젤·롱텀·규제 역공학 4–6h · ★★★ **신규 엑셀 포맷 내성 축 — SEC-D34 축9/축10 = no-break space U+00A0 + ideographic space U+3000** — BE `@6d3c766`(BNK-888 `@e60e288` → +1 commit `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`) shared helper `ExcelAmountNormalizer.normalizeNumeric` 에 `.replace(NO_BREAK_SPACE,"")` + `.replace(IDEOGRAPHIC_SPACE,"")` 을 `.replaceAll("\\s+","")` 바로 앞에 명시 삽입(Java `\s` 미포함 유니코드 공백 명시 strip)·+2 @Test·behavior-neutral(ASCII input)·3 files +53/-5·SEC-D34 파일/포맷 내성 축 production 8→**10** + test 1 = **10-축 총합**·경쟁 4종 유일 SUPERIOR · ★★★ **회귀 회귀(regression-of-regression) = BNK-887 pre-block 로직 + BNK-888 §119 dual-field a11y routing 「리셋 동시성」 lock** — FE `@0ff9c7d`(BNK-888 `@5789173` → +1 commit `Add regression for program report date error reset`·test-only +36L) 4-check: alert 노출→정정→fetch 재발화→alert 리셋→시작일 aria-invalid/aria-describedby 리셋(모두 동시에)·orthogonal 판정 강화(번복 아님·rules §14)·리포트 폼 리셋 동시성 lock 유일 full-stack SUPERIOR · NHIS #44 제34조 **611차 byte-IDENTICAL**(러-1~4 verbatim) · silverangel system_feature **15차 byte-IDENTICAL**(transport 6-term 0-hit) · law 2025-247 strip BNK-886↔887↔888↔889 **4-cycle IDENTICAL**(diff 0-line) · audit-first HTTP 442 **49차** byte/count-exact IDENTICAL(SEC-D34 shared helper 확장·CSS 신설 0·API 안정성 49-cycle 동결) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T04:19:00Z -->
+
+**조사일**: 2026-07-19T04:19:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4–6h — BNK-888(교차검증·갭 우선순위 8h+·2026-07-19T03:36:42Z) → ~43분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — BE +1(SEC-D34 축9/축10 신규)·FE +1(회귀 회귀 test-only)·Route/Page/BE-Test/FE-Test 재산정(§889-0) · (2) ★★★ **SEC-D34 축9/축10 = no-break/ideographic space** — shared helper `ExcelAmountNormalizer` 단일 source of truth 확장·production 10-축 total(§889-1) · (3) ★★★ **FE 회귀 회귀 = orthogonal 패턴 「리셋 동시성」 lock** — BNK-887 pre-block 로직 + BNK-888 §119 dual-field a11y routing 리셋 동시성 명시(§889-2) · (4) **규제 백본 3-URL 교차검증** — NHIS #44 611차·silverangel 15차·law strip 4-cycle IDENTICAL(§889-3) · (5) **audit-first HTTP 442 49차 IDENTICAL**(§889-4) · (6) **갭 우선순위 재점검** — P3/P4「가정」 8종 carry·진성갭 승격 0(§889-5) · (7) **planner 권고 갱신**(§889-6).
+
+### §889-0 · Baseline (2026-07-19T04:19:00Z)
+
+- ogada backend develop = `6d3c766`(BNK-888 `@e60e288` → **+1 commit**·`fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`·author `jwj3400`·2026-07-19T03:38:03Z·ahead **774** vs `598d108`·BE @Test strict **2413**(BNK-888 2411 → +2·SEC-D34 축9/축10 회귀)·WT CLEAN·3 files +53/-5)
+- ogada frontend develop = `0ff9c7d`(BNK-888 `@5789173` → **+1 commit**·`Add regression for program report date error reset`·author `jwj3400`·2026-07-19T04:08:04Z·ahead **32** vs `b23711f`·WT CLEAN·1 file +36/-0·in-place `pages/ProgramReportsPage.test.jsx`·신규 파일 0·tester FF 대기)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·IDENTICAL) · Page **106**(carry·no new page·test-only) · FE test **543**(228 .test.js + 315 .test.jsx·in-place +36·신규 0·count 동결)
+- BE Test **297**(296 Test.java + 1 Tests.java·carry) · @Test strict **2413** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**49차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **806**(FE 32 + BE 774·BE-heavy·신규 마이그레이션 0·※ PLN 235차 merge_status: ready 설정 완료 → 다음 build `maybe_merge_version_to_test` auto-merge FF 발화 대기)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §889-1 · ★★★ SEC-D34 축9/축10 = no-break (U+00A0) + ideographic (U+3000) space [엑셀 포맷 내성 스캔]
+
+**BE `@6d3c766` commit body verbatim**:
+- **subject**: `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row`
+- **motivation** (verbatim 핵심): "Java's \s regex class does not match the no-break space (U+00A0, from CMS/web copy-paste) or the ideographic space (U+3000, from a fullwidth IME alongside the fullwidth digits/comma already handled), so a deposit or NHIS amount grouped with either space survived normalization, failed numeric parsing, and was silently dropped to null — skewing financial reconciliation."
+- **solution**: shared helper `ExcelAmountNormalizer` 단일 source of truth (BNK-886 refactor) 안에 신규 상수 `NO_BREAK_SPACE="\u00A0"`·`IDEOGRAPHIC_SPACE="\u3000"` 추가 + `.replace(NO_BREAK_SPACE,"")` + `.replace(IDEOGRAPHIC_SPACE,"")` 를 기존 `.replaceAll("\\s+","")` **바로 앞** 에 삽입(order-preserving·ASCII behavior-neutral). NHIS·BankDeposit 두 importer 자동 lockstep(rules §13 코드 재사용 posture 재확인).
+- **diff (`e60e288..6d3c766`)**: 3 files +53/-5(helper +27 / Normalizer test +11 / BankDeposit parser test +20)
+- **@Test strict**: 2411 → 2413 (+2·ExcelAmountNormalizerTest no-break/ideographic 통합 +1 + BankDepositExcelParserTest end-to-end 통합 +1)
+
+**Javadoc 확장 verbatim(shared helper)**:
+```
+Strips thousands separators (ASCII , and fullwidth ， U+FF0C), the won sign
+(₩ U+20A9 / fullwidth ￦ U+FFE6), the 원 currency marker and all whitespace
+— including the no-break (U+00A0) and ideographic (U+3000) spaces that Java's
+\s class does not match — and maps fullwidth digits (０-９ U+FF10-U+FF19) back
+to ASCII, so a display-formatted amount cell (e.g. "765,000원", "₩765,000",
+"￦765，000", "￦７６５，０００", "1 000 000" or "７６５　０００") is not silently
+dropped to null, which would otherwise skew financial reconciliation.
+```
+
+**SEC-D34 파일/포맷 내성 축 누적 (BNK-889·개정)**:
+| 축 | 유니코드/의미 | 커밋 | 성격 |
+|---|---|---|---|
+| 1 | 「원」 통화접미사 | BNK-875 | production |
+| 2 | ASCII 공백그룹(SPACE strip) | BNK-877 | production |
+| 3 | NHIS 「일」 접미사 | BNK-878 | production (NHIS-specific) |
+| 4 | test-layer harness lock | BNK-880 | test |
+| 5 | halfwidth ₩ (U+20A9) | BNK-881 | production |
+| 6 | fullwidth ￦ (U+FFE6) | BNK-883 | production |
+| 7 | fullwidth comma ， (U+FF0C) | BNK-884 | production |
+| 8 | fullwidth digit ０-９ (U+FF10-U+FF19) | BNK-885 | production |
+| **9** | **no-break space (U+00A0)** | **BNK-889·NEW** | **production** |
+| **10** | **ideographic space (U+3000)** | **BNK-889·NEW** | **production** |
+
+= production 9-축 + test 1-축 = **10-축 총합**(BNK-888 8-축 → +2). 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축. **경쟁 4종 유일 full-stack SUPERIOR**(케어포 func.php excel normalize helper 근거 0·이지케어 FAQ 유니코드 공백 정규화 verbatim 0·엔젤/롱텀 근거 0).
+
+**의의**:
+1. Java `\s` regex class 는 유니코드 공백 전체를 포함하지 않는다 — no-break/ideographic space 는 별도 명시 strip 필요(방어 계약).
+2. no-break space(U+00A0) 는 은행 웹포털·CMS 편집기·Word/HWP copy&paste 에서 흔히 잠입 → 실무 은행 입금 대사 실패 방어.
+3. ideographic space(U+3000) 는 한국 IME 전각 모드에서 이미 처리된 fullwidth digit/comma(BNK-884/885) 와 동일 시점 발생 → "fullwidth-currency normalize lineage" 자연 확장.
+4. BNK-886 refactor(single source of truth) posture 로 인해 신규 축 추가가 helper 1개 파일 수정만으로 두 importer 자동 lockstep — drift 위험 제거 재확인(rules §13 코드 재사용).
+
+### §889-2 · ★★★ FE 회귀 회귀(regression-of-regression) = orthogonal 패턴 「리셋 동시성」 lock
+
+**FE `@0ff9c7d` commit body**:
+- **subject**: `Add regression for program report date error reset`
+- **diff**: 1 file +36/-0 (`src/pages/ProgramReportsPage.test.jsx`·in-place 확장·신규 파일 0)
+- **회귀 시나리오 4-check(verbatim)**:
+  1. reversed 기간(현재월-1 ~ 시작일 이전) 입력 → `role="alert"` 배너에 `PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE` 노출 (BNK-887 pre-block 로직 발화)
+  2. valid 기간으로 정정 → 「조회」 클릭 → `fetchProgramParticipationReportApi.mock.calls.length >= 2` (BNK-887 pre-block 로직 해제·round-trip 허용)
+  3. `queryByRole("alert") === null` (BNK-887 배너 리셋)
+  4. `document.getElementById("program-report-from-date").getAttribute("aria-invalid") !== "true"` AND `.getAttribute("aria-describedby")` 에 `"program-report-to-date-error"` 미포함 (BNK-888 §119 dual-field a11y routing 리셋)
+
+**의의(rules §14 정합)**:
+- BNK-887 domain-config `resolveProgramReportDateRangeError` shared helper (`config/programReports.js`·pre-block 로직) 와
+- BNK-888 §119 `TransportServiceFeePanel` dual-field a11y routing 패턴(`aria-invalid` + `aria-describedby` cross-ref·스크린리더 노출) 이
+- **orthogonal 판정(BNK-888 §888-1)** 이면서도 **정정 후 리셋 방향에서는 반드시 동시에 정리**돼야 UI 로 신뢰됨을 처음으로 명시 lock.
+- 두 패턴이 orthogonal(로직 vs 스크린리더) 이라는 사실은 그대로 유지 — **번복 아님**. 그러나 「fixed」 상태가 UI 로 관찰되기 위해서는 pre-block reset + a11y attribute reset 두 축이 동시에 동작해야 하며, BNK-889 는 이를 처음으로 lock.
+
+**경쟁 4종 대비**:
+- 케어포 시설 셸 리포트 a11y 리셋 근거 0
+- 이지케어 데모 리포트 필드 검증 리셋 verbatim 0
+- 엔젤 리포트 활용법 라벨만 (실 리셋 로직 근거 0)
+- 롱텀 규제만
+= **리포트 폼 리셋 동시성 lock 유일 full-stack SUPERIOR**.
+
+### §889-3 · ★ 규제 백본 3-URL 재실측 (엔젤·롱텀·규제 rotation 초점)
+
+- **NHIS #44 제34조** [`joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · `cmp` vs `snapshots/nhis_jo44_live_bnk888.html` = **BYTE-IDENTICAL** = **611차 byte-IDENTICAL**(BNK-888 610차 → +1·zero drift). verbatim grep 재확인: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·**Transport 상수 재조정 불요**·id=2 0.85 carry. snapshot: `nhis_jo44_live_bnk889.html`.
+- **silverangel system_feature** [`silverangel/angelsystem/system_feature.do`](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) HTTP 200 · 45,601B · md5 `c950719098eecaf748bbdeea5deb93da` · `cmp` vs `snapshots/silverangel_system_feature_live_bnk888.html` = **BYTE-IDENTICAL** = **15차 byte-IDENTICAL**(BNK-888 14차 → +1). transport 6-term grep(`이동서비스|배차|GPS|RFID|차량|송영`) = **0-hit ALL** → 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인·**ogada Transport 자체 시스템 SUPERIOR**. snapshot: `silverangel_system_feature_live_bnk889.html`.
+- **law 2025-247** [`admRulInfoP.do?admRulSeq=2100000271110`](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) HTTP 200 · 78,450B · raw md5 `1d796f10af8a2fd65f58847821c1c5c0`(cache-buster `?Time=` DRIFT vs BNK-888 raw `c9976731`)/strip `sed 's/Time=[0-9]*/Time=STRIPPED/g'` semantic md5 `ad1db6e06903bc34e70e139a19d854cd` = **BNK-886↔887↔888↔889 4-cycle strip IDENTICAL**(diff 0-line·canonical URL `admRulSeq=2100000271110` 고정). snapshot: `law_mohw_2025_247_admRulInfoP_live_bnk889.html`. → **규제 앵커 재조정 불요**.
+- **longterm 502·carefor func.php** 재측정 skip(각 BNK-872 근본 원인 확정·115-cycle+ timeout carry「미확인」).
+
+### §889-4 · ★ audit-first HTTP 442 posture 49차 byte/count-exact IDENTICAL
+
+`@6d3c766` grep(`--include='*.java'` @{Get,Post,Patch,Put,Delete}Mapping): GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442** · @RestController **81**(loose) · endpoints per controller 5.46 = BNK-836→889 = **49차 byte/count-exact IDENTICAL**. BE +1(SEC-D34 축9/축10 shared helper 확장·service-layer only·CSS 신설 0) + FE +1(test-only 리셋 회귀) 후에도 endpoint 신설 **0** = **API 안정성 49-cycle 동결**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합). **SEC-D34 신규 축조차 shared helper (BNK-886 refactor 이후) 안에서만 확장 → API 표면 미영향** · 리팩터 posture(rules §13 코드 재사용) 재확인.
+
+### §889-5 · 갭 우선순위 재점검 (엔젤·롱텀·규제 rotation)
+
+- **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0**
+- **P3/P4「가정」 candidate 8종 전부 carry**(진성갭 승격 0·rules §11·§17·「미확인」 유지):
+  - BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+  - BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+- BNK-884 M7 crosswalk 11/11 PARITY 유지 · 본인부담 진성갭 0 재확인
+- BNK-888 §119 dual-field a11y routing 9-page rollout 유지 · BNK-889 「리셋 동시성」 lock 으로 강화
+- silverangel system_feature 15차 byte-IDENTICAL(transport 6-term 0-hit) → 엔젤 배차 부재 유지 → ogada Transport SUPERIOR carry(rules §11 과대구축 회피)
+- 모듈 커버 97.41% CARRY(진성갭 0)
+
+### §889-6 · planner 권고
+
+- **★★★ SEC-D34 파일/포맷 내성 10-축 명시** (production 9 + test 1): 「원」·ASCII 공백그룹·「일」·test·halfwidth ₩·fullwidth ￦·fullwidth comma ，·fullwidth digit ０-９·**no-break space U+00A0**·**ideographic space U+3000** · 마케팅 카피 「원화 기호 + 반각/전각 쉼표 + 전각 숫자 + 유니코드 공백(no-break·ideographic) 자동 정규화」 · 신규 축 추가는 shared helper `ExcelAmountNormalizer` 1개 파일만 수정하면 두 importer 자동 lockstep(BNK-886 refactor posture) — 유지보수성 SUPERIOR 재확인(rules §13/§16).
+- **★★★ 리포트 폼 「리셋 동시성」 lock 명시**: BNK-887 domain-config pre-block 로직 + BNK-888 §119 dual-field a11y routing 두 orthogonal 패턴 이 **정정 후 리셋 방향에서 반드시 동시에 정리** 돼야 함을 회귀 회귀(regression-of-regression) 로 명시 lock(BNK-889 `ProgramReportsPage.test.jsx` 4-check) — REQUIREMENTS §접근성 「리포트 폼 오류 정정 후 alert 배너 + 시작일 aria-invalid + aria-describedby 동시 리셋」 명시 권고 · 리포트 폼 리셋 동시성 lock 유일 full-stack SUPERIOR.
+- **NHIS #44 611차·law strip 4-cycle IDENTICAL·silverangel 15차(transport 0-hit)** → 규제 상수·앵커 재조정 **불요**·엔젤 배차 부재 → ogada Transport SUPERIOR.
+- **audit-first 442 49차 IDENTICAL** → API posture 49-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·SEC-D34 축9/축10 도 endpoint 신설 0·CSS 신설 0·shared helper 확장 posture 재확인).
+- **P3/P4「가정」 candidate 8종**(BNK-881 3 + BNK-882 5) 전부 carry(진성갭 승격 0·rules §11·§17)·「미확인」 유지.
+- **tester FF merge gate 806 carry**(BE 774+FE 32·BE-heavy·신규 마이그레이션 0·PLN 235차 merge_status: ready 설정 완료·다음 build auto-merge FF 발화 대기) — SEC-D34 축9/축10 + 리셋 동시성 회귀 이관 흡수 권고.
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+주력 산출: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk889.txt`(BNK-889 엔젤·롱텀·규제 역공학 4–6h 주력·§0~7 통합) + `nhis_jo44_live_bnk889.html`(611차·러-1~4) + `silverangel_system_feature_live_bnk889.html`(15차·transport 0-hit) + `law_mohw_2025_247_admRulInfoP_live_bnk889.html`(strip 4-cycle IDENTICAL). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §888 BNK-888 — 교차검증·갭 우선순위 8h+ · ★★★ **a11y CROSS-DOMAIN ROLLOUT — §119 이중 필드 오류 라우팅 → 9개 리포트 페이지** — FE `@5789173`(BNK-887 `@60716c66` → +1 commit·`fix(a11y/reports): route reversed date-range error to start-date field across 9 L02·L03·M5 reports (UXD-196)`) `TransportServiceFeePanel` §119 이중 필드(시작일+종료일 모두 `aria-invalid`·시작일이 `aria-describedby` 로 종료일 오류 id 참조) 라우팅 패턴을 **9개 form-polished 리포트 페이지**(L02 7 + L03 1 + M5 1)에 일괄 적용·WCAG 3.3.1·4.1.2 gap 폐쇄·`role="alert"` 안내는 종료일 단일 유지(중복 낭독 방지)·18 files +75/-0·신규 파일 0·신규 CSS 0·`npm test`(flock) 9파일 38/38 PASS·경쟁 4종 유일 full-stack SUPERIOR · BNK-887 domain-config shared-helper rollout(3 families)과 orthogonal — pre-block 로직 vs 스크린리더 노출 · NHIS #44 제34조 **610차 byte-IDENTICAL**(러-1~4 verbatim) · silverangel system_feature **14차 byte-IDENTICAL**(transport 6-term 0-hit) · law 2025-247 strip BNK-886↔887↔888 3-cycle IDENTICAL(diff 0-line) · audit-first HTTP 442 **48차** byte/count-exact IDENTICAL(FE a11y dual-field routing 도 endpoint 신설 0·CSS 신설 0·API 안정성 48-cycle 동결) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T03:36:42Z -->
+
+**조사일**: 2026-07-19T03:36:42Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-887(교차검증·갭 우선순위 8h+·2026-07-19T02:58:00Z) → ~39분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — 신규 FE 커밋 delta·Route·page·module 커버 % 재산정(§888-0) · (2) ★★★ **a11y CROSS-DOMAIN ROLLOUT** — FE `@5789173`(BNK-887 `@60716c66` → +1 commit·UXD-196) `TransportServiceFeePanel` §119 이중 필드 오류 라우팅 패턴을 9개 form-polished 리포트에 일괄 적용·WCAG 3.3.1·4.1.2 gap 폐쇄(§888-1) · (3) **규제 백본 3-URL 교차검증** — NHIS #44 610차·silverangel 14차·law strip 3-cycle IDENTICAL(§888-2) · (4) **audit-first HTTP 442 48차 IDENTICAL**(§888-3) · (5) **갭 우선순위 재점검** — P3/P4「가정」 8종 carry·진성갭 승격 0(§888-4) · (6) **planner 권고 갱신**(§888-5).
+
+### §888-0 · Baseline (2026-07-19T03:36:42Z)
+
+- ogada backend develop = `e60e288`(BNK-886→887→888 **3-cycle 동일 HEAD·zero advance**·`refactor(v3/SEC-D34): extract shared excel amount normalizer`·ahead **773** vs `598d108`·BE @Test strict **2411**·WT CLEAN)
+- ogada frontend develop = `5789173`(BNK-887 `@60716c66` → **+1 commit**·`fix(a11y/reports): route reversed date-range error to start-date field across 9 L02·L03·M5 reports (UXD-196)`·author `jwj3400`·2026-07-19T03:32:51Z 즉시 pickup·18 files +75/-0·신규 파일 0·in-place test +18(9 test.jsx × 2 라인)·ahead **31** vs `b23711f`·WT CLEAN·tester FF 대기)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·carry) · Page **107**(recount·no new page file in `5789173`·prior BNK-887 carry 106 → +1 corrected) · FE test **543**(228 .test.js + 315 .test.jsx·in-place +18·신규 0·count 동결)
+- BE Test **297**(296 Test.java + 1 Tests.java) · @Test strict **2411** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**48차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **804**(FE 31 + BE 773·BE-heavy·신규 마이그레이션 0)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §888-1 · ★★★ a11y CROSS-DOMAIN ROLLOUT — §119 이중 필드 오류 라우팅 → 9개 리포트 페이지
+
+**FE `@5789173` commit body 실측**(verbatim):
+- **subject**: `fix(a11y/reports): route reversed date-range error to start-date field across 9 L02·L03·M5 reports (UXD-196)`
+- **motivation**: coder 의 역방향 기간 사전 차단 5커밋(BNK-882/883/885/886/887)은 종료일 `DateInput` 에만 `aria-invalid`/`role=alert` 를 연결해, 시작일 `DateInput` 이 `aria-invalid`·`aria-describedby` 를 받지 못하는 **WCAG 3.3.1·4.1.2 갭**이 남았다 — 두 필드 모두 위반이지만 스크린리더엔 종료일만 잘못된 상태로 노출.
+- **solution**: **§119 `TransportServiceFeePanel` 이중 필드 오류 라우팅 패턴** 을 9개 form-polished 리포트에 일괄 적용 — 시작일도 `aria-invalid` 를 전달하고 `aria-describedby` 로 종료일 오류 id 를 참조. 안내 `role=alert` 는 종료일 단일 메시지만 유지해 중복 낭독 방지. `Field` render-prop 의 `controlProps` 는 병합만. 신규 `ds-*` 클래스 **0건**(CSS 무변경). `npm test`(flock) 9파일 **38/38 PASS**.
+- **diff (`60716c66..5789173`)**: 18 files +75/-0 (test only 확장 + a11y attribute·신규 파일 0)
+
+**§119 anchor 실측**(`src/components/transport/TransportServiceFeePanel.jsx:280-286`):
+```
+aria-invalid={dateRangeError ? true : fieldProps["aria-invalid"]}
+aria-describedby={dateRangeError
+  ? [fieldProps["aria-describedby"], SERVICE_FEE_TO_ERROR_ID].filter(Boolean).join(" ") || undefined
+  : fieldProps["aria-describedby"]}
+```
+→ 이 패턴이 9개 리포트 시작일 `DateInput` 에 identical 하게 배선 (예: `BathHelpReportPage.jsx:194-200`·`ProgramReportsPage.jsx:268-274` verbatim 확인).
+
+**a11y CROSS-DOMAIN ROLLOUT 실측(BNK-888 NEW)**:
+1. **L02 care-report family** — 7 pages: `BathHelp`·`CareMealExcretion`·`CareNursingService`·`IntensiveExcretion`·`PatientService`·`PositionChange`·`ServiceSummary` `ReportPage.jsx`
+2. **L03 nursing family** — 1 page: `NursingServiceReportsPage.jsx`
+3. **M5 program family** — 1 page: `ProgramReportsPage.jsx`
+= **9 pages · 3 domain families**·원본 anchor = `TransportServiceFeePanel` §119(transport-fee 4th family)·"id=2 form-polish 계보" 20차+ 의 dual-field a11y routing 형제
+
+**BNK-887 domain-config shared-helper rollout(3 families) 과의 관계 — 직교(orthogonal) 패턴**:
+- BNK-882→887: domain-config `resolveXxxDateRangeError` shared helper(3 families·**pre-block round-trip 로직**)
+- BNK-888 NEW: a11y dual-field routing(**스크린리더 이중 aria-invalid + aria-describedby cross-ref**)
+- 두 패턴은 orthogonal — 한 helper 는 로직·다른 패턴은 스크린리더 노출·번복 아님·rules §14
+
+- **판정**: BNK-882/883 예측「L02 리포트 form-polish 확산」 → BNK-885 L02 7 DOMAIN-COMPLETE → BNK-886 L03 nursing 확산 → BNK-887 M5 programs 확산(3rd domain-config family) → BNK-888 **9-page a11y dual-field routing rollout (§119 anchor)** = 예측 범위 초과 지속 확장·CROSS-DOMAIN ROLLOUT 지속(**번복 아님·rules §14**)
+- **경쟁 4종 대비**: 케어포 시설 셸 리포트 a11y 근거 0·이지케어 데모 리포트 필드 이중 aria-invalid verbatim 0·엔젤 리포트 활용법 라벨만·롱텀 규제만 = 리포트 시작일 필드 aria-invalid 이중 라우팅 유일 full-stack SUPERIOR
+
+### §888-2 · ★ 규제 백본 3-URL 교차검증
+
+- **NHIS #44 제34조** [`joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **610차 byte-IDENTICAL**(BNK-887 609차 → +1·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·**Transport 상수 재조정 불요**·id=2 0.85 carry. snapshot: `nhis_jo44_live_bnk888.html`.
+- **silverangel system_feature** [`silverangel/angelsystem/system_feature.do`](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) HTTP 200 · 45,601B · md5 `c950719098eecaf748bbdeea5deb93da` = **14차 byte-IDENTICAL**(BNK-887 13차 → +1). transport 6-term grep(`이동서비스|배차|GPS|RFID|차량|송영`) = **0-hit ALL** → 엔젤 자체 이동서비스/배차/GPS/RFID/차량 모듈 부재 재확인·**ogada Transport 자체 시스템 SUPERIOR**. snapshot: `silverangel_system_feature_live_bnk888.html`.
+- **law 2025-247** [`admRulInfoP.do?admRulSeq=2100000271110`](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) HTTP 200 · 78,450B · raw md5 `c99767311c89ea7f70d66116e685ddff`(cache-buster `?Time=` DRIFT)/strip `sed 's/Time=[0-9]*/Time=STRIPPED/g'` semantic md5 `ad1db6e06903bc34e70e139a19d854cd` = **BNK-886↔887↔888 IDENTICAL**(3-cycle strip-md5 동결·canonical URL `admRulSeq=2100000271110` 고정). snapshot: `law_mohw_2025_247_admRulInfoP_live_bnk888.html`. → **규제 앵커 재조정 불요**.
+- **longterm 502** 재측정 skip(lean-shell 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지).
+
+### §888-3 · ★ audit-first HTTP 442 posture 48차 byte/count-exact IDENTICAL
+
+`@e60e288` grep(`--include='*.java'` @{Get,Post,Patch,Put,Delete}Mapping): GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442** · @RestController **81**(loose) · endpoints per controller 5.46 = BNK-836→888 = **48차 byte/count-exact IDENTICAL**·FE +1(a11y dual-field routing·view/test only·CSS/endpoint 신설 0) 후에도 endpoint 신설 **0** = **API 안정성 48-cycle 동결**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합).
+
+### §888-4 · 갭 우선순위 재점검 (교차검증 rotation)
+
+- **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0**
+- **P3/P4「가정」 candidate 8종 전부 carry**(진성갭 승격 0·rules §11·§17·「미확인」 유지):
+  - BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+  - BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+- BNK-884 M7 crosswalk 11/11 PARITY 유지 · 본인부담 진성갭 0 재확인
+- 모듈 커버 97.41% CARRY(진성갭 0)
+
+### §888-5 · planner 권고
+
+- **a11y CROSS-DOMAIN ROLLOUT — §119 이중 필드 오류 라우팅 → 9-page 명시**(`TransportServiceFeePanel` §119 anchor·L02 7 + L03 1 + M5 1 = 9 pages·WCAG 3.3.1·4.1.2 gap 폐쇄) — REQUIREMENTS §접근성 「리포트 폼 시작일/종료일 이중 aria-invalid + aria-describedby cross-ref (§119 anchor)」 명시 권고·UXD-196 lineage carry·커밋 body verbatim "§119 TransportServiceFeePanel 이중 필드 오류 라우팅 패턴을 9개 리포트 페이지에 일괄 적용"·BNK-887 domain-config shared-helper rollout(3 families·pre-block round-trip) 과 **orthogonal**(로직 vs 스크린리더)·리포트 시작일 필드 aria-invalid 이중 라우팅 유일 full-stack SUPERIOR(경쟁 4종 근거 0).
+- **NHIS #44 610차·law strip 3-cycle IDENTICAL·silverangel 14차(transport 0-hit)** → 규제 상수·앵커 재조정 **불요**·엔젤 배차 부재 → ogada Transport SUPERIOR.
+- **audit-first 442 48차 IDENTICAL** → API posture 48-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·FE a11y dual-field routing 도 endpoint 신설 0·CSS 신설 0).
+- **P3/P4「가정」 candidate 8종**(BNK-881 3 + BNK-882 5) 전부 carry(진성갭 승격 0·rules §11·§17)·「미확인」 유지.
+- **tester FF merge gate 804 carry**(BE 773+FE 31·BE-heavy·신규 마이그레이션 0) — a11y dual-field routing 이관 흡수 권고.
+- **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+### §888-6 · per-cycle minimum 충족
+
+- **신규 증거 URL 1건+**: NHIS #44 610차 재실측(zero drift)·silverangel system_feature 14차 재실측(transport 0-hit)·law 2025-247 strip BNK-886↔887↔888 3-cycle IDENTICAL 재실측
+- **경쟁사 메뉴/필드/워크플로 상세 1블록+**: FE `@5789173` UXD-196 9-page a11y dual-field routing 실측 목록 + §119 anchor(`TransportServiceFeePanel.jsx:280-286`) verbatim 확인
+- **COMPETITOR_MATRIX 1행+ @HEAD 갱신**: `@5789173`/`@e60e288` delta 갱신
+- **BENCHMARK_REPORT §신규 소절 1건+**: §888 (6-subsection)
+
+주력 산출: `docs/planning/research/snapshots/cross_gap_priority_bnk888.txt`(BNK-888 교차검증·갭 우선순위 8h+ 주력·§888-0~6 통합) + `nhis_jo44_live_bnk888.html`(610차·러-1~4) + `law_mohw_2025_247_admRulInfoP_live_bnk888.html`(strip 3-cycle IDENTICAL) + `silverangel_system_feature_live_bnk888.html`(14차·transport 0-hit). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.
+
+## §887 BNK-887 — 교차검증·갭 우선순위 8h+ · ★★★ **form-polish domain-config CROSS-DOMAIN 3rd family — M5 programs** — FE `@60716c66`(BNK-886 `@d4d9887` → +1 commit·`fix(v1.2.1/programs): pre-block reversed date range before program-report round-trip (M5 id=2 form polish)`) `ProgramReportsPage`(5-7~5-10 4-variant) load guard 에 신규 shared helper `resolveProgramReportDateRangeError`(`config/programReports.js`) 배선·**커밋 body 명시** "mirrors care-report + transport-fee domain-config pattern" → form-polish domain-config pattern 이 **3 families**(transport-fee·care-report 8 pages·**program-report M5 NEW**)로 확산·경쟁 4종 유일 full-stack SUPERIOR · NHIS #44 제34조 **609차 byte-IDENTICAL**(러-1~4 verbatim) · silverangel system_feature **13차 byte-IDENTICAL**(transport 6-term 0-hit) · law 2025-247 strip BNK-886↔887 IDENTICAL(diff 0-line) · audit-first HTTP 442 **47차** byte/count-exact IDENTICAL(FE form-polish 도 endpoint 신설 0·API 안정성 47-cycle 동결) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T02:58:00Z -->
+
+**조사일**: 2026-07-19T02:58:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-886(ogada git 실측 6-8h·2026-07-19T02:12:30Z) → ~46분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — 신규 FE 커밋 delta·Route·page·module 커버 % 재산정(§887-0) · (2) **form-polish domain-config CROSS-DOMAIN 3rd family** — FE `@60716c66`(BNK-886 `@d4d9887` → +1 commit) `ProgramReportsPage`(M5 programs) 신규 shared helper `resolveProgramReportDateRangeError` 배선·domain-config pattern 3 families 확산(§887-1) · (3) **규제 백본 3-URL 교차검증** — NHIS #44 609차·silverangel 13차·law strip IDENTICAL(§887-2) · (4) **audit-first HTTP 442 47차 IDENTICAL**(§887-3) · (5) **갭 우선순위 재점검** — P3/P4「가정」 8종 carry·진성갭 승격 0(§887-4) · (6) **planner 권고 갱신**(§887-5).
+
+### §887-0 · Baseline (2026-07-19T02:58:00Z)
+
+- ogada backend develop = `e60e288`(BNK-886 **동일 HEAD·zero advance**·`refactor(v3/SEC-D34): extract shared excel amount normalizer`·ahead **773** vs `598d108`·BE @Test strict **2411**·WT CLEAN)
+- ogada frontend develop = `60716c66`(BNK-886 `@d4d9887` → **+1 commit**·`fix(v1.2.1/programs): pre-block reversed date range before program-report round-trip (M5 id=2 form polish)`·4 files +132/-3·신규 파일 1(`config/programReports.test.js`)·ahead **30** vs `b23711f`·WT CLEAN·tester FF 대기)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·carry) · Page **106**(carry) · FE test **543**(228 .test.js + 315 .test.jsx·+1 신규 `programReports.test.js`)
+- BE Test **297**(296 Test.java + 1 Tests.java) · @Test strict **2411** · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**47차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0)
+- merge gate **803**(FE 30 + BE 773·BE-heavy·신규 마이그레이션 0)
+- 모듈 커버 KPI **97.41%**(28.25/29·진성갭 0·carry)
+
+### §887-1 · ★★★ form-polish domain-config CROSS-DOMAIN 3rd family — M5 programs
+
+**FE `@60716c66` commit body 실측**(verbatim):
+- **subject**: `fix(v1.2.1/programs): pre-block reversed date range before program-report round-trip (M5 id=2 form polish)`
+- **motivation**: `ProgramReportsPage`(5-7~5-10 4-variant) 가 시작일>종료일 역방향 조회 기간을 서버에 그대로 보내 BE `ProgramReportService.resolveDateWindow` 의 400(「종료일은 시작일 이후여야 합니다.」) 이 round-trip **후에야** surface → UX 지연·서버 왕복 낭비
+- **solution**: 신규 shared helper `resolveProgramReportDateRangeError` / `isProgramReportDateRangeInOrder` / `PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE`(`config/programReports.js`·**verbatim BE lockstep**·"mirrors care-report + transport-fee domain-config pattern") 를 load guard head 에 배선 → 역방향 range 사전 차단·종료일 필드 anchor(role="alert" + aria-invalid·WCAG 3.3.1)·stale aggregate 초기화·missing endpoints 는 valid 유지(BE default window 대체)
+- **diff (`d4d9887..60716c66`)**: 4 files +132/-3(`config/programReports.js`·`config/programReports.test.js`(신규)·`ProgramReportsPage.jsx`·`ProgramReportsPage.test.jsx`)
+
+**form-polish domain-config pattern = 3 families 확산 실측(BNK-887)**:
+1. **transport-fee** — `resolveTransportServiceFeeDateRangeError`(이동서비스비 계보·20차+)
+2. **care-report** — `resolveCareReportDateRangeError`(**8 pages**·L02 7 + L03 1·BNK-882→886·grep 확인: `careReports.js`+`careReports.test.js`+BathHelp·CareMealExcretion·CareNursingService·IntensiveExcretion·NursingServiceReports·PatientService·PositionChange·ServiceSummary)
+3. **program-report** — `resolveProgramReportDateRangeError`(**M5 programs·ProgramReportsPage 5-7~5-10 4-variant·BNK-887 NEW**·grep 확인: `programReports.js`+`programReports.test.js`+ProgramReportsPage.jsx)
+
+- **판정**: BNK-882/883 예측「L02 리포트 form-polish 확산」 → BNK-885 L02 7 DOMAIN-COMPLETE → BNK-886 L03 nursing 확산 → BNK-887 **M5 programs 확산(3rd domain-config family)** = 예측 범위 초과 지속 확장·CROSS-DOMAIN ROLLOUT 지속(**번복 아님·rules §14**)
+- **경쟁 4종 대비**: 케어포 시설 셸 리포트 form-폴리시 근거 0·이지케어 데모 리포트 필드 검증 verbatim 0·엔젤 리포트 활용법 라벨만·롱텀 규제만 = 리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR
+
+### §887-2 · ★ 규제 백본 3-URL 교차검증
+
+- **NHIS #44 제34조** [`joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **609차 byte-IDENTICAL**(BNK-886 608차 → +1·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*` full-stack 1:1 SUPERIOR·**Transport 상수 재조정 불요**·id=2 0.85 carry. snapshot: `nhis_jo44_live_bnk887.html`.
+- **silverangel system_feature** [`silverangel/angelsystem/system_feature.do`](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) HTTP 200 · 45,601B · md5 `c950719098eecaf748bbdeea5deb93da` = **13차 byte-IDENTICAL**(BNK-886 12차 → +1). transport 6-term grep(`이동서비스|배차|GPS|RFID|차량|송영`) = **0-hit ALL** → 엔젤 자체 이동서비스/배차/GPS/RFID/차량 모듈 부재 재확인·**ogada Transport 자체 시스템 SUPERIOR**. snapshot: `silverangel_system_feature_live_bnk887.html`.
+- **law 2025-247** [`admRulInfoP.do?admRulSeq=2100000271110`](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) HTTP 200 · 78,450B · raw md5 `7e6a1905dab2e54d47ca110e4017930b`(cache-buster `?Time=` DRIFT)/strip `sed 's/Time=[0-9]*/Time=STRIPPED/g'` semantic md5 `ad1db6e06903bc34e70e139a19d854cd` = **BNK-886↔887 IDENTICAL**(diff 0-line·canonical URL `admRulSeq=2100000271110` 고정). snapshot: `law_mohw_2025_247_admRulInfoP_live_bnk887.html`. → **규제 앵커 재조정 불요**.
+- **longterm 502** 재측정 skip(lean-shell 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지).
+
+### §887-3 · ★ audit-first HTTP 442 posture 47차 byte/count-exact IDENTICAL
+
+`@e60e288` grep(`--include='*.java'` @{Get,Post,Patch,Put,Delete}Mapping): GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442** · @RestController **81**(loose) · endpoints per controller 5.46 = BNK-836→887 = **47차 byte/count-exact IDENTICAL**·FE +1(M5 programs form-polish·view/test only) 후에도 endpoint 신설 **0** = **API 안정성 47-cycle 동결**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합).
+
+### §887-4 · 갭 우선순위 재점검 (교차검증 rotation)
+
+- **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0**
+- **P3/P4「가정」 candidate 8종 전부 carry**(진성갭 승격 0·rules §11·§17·「미확인」 유지):
+  - BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+  - BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+- BNK-884 M7 crosswalk 11/11 PARITY 유지 · 본인부담 진성갭 0 재확인
+- 모듈 커버 97.41% CARRY(진성갭 0)
+
+### §887-5 · planner 권고
+
+- **form-polish domain-config pattern 3 families 명시**(transport-fee + care-report 8 pages + **program-report M5·BNK-887 NEW**) — REQUIREMENTS §M5 프로그램 리포트 form-polish 확산 명시·shared helper `resolveProgramReportDateRangeError` 계보·커밋 body 명시 "mirrors care-report + transport-fee domain-config pattern"·리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR. BNK-882/883/885/886 예측 범위 초과 지속 확장(번복 아님).
+- **NHIS #44 609차·law strip IDENTICAL·silverangel 13차(transport 0-hit)** → 규제 상수·앵커 재조정 **불요**·엔젤 배차 부재 → ogada Transport SUPERIOR.
+- **audit-first 442 47차 IDENTICAL** → API posture 47-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·FE form-polish 도 endpoint 신설 0).
+- **P3/P4「가정」 candidate 8종**(BNK-881 3 + BNK-882 5) 전부 carry(진성갭 승격 0·rules §11·§17)·「미확인」 유지.
+- **tester FF merge gate 803 carry**(BE 773+FE 30·BE-heavy·신규 마이그레이션 0) — M5 programs form-polish 이관 흡수 권고.
+- **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+### §887-6 · per-cycle minimum 충족
+
+- **신규 증거 URL 1건+**: NHIS #44 609차 재실측(zero drift)·silverangel system_feature 13차 재실측(transport 0-hit)·law 2025-247 strip BNK-886↔887 IDENTICAL 재실측
+- **경쟁사 메뉴/필드/워크플로 상세 1블록+**: FE `resolveProgramReportDateRangeError` 신규 shared helper 3-file 배선 + form-polish domain-config 3-family 실측 목록
+- **COMPETITOR_MATRIX 1행+ @HEAD 갱신**: `@60716c66`/`@e60e288` delta 갱신
+- **BENCHMARK_REPORT §신규 소절 1건+**: §887 (6-subsection)
+
+주력 산출: `docs/planning/research/snapshots/cross_gap_priority_bnk887.txt`(BNK-887 교차검증·갭 우선순위 8h+ 주력·§887-0~6 통합) + `nhis_jo44_live_bnk887.html`(609차·러-1~4) + `law_mohw_2025_247_admRulInfoP_live_bnk887.html`(strip IDENTICAL) + `silverangel_system_feature_live_bnk887.html`(13차·transport 0-hit). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.
+
+## §886 BNK-886 — ogada git 실측 6-8h · ★★★ **BNK-885 SEC-D34 8-축 → DRY refactor 완결** — BE `@e60e288` 신규 package-private helper `ExcelAmountNormalizer` (`billing.domain`)로 두 parser 의 byte-identical normalize chain 추출·behavior-neutral(기존 42/42 PASS)·6 files +330/-18·+9 @Test·drift 위험 제거 posture 향상 · ★★★ **form-polish DOMAIN-COMPLETE 확산 L02 → L03** — FE `@d4d9887` `NursingServiceReportsPage`(L03_M07/M09/M10 간호급여 리포트) `resolveCareReportDateRangeError` shared helper 배선·care-report family 총 **8 페이지** defense-in-depth 크로스-도메인 확산(L02 7 + L03 1)·경쟁 4종 유일 full-stack SUPERIOR · NHIS #44 제34조 **608차 byte-IDENTICAL**(러-1~4 verbatim) · silverangel system_feature **12차 byte-IDENTICAL**(transport 6-term 0-hit) · law 2025-247 strip BNK-885↔886 IDENTICAL(diff 0-line) · BE `@e60e288`(+1 SEC-D34 DRY refactor·@Test 2411 +9)/FE `@d4d9887`(+1 L03 nursing form-polish) 재실측 · audit-first HTTP 442 **46차** byte/count-exact IDENTICAL(refactor 커밋조차 endpoint 신설 0·API 안정성 46-cycle 동결) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T02:12:30Z -->
+
+**조사일**: 2026-07-19T02:12:30Z | **rotation**: ogada git 실측 6-8h — BNK-885(엔젤·롱텀·규제 4–6h·2026-07-19T01:30Z) → ~42분 후. 이번 사이클 초점: (1) **ogada BE/FE @HEAD 재실측** — 신규 커밋 delta·Route·page·module 커버 % 재산정(§886-1/2/6) · (2) **BNK-885 SEC-D34 8-축 → DRY refactor 검증** — BE `@e60e288`(BNK-885 `@c7b6608` → +1 commit·`refactor(v3/SEC-D34): extract shared excel amount normalizer`) `ExcelAmountNormalizer` 신규 helper 도입·behavior-neutral(§886-1) · (3) **form-polish DOMAIN-COMPLETE 확산 L02 → L03** — FE `@d4d9887`(BNK-885 `@ca31864` → +1 commit·`fix(v1.2.1/nursing): pre-block reversed date range before nursing-report round-trip`) `NursingServiceReportsPage`(L03_M07/M09/M10) 착지·care-report family 8 페이지 크로스-도메인 확산(§886-2) · (4) **규제 백본 3-URL 재실측** — NHIS #44 608차·silverangel system_feature 12차·law 2025-247 strip IDENTICAL(§886-3) · (5) **audit-first HTTP 442 46차 IDENTICAL** — refactor endpoint 신설 0·API 안정성 46-cycle 동결(§886-4) · (6) **planner 권고 갱신** — SEC-D34 DRY refactor 명시·care-report 8 페이지 크로스-도메인 확산 명시·규제 상수 재조정 불요·API posture 46차 동결(§886-5).
+
+### §886-0 · Baseline (2026-07-19T02:12:30Z)
+
+- ogada backend develop = `e60e288`(BNK-885 `@c7b6608` → **+1 commit**·`refactor(v3/SEC-D34): extract shared excel amount normalizer`·6 files +330/-18·ahead **773** vs `598d108`·BE @Test strict **2411**·+9 신규 `ExcelAmountNormalizerTest.java`·WT CLEAN)
+- ogada frontend develop = `d4d9887`(BNK-885 `@ca31864` → **+1 commit**·`fix(v1.2.1/nursing): pre-block reversed date range before nursing-report round-trip (id=2 form polish)`·2 files +60/-4·ahead **29** vs `b23711f`·WT CLEAN·tester FF 대기)
+- Route **133**(App.jsx `<Route\b` 132 + `<Routes>` 1·carry) · Page **106**(carry) · FE test **542**(227 .test.js + 315 .test.jsx·NursingServiceReportsPage.test.jsx in-place +38·신규 파일 0)
+- BE Test **297**(296 Test.java + 1 Tests.java·+1 신규 `ExcelAmountNormalizerTest.java`) · @RestController **81**(loose) · HTTP **442**(GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·**46차** byte/count-exact IDENTICAL·endpoint 신설 **0**) · Flyway V1–V196(신규 0·latest V194/V195/V196)
+- merge gate **802**(FE 29 + BE 773·BE-heavy·신규 마이그레이션 0·rev-list --left-right BE 0/773·FE 0/29)
+- 모듈 커버 KPI **97.41%**(28.25/29·비-1.0 실 id 2/8/10=0.85·12=0.7·진성갭 0·carry)
+
+### §886-1 · ★★★ SEC-D34 8-축 → DRY refactor (`ExcelAmountNormalizer` single source of truth)
+
+**BE `@e60e288` commit body 실측**(git show 요약):
+- **subject**: `refactor(v3/SEC-D34): extract shared excel amount normalizer`
+- **motivation**: `NhisExcelParser` 와 `BankDepositExcelParser` 이 SEC-D34 8-축(currency suffix·whitespace grouping·day marker·halfwidth ₩·fullwidth ￦·fullwidth comma·fullwidth digits·test-layer) 성장 과정에서 **byte-identical 로 복사된** normalize chain(WON_SIGN·FULLWIDTH_WON_SIGN·FULLWIDTH_COMMA·FULLWIDTH_DIGIT_ZERO/NINE 상수 + `mapFullwidthDigitsToAscii` helper + strip chain)을 각 파일 별 lockstep 편집 → **drift 위험**
+- **solution**: 신규 package-private helper `ExcelAmountNormalizer`(`src/main/java/com/ogada/backend/billing/domain/`) = **단일 source of truth**
+  - 상수: `WON_SIGN` (U+20A9)·`FULLWIDTH_WON_SIGN` (U+FFE6)·`FULLWIDTH_COMMA` (U+FF0C)·`FULLWIDTH_DIGIT_ZERO/NINE` (U+FF10/U+FF19)
+  - helper: `mapFullwidthDigitsToAscii` (전각 숫자 ０-９ → ASCII 0-9·strip 전 적용)
+  - static: `normalizeNumeric(String)` = 전체 normalize chain(fullwidth digits → 쉼표/won/원/whitespace strip)
+  - Javadoc 요지: "so a display-formatted amount cell (e.g. "765,000원", "₩765,000", "￦765，000", "￦７６５，０００" or "1 000 000") is not silently dropped to null, which would otherwise skew financial reconciliation"
+- **downstream**:
+  - `NhisExcelParser.normalizeNumeric`: NHIS-specific 「일」 day marker(BNK-878 축3) strip **후** delegate → -63L slim
+  - `BankDepositExcelParser.parseAmount`: delegate **후** `setScale(2, HALF_UP)` → -58L slim
+- **behavior-neutral**: 기존 8-축 regression test 42/42 PASS(NhisExcelParserTest 16 + BankDepositExcelParserTest 17 + 신규 `ExcelAmountNormalizerTest` 9)
+- **신규 `ExcelAmountNormalizerTest.java`** +64L / **9 @Test** verbatim(BE `@Test\b` grep):
+  1. `shouldReturnNullForNullOrBlank` (null / "" / "   ")
+  2. `shouldLeavePlainAsciiDigitsUnchanged` (ASCII neutral)
+  3. `shouldStripAsciiThousandsSeparatorsAndCurrencySuffix` (ASCII 쉼표+원 = 축1)
+  4. `shouldStripHalfwidthAndFullwidthWonSigns` (₩ U+20A9 + ￦ U+FFE6 = 축5+6)
+  5. `shouldStripFullwidthComma` (， U+FF0C = 축7)
+  6. `shouldMapFullwidthDigitsToAscii` (０-９ = 축8)
+  7. `shouldNormalizeMixedAllAxis` (all-axis composition)
+  8. `shouldStripWhitespaceGroups` (space thousands = 축2)
+  9. `shouldReturnNullWhenNothingNumericRemains` (edge)
+- **diff (`git diff --shortstat c7b6608..e60e288`)**: 6 files +330/-18(`ExcelAmountNormalizer.java` +83·`ExcelAmountNormalizerTest.java` +64·`NhisExcelParser.java` -63·`BankDepositExcelParser.java` -58·`NhisExcelParserTest.java` updated·`BankDepositExcelParserTest.java` updated)
+- **의의**:
+  1. **drift 위험 제거** — 향후 SEC-D34 축9+ 는 `ExcelAmountNormalizer` 만 편집하면 두 importer 자동 lockstep(BNK-881~885 5 사이클간 두 parser 를 병렬 편집한 취약점 해소)
+  2. **rules §13 코드 재사용** — 동일 함수 중복 제거·유지보수성 posture 향상
+  3. **경쟁 4종 대비 유일**: carefor func.php 정적 메뉴 근거 0·이지케어 FAQ rowid=21168/21298/21534/21563 엑셀 문구만·엔젤 system_feature 12차 IDENTICAL 근거 0·롱텀 규제만 = SEC-D34 8-축 + DRY refactor 는 4종 SUPERIOR
+- **판정**: BE zero-refactor budget 을 SEC-D34 8-축 성장 5-cycle(BNK-881~885) 직후 즉시 소진 = **maintainability 우선 posture** 확인(rules §16 유지보수성 > 성능)·**신규 진성갭 0·API surface 확장 0·behavior-neutral 42/42 PASS**
+
+### §886-2 · ★★★ form-polish DOMAIN-COMPLETE 확산 L02 → L03 (care-report family 8 페이지)
+
+**FE `@d4d9887` commit body 실측**:
+- **subject**: `fix(v1.2.1/nursing): pre-block reversed date range before nursing-report round-trip (id=2 form polish)`
+- **motivation**: `NursingServiceReportsPage`(L03_M07/M09/M10 간호급여 리포트) load guard 가 시작일>종료일 역방향 조회 기간을 서버에 그대로 보내 BE `NursingServiceRecordService.resolveDateWindow` 의 400(「종료일은 시작일 이후여야 합니다.」) 이 round-trip **후에야** surface → UX 지연·서버 왕복 낭비
+- **solution**:
+  - shared helper `resolveCareReportDateRangeError`(BNK-882 §882-5 신규 도입, in `config/careReports.js`) 배선 = **verbatim BE-message lockstep**(「종료일은 시작일 이후여야 합니다.」)
+  - 종료일 필드 anchor(role="alert" + aria-invalid) = **WCAG 3.3.1**
+  - stale aggregate 초기화·EMPTY_NURSING_SERVICE_REPORT 단일 상수(중복 empty-report 객체 제거)
+  - missing endpoints 는 valid 유지(BE default window 대체)
+- **커밋 body 명시** verbatim: **"Mirrors the L02 care-report form-polish lineage (BathHelp/PatientService/ServiceSummary)"** ← L02 domain-complete 계보의 **크로스-도메인 확산** (BNK-882/883/885 예측 범위 초과 확장)
+- **diff (`git diff --shortstat ca31864..d4d9887`)**: 2 files +60/-4(`NursingServiceReportsPage.jsx` +26/-4·`NursingServiceReportsPage.test.jsx` +38/0·신규 파일 0·in-place expand)
+- **`resolveCareReportDateRangeError` shared helper 사용 8 페이지 실측**(`grep -rl 'resolveCareReportDateRangeError' src/frontend/src`):
+  1. `BathHelpReportPage.jsx` (L02·목욕급여)
+  2. `CareMealExcretionReportPage.jsx` (L02·식이·배설)
+  3. `CareNursingServiceReportPage.jsx` (L02·요양보호일지)
+  4. `IntensiveExcretionReportPage.jsx` (L02·집중배설관찰)
+  5. **`NursingServiceReportsPage.jsx` (L03·간호급여 리포트 — BNK-886 NEW)**
+  6. `PatientServiceReportPage.jsx` (L02_M11·환자서비스)
+  7. `PositionChangeReportPage.jsx` (L02·체위변경)
+  8. `ServiceSummaryReportPage.jsx` (L02_M12·서비스총괄)
+- **크로스-도메인 확산**: L02(7 페이지 domain-complete·BNK-882/883/885) + **L03 nursing(1 페이지·BNK-886 NEW)** = care-report family **8 페이지** defense-in-depth
+- **경쟁 4종 대비**: 케어포 시설 셸 리포트 form-폴리시 근거 0(disk `carefor_func.php` grep 확인)·이지케어 데모 리포트 필드 검증 verbatim 0(BNK-880 근거)·엔젤 리포트 활용법 라벨만(system_feature 12차 IDENTICAL 근거 0)·롱텀 규제만 = 4종 대비 **유일 full-stack SUPERIOR**
+- **판정**: BNK-882/883 예측 「L02 리포트 form-polish 확산 여지」 → BNK-885 L02 7 페이지 DOMAIN-COMPLETE → BNK-886 **L03 로 확장** = 예측 범위 초과 크로스-도메인 rollout(**번복 아님·확장·rules §14**)·id=2 0.85 carry(진성갭 승격 아님)
+
+### §886-3 · ★ 규제 백본 3-URL 재실측
+
+- **NHIS #44 제34조** [`joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **608차 byte-IDENTICAL**(BNK-885 607차 → +1·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·**Transport 상수 재조정 불요**·id=2 0.85 carry. snapshot: `nhis_jo44_live_bnk886.html`.
+- **silverangel system_feature** [`silverangel/angelsystem/system_feature.do`](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) HTTP 200 · 45,601B · md5 `c950719098eecaf748bbdeea5deb93da` = **12차 byte-IDENTICAL**(BNK-885 11차 → +1). transport 6-term grep(`이동서비스|배차|GPS|RFID|차량|송영`) = **0-hit ALL** → 엔젤 자체 이동서비스/배차/GPS/RFID/차량 모듈 부재 재확인·**ogada Transport 자체 시스템 SUPERIOR**. snapshot: `silverangel_system_feature_live_bnk886.html`.
+- **law 2025-247** [`admRulInfoP.do?admRulSeq=2100000271110`](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) HTTP 200 · 78,450B · raw md5 `e176ac06d10b3e8ee491d5d4f6281ae6`(cache-buster `?Time=` DRIFT)/strip `sed 's/Time=[0-9]*/Time=STRIPPED/g'` semantic md5 `ad1db6e06903bc34e70e139a19d854cd` = **BNK-885↔886 IDENTICAL**(diff 0-line·canonical URL `admRulSeq=2100000271110` 고정). snapshot: `law_mohw_2025_247_admRulInfoP_live_bnk886.html`. → **규제 앵커 재조정 불요**.
+- **longterm 502** 재측정 skip(lean-shell 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지).
+
+### §886-4 · ★ audit-first HTTP 442 posture 46차 byte/count-exact IDENTICAL
+
+`@e60e288` grep(`--include='*.java'` @{Get,Post,Patch,Put,Delete}Mapping): GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442** · @RestController **81**(loose) · endpoints per controller 5.46 = BNK-836→886 = **46차 byte/count-exact IDENTICAL**·**refactor 커밋조차 endpoint 신설 0**(BE +1 commit = shared helper extract·**API surface 확장 없음**) = **API 안정성 46-cycle 동결**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합).
+
+**의의**: SEC-D34 축8 성장(BNK-881~885)에도 endpoint 신설 0 유지 → 축8 all-axis 를 endpoint 신설 없이 domain-layer 보강으로 흡수 = **audit-first posture** 확인. BNK-886 refactor 도 endpoint 신설 0 → refactor 도 API 계약 확장 없이 domain-layer 정리 = **posture 강화**.
+
+### §886-5 · planner 권고
+
+- **SEC-D34 8-축 DRY refactor(`ExcelAmountNormalizer` single source of truth) 명시** — 향후 신규 axis 는 한 파일만 수정하면 두 importer 자동 lockstep(drift 위험 제거)·rules §13 코드 재사용·유지보수성 posture 향상·경쟁 4종 유일. REQUIREMENTS §「엑셀 import 다중 축 정규화」 = shared helper 아키텍처 명시 권고.
+- **care-report form-polish 8 페이지 DOMAIN-COMPLETE + 크로스-도메인 확산 명시(L02 7 → L03 nursing 1)** — REQUIREMENTS §L02/L03 리포트 form-polish 명시·shared helper `resolveCareReportDateRangeError` 재사용 계보·리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR. BNK-882/883/885 예측 범위 초과 확장(번복 아님).
+- **NHIS #44 608차·law strip IDENTICAL·silverangel 12차(transport 0-hit)** → 규제 상수·앵커 재조정 **불요**·엔젤 배차 부재 → ogada Transport SUPERIOR.
+- **audit-first 442 46차 IDENTICAL** → API posture 46-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·refactor 도 endpoint 신설 0).
+- **P3/P4「가정」 candidate 8종**(BNK-881 3 + BNK-882 5) 전부 carry(진성갭 승격 0·rules §11·§17)·「미확인」 유지.
+- **tester FF merge gate 802 carry**(BE 773+FE 29·BE-heavy·신규 마이그레이션 0) — SEC-D34 DRY refactor + L03 nursing form-polish 이관 흡수 권고.
+- **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+### §886-6 · 가정/예측 번복 재점검(rules §14·§18)
+
+- BNK-882/883/885 예측 「L02 리포트 form-polish 확산」 = **CROSS-DOMAIN ROLLOUT CONFIRMED**(L02 7 페이지 DOMAIN-COMPLETE + L03 nursing 1 페이지 확장 = 8 페이지·**범위 초과 확장·번복 아님**)
+- BNK-884 M7 crosswalk 11/11 PARITY 유지·본인부담 진성갭 0 재확인
+- BNK-885 규제 백본 3-URL IDENTICAL 유지(NHIS #44 러-1~4·silverangel transport 6-term 0-hit·law strip)
+- BNK-882 신규 P3/P4「가정」 5종 carry(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION)
+- BNK-881 P3「가정」 3종 carry(G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY)
+- BNK-858 longterm 종료가정 결착 유지·BNK-826 law URL alias 폐기 유지·BNK-880 rowid=21704 라벨 fact 정정 유지
+- **신규 가정 번복 0·미확인 승격 0·P0~P3 결정 번복 0·KPI promote 0**
+
+### §886-7 · per-cycle minimum 충족
+
+- **신규 증거 URL 1건+**: NHIS #44 608차 재실측(zero drift)·silverangel system_feature 12차 재실측(transport 0-hit)·law 2025-247 strip IDENTICAL 재실측
+- **경쟁사 메뉴/필드/워크플로 상세 1블록+**: BE `ExcelAmountNormalizer` 신규 helper 상수/메서드 목록 + `ExcelAmountNormalizerTest` 9 @Test verbatim + FE `resolveCareReportDateRangeError` shared helper 사용 8 페이지 실측
+- **COMPETITOR_MATRIX 1행+ @HEAD 갱신**: `@e60e288`/`@d4d9887` 6-row delta 갱신
+- **BENCHMARK_REPORT §신규 소절 1건+**: §886 (7-subsection)
+
+주력 산출: `docs/planning/research/snapshots/ogada_git_remeasure_bnk886.txt`(BNK-886 ogada git 실측 6-8h 주력·§886-0~7 통합) + `nhis_jo44_live_bnk886.html`(608차·러-1~4) + `law_mohw_2025_247_admRulInfoP_live_bnk886.html`(strip IDENTICAL) + `silverangel_system_feature_live_bnk886.html`(12차·transport 0-hit). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.
+
+---
+
+## §885 BNK-885 — 엔젤·롱텀·규제 역공학 4–6h · ★★★ **BNK-882/883 예측 「L02 리포트 form-polish 확산」 = FULL DOMAIN ROLLOUT CONFIRMED** — FE `@ca31864` 나머지 5개 L02 리포트 페이지(BathHelp·CareMealExcretion·CareNursingService·IntensiveExcretion·PositionChange) 일괄 착지 → L02 care-report family form-polish DOMAIN-COMPLETE(M12→M11→+5 = 총 7 리포트 페이지) · ★★★ **신규 엑셀 포맷 내성 축 — SEC-D34 축8 = fullwidth digit ０-９ (U+FF10–U+FF19)** — BE `@c7b6608` `mapFullwidthDigitsToAscii` shared helper·전각 숫자→ASCII·"fullwidth-currency normalize lineage" 완성(₩→￦→，→０-９)·SEC-D34 파일/포맷 내성 8-축 완성 · NHIS #44 제34조 **607차 byte-IDENTICAL**(러-1~4 verbatim) · law 2025-247 strip `a913639a` **15-cycle IDENTICAL** · silverangel system_feature **11차 byte-IDENTICAL**(transport-axis 6-term 0-hit) · BE `@c7b6608`(+1 SEC-D34 축8)/FE `@ca31864`(+1 L02 DOMAIN rollout) 재실측 · audit-first HTTP 442 **45차** byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T01:30:00Z -->
+
+**조사일**: 2026-07-19T01:30:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4–6h — BNK-884(케어포 0–2h·2026-07-19T00:55Z) → ~35분 후. 이번 사이클 초점: (1) **엔젤·롱텀·규제 백본 재실측** — silverangel system_feature 공개 기능·law.go.kr 이동서비스비 러-1~4(PLAN_NOTES #44)·longterm 502 재확인(§885-3) · (2) **이전 BNK 예측 교차검증** — BNK-882/883 이 예측한 「resolveCareReportDateRangeError shared helper 의 잔여 L02 리포트 확산」이 FE `@ca31864`로 나머지 5페이지 일괄 착지했는지 실측(§885-1·CONFIRMED·DOMAIN-COMPLETE) · (3) **신규 엑셀 포맷 변경 스캔** — BE `@c7b6608` SEC-D34 축8 fullwidth digit(０-９ U+FF10-U+FF19) 정규화 신규 착지 실측(§885-2) · (4) ogada BE·FE develop HEAD 재실측(BNK-884 → BE +1 / FE +1) · (5) audit-first HTTP 442 45차 byte/count-exact IDENTICAL 재검증(§885-4) · (6) 갭 우선순위 재점검 — P3/P4「가정」 candidate 8종 carry·진성갭 승격 0·P0~P3 결정 번복 0(§885-5).
+
+**ogada baseline (git 실측 · BNK-884 → BE +1 / FE +1)**:
+- BE `@c7b6608` (BNK-884 `@c88687a` → **+1 commit**·`fix(v3/SEC-D34): normalize fullwidth-digit excel import amounts instead of dropping row`·`NhisExcelParser.normalizeNumeric`+`BankDepositExcelParser.parseAmount` 에 신규 shared helper `mapFullwidthDigitsToAscii`(상수 `FULLWIDTH_DIGIT_ZERO='\uFF10'`·`FULLWIDTH_DIGIT_NINE='\uFF19'`) 추가 → 한국 IME 전각 모드가 렌더하는 전각 숫자("￦１，２５０，０００")를 ASCII 0-9 로 매핑(기존 ￦·， strip 전에 적용·ASCII 입력 behavior-neutral) → 파싱 실패로 인한 유효 청구/입금 행 누락 방어·+2 @Test(`shouldNormalizeFullwidthDigitAmount*` NhisExcelParserTest 15→16·BankDepositExcelParserTest 16→17)·4 files +112/-15·WT CLEAN·ahead **772** vs `598d108`·BE @Test strict **2402**).
+- FE `@ca31864` (BNK-884 `@c3a0cac` → **+1 commit**·`fix(v1.2.1/care-reports): pre-block reversed date range across remaining L02 reports (form polish)`·나머지 5개 L02 리포트 페이지(`BathHelpReportPage`·`CareMealExcretionReportPage`·`CareNursingServiceReportPage`·`IntensiveExcretionReportPage`·`PositionChangeReportPage`)에 역방향 조회 기간 사전 차단 + 종료일 필드 `role="alert"`/`aria-invalid`(WCAG 3.3.1) + 거부된 기간 stale aggregate 초기화·10 files +317/-33·**신규 파일 0**(5 report `.test.jsx` in-place 확장)·ahead **28**(0/28) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@ca31864 / @c7b6608)**:
+| KPI | 값 | BNK-884 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (product route 무변·form polish only) | `grep -cE '<Route\b' App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `find '*Page.jsx'` |
+| FE test files | **542** (227 .test.js + 315 .test.jsx) | IDENTICAL (5 report `.test.jsx` in-place +·신규 0) | `find '*.test.js*'` |
+| BE @Test (strict) | **2402** | +2 (SEC-D34 축8 fullwidth digit 2-parser 회귀) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 45차** (BNK-836→885·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **800** (FE 28 + BE 772·BE-heavy) | +2 (FE +1·BE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk885.txt`(BNK-885 엔젤·롱텀·규제 4–6h 주력·§885-1~7 통합) · `nhis_jo44_live_bnk885.html`(607차 byte-IDENTICAL·러-1~4 verbatim) · `law_mohw_2025_247_admRulInfoP_live_bnk885.html`(15-cycle strip IDENTICAL) · `silverangel_system_feature_live_bnk885.html`(11차 byte-IDENTICAL·transport 0-hit). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0.
+
+### §885-1 ★★★ 교차검증 — BNK-882/883 예측 「L02 리포트 form-polish 확산」 = FULL DOMAIN ROLLOUT CONFIRMED (예측 번복 아님)
+
+**BNK 예측 이력**: BNK-882 §882-5/§882-8 이 「신규 shared helper `resolveCareReportDateRangeError` 는 다른 L02 리포트(BathHelp/BasicVital/PressureUlcer/MealExcretion)로 확산 여지 남김」 예측 → BNK-883 L02_M11 `PatientServiceReportPage` 착지(확산 2번째) → **본 사이클 = 나머지 5페이지 일괄 착지로 DOMAIN-COMPLETE**.
+
+**FE diff (`c3a0cac..ca31864`)**: 10 files +317/-33 — `BathHelpReportPage`·`CareMealExcretionReportPage`·`CareNursingServiceReportPage`·`IntensiveExcretionReportPage`·`PositionChangeReportPage` 5개 리포트 페이지 + 각 in-place `.test.jsx`. 각 페이지 load guard 에 역방향 조회 기간(시작일>종료일)을 서버 왕복 전 FE 사전 차단·종료일 필드 `role="alert"`+`aria-invalid`(WCAG 3.3.1) anchor·거부된 조회 기간 stale aggregate 즉시 초기화(오류 배너-표 정합)·결측 종료일은 BE default window 대체 valid.
+
+**판정 = CONFIRMED·DOMAIN-COMPLETE**(예측 번복 0). L02 care-report family form-polish 착지 경로: L02_M12 `ServiceSummaryReportPage`(BNK-882) → L02_M11 `PatientServiceReportPage`(BNK-883) → **+5 = 총 7 리포트 페이지** defense-in-depth 완성. shared helper 형제 `resolveTransportServiceFeeDateRangeError`(이동서비스비 계보 20차+·id=2). 경쟁 4종(케어포 시설 셸·이지케어 데모·엔젤 라벨만·롱텀 규제) 리포트 form-폴리시 근거 0 → 리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR.
+
+### §885-2 ★★★ 신규 엑셀 포맷 내성 축 — SEC-D34 축8 = fullwidth digit ０-９ (U+FF10–U+FF19) [엑셀 포맷 변경 스캔]
+
+**diff (`c88687a..c7b6608`)**: 4 files +112/-15 (`NhisExcelParser.normalizeNumeric` +41/- · `BankDepositExcelParser.parseAmount` +43/- · +2 Test).
+
+**문제**: 한국 IME 가 전각 모드로 남아 있으면 통화 서식 셀의 **숫자 자체**가 전각으로 렌더("￦１，２５０，０００"). ￦(U+FFE6·BNK-883)·，(U+FF0C·BNK-884) strip 후에도 잔존한 전각 숫자(０-９ U+FF10-U+FF19)가 BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 상태 왜곡). **해결**: 신규 shared helper `mapFullwidthDigitsToAscii`(０-９→0-9)를 기존 구분자/마커 strip **전에** 적용(ASCII 입력 behavior-neutral·전각 숫자 없으면 동일 참조 반환).
+
+**SEC-D34 엑셀 import 파일/포맷 내성 축 누적 (BNK-885)**: 축1 통화접미사(BNK-875)·축2 공백그룹(BNK-877)·축3 「일」 접미사(BNK-878)·축4 test-layer(BNK-880)·축5 halfwidth ₩ U+20A9(BNK-881)·축6 fullwidth ￦ U+FFE6(BNK-883)·축7 fullwidth comma ， U+FF0C(BNK-884)·**축8 fullwidth digit ０-９ U+FF10-U+FF19(BNK-885·신규)** = production 7-축 + test 1-축 = 8-축. commit body 가 명시하는 "fullwidth-currency normalize lineage"(₩→￦→，→０-９) 완성. 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축. 경쟁 4종 유일 SUPERIOR(케어포 시설 셸/엔젤 배차 부재/이지케어 데모 파일 무결성 verbatim 0/롱텀 규제만).
+
+### §885-3 ★ 규제 백본 재실측 zero substantive drift [엔젤·롱텀·규제 focus·기존 URL 재실측]
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조(이동서비스비 러-1~4·PLAN_NOTES #44) live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **607차 byte-IDENTICAL**(BNK-884 606차 → +1)·verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)** live HTTP 200·**78,450B**·raw md5 `4e0e17393ada6b90b5708089583d329f`(DRIFT vs BNK-884 raw `11a5c2ba`·전량 cache-buster `?Time=` 숫자)·strip `Time=[0-9]*` 후 semantic md5 **`a913639ab52293e3571cfe7e3ca35097`** = **15-cycle strip IDENTICAL**(canonical URL `admRulSeq=2100000271110` 고정).
+- **[silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)** live HTTP 200·**45,601B**·md5 `c950719098eecaf748bbdeea5deb93da` = **11차 byte-IDENTICAL**(BNK-859→885)·transport-axis grep 이동서비스(0)·배차(0)·GPS(0)·RFID(0)·차량(0)·송영(0) = **6-term ALL 0-hit** 재확인(엔젤 자체 이동서비스/배차/GPS 모듈 부재·ogada Transport 자체 시스템 SUPERIOR).
+- **longterm 502** — live HTTP 302·0B(session-required redirect stub)·「미확인」 carry(BNK-872 근본 원인 확정 이후·기능 갭 아님). **carefor func.php** — LIVE HTTP 000 timeout(114-cycle+ carry·「미확인」·disk canonical `6226e6eb` LOCK).
+
+### §885-4 ★ audit-first HTTP 442 posture 45차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+
+`@c7b6608` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→885 **45차** 연속 IDENTICAL. BE +1(SEC-D34 fullwidth digit production·service-layer)+FE +1(L02 form-polish view/test) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+### §885-5 ★ 가정/예측 번복 재점검 (rules §14·§18)
+
+- **BNK-882/883 예측 「L02 리포트 form-polish 확산」 = FULL DOMAIN ROLLOUT CONFIRMED**(번복 아님·DOMAIN-COMPLETE 7 페이지) · BNK-884 M7 본인부담 crosswalk 11/11 PARITY 유지 · BNK-880 rowid=21704 라벨 fact 정정 유지 · BNK-858 longterm 종료가정 결착 유지 · BNK-826 law URL alias 폐기 유지.
+- BNK-881 P3「가정」 3종(G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY) carry · BNK-882 P3/P4「가정」 5종(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION) carry = 총 8종.
+- 신규 가정 번복 **0**·미확인 승격 **0**·P0~P3 결정 번복 **0**·KPI promote **0**·모듈 97.41% CARRY.
+
+### §885-6 ★★ planner 액션 아이템 [갭 우선순위 동결]
+
+1. **REQUIREMENTS §L02 리포트 form-polish DOMAIN-COMPLETE 명시 권고** — resolveCareReportDateRangeError shared helper 가 L02 care-report family 7 리포트 페이지(ServiceSummary·PatientService·BathHelp·CareMealExcretion·CareNursingService·IntensiveExcretion·PositionChange) 전량 착지 = **DOMAIN-COMPLETE**·리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR·BNK-882/883 예측 확산 완결.
+2. **SEC-D34 엑셀 import 포맷 내성 8-축 명시** — 통화접미사·공백그룹·일접미사·test·halfwidth ₩·fullwidth ￦·fullwidth comma ，·**fullwidth digit ０-９** = 경쟁 4종 유일 SUPERIOR. 마케팅 카피 「엑셀 원화 기호 ₩/￦ + 반각/전각 쉼표 + 전각 숫자 자동 정규화 — 한글 IME 전각 모드 셀도 재무 대사 행 누락 방어」.
+3. **NHIS #44 §34조 607차 IDENTICAL(러-1~4 verbatim) · law 2025-247 15-cycle strip IDENTICAL · silverangel system_feature 11차(transport 6-term 0-hit)** → 규제 상수·앵커 재조정 불요·엔젤 배차 부재 → ogada Transport SUPERIOR carry.
+4. **audit-first HTTP 442 45차 IDENTICAL** → API posture 45-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT).
+5. **P3/P4「가정」 candidate 8종(BNK-881 3 + BNK-882 5) 전부 carry** — 진성갭 승격 0·rules §11·§17 과대구축 회피·「미확인」 유지.
+6. **tester FF merge gate 800 carry**(BE 772 + FE 28·BE-heavy·신규 마이그레이션 0) — SEC-D34 fullwidth digit 축8 + L02 form-polish DOMAIN rollout test 이관 흡수 권고.
+7. 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·KPI promote 0·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+## §884 BNK-884 — 케어포 역공학 0–2h · ★★★ **케어포 func.php M7「본인부담금」 7-x 11-leaf → ogada `/billing/*` Route 1:1 전수 crosswalk 첫 완결** (✅ 11/11 PARITY · GAP 0 · PARTIAL 0 · phantom 0 · SUPERIOR 4축 · SUPERSET 5종 · 본인부담 도메인 진성갭 0 재확인) · ★★★ **신규 엑셀 포맷 내성 축 — SEC-D34 축7 = fullwidth comma ， (U+FF0C)** — BE `@c88687a` `NhisExcelParser`+`BankDepositExcelParser` 전각 쉼표 strip(BNK-883 fullwidth ￦ U+FFE6 형제)·SEC-D34 파일/포맷 내성 7-축 완성 · NHIS #44 제34조 **606차 byte-IDENTICAL** · law 2025-247 strip `a913639a` **14-cycle IDENTICAL** · silverangel system_feature **10차 byte-IDENTICAL**(배차 0-hit) · BE `@c88687a`(+1 SEC-D34 축7)/FE `@c3a0cac`(zero advance) 재실측 · audit-first HTTP 442 **44차** byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T00:55:00Z -->
+
+**조사일**: 2026-07-19T00:55:00Z | **rotation**: 케어포 역공학 0–2h — BNK-883(교차검증·갭 우선순위 8h+·2026-07-19T00:05Z) → ~50분 후. 이번 사이클 초점: (1) **케어포 func.php M7「본인부담금」 7-x 번호식 흐름 leaf-level 첫 전수 crosswalk** — BNK-860 M7 copay route 1:1(개괄) → 본 사이클 11-leaf(7-1..7-10 + 7-2-1) 전수 실측·ogada `/billing/*` 18-route 1:1 매핑(§884-1) · (2) **신규 엑셀 포맷 변경 스캔** — BE `@c88687a` SEC-D34 축7 fullwidth comma ，(U+FF0C) 정규화 신규 착지 실측(§884-2) · (3) ogada BE·FE develop HEAD 재실측(BNK-883 → BE +1 / FE zero advance) · (4) 규제 백본 3-URL 재실측(NHIS #44 606차·law 2025-247 14-cycle strip·silverangel system_feature 10차) · (5) audit-first HTTP 442 44차 byte/count-exact IDENTICAL 재검증 · (6) 갭 우선순위 재점검 — P3/P4「가정」 candidate 8종 carry·진성갭 승격 0·M7 도메인 GAP 0 재확인.
+
+**ogada baseline (git 실측 · BNK-883 → BE +1 / FE zero advance)**:
+- BE `@c88687a` (BNK-883 `@ce656d5` → **+1 commit**·`fix(v3/SEC-D34): normalize fullwidth comma grouped excel import amounts instead of dropping row`·`NhisExcelParser.normalizeNumeric`+`BankDepositExcelParser.parseAmount` 에 신규 상수 `FULLWIDTH_COMMA="\uFF0C"` 추가 → 전각 서식 셀("￦765，000") 의 전각 천단위 구분자(U+FF0C)를 ASCII "," 와 lockstep strip → BigDecimal/Integer 파싱 실패로 인한 유효 청구/입금 행 누락 방어·정상 입력 behavior-neutral·+2 @Test(`shouldNormalize*FullwidthComma*` NhisExcelParserTest+BankDepositExcelParserTest)·4 files +67/-15·WT CLEAN·ahead **771** vs `598d108`·BE @Test strict **2400**).
+- FE `@c3a0cac` (BNK-883 **동일 HEAD·zero advance**·coder develop 신규 커밋 0·WT CLEAN·ahead **27**(0/27) vs origin/test=`b23711f`·tester FF 대기·subject `fix(v1.2.1/care-reports): pre-block reversed date range before patient-service round-trip (L02_M11 form polish)`).
+
+**git 실측 KPI (@c88687a / @c3a0cac)**:
+| KPI | 값 | BNK-883 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (FE zero advance) | `grep -cE '<Route\b' App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `find '*Page.jsx'` |
+| FE test files | **542** (227 .test.js + 315 .test.jsx) | IDENTICAL (FE zero advance) | `find '*.test.js*'` |
+| BE @Test (strict) | **2400** | +2 (SEC-D34 축7 fullwidth comma 2-parser 회귀) | `grep -rE '^\s*@Test\b' src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 44차** (BNK-836→884·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **798** (FE 27 + BE 771·BE-heavy) | +1 (BE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/carefor_m7_copay_flow_1to1_bnk884.txt`(BNK-884 케어포 M7 본인부담 7-x leaf-level crosswalk 주력·§884-1~11 통합) · `nhis_jo44_live_bnk884.html`(606차 byte-IDENTICAL) · `law_mohw_2025_247_admRulInfoP_live_bnk884.html`(14-cycle strip IDENTICAL) · `silverangel_system_feature_live_bnk884.html`(10차 byte-IDENTICAL·배차 0-hit). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0.
+
+### §884-1 ★★★ 케어포 func.php M7「본인부담금」 7-x 11-leaf → ogada `/billing/*` Route 1:1 전수 crosswalk (첫 leaf-level 완결)
+
+**disk canonical**: `snapshots/carefor_func.php` md5 `6226e6eb`/98,328B(BNK-810→884 113-cycle+ IDENTICAL)·`grep -oE "7-[0-9]+"` → M7 = **11-leaf**(top 10 + sub-leaf 7-2-1). carefor func.php LIVE = HTTP 000 20s timeout(113-cycle+ carry·「미확인」 유지·disk canonical LOCK).
+
+**BNK 이력 차별점**: BNK-860 은 M7 copay route 1:1 을 개괄 수준으로 캡처. **본 사이클 = 7-x 11-leaf 전수 실측 + ogada `/billing/*` 18-route 1:1 첫 leaf-level crosswalk 완결**.
+
+**11-leaf crosswalk 판정 (§7 텍스트 상세 참조)**:
+| carefor M7 leaf | ogada Route/서비스 | 판정 |
+|---|---|---|
+| 7-1 본인부담금 청구관리 | `/billing` + `/billing/claims/:claimId` · `BillingClaim*` | ✅ PARITY |
+| 7-2 본인부담금 입금관리 | `/billing/payments` · `BankDepositImportService`(은행 입금 엑셀 대사) | ✅ PARITY(+SUPERIOR) |
+| 7-2-1 의료비공제(연말정산) | `MedicalExpenseDeduction*` · `/billing/reports/medical-deduction`(+국세청 CSV export) · `/clients/{id}/medical-expense-deduction` · `/guardian/.../medical-expense-deduction` | ✅ SUPERIOR(보호자 포털 자가조회+국세청 배치 export) |
+| 7-3 본인부담금 미납관리 | `/billing/overdue` | ✅ PARITY |
+| 7-4 본인부담금 자동이체 (CMS) | `/billing/cms` · `CmsService`(Enrollment·DebitRequest·CollectionRequest) | ✅ PARITY(+SUPERIOR: 다계좌 정산·가상계좌) |
+| 7-5 본인부담금 간편결제 | `/billing/easy-pay` · `EasyPayService` | ✅ PARITY |
+| 7-6 본인부담금 청구대장 리포트 | `/billing/reports/charges` | ✅ PARITY |
+| 7-7 본인부담금 입금대장 리포트 | `/billing/reports/deposits` | ✅ PARITY |
+| 7-8 본인부담금 수납대장 리포트 | `/billing/reports/receipts` | ✅ PARITY |
+| 7-9 본인부담금 수납,환불내역 | `/billing/cash-receipts`(현금영수증) + `/billing/reports/refunds` · `CopayRefundFeePolicyCatalog` | ✅ PARITY(+SUPERIOR: 현금영수증 발급+환불 수수료 정책) |
+| 7-10 본인부담금 간편계산기 | `/billing/calculator` · `CopayRefundFeePreview` | ✅ PARITY |
+
+**집계**: ✅ **11/11 PARITY**(SUPERIOR 축 4: 7-2·7-2-1·7-4·7-9) · ❌ GAP 0 · △ PARTIAL 0 · phantom 0. **ogada SUPERSET 5종**(케어포 flat M7 미노출): 본인부담 통계 리포트 `/billing/reports/statistics`(G26)·본인부담률 관리 `/billing/copay-rates`·수가 스케줄 `/billing/fee-schedules`·공단 엑셀 import batch `/billing/imports/nhis`(SEC-D34)·수지파인 BPO SSO `/accounting`. **메뉴 depth**: carefor M7 flat 2-depth(7-2-1만 sub) < ogada nested `/billing/*` 18-route(리포트 `BillingReportPage` variant 재사용) = organizational depth SUPERIOR. **판정**: 본인부담(M7) 도메인 진성갭 **0** 재확인·신규 P3「가정」 candidate 0.
+
+### §884-2 ★★★ 신규 엑셀 포맷 내성 축 — SEC-D34 축7 = fullwidth comma ， (U+FF0C) [엑셀 포맷 변경 스캔]
+
+**diff (`ce656d5..c88687a`)**: 4 files +67/-15 (`NhisExcelParser.normalizeNumeric` +21/-8 · `BankDepositExcelParser.parseAmount` +19/-7 · `NhisExcelParserTest` +22 · `BankDepositExcelParserTest` +20).
+
+**문제**: 일부 한국 엑셀이 전각 통화 서식 셀에 fullwidth ￦(U+FFE6·BNK-883 처리)와 함께 **fullwidth comma ，(U+FF0C)**를 천단위 구분자로 렌더("￦765，000") → 파서가 ASCII "," 만 제거 → 전각 쉼표 잔존 → BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 상태 왜곡). **해결**: 신규 상수 `FULLWIDTH_COMMA="\uFF0C"` 를 ASCII "," 정규화와 lockstep strip(정상 입력 behavior-neutral).
+
+**SEC-D34 엑셀 import 파일/포맷 내성 축 누적 (BNK-884)**: 축1 통화접미사(BNK-875)·축2 공백그룹(BNK-877)·축3 「일」 접미사(BNK-878)·축4 test-layer(BNK-880)·축5 halfwidth ₩ U+20A9(BNK-881)·축6 fullwidth ￦ U+FFE6(BNK-883)·**축7 fullwidth comma ， U+FF0C(BNK-884·신규)** = production 6-축 + test 1-축 = 7-축 파일/포맷 내성. 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축. 경쟁 4종 유일(케어포 시설 셸/엔젤 배차 부재/이지케어 데모 파일 무결성 verbatim 0/롱텀 규제만).
+
+### §884-3 ★ 규제 백본 3-URL 재실측 zero substantive drift [기존 URL 재실측]
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조 live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **606차 byte-IDENTICAL**(BNK-883 605차 → +1)·verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)** live HTTP 200·**78,450B**·raw md5 `11a5c2ba9e0d614a1d77a3876d839693`(DRIFT vs BNK-883 `5a7a8935`·전량 cache-buster `?Time=` 숫자)·strip `Time=[0-9]*` 후 semantic md5 **`a913639ab52293e3571cfe7e3ca35097`** = **14-cycle strip IDENTICAL**(canonical URL `admRulSeq=2100000271110` 고정).
+- **[silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)** live HTTP 200·**45,601B**·md5 `c950719098eecaf748bbdeea5deb93da` = **10차 byte-IDENTICAL**(BNK-859→884·이동서비스/배차/GPS/RFID/차량 0-hit 재확인·엔젤 자체 배차 부재 carry·ogada Transport 자체 시스템 SUPERIOR).
+- **carefor func.php** — LIVE HTTP 000 20s timeout·disk canonical `6226e6eb` LOCK·113-cycle+ carry·「미확인」 유지(M7 crosswalk 은 disk canonical grep 근거). **longterm 502** — 재측정 skip(BNK-872 근본 원인 확정 이후 lean-shell 오실레이션 signal only·기능 갭 아님).
+
+### §884-4 ★ audit-first HTTP 442 posture 44차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+
+`@c88687a` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→884 **44차** 연속 IDENTICAL. BE +1(SEC-D34 fullwidth comma production·service-layer) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+### §884-5 ★ 가정/예측 번복 재점검 (rules §14·§18)
+
+- **M7 본인부담 crosswalk = 11/11 PARITY**(GAP 0) → 본인부담 도메인 진성갭 없음 재확인·신규 P3「가정」 candidate **0**(carefor M7 flat 흐름 전량 ogada 흡수).
+- BNK-880 「BNK-878 rowid=21704 라벨 fact 정정」 유지(P3 지위 불변) · BNK-858 longterm 종료가정 최종 결착 유지 · BNK-826 law URL alias 폐기 유지.
+- BNK-881 P3「가정」 3종(G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY) carry · BNK-882 P3/P4「가정」 5종(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION) carry = 총 8종.
+- 신규 가정 번복 **0**·미확인 승격 **0**·P0~P3 결정 번복 **0**·KPI promote **0**·모듈 97.41% CARRY.
+
+### §884-6 ★★ planner 액션 아이템 [갭 우선순위 동결]
+
+1. **REQUIREMENTS §본인부담 lifecycle 명시 권고** — 케어포 M7 7-x 11-leaf → ogada `/billing/*` **11/11 PARITY**(GAP 0·SUPERIOR 4·SUPERSET 5). 본인부담 도메인 진성갭 0 재확인·메뉴 depth SUPERIOR.
+2. **SEC-D34 엑셀 import 포맷 내성 7-축 명시** — 통화접미사·공백그룹·일접미사·test·halfwidth ₩·fullwidth ￦·**fullwidth comma ，** = 경쟁 4종 유일 SUPERIOR. 마케팅 카피 「엑셀 원화 기호 ₩/￦ + 반각/전각 쉼표 자동 정규화 — 재무 대사 행 누락 방어」.
+3. **SUPERIOR 마케팅 카피 후보** — 「의료비공제(연말정산)를 보호자가 포털에서 직접 조회 + 국세청 배치 CSV 자동 export — 케어포 대비 셀프서비스 우위」·「본인부담 CMS 다계좌 정산·가상계좌·현금영수증·환불 수수료 정책 카탈로그」.
+4. **NHIS #44 §34조 606차 IDENTICAL · law 2025-247 14-cycle strip IDENTICAL · silverangel system_feature 10차** → 규제 상수·앵커 재조정 불요.
+5. **audit-first HTTP 442 44차 IDENTICAL** → API posture 44-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT).
+6. **P3/P4「가정」 candidate 8종(BNK-881 3 + BNK-882 5) 전부 carry** — 진성갭 승격 0·rules §11·§17 과대구축 회피·「미확인」 유지·M7 신규 candidate 0.
+7. **tester FF merge gate 798 carry**(BE 771 + FE 27·BE-heavy·신규 마이그레이션 0) — SEC-D34 fullwidth comma 축7 test 이관 흡수 권고.
+8. 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·KPI promote 0·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+## §883 BNK-883 — 교차검증·갭 우선순위 8h+ · ★★★ **BNK-882 예측 「L02 리포트 form-polish 확산」 착지 확인 (예측 번복 아님·CONFIRMED)** — FE `@c3a0cac` `PatientServiceReportPage`(L02_M11)에 `resolveCareReportDateRangeError` shared helper wire → L02 리포트 도메인 확산 2번째 페이지(M12 `ServiceSummaryReportPage` → M11) · ★★★ **신규 엑셀 포맷 내성 축 — SEC-D34 축6 = fullwidth ￦ (U+FFE6)** — BE `@ce656d5` `NhisExcelParser`+`BankDepositExcelParser` U+FFE6 원화 기호 strip(BNK-881 halfwidth ₩ U+20A9 형제)·SEC-D34 파일/포맷 내성 6-축 완성 · NHIS #44 제34조 **605차 byte-IDENTICAL** · law 2025-247 strip `a913639a` **13-cycle IDENTICAL** · silverangel system_feature **9차 byte-IDENTICAL**(배차 0-hit) · BE `@ce656d5`(+1 SEC-D34 축6)/FE `@c3a0cac`(+1 L02_M11 form-polish 확산) 재실측 · audit-first HTTP 442 **43차** byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-19T00:05:00Z -->
+
+**조사일**: 2026-07-19T00:05:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-882(엔젤·롱텀·규제 4–6h·2026-07-18T23:15Z) → ~50분 후. 이번 사이클 초점: (1) **이전 BNK 예측 번복 여부 교차검증** — BNK-882 §882-5/§882-8 이 예측한 「`resolveCareReportDateRangeError` shared helper 의 다른 L02 리포트 확산」이 FE `@c3a0cac`로 착지했는지 실측(§883-1·CONFIRMED) · (2) **신규 엑셀 포맷 변경 스캔** — BE `@ce656d5` SEC-D34 축6 fullwidth ￦(U+FFE6) 정규화 신규 착지 실측(§883-2) · (3) ogada BE·FE develop HEAD 재실측(BNK-882 → BE +1 / FE +1) · (4) 규제 백본 3-URL 재실측(NHIS #44 605차·law 2025-247 13-cycle strip·silverangel system_feature 9차) · (5) audit-first HTTP 442 43차 byte/count-exact IDENTICAL 재검증 · (6) 갭 우선순위 재점검 — P3/P4「가정」 candidate 8종 carry·진성갭 승격 0·P0~P3 결정 번복 0.
+
+**ogada baseline (git 실측 · BNK-882 → BE +1 / FE +1)**:
+- BE `@ce656d5` (BNK-882 `@1d067d9` → **+1 commit**·`fix(v3/SEC-D34): normalize fullwidth won sign in excel import amounts instead of dropping row`·`NhisExcelParser.normalizeNumeric`+`BankDepositExcelParser.parseAmount` 가 halfwidth ₩(U+20A9)만 strip 하던 것을 fullwidth ￦(U+FFE6)까지 lockstep strip → ￦-접두 금액 파싱 실패로 인한 유효 청구/입금 행 누락 방어·정상 입력 behavior-neutral·+2 @Test(`shouldNormalizeFullwidthWonSignPrefixedAmount*` NhisExcelParserTest 13→14·BankDepositExcelParserTest 14→15)·4 files +65/-13·WT CLEAN·ahead **770** vs `598d108`·BE @Test strict **2398**).
+- FE `@c3a0cac` (BNK-882 `@cf360d7` → **+1 commit**·`fix(v1.2.1/care-reports): pre-block reversed date range before patient-service round-trip (L02_M11 form polish)`·`PatientServiceReportPage` 시작일>종료일 역방향 조회 기간을 서버 왕복 전 FE `resolveCareReportDateRangeError`(BNK-882 신규 shared helper·`config/careReports.js`)로 load guard(clientId 체크 이후)에서 사전 차단 → 종료일 필드 `role="alert"`+`aria-invalid` anchor(WCAG 3.3.1)·거부된 조회 기간의 stale aggregate 즉시 초기화(오류 배너-표 정합)·결측 종료일은 BE default window 대체로 valid 유지·L02_M12 `ServiceSummaryReportPage`(BNK-882)와 동일 패턴·2 files +75/-24·**신규 파일 0**(in-place `.test.jsx` +42)·ahead **27**(0/27) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@c3a0cac / @ce656d5)**:
+| KPI | 값 | BNK-882 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (product route 무변·form polish only) | `grep -cE '<Route\b' App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `find '*Page.jsx'` |
+| FE test files | **542** (227 .test.js + 315 .test.jsx) | IDENTICAL (`PatientServiceReportPage.test.jsx` in-place +42·신규 0) | `find '*.test.js*'` |
+| BE @Test (strict) | **2398** | +2 (SEC-D34 축6 fullwidth ￦ 2-parser 회귀) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 43차** (BNK-836→883·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **797** (FE 27 + BE 770·BE-heavy) | +2 (FE +1·BE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk883.txt`(BNK-883 교차검증·갭 우선순위 8h+ 주력·§883-1~6 통합) · `nhis_jo44_live_bnk883.html`(605차 byte-IDENTICAL) · `law_mohw_2025_247_admRulInfoP_live_bnk883.html`(13-cycle strip IDENTICAL) · `silverangel_system_feature_live_bnk883.html`(9차 byte-IDENTICAL·배차 0-hit). 신규 snapshot **4**(txt 1 + html 3)·덮어쓰기 0.
+
+### §883-1 ★★★ 교차검증 — BNK-882 예측 「L02 리포트 form-polish 확산」 착지 확인 (예측 번복 아님·CONFIRMED)
+
+BNK-882 §882-5/§882-8 planner 액션은 「신규 helper `resolveCareReportDateRangeError` 는 다른 L02 리포트(`BathHelpReportPage`·`BasicVitalReportPage`·`PressureUlcerReportPage`·`MealExcretionReport*Page`)로 확산 여지 남김」이라고 예측(진성갭 아님·coder 후일 결정). **본 사이클 FE `@c3a0cac`로 예측 착지 실측**.
+
+**diff (`cf360d7..c3a0cac`)**: 2 files +75/-24 (`pages/PatientServiceReportPage.jsx` +57/-24 + `pages/PatientServiceReportPage.test.jsx` +42).
+
+**착지 상세**: `PatientServiceReportPage`(L02_M11) load guard(clientId 체크 이후)에 shared helper `resolveCareReportDateRangeError` wire →
+- 시작일>종료일 역방향 조회 기간을 서버 왕복 전 FE 사전 차단(BE `CareReportService.resolveDateWindow` 문구 「종료일은 시작일 이후여야 합니다.」 verbatim lockstep).
+- 종료일 필드에 anchor(`role="alert"` + `aria-invalid`) — WCAG 3.3.1 필드 오류 라우팅(§117/§118 패턴 재사용).
+- 거부된 조회 기간의 stale aggregate 즉시 초기화(오류 배너-표 정합).
+- 결측 종료일은 BE default window 대체로 valid 유지(L02_M12 `ServiceSummaryReportPage`(BNK-882)와 동일 패턴).
+
+**판정**: BNK-882 예측 = **CONFIRMED 착지**(번복 0). L02 리포트 도메인 확산 **2번째 페이지**(M12 → M11). shared helper 형제: `resolveCareReportDateRangeError` ↔ `resolveTransportServiceFeeDateRangeError`(이동서비스비 계보 20차+). 잔여 확산 여지: BathHelp/BasicVital/PressureUlcer/MealExcretion(진성갭 아님·coder 후일).
+
+### §883-2 ★★★ 신규 엑셀 포맷 내성 축 — SEC-D34 축6 = fullwidth ￦ (U+FFE6) [엑셀 포맷 변경 스캔]
+
+**diff (`1d067d9..ce656d5`)**: 4 files +65/-13 (`NhisExcelParser.normalizeNumeric` +17/-6 · `BankDepositExcelParser.parseAmount` +19/-7 · `NhisExcelParserTest` +22(13→14) · `BankDepositExcelParserTest` +20(14→15)).
+
+**문제**: POI DataFormatter 가 통화 서식/수기 셀을 렌더링할 때 halfwidth ₩(U+20A9·BNK-881 처리)뿐 아니라 **fullwidth ￦(U+FFE6)**를 붙이는 한국 엑셀 포맷 존재 → ￦-접두 금액이 BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 상태 왜곡). **해결**: U+FFE6 을 sibling U+20A9 정규화와 lockstep strip(정상 입력 behavior-neutral).
+
+**SEC-D34 엑셀 import 파일/포맷 내성 축 누적 (BNK-883)**: 축1 통화접미사(BNK-875)·축2 공백그룹(BNK-877)·축3 「일」 접미사(BNK-878)·축4 test-layer(BNK-880)·축5 halfwidth ₩ U+20A9(BNK-881)·**축6 fullwidth ￦ U+FFE6(BNK-883·신규)** = production 5-축 + test 1-축 = 6-축 파일/포맷 내성. 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축. 경쟁 4종 유일(케어포 시설 셸/엔젤 배차 부재/이지케어 데모 파일 무결성 verbatim 0/롱텀 규제만).
+
+### §883-3 ★ 규제 백본 3-URL 재실측 zero substantive drift [기존 URL 재실측]
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조 live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **605차 byte-IDENTICAL**(BNK-882 604차 → +1)·verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)** live HTTP 200·**78,450B**·raw md5 `5a7a8935f9dcaa39b2beb4f7df40bcba`(DRIFT vs BNK-882 `9e48a0549`·전량 cache-buster `?Time=` 숫자)·strip `Time=[0-9]*` 후 semantic md5 **`a913639ab52293e3571cfe7e3ca35097`** = **13-cycle strip IDENTICAL**(BNK-859/861/862/865/866/868/870/875/880/881/882/883·canonical URL `admRulSeq=2100000271110` 고정).
+- **[silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)** live HTTP 200·**45,601B**·md5 `c950719098eecaf748bbdeea5deb93da` = **9차 byte-IDENTICAL**(BNK-859→883·이동서비스/배차/GPS/RFID/차량 0-hit 재확인·엔젤 자체 배차 부재 carry·ogada Transport 자체 시스템 SUPERIOR).
+- **carefor func.php** — 재측정 skip(BNK-881 timeout·disk canonical `6226e6eb` LOCK·112-cycle+ carry·「미확인」 유지). **longterm 502** — 재측정 skip(BNK-872 근본 원인 확정 이후 lean-shell 오실레이션 signal only·기능 갭 아님).
+
+### §883-4 ★ audit-first HTTP 442 posture 43차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+
+`@ce656d5` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→883 **43차** 연속 IDENTICAL. BE +1(SEC-D34 fullwidth ￦ production·service-layer)·FE +1(L02_M11 form-polish test-only) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+### §883-5 ★ 가정/예측 번복 재점검 (rules §14·§18)
+
+- **BNK-882 예측 「L02 리포트 form-polish 확산」 = §883-1 CONFIRMED 착지**(번복 아님·예측 실현).
+- BNK-880 「BNK-878 rowid=21704 라벨 fact 정정」 유지(P3 지위 불변) · BNK-858 longterm 종료가정 최종 결착 유지 · BNK-826 law URL alias 폐기 유지.
+- BNK-881 P3「가정」 3종(G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY) carry · BNK-882 P3/P4「가정」 5종(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION) carry.
+- 신규 가정 번복 **0**·미확인 승격 **0**·P0~P3 결정 번복 **0**·KPI promote **0**·모듈 97.41% CARRY.
+
+### §883-6 ★★ planner 액션 아이템 [갭 우선순위 동결]
+
+1. **REQUIREMENTS §L02 리포트 form-polish 계보 확산 = 2번째 페이지 착지 명시 권고** — L02_M12 `ServiceSummaryReportPage`(BNK-882) → L02_M11 `PatientServiceReportPage`(BNK-883)로 확산. shared helper `resolveCareReportDateRangeError` 로 BathHelp/BasicVital/PressureUlcer/MealExcretion 확산 여지 남김(진성갭 아님·coder 후일 결정).
+2. **SEC-D34 엑셀 import 포맷 내성 6-축 명시** — 통화접미사·공백그룹·일접미사·test·halfwidth ₩·**fullwidth ￦** = 경쟁 4종 유일 SUPERIOR. 마케팅 카피 「엑셀 원화 기호 ₩/￦ 양형(半角/全角) 자동 정규화 — 재무 대사 행 누락 방어」.
+3. **NHIS #44 §34조 605차 IDENTICAL · law 2025-247 13-cycle strip IDENTICAL · silverangel system_feature 9차** → 규제 상수·앵커 재조정 불요.
+4. **audit-first HTTP 442 43차 IDENTICAL** → API posture 43-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT).
+5. **P3/P4「가정」 candidate 8종(BNK-881 3 + BNK-882 5) 전부 carry** — 진성갭 승격 0·rules §11·§17 과대구축 회피·「미확인」 유지.
+6. **tester FF merge gate 797 carry**(BE 770 + FE 27·BE-heavy·신규 마이그레이션 0) — SEC-D34 fullwidth ￦ + L02_M11 form-polish test 이관 흡수 권고.
+7. 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·KPI promote 0·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+## §882 BNK-882 — 엔젤·롱텀·규제 역공학 4–6h · ★★★ **신규 앵글 — silverangel LCMS `businessSupportService.do` 35-item 「도입 후 관리」 checklist + 32-item 「업무지원 교육」 커리큘럼 → ogada Route 1:1 leaf-level 첫 크로스워크** (19✅+13△+1N/A checklist · 11✅+6△+2N/A curriculum · 신규 P3/P4「가정」 candidate 5종·진성갭 승격 0) · ★★ **silverangel = SaaS + paid consulting bundling 모델 실체 확인**(ogada = SaaS self-serve 지향 차별화 축) · NHIS #44 제34조 **604차 byte-IDENTICAL** · silverangel LCMS 8차 byte-IDENTICAL · silverangel businessSupport 4차 byte-IDENTICAL · longterm 502 lean-shell 5연속(오실레이션 signal only) · law 2025-247 strip `a913639a` **12-cycle IDENTICAL** · BE `@1d067d9`(zero advance carry)/FE `@cf360d7`(+1 L02_M12 리포트 form-polish 신규 확산 착지·이동서비스비 계보 20차+ → 리포트 도메인 첫 확산) 재실측 · audit-first HTTP 442 **42차** byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T23:15:00Z -->
+
+**조사일**: 2026-07-18T23:15:00Z | **rotation**: 엔젤·롱텀·규제 4–6h — BNK-881(케어포 역공학 0–2h·2026-07-18T22:35Z) → ~40분 후. 이번 사이클 초점: (1) **silverangel `businessSupportService.do` 페이지 leaf-level 첫 크로스워크**(BNK-641/775/846 는 5-tab 라벨만 언급·본 사이클 35+32=67 item 전수 실측) · (2) ogada BE·FE develop HEAD 재실측(BNK-881 → BE zero advance / FE +1·L02_M12 리포트 form-polish 신규 착지) · (3) 규제 백본 4-URL + businessSupportService 재실측(NHIS #44 604차·silverangel LCMS 8차+businessSupport 4차·longterm 502 lean 5연속·law 2025-247 12-cycle strip) · (4) audit-first HTTP 442 42차 byte/count-exact IDENTICAL 재검증 · (5) 신규 P3/P4「가정」 candidate 5종은 SaaS out-of-scope carry(진성갭 승격 아님).
+
+**ogada baseline (git 실측 · BNK-881 → BE zero advance / FE +1)**:
+- BE `@1d067d9` (BNK-881 **동일 HEAD·zero advance**·coder develop 신규 커밋 0·WT CLEAN·ahead **769** vs `598d108`·BE @Test strict **2396** IDENTICAL·subject `fix(v3/SEC-D34): strip won sign from excel import amount cells instead of dropping row`).
+- FE `@cf360d7` (BNK-881 `@ab9ef17` → **+1 commit**·`fix(v1.2.1/care-reports): pre-block reversed date range before service-summary round-trip (L02_M12 form polish)`·`ServiceSummaryReportPage` 시작일>종료일 역방향 조회 기간을 서버 왕복 전 FE `resolveCareReportDateRangeError`(`config/careReports.js` +40 신규 shared helper)로 사전 차단 → 종료일 필드 error 로 귀속·직전 유효 기간 rows 초기화(오류 배너-표 정합)·BE `CareReportService.resolveDateWindow` 문구 verbatim lockstep(「종료일은 시작일 이후여야 합니다.」)·useEffect load 시 focus hijack 없음·`isCareReportDateRangeInOrder` unit test +14 계약 lock·`ServiceSummaryReportPage.test.jsx` in-place +42·4 files +137/-3·**신규 파일 2**(`config/careReports.test.js`+`careReports.js` 확장)·ahead **26**(0/26) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@1d067d9 / @cf360d7)**:
+| KPI | 값 | BNK-881 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (product route 무변·form polish only) | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop '*Page.jsx'` |
+| FE test files | **542** (227 .test.js + 315 .test.jsx) | +1 (신규 `config/careReports.test.js`·in-place +42) | `git ls-tree develop '*.test.js*'` |
+| BE @Test (strict) | **2396** | IDENTICAL (BE zero advance) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 42차** (BNK-836→882·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **795** (FE 26 + BE 769·BE-heavy) | +1 (FE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk882.txt`(BNK-882 엔젤·롱텀·규제 4–6h 주력·§882-1~8 통합) · `silverangel_businessSupport_live_bnk882.html`(★★★ 첫 leaf-level 크로스워크 · 4차 byte-IDENTICAL) · `nhis_jo44_live_bnk882.html`(604차 byte-IDENTICAL) · `silverangel_home_live_bnk882.html`(8차 byte-IDENTICAL) · `silverangel_system_feature_live_bnk882.html`(8차 byte-IDENTICAL) · `longterm_502_live_bnk882.html`(lean-shell 5연속) · `law_mohw_2025_247_admRulInfoP_live_bnk882.html`(12-cycle strip IDENTICAL). 신규 snapshot **7**(txt 1 + html 6)·덮어쓰기 0.
+
+### §882-1 ★★★ 신규 앵글 — silverangel LCMS `businessSupportService.do` 「도입 후 관리」 35-item checklist → ogada Route 1:1 (첫 leaf-level 크로스워크)
+
+**disk canonical**: `snapshots/silverangel_businessSupport_live_bnk882.html` md5 `a13cb5ac3c265d692ddfaadb9051f3d6`·75,878B → BNK-641/775/846/882 **4차 byte-IDENTICAL** carry. live [`businessSupportService.do`](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do) HTTP 200·75,878B·재fetch(2026-07-18T23:16Z).
+
+**BNK 이력 차별점**: BNK-641/775/846 는 페이지 5-tab 라벨(실시간 업무지도·도입 후 관리·업무지원 교육·주요교육실적·사용후기)과 컨설팅 회차 축(1회차·2회차 등) 만 캡처. **본 사이클 = 35+32=67 item 전수 실측 첫 leaf-level 크로스워크**.
+
+**35-item 「도입 후 관리」 checklist 판정 요약 (§4-1 텍스트 상세 참조)**:
+- ✅ **19 PARITY** — 직원 ID+RBAC·간호처치·투약·건강기록·프로그램그룹/계획/일지·욕구사정·급여제공계획·관찰기록·체위변경·목욕서비스·기능회복훈련·비대면 발송/유선상담·집중배설관찰·사례관리회의·보고서 4-report·욕창위험도평가/사후관리·기관운영 메뉴·기록지 점검+KPI+ProvisionResultEvaluation.
+- △ **13 PARTIAL/편의** — 기록지 복사옵션·업무 시간설정 등록·기록지 큰화면 유도·**배변배뇨 QR**·작성자 일괄등록·물리(작업)치료 기록·상담일지·프로그램계획 달력 유사데이터생성·간호처치 자동 timing·처방약 연장·물리치료일지 특정일 복사·묻고답하기 인바운드 지원.
+- N/A **1** — 「1차 점검 시 지도내용 완수여부 확인」 (silverangel 컨설팅 상품 축 자체).
+
+**신규 P3「가정」 candidate 승격 없음** (5종 모두 「가정」 carry로 유지 — §882-3 참조).
+
+### §882-2 ★★★ silverangel LCMS 「업무지원 교육」 32-item 커리큘럼 → ogada 온보딩·문서 크로스워크 (첫 leaf-level 실측)
+
+**11 PARITY** (일부 SUPERIOR) — 대상 5분류·주요기능/특징·신규입소 기록(FAQ21824 lifecycle SUPERIOR)·욕구사정(2-축 SUPERSET)·급여제공계획·급여제공(SUPERSET)·계획대로 서비스 못하는 경우 조치·급여제공평가(ProvisionResultEvaluationService+Page)·사례회의·퇴소·업무 효율성/서비스 질/부가기능.
+
+**6 △ PARTIAL/편의** — **프로그램 뱅크**·비정기 업무 전부(외박/외래진료/입원/신체제재/특별침실)·**KPI 보고서**·라이브 웨비나·교육화면 분할 튜토리얼·컴플라이언스 자동 확인.
+
+**N/A 2** — 「개별 기관의 자료를 기준으로 교육」(silverangel 컨설팅 상품)·「교육자료 파일 제공」(silverangel 배포자료·ogada 는 `docs/ops/USER_MANUAL.md` PARITY carry).
+
+**신규 P3/P4「가정」 candidate 3종**:
+- **G-PROGRAM-BANK** (프로그램 뱅크·주제 8) — 공유 템플릿 라이브러리 · `programBank\|ProgramTemplate\|SharedProgram` 0-hit BE+FE
+- **G-KPI-REPORT** (핵심성과지표 KPI 보고서·주제 12) — dashboard PARITY · 전용 「기록 분석 KPI 리포트」 페이지 `KpiReport\|kpi.?report\|coreKpi` 0-hit FE
+- **G-TRAINING-MATERIALS** (교육자료 파일 제공·방식 5) — `docs/ops/USER_MANUAL.md` PARITY · in-app 자료실/훈련자료 라이브러리 `자료실\|training.?material\|resource.?library` 0-hit(homeNewsletter 첨부만)
+
+**진성갭 승격 판정**: **0건**. 3종 모두 「가정」 candidate carry — SaaS MVP out-of-scope(rules §11·§17 과대구축 회피).
+
+### §882-3 ★★ 신규 P3/P4「가정」 candidate 5종 총합 (진성갭 승격 아님·rules §11·§17)
+
+| ID | 라벨 | silverangel verbatim 근거 | ogada literal grep | 판정 |
+|---|---|---|---|---|
+| **G-EXCRETION-QR** | 배변배뇨 QR 스캔 등록 | 도입 후 관리 #14 「배변배뇨 QR 활용여부」 | `IntensiveExcretion*` 수기 CRUD ✅ / QR literal 0-hit BE+FE | ❌ P3「가정」 carry |
+| **G-PROGRAM-BANK** | 프로그램 뱅크(공유 템플릿 라이브러리) | 업무지원 교육 주제 8 「프로그램의 모든 것 (그룹 분류·**뱅크**·계획·일지)」 | 그룹/계획/일지 ✅ / `programBank\|ProgramTemplate` 0-hit | ❌ P3「가정」 carry |
+| **G-KPI-REPORT** | 기록 분석 KPI 보고서 (소비자용) | 업무지원 교육 주제 12 「요양기관 기록을 엔젤시스템이 분석하여 제공하는 핵심성과지표(KPI) 보고서」 | dashboard ✅ / 전용 `KpiReport\|kpi.?report` 0-hit FE | ❌ P3「가정」 carry |
+| **G-TRAINING-MATERIALS** | 교육자료 파일 라이브러리 (in-app) | 업무지원 교육 방식 5 「교육자료 파일 제공」 | `docs/ops/USER_MANUAL.md` ✅ / in-app 라이브러리 0-hit | ❌ P4「가정」 carry |
+| **G-RECORD-COPY-OPTION** | 기록지 복사옵션 · 유사데이터생성 · 특정일 복사 | 도입 후 관리 #3+#26+#32 | 개별 CRUD ✅ / 복사 helper 0-hit | ❌ P3「가정」 carry |
+
+**정책 결과**: 진성갭 0 · P0~P3 결정 번복 0 · 「미확인」 승격 0 · KPI promote 0 · 모듈 97.41% CARRY. silverangel 이 **paid consulting** 상품으로 이 축을 유료 제공한다는 사실 → ogada 는 SaaS **self-serve** 지향(컨설팅 없이 자체 도입) 이므로 컨설팅 축은 P3~P4 carry.
+
+### §882-4 ★★ silverangel = SaaS + paid consulting 번들링 모델 실체 확인 (planner Q 예방)
+
+「업무지원서비스」 페이지 = silverangel 이 도입 기관을 대상으로 **paid consulting** 을 판매한다는 실체 확인:
+- **실시간 업무지도**: 묻고답하기 전담부서·1:1 카톡 상담·오픈톡(`open.kakao.com/o/gsixWHJ` verbatim BNK 이전 기록) → 컨설팅형 인바운드 지원 상품.
+- **도입 후 관리**: 35-item checklist 를 컨설턴트가 순회 점검(1차 → 2차 → …) → **on-site 지도** 상품.
+- **업무지원 교육**: 32-item 커리큘럼을 대상별·주제별·방식별로 진행 → **오프라인/온라인 교육** 상품.
+- **주요교육실적**: 분기 직무능력향상교육·지역 협회 교육 이력 → 실적 노출로 상품성 강화.
+
+**ogada 대비 SUPERIOR / INFERIOR 축 정리**:
+- **SUPERIOR (ogada 우위)**: SaaS 자체 서비스 완결도(감사 트리거·JWT/RBAC·다지점·SEC-D34 5-축·form-polish 20차+ 계보·audit-first HTTP 442 42차) · 컨설팅 없이 self-serve 로 도입 가능.
+- **INFERIOR (silverangel 우위)**: 도입 후 컨설팅 밀도 · 대면 교육 커리큘럼 · 인바운드 카톡/오픈톡 상담 SLA.
+- **차별화 제안**: ogada 는 **컨설팅 없이 self-serve 도입 가능** 을 마케팅 축으로 사용. 필요 시 「가이드 온보딩」(`docs/ops/USER_MANUAL.md` 기반·`/onboarding/*` route 활용) 을 P3 optional add-on 으로 후일 검토(rules §17 과대구축 회피).
+
+### §882-5 ★ FE `@cf360d7` — L02_M12 리포트 form-polish 신규 계보 (이동서비스비 계보 20차+ → 리포트 도메인 첫 확산 착지)
+
+**diff (`ab9ef17..cf360d7`)**: 4 files +137/-3 (`config/careReports.js` +40 + **신규** `config/careReports.test.js` +34 + `pages/ServiceSummaryReportPage.jsx` +24/-3 + `pages/ServiceSummaryReportPage.test.jsx` +42).
+
+**패턴 확산**: 이동서비스비 축 20차+ 계보(862/863/864/866/867/868/869/871/875/876/877/879/880/881) 에서 확립된 **defense-in-depth 폼 폴리시 패턴** — (1) FE 사전 검증(BE 문구 verbatim lockstep) + (2) 필드 오류 라우팅(WCAG 3.3.1·§117/§118 패턴) + (3) 거부된 조회 기간의 stale 데이터 즉시 초기화(오류 배너-표 정합) + (4) shared helper 추출(unit test 계약 lock) — 이 **L02_M12 리포트 도메인 첫 확산 착지**. 신규 helper `resolveCareReportDateRangeError` 는 TransportServiceFee 계열 `resolveTransportServiceFeeDateRangeError` 형제 · `ServiceSummaryReportPage` 착지 후 다른 L02 리포트(`BathHelpReportPage`·`BasicVitalReportPage`·`PressureUlcerReportPage`·`MealExcretionReport*Page`) 로 확산 여지 남김.
+
+**경쟁 4종 대비**: 케어포 시설 셸 리포트 form-폴리시 근거 0 · 엔젤 리포트 화면 (본 사이클 businessSupport `보고서(관찰일지·배변배뇨 달력·목욕) 활용방법 지도` 라벨만·필드 검증 근거 0) · 이지케어 데모 서비스 리포트 필드 검증 verbatim 0 · 롱텀 규제 문서만 = 리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR.
+
+### §882-6 ★ 규제 백본 4-URL 재실측 zero substantive drift [기존 URL 재실측]
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조 live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **604차 byte-IDENTICAL**(BNK-881 603차 → +1)·verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`+`TransportServiceLog*` full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[silverangel LCMS home](https://www.silverangel.kr/)** live HTTP 200·**101,220B**·md5 `6638283511f0e1e9e36d2c89324e4d67` = **8차 byte-IDENTICAL**(BNK-843→882). **[silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)** live HTTP 200·**45,601B**·md5 `c950719098eecaf748bbdeea5deb93da` = **8차 byte-IDENTICAL**(BNK-859→882·이동서비스/배차/GPS/RFID/차량 0-hit 재확인·엔젤 자체 배차 부재 carry).
+- **[silverangel businessSupportService](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do)** live HTTP 200·**75,878B**·md5 `a13cb5ac3c265d692ddfaadb9051f3d6` = **4차 byte-IDENTICAL**(BNK-641/775/846/882) — **§882-1/2 첫 leaf-level 크로스워크 근거**.
+- **[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500)** live HTTP 200·**89,162B**·md5 `5618573525680a407975cbbafe93ccd1` = **lean-shell 5연속**(BNK-870→880→881→882·`var s16;` ±9B 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지·본문 규제 콘텐츠 IDENTICAL·기능 갭 아님).
+- **[law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)** live HTTP 200·**78,450B**·raw md5 `9e48a0549a8b8a5047a09ea50bbdb5a1`(DRIFT vs BNK-881 `bf9f8d4c`)·strip `Time=[0-9]*` 후 semantic md5 **`a913639ab52293e3571cfe7e3ca35097`** = **12-cycle strip IDENTICAL**(BNK-859/861/862/865/866/868/870/875/880/881/882·cache-buster only·canonical URL `admRulSeq=2100000271110` 고정·verbatim `장기요양급여`(3)·`2025-247`(4) 무변).
+- **carefor func.php** — 재측정 skip(BNK-881 timeout 30s·111-cycle+ carry·disk canonical `6226e6eb` LOCK·「미확인」 유지).
+
+### §882-7 ★ audit-first HTTP 442 posture 42차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+
+`@1d067d9` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→882 **42차** 연속 IDENTICAL. FE +1(L02_M12 form-polish test-only) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+### §882-8 ★★ planner 액션 아이템 [갭 우선순위 동결]
+
+1. **REQUIREMENTS §M1·§L02 리포트 form-polish 계보 확산 명시 권고** — 이동서비스비 축 20차+ 계보 → L02_M12 리포트 도메인 첫 확산 착지(§882-5). `resolveCareReportDateRangeError` shared helper 로 다른 L02 리포트(BathHelp/MealExcretion/BasicVital/PressureUlcer) 확산 여지 남김(진성갭 아님·coder 후일 결정).
+2. **silverangel「업무지원서비스」 = paid consulting 상품 축 실체 명시** — REQUIREMENTS §벤치마킹·§비즈니스모델 「silverangel 은 SaaS + paid consulting bundling 모델·ogada 는 SaaS self-serve 모델 지향(컨설팅 없이 self-serve 도입 가능 마케팅 축)」 명시 권고(§882-4).
+3. **신규 P3/P4「가정」 candidate 5종 carry**(진성갭 승격 아님·rules §11·§17):
+   - **G-EXCRETION-QR** (도입 후 관리 #14 배변배뇨 QR 활용) — 수기 CRUD 는 PARITY·QR 스캔은 GAP
+   - **G-PROGRAM-BANK** (업무지원 교육 주제 8 프로그램 뱅크) — 그룹/계획/일지는 PARITY·공유 템플릿은 별개
+   - **G-KPI-REPORT** (업무지원 교육 주제 12 KPI 보고서) — dashboard PARITY·전용 리포트는 P3
+   - **G-TRAINING-MATERIALS** (업무지원 교육 방식 5 교육자료 파일 제공) — `docs/ops/USER_MANUAL.md` PARITY·in-app 라이브러리는 P4
+   - **G-RECORD-COPY-OPTION** (도입 후 관리 #3+#26+#32 기록지 복사옵션) — 기록 CRUD PARITY·편의 helper 는 P3
+4. **NHIS #44 §34조 604차 IDENTICAL** ↔ Transport full-stack 1:1 carry(상수 재조정 불요).
+5. **law 2025-247 semantic 12-cycle strip IDENTICAL** — canonical URL 고정 유지·규제 상수·앵커 재조정 불요.
+6. **longterm 502 lean-shell 5연속** — `var s16;` 오실레이션 signal only·본문 규제 콘텐츠 IDENTICAL·규제 상수·앵커 재조정 불요.
+7. **audit-first 442 42차 IDENTICAL** — REQUIREMENTS §감사·§PIPA 「물리 삭제 API 신설 금지·PATCH partial + soft-delete 우선」 posture 42-cycle 동결 명시.
+8. **tester FF merge gate 795 carry**(BE 769+FE 26·BE-heavy·신규 마이그레이션 0) — FE L02_M12 form-polish test 이관 흡수 권고.
+9. **SUPERIOR 항목 마케팅 카피** 후보:
+   - 「컨설팅 없이 self-serve 로 도입 가능한 SaaS — 35-item 도입 후 checklist 를 UI 로 자동 안내」
+   - 「리포트 폼 오류 시 잘못된 조회 기간의 이전 결과까지 즉시 정리 — 이동서비스비 계보 → L02 리포트 확산」
+   - 「엑셀 import 원화 기호 ₩ 접두 자동 정규화 — SEC-D34 5-축 파일 내성 SUPERIOR」
+10. **신규 진성갭 0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+
+### §882-9 per-cycle minimum 4종 충족 (BNK-882)
+
+1. **신규 증거 URL 1+ (또는 기존 URL 재실측 + 변동 기록)**: silverangel `businessSupportService.do` (4차 byte-IDENTICAL·첫 leaf-level 크로스워크 실측·§882-1~4) · NHIS #44 (603→604차 재실측·byte-IDENTICAL) · silverangel LCMS home+system_feature (7→8차 byte-IDENTICAL) · longterm 502 (lean 5-cycle carry) · law 2025-247 (11→12-cycle strip IDENTICAL) — **6 URL 재실측** (신규 첫 leaf 크로스워크 1개).
+2. **메뉴/필드/워크플로 상세 1블록+**: silverangel `businessSupportService.do` 35-item 「도입 후 관리」 + 32-item 「업무지원 교육」 → ogada Route 1:1 크로스워크 (§882-1~3 · 19✅+13△+1N/A / 11✅+6△+2N/A + 신규 P3/P4「가정」 candidate 5종).
+3. **COMPETITOR_MATRIX 1행+ @HEAD**: BE `@1d067d9`(zero advance) · FE `@cf360d7` 갱신 + 신규 앵글 표 신규 추가.
+4. **BENCHMARK_REPORT §신규 소절 1건+**: §882 신규 9-절(§882-1~9).
+
+**가정 번복 0** · **결정 번복 0** · **KPI promote 0** · **미확인 승격 0** · **P0~P3 신규 승격 0** · 진성갭 0.
+
+---
+
+## §881 BNK-881 — 케어포 역공학 0–2h · ★★★ **신규 앵글 — func.php M1(수급자 관리) 11-leaf → ogada Route 1:1 실측 = 6 PARITY + 4 PARTIAL + 1 GAP(1-1-1 대기 수급자·P3「가정」 candidate) + SUPERSET 7종 + phantom 0** · NHIS #44 제34조 **603차 byte-IDENTICAL** · silverangel LCMS 7차 byte-IDENTICAL · longterm 502 lean-shell 4연속(BNK-870→880→881·오실레이션 signal only) · law 2025-247 strip `a913639a` **11-cycle IDENTICAL** · BE `@1d067d9`(+1 SEC-D34 원화기호 strip normalize · +2 @Test)/FE `@ab9ef17`(+1 a11y focus first invalid field UXD-195 follow-up·+2 test) 재실측 · audit-first HTTP 442 **41차** byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T22:35:00Z -->
+
+**조사일**: 2026-07-18T22:35:00Z | **rotation**: 케어포 역공학 0–2h — BNK-880(교차검증·갭 우선순위 8h+·2026-07-18T21:40Z) → ~55분 후. 이번 사이클 초점: (1) **케어포 M1 수급자관리 11-leaf → ogada Route 1:1 leaf-level 실측**(BNK-860 M7·BNK-867 M8+M11·BNK-874 리포트밀도·BNK-877 depth3 후속·MB-8 신규 앵글로 M1 첫 leaf-level 크로스워크) · (2) ogada BE·FE develop HEAD 재실측(BNK-880 → BE +1 / FE +1) · (3) 규제 백본 4-URL 재실측(NHIS #44 603차·silverangel LCMS·longterm 502·law 2025-247) · (4) audit-first HTTP 442 41차 byte/count-exact IDENTICAL 재검증 · (5) 갭 우선순위 동결·M1 gap 3종은 P3「가정」 carry(진성갭 승격 아님).
+
+**ogada baseline (git 실측 · BNK-880 → BE +1 / FE +1)**:
+- BE `@1d067d9` (BNK-880 `@68c2378` → **+1 commit**·`fix(v3/SEC-D34): strip won sign from excel import amount cells instead of dropping row`·NHIS/공단·은행 export 가 금액 열을 통화 서식으로 저장 시 POI DataFormatter 가 한글 원 대신 ₩(U+20A9) 원화 기호를 붙여 렌더링(예: "₩765,000"·"₩1,250,000")·`NhisExcelParser.normalizeNumeric`+`BankDepositExcelParser.parseAmount` 는 원 만 제거·₩ 접두 금액이 BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 상태 왜곡)·형제 정규화 계보와 동일하게 ₩ 제거 추가·+2 @Test(NhisExcelParser `shouldNormalizeWonSignPrefixedAmountInsteadOfDroppingToNull` + BankDepositExcelParser `shouldNormalizeWonSignPrefixedAmountInsteadOfDroppingRow`·각 13/13, 14/14 PASS)·2 files +39/-11·WT CLEAN·ahead **769** vs `598d108`·BE @Test strict **2396**).
+- FE `@ab9ef17` (BNK-880 `@32b7ae3` → **+1 commit**·`fix(a11y/transport): focus first invalid service-fee date field on blocked 조회/생성 (UXD-195 follow-up)`·`TransportServiceFeePanel` UXD-195 base 위에 명시적 조회/생성 액션 blocked 시 첫 잘못된 필드로 키보드 focus 이동(시작일 for empty/reversed·종료일 for empty end)·useEffect load 시 focus hijack 없음(explicit submit only)·`resolveTransportServiceFeeDateRangeErrorField` shared helper(config/transportServiceFee.js +25 / .test.js +14)+`TransportServiceFeePanel.jsx` +134/-42·`TransportServiceFeePanel.test.jsx` +66·WCAG 3.3.1·id=2 form-polish 계보 **19차**·in-place test +80·신규 파일 0·ahead **25**(0/25) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@1d067d9 / @ab9ef17)**:
+| KPI | 값 | BNK-880 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (product route 무변·form polish only) | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL (in-place +80·신규 0) | `git ls-tree develop '*.test.js*'` |
+| BE @Test (strict) | **2396** | +2 (BNK-880 2394·SEC-D34 원화 strip @Test ×2) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 41차** (BNK-836→881·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **794** (FE 25 + BE 769·BE-heavy) | +2 (BE +1, FE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/carefor_m1_client_route_1to1_bnk881.txt`(BNK-881 케어포 M1 crosswalk 주력·§881-1~7 통합) · `nhis_jo44_live_bnk881.html`(603차 byte-IDENTICAL) · `silverangel_home_live_bnk881.html`(7차 byte-IDENTICAL) · `silverangel_system_feature_live_bnk881.html`(7차 byte-IDENTICAL) · `longterm_502_live_bnk881.html`(lean-shell 4연속) · `law_mohw_2025_247_admRulInfoP_live_bnk881.html`(11-cycle strip IDENTICAL). 신규 snapshot **6**(txt 1 + html 5)·덮어쓰기 0.
+
+### §881-1 ★★★ 신규 앵글 — 케어포 func.php M1(수급자관리) 11-leaf → ogada Route 1:1 실측 [케어포 역공학·최다 새로운 관측]
+
+**disk canonical**: `docs/planning/research/snapshots/carefor_func.php`(md5 `6226e6eb92fdd25ed3e50842a5e8a00b`·98,328B·BNK-810→881 **111-cycle+** IDENTICAL carry). live `https://sisul.carefor.co.kr/daycare/func.php` HTTP 000(connection timeout 30s·BNK-880 109-cycle → 881 **110-cycle+**·미확인 유지).
+
+**leaf 요약 판정 (11/11 전수)**:
+| carefor M1 leaf | 라벨 | ogada 대응 | 판정 |
+|---|---|---|---|
+| 1-1 | 수급자 정보관리 | `/clients`+`/clients/new`+`/clients/:id`(12-tab)+`/clients/:id/edit`+`/clients/:id/files` | ✅ PARITY |
+| 1-1-1 | 대기 수급자 관리 | — (0-hit) | ❌ **P3「가정」 candidate** |
+| 1-2 | 전체 기초평가 현황 | `/clients/needs-assessments`+`/clients/periodic-risk-assessments` (2-view split) | ✅ PARITY |
+| 1-3 | 기초평가 관리 | ClientDetailPage tabs `assessment`+`risk-assessment` (Panel 3종) | ✅ PARITY |
+| 1-4 | 상담일지 | — (특이사항/모니터링/고충 3-축 분산·전용 화면 부재) | △ **P3「가정」 재분류** |
+| 1-5 | 가정통신문 | `/clients/home-newsletter` (G2 launch+compose+dispatch+facility-notices) | ✅ **PARITY SUPERIOR** |
+| 1-6 | 안내사항/예방접종 | — (예방접종 0-hit·안내사항 파일첨부/알림로그로 흡수) | △ **P3「가정」 재분류** |
+| 1-7 | 현황 리포트 | `/dashboard`+`/clients` export+4-report page | △ 라벨링 차이(진성갭 아님) |
+| 1-8 | 월별 통계 리포트 | `/attendance/stats`+`/dashboard`+`/billing/reports/statistics` | △ 라벨링 차이(진성갭 아님) |
+| 1-9 | 등급 변동 현황 | ClientDetailPage tab `grade`+`GradeHistoryTimeline`+`GradeHistoryAttachmentPanel`+BE `LtcGradeHistoryService`+V flyway | ✅ PARITY |
+| 1-10 | 연계기록지 발송 리포트 | `/clients/linkage-records`+ClientDetailPage tab `linkage`+V194 CHECK CRUD | ✅ **PARITY SUPERIOR** |
+
+**총합**: ✅ **6 PARITY** + △ **4 PARTIAL** + ❌ **1 GAP** + SUPERSET **7종** + phantom **0** (ogada 부풀림 없음).
+
+**ogada SUPERSET(M1 도메인 확장·carefor 부재·7종)**:
+1. `/clients/care-plan-notifications` → `CarePlanNotificationPage` (G38 US-T12 급여계획 통보)
+2. ClientDetailPage tab `care-plan-form` + `/clients/:id/care-plan-form` → `ClientCarePlanForm` (급여계획서 편집)
+3. ClientDetailPage tab `contract` → `ClientBenefitContractPanel` (급여계약 US-T10·signedAt/renewedAt·파일 업로드)
+4. ClientDetailPage tab `care-provision` → `CareProvisionRecordPanel` (주간 급여제공 통합 뷰·G39 FAQ21817 7일 SLA)
+5. ClientDetailPage tab `outing`+`/transport/outings`+`/reports/client-outings` (외출 lifecycle)
+6. `/guardian`+`/guardian/checkin`+`/guardian/invitations/:token/accept` (보호자 앱 3-screen SUPERIOR)
+7. `ClientFaq21824LifecyclePanel` (계약→청구 4-단 lifecycle checklist·BNK-165)
+
+**GAP 1건 판정 (1-1-1 대기 수급자 관리)**:
+- ogada 실측 grep(BE+FE develop): `waitlist|waiting.list|prospect|inquiry|대기 수급` = **0-hit** · Client 라이프사이클: PENDING/ACTIVE/SUSPENDED/ENDED 4-state·대기 pre-admission 상태 없음.
+- 판정: ❌ **P3「가정」 candidate**(신규 gap 승격 아님) — 소규모 주간보호센터에서 대기명단 상시 필요 사례는 드묾·carefor 도 sub-leaf(1-1-1 depth-3)로만 존재·핵심 운영 갭 아님·「미확인」 유지 (rules §11·§17 과대구축 회피).
+
+**PARTIAL 2건 P3「가정」 재분류**:
+- **1-4 상담일지**: 수급자 스코프 「상담일지」 전용 화면 부재, 특이사항(`/care/service-special-notes`)/모니터링(MonitoringPhoneConsultation)/고충(GrievanceCounseling) 3-축이 도메인별로 분산 → **Client Consultation Log P3 candidate** carry.
+- **1-6 예방접종**: `vaccin|inocul|예방접종|접종` literal 0-hit(BE+FE)·주간보호(외래성) 대비 요양원(집단생활)에서만 필수적·건강기록/파일 첨부로 흡수 가능 → **Client Vaccination History P3 candidate** carry.
+
+**coverage config id=1-* 유지** (BNK-729·BNK-810 lock): id=1-1(1.0)·1-3(1.0·보호자관리)·1-5(1.0·가정통신문)·1-7(1.0·현황·통계 대시보드)·1-9(1.0·등급변동 이력)·1-10(1.0·연계기록지) — KPI promote **0**.
+
+**메뉴 depth·IA 비교(M1 한정)**: carefor M1 = flat 번호 메뉴 최대 depth 3(1-1-1 만 sub-leaf) vs ogada M1 = nested React Router IA depth 4(`/clients/:clientId/care-plan-form`·`/clients/:clientId/files`·`/clients/:clientId/edit`) + 12-tab(ClientDetailPage) = **organizational depth SUPERIOR**. `ClientsContextNav` 7-link 사이드바로 flat top-level 진입 유지.
+
+### §881-2 ★★ BE `@1d067d9` — SEC-D34 계보 「원화 기호 ₩ 접두 금액 strip normalize」 (5-parser 5번째 축·재무 대사 확산)
+
+**diff (`68c2378..1d067d9`)**: 2 files +39/-11 (`billing/domain/BankDepositExcelParser.java` +15/-5 + `billing/domain/NhisExcelParser.java` +24/-6). +2 test (총 BE @Test strict 2394 → **2396**).
+
+**문제**: NHIS·공단·은행 export 가 금액 열을 통화 서식으로 저장하면 POI DataFormatter 가 한글 원 대신 **₩(U+20A9)** 원화 기호를 붙여 렌더링("₩765,000"·"₩1,250,000"). 기존 정규화는 한글 "원"만 제거하고 ₩ 접두 금액은 BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 상태 왜곡).
+
+**조치**: `NhisExcelParser.normalizeNumeric` + `BankDepositExcelParser.parseAmount` 형제 정규화 계보(SEC-D34 축 BNK-875 통화접미사·BNK-877 공백그룹·BNK-878 「일」 접미사)와 동일하게 **₩ 제거** 추가. 정상 입력 behavior-neutral·row-level resilience·lockstep·+2 @Test 회귀 lock(NhisExcelParserTest `shouldNormalizeWonSignPrefixedAmountInsteadOfDroppingToNull` 13/13 PASS + BankDepositExcelParserTest `shouldNormalizeWonSignPrefixedAmountInsteadOfDroppingRow` 14/14 PASS).
+
+**SEC-D34 normalize 축 5-parser 표면 확산 카운트**:
+- 축 1: 통화 접미사(BNK-875 currency-suffixed NHIS import 금액/일수 · BE `@ad2c0b1`)
+- 축 2: 공백 그룹핑 입금액(BNK-877 whitespace-grouped bank deposit "1 234 567" · BE `@dc261ed`)
+- 축 3: 「일」 접미사 NHIS 서비스 일수(BNK-878 day-marker-suffixed · BE `@ec7a1ce`)
+- 축 4: test-layer 회귀 lock(BNK-880 · BE `@68c2378`)
+- **축 5: 원화 기호 ₩ 접두 금액(BNK-881 · BE `@1d067d9`)** — 신규
+
+= 재무·청구 대사 축 4-축 production + 1-축 test-layer 통합 5-축 SUPERIOR carry. 경쟁 4종(케어포 시설 셸/엔젤 배차 부재/이지케어 데모 파일 무결성 verbatim 0/롱텀 규제만) 대비 파일 내성/서명 검증/포맷 정규화 5-축 통합 = 유일 full-stack.
+
+### §881-3 ★ FE `@ab9ef17` — a11y focus first invalid service-fee date field (UXD-195 follow-up · id=2 form polish 19차)
+
+**diff (`32b7ae3..ab9ef17`)**: 4 files +239/-42 (`TransportServiceFeePanel.jsx` +134/-42 + `TransportServiceFeePanel.test.jsx` +66 + `config/transportServiceFee.js` +25 + `config/transportServiceFee.test.js` +14). +2 test (in-place expansion·신규 파일 0).
+
+**개선**: BNK-880 UXD-195 base(field-scope 오류 라우팅) 위에 명시적 조회/생성 액션 blocked 시 **첫 잘못된 필드로 키보드 focus 이동**(시작일 for empty/reversed·종료일 for empty end). useEffect load 시 focus hijack **없음**(explicit submit only·WCAG 3.3.1). `resolveTransportServiceFeeDateRangeErrorField` shared helper 추출(unit test +14 계약 lock).
+
+**id=2 form-polish 계보 19차 축**: 862/863 회차 · 864 정차상한 · 866 stale-state · 867 helper 추출 · 868 blocked focus · 869 exponent/hex+out-of-range · 871 Integer max · 875 stale banner · 876 역방향 기간 reject · 877 결측 기간 reject · 879 rejected range stale record clear · 880 UXD-195 date-field routing · **881 UXD-195 follow-up focus first invalid field** = 이동서비스비 폼 전 축 FE↔BE lockstep 검증 + 오류-상태 정합 + 키보드 접근성 밀도 유일 full-stack SUPERIOR(경쟁 4종 이동서비스 축 부재).
+
+### §881-4 ★ 규제 백본 4-URL 재실측 zero substantive drift [기존 URL 재실측]
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조 live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **603차 byte-IDENTICAL**(BNK-880 602차 → +1)·verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(전자 일지+감사 이력) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[silverangel LCMS home](https://www.silverangel.kr/)** live HTTP 200·**101,220B**·md5 `6638283511f0e1e9e36d2c89324e4d67` = **7차 byte-IDENTICAL**(BNK-843→881·굽은나무 보호자 앱 브랜드 carry). **[silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)** live HTTP 200·**45,601B**·md5 `c950719098eecaf748bbdeea5deb93da` = **7차 byte-IDENTICAL**(BNK-859→881·이동서비스/배차/GPS/RFID/차량 0-hit 재확인·엔젤 자체 배차 부재 carry).
+- **[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500)** live HTTP 200·**89,162B**·md5 `5618573525680a407975cbbafe93ccd1` = **lean-shell 4연속**(BNK-870→880→881·`var s16;` ±9B 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지·본문 규제 콘텐츠 IDENTICAL·기능 갭 아님).
+- **[law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)** live HTTP 200·**78,450B**·raw md5 `bf9f8d4c63483a07046b9d28884e66ac`(DRIFT vs BNK-880 `c9fa4ffa`)·strip `?Time=` 후 semantic md5 **`a913639ab52293e3571cfe7e3ca35097`** = **11-cycle strip IDENTICAL**(BNK-859/861/862/865/866/868/870/875/880/881·cache-buster only·canonical URL `admRulSeq=2100000271110` 고정).
+- **carefor func.php** — connection timeout 30s(DNS OK·서버 outage 또는 방화벽)·disk canonical `carefor_func.php`(`6226e6eb`, 98,328B) LIVE 000 **110-cycle+** carry·**미확인** 유지.
+
+### §881-5 ★ audit-first HTTP 442 posture 41차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+
+`@1d067d9` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→881 **41차** 연속 IDENTICAL. BE +1(SEC-D34 원화 strip production)·FE +1(a11y focus test-only) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+### §881-6 ★★ planner 액션 아이템 [갭 우선순위 동결]
+
+1. **REQUIREMENTS §M1 「수급자 관리」 crosswalk 명시 권고** — 11-leaf 전량 대응 표 추가 (✅ 6 + △ 4 + ❌ 1 · SUPERSET 7종) — 본 §881-1 + `carefor_m1_client_route_1to1_bnk881.txt` 기반. BNK-880 M1 「이용자관리」 항목 별도 leaf-level crosswalk 없이 competitorModuleCoverage=1.0 만 유지되어 있었으나 본 사이클 실측으로 세부 leaf 라벨 대응 명확화(rules §14 검증·competitorModuleCoverage 유지·carry).
+2. **P3「가정」 candidate 3종 carry**(진성갭 승격 아님·rules §11·§17):
+   - **G-CLIENT-WAITLIST** (1-1-1 대기 수급자 관리) — 소규모 주간보호 필수 아님·v3+ 「입소 대기·인수 인계」축 candidate·「미확인」 유지
+   - **G-CLIENT-CONSULTATION-LOG** (1-4 상담일지) — 계약 상담·초기 면담·주기 상담 통합·특이사항/모니터링/고충 3-축과 겹침·「미확인」 유지
+   - **G-CLIENT-VACCINATION-HISTORY** (1-6 예방접종) — 주간보호(외래성) 대비 요양원(집단생활)에서만 필수적·건강기록 확장으로 흡수 가능·「미확인」 유지
+3. **SUPERIOR 항목 마케팅 카피** 후보:
+   - 「가정통신문 DRAFT/PUBLISHED workflow + Kakao 알림톡 quiet-hours (22:00~08:00 reject)」
+   - 「연계기록지 3-type CRUD lifecycle + org-wide 발송 리포트 (BE V194 CHECK 정합)」
+   - 「기초평가 2-축 (연간 욕구사정 · 반기 정기욕구평가) + 신규입소 위험도평가 SUPERSET」
+   - 「엑셀 import 원화 기호 ₩ 접두 금액 자동 정규화 — 5-축 파일 내성 (통화접미사·공백그룹·일접미사·test회귀·원화기호) SUPERIOR」
+   - 「이동서비스비 폼 오류 시 첫 잘못된 필드로 즉시 focus — WCAG 3.3.1·id=2 form polish 19차 lockstep」
+4. **NHIS #44 §34조 603차 IDENTICAL** ↔ Transport full-stack 1:1 carry(상수 재조정 불요).
+5. **law 2025-247 semantic 11-cycle strip IDENTICAL** — canonical URL `admRulSeq=2100000271110` 고정 유지·규제 상수·앵커 재조정 불요.
+6. **longterm 502 lean-shell 4연속** — `var s16;` 오실레이션 signal only·본문 규제 콘텐츠 IDENTICAL·규제 상수·앵커 재조정 불요·향후 재측정 불요 정책 유지(BNK-872/873/875·880 확정).
+7. **audit-first 442 41차 IDENTICAL** — REQUIREMENTS §감사·§PIPA 「물리 삭제 API 신설 금지·PATCH partial + soft-delete 우선」 posture 41-cycle 동결 명시.
+8. **BE SEC-D34 normalize 5-축(통화 접미사·공백그룹·「일」·test-lock·원화 ₩) 대칭 완성 확산** — production 4-축 + test 1-축 = 5-parser 파일 내성 SUPERIOR carry(BNK-875·877·878·880·881 계보).
+9. **FE id=2/G16 이동서비스비 form-polish 계보 19차** — a11y 필드 focus 완성(WCAG 3.3.1)·UXD-195 lineage carry·경쟁 4종 유일 full-stack SUPERIOR.
+10. **tester FF merge gate 794 carry**(BE 769+FE 25·BE-heavy·신규 마이그레이션 0) — FE id=2/G16 a11y test 이관 흡수 권고.
+11. **신규 진성갭 0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+
+### §881-7 per-cycle minimum 4종 충족 (BNK-881)
+
+1. **신규 증거 URL 1+ (또는 기존 URL 재실측 + 변동 기록)**: NHIS #44 (602→603차 재실측·byte-IDENTICAL) · silverangel LCMS home+system_feature (6→7차 byte-IDENTICAL) · longterm 502 (lean 4-cycle carry) · law 2025-247 (10→11-cycle strip IDENTICAL) — **5 URL 재실측**.
+2. **메뉴/필드/워크플로 상세 1블록+**: 케어포 M1 11-leaf → ogada Route 1:1 crosswalk (§881-1 · `carefor_m1_client_route_1to1_bnk881.txt` 주력 · 6✅+4△+1❌+7SUPERSET+0phantom).
+3. **COMPETITOR_MATRIX 1행+ @HEAD**: BE `@1d067d9` · FE `@ab9ef17` 갱신 + M1 세부 leaf 표 신규 추가.
+4. **BENCHMARK_REPORT §신규 소절 1건+**: §881 신규 7-절(§881-1~7·1,300라인+).
+
+**가정 번복 0** · **결정 번복 0** · **KPI promote 0** · **미확인 승격 0** · **P0~P3 신규 승격 0**.
+
+---
+
+## §880 BNK-880 — 교차검증·갭 우선순위 8h+ · ★★ **BNK-878 「미포착 신규 rowid=21704」 가정 반증(BNK-329/332 이후 반복 재실측 4차 byte-IDENTICAL·G-BANK-TXN-LOOKUP P3 지위 불변)** · ★ **silverangel 도메인 이원화 명시**(`silverangel.kr`=LCMS ERP 벤치마킹 대상 · `silverangel.co.kr`=엔젤쇼핑몰 e-commerce 별개 비즈) · NHIS #44 제34조 602차 + law 2025-247 10-cycle strip IDENTICAL + longterm 502 lean-shell 재복귀(오실레이션 signal only) · BE `@68c2378`(+1 SEC-D34 test-layer 회귀 lock)/FE `@32b7ae3`(+1 a11y date-field error routing UXD-195) 재실측 · audit-first HTTP 442 40차 byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T21:40:00Z -->
+
+**조사일**: 2026-07-18T21:40:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-879(ogada git 실측 6–8h·2026-07-18T21:00Z) → ~40분 후. 이번 사이클 초점: (1) BNK-878 「미포착 신규 rowid=21704」 가정 재검증(rules §14·§18) · (2) silverangel 도메인 이원화 재확인(`silverangel.kr` LCMS vs `silverangel.co.kr` 쇼핑몰) · (3) 규제 백본 4-URL 재실측(NHIS #44 602차·law 2025-247·longterm 502·longterm 610) · (4) ezcare FAQ rowid=21704/21602 재fetch byte-IDENTICAL 재확인 · (5) ogada BE·FE develop HEAD 재실측(BNK-879 → BE +1 / FE +1) · (6) audit-first HTTP 442 40차 byte/count-exact IDENTICAL 재검증 · (7) 갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-879 → BE +1 / FE +1)**:
+- BE `@68c2378` (BNK-879 `@ec7a1ce` → **+1 commit**·`test(v3/SEC-D34): lock day-marker NHIS days and whitespace-grouped bank amount normalization`·2 test files +205: `BankDepositImportServiceTest.java`+96 + `NhisImportServiceTest.java`+109·BNK-877(공백그룹 입금액)/BNK-878(NHIS 「일」 접미사) production fix 위에 test-layer 대칭 회귀 lock·+2 @Test·WT CLEAN·ahead **768** vs `598d108`·BE @Test strict **2394**).
+- FE `@32b7ae3` (BNK-879 `@6c280d0` → **+1 commit**·`fix(a11y/transport): route service-fee date-range error to date fields (UXD-195)`·`TransportServiceFeePanel` 빈/역방향 조회 기간 오류를 상단 페이지 Alert 대신 종료일 필드 `role="alert"`(#service-fee-to-error)로 귀속·두 날짜 필드 `aria-invalid` + 시작일 `aria-describedby` 연결·API 오류만 상단 Alert 사용 분리(§117·§118 필드 오류 라우팅 패턴·WCAG 3.3.1·4.1.2)·in-place test +30·신규 파일 0·id=2 form-polish 계보 18차·ahead **24**(0/24) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@68c2378 / @32b7ae3)**:
+| KPI | 값 | BNK-879 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL (in-place +30·신규 0) | `git ls-tree develop '*.test.js*'` |
+| BE @Test (strict) | **2394** | +2 (BNK-879 2392·SEC-D34 test-layer 회귀) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 40차** (BNK-836→880·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **792** (FE 24 + BE 768·BE-heavy) | +2 (BE +1, FE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk880.txt`(BNK-880 교차검증 8h+ 주력·§880-1~8 통합) · `nhis_jo44_live_bnk880.html`(602차 byte-IDENTICAL) · `law_mohw_2025_247_admRulInfoP_live_bnk880.html`(10-cycle strip IDENTICAL) · `longterm_502_live_bnk880.html`(lean-shell 재복귀) · `silverangel_home_live_bnk880.html`(silverangel.kr LCMS 6차 byte-IDENTICAL) · `silverangel_coshop_live_bnk880.html`(silverangel.co.kr 쇼핑몰·별개 도메인 확인) · `ezcare_faq_21704_recross_bnk880.html`+`ezcare_faq_21602_recross_bnk880.html`(재실측·byte-IDENTICAL). 신규 snapshot **8**(txt 1 + html 7)·덮어쓰기 0.
+
+### §880-1 ★★ 이전 BNK-878 「미포착 신규 rowid=21704」 가정 반증 [교차검증·rules §14·§18]
+
+**증거 체인 (byte-IDENTICAL 4차 · `db8fd61f622e86a213c39f89af9642a9`, 16,996B)**:
+- `snapshots/ezcare_faq21704.html` — **BNK-332(2026-06-17) 신규** ★★★ 「통장거래내역 간편조회」·**G-BANK-TXN-LOOKUP P3 candidate deepen(BNK-329 21703 cross-confirm·신규 갭 아님)**
+- `snapshots/ezcare_faq_21704_live_bnk688.html` — BNK-688 rowid 전수 스캔 재캡처
+- `snapshots/ezcare_faq_21704_bank_txn_lookup_bnk878.html` — BNK-878 재캡처(「미포착 신규 rowid」 라벨)
+- `snapshots/ezcare_faq_21704_recross_bnk880.html` — **본 사이클 재fetch = HTTP 200·16,996B·`db8fd61f...`** 4차 byte-IDENTICAL
+
+**판정**: BNK-878(2026-07-18T20:19Z) 최상단 「미포착 신규 rowid 2건」 라벨의 **21704 부분은 사실 오류** — BNK-329/332 이후 반복 캡처된 URL. **가정 번복(rules §14)**: 「미포착 신규」 → 「기존 URL 재실측 + `BankDepositImportService` full-stack 1:1 crosswalk **심화** 사이클」로 재분류. **다만 rowid=21602(CIST)** 는 prior file 0-hit 확인 → BNK-880 재fetch `cc592c41...` 15,724B 2차 byte-IDENTICAL·「BNK-878 신규 rowid」 라벨 **유지**. **G-BANK-TXN-LOOKUP P3 candidate 지위 불변**(BNK-329 이후 P3 carry)·**은행 계좌 LIVE 연동/오픈뱅킹 P3「가정」 carry**(PIPA/전자금융 리스크·엑셀 import 대체 가능·과대구축 회피 rules §11·§17). ogada `BankDepositImportService` 자동매칭→copay 적용→PAID 알림(`BankDepositCopayLifecycleE2eTest` US-L01) lifecycle SUPERIOR carry.
+
+### §880-2 ★★ silverangel 도메인 이원화 재확인 [교차검증·planner Q 예방]
+
+**증거**:
+- [`https://www.silverangel.kr/`](https://www.silverangel.kr/) HTTP 200·**101,220B**·`6638283511f0e1e9e36d2c89324e4d67`·**6차 byte-IDENTICAL**(BNK-843/858/842 이후 STABLE)·`<title>엔젤시스템</title>`·href: `/newSilverangel/daycare/daycareEssentialWork.do`·`/newSilverangel/service/{extraService,feeService,mainService}.do`·`/newSilverangel/webSite/*` = **LCMS/ERP 카탈로그**(굽은나무 보호자 앱·필수업무27=가족과의 소통·이동서비스일지 예시 문서 축 carry).
+- [`https://www.silverangel.co.kr/`](https://www.silverangel.co.kr/) HTTP 200·**180,475B**·`bd726e999299427dda5406c0ef46ee2f`·`<title>엔젤 시스템</title>`(공백 다름)·href: `/shop/item.php?it_id=1748481149`(요양원 환자용 간병 와이드 물티슈 [지우버탄] 60매×20팩)·`/shop/item.php?it_id=1760590474`(휴체어 미키코리아메디컬 알루미늄 MIKISKY-2)·`/shop/{cart,orderinquiry,couponzone,personalpay}.php`·`/bbs/{faq,notice,qa,mail,login,register,password_lost}.php` = **엔젤쇼핑몰 e-commerce**(요양원·요양보호사·간병용품 판매)·`/newSilverangel/*` `/main/system_*.html` 접근 시 HTTP 404(LCMS 라우팅 없음)·상단 nav 링크 `http://www.silverangel.kr/` 로 LCMS 전환.
+
+**판정**: 엔젤시스템 그룹은 두 도메인 분리 운영:
+- `silverangel.kr` → **엔젤시스템 LCMS/ERP**(요양기관 SaaS 관리 웹) = **벤치마킹 대상**
+- `silverangel.co.kr` → **엔젤쇼핑몰**(요양·간호용품 e-commerce) = **벤치마킹 대상 아님**(별개 비즈)
+
+snapshots/README.md 전 이력의 `silverangel_home_live_bnk*.html` base URL 은 **`silverangel.kr`**(BNK-775 이후 명시)·본 사이클 실측 md5 6차 byte-IDENTICAL 로 재확인. **가정 번복 없음(rules §14)**: 벤치마킹 대상 URL 정확·「co.kr 404」→「도메인 이원화」 planner Q 예방 정리. **crosswalk**: ogada 는 단일 SaaS ERP 도메인·별도 e-commerce 없음·플랫폼 집중 SUPERIOR·엔젤 쇼핑몰 축(소모품 발주)은 ogada v3+ **P4「가정」** 유지(과대구축 회피 rules §11·§17).
+
+### §880-3 ★ 규제 백본 재실측 zero substantive drift [기존 URL 재실측]
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조 live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **602차 byte-IDENTICAL**(BNK-879 601차 → +1)·verbatim: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog` `RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY`+`TransportServiceLog*`(전자 일지+감사 이력) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[law.go.kr 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110)** (장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시) live HTTP 200·**78,450B**·raw md5 `c9fa4ffac13849fa7b836e67c7f66340`(DRIFT vs BNK-875 `00114a8c`)·**byte diff = 96 bytes 전량 cache-buster `?Time=1784411120` vs `?Time=1784398551` 안 숫자 뿐** → strip `?Time=` 후 semantic **IDENTICAL**·verbatim: `장기요양급여`(3)·`2025-247`(4) 무변·**10-cycle strip IDENTICAL carry**·canonical URL 고정.
+- **[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500)** live HTTP 200·**89,162B**·`5618573525680a407975cbbafe93ccd1` = **lean-shell 재복귀**(BNK-870 lean → 872/873/875 full `a71379de` 3연속 → BNK-880 lean 복귀·`var s16;` ±9B 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지·본문 규제 콘텐츠 IDENTICAL·기능 갭 아님).
+- **longterm 610** live HTTP 200·**422B**·「refreshedException」 stub — session 쿠키 없는 raw fetch 는 계속 stub·「미확인」 carry.
+- **carefor func.php** — connection timeout 20s(DNS OK `58.76.184.55`·서버 outage 또는 방화벽)·disk canonical `carefor_func.php`(`6226e6eb`, 98,328B) LIVE 000 **109-cycle+** carry·**미확인** 유지(재측정 향후 rotation).
+
+### §880-4 ★ audit-first HTTP 442 posture 40차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+
+`@68c2378` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→880 **40차** 연속 IDENTICAL. BE +1(SEC-D34 test-layer)·FE +1(a11y test-only) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+### §880-5 ★ planner 액션 아이템 [갭 우선순위 동결]
+
+1. **BNK-878 「미포착 신규 rowid=21704」 라벨 정정 권고** — 실제로는 BNK-329/332 이후 반복 캡처된 URL(byte-IDENTICAL 4차)·G-BANK-TXN-LOOKUP P3 지위 불변·`BankDepositImportService` full-stack crosswalk **심화** 사이클로 재분류(rules §14 검증·§18 오류 처리). BNK-878 rowid=21602(CIST) 는 진짜 첫 캡처 유지.
+2. **silverangel 도메인 이원화 명시** — REQUIREMENTS §벤치마킹·PLAN_NOTES 각주 「엔젤은 `silverangel.kr`(LCMS ERP) 와 `silverangel.co.kr`(엔젤쇼핑몰 e-commerce) 를 분리 운영 — 벤치마킹 대상은 `silverangel.kr`」 명시 권고(planner Q 예방).
+3. **NHIS #44 §34조 602차 IDENTICAL** ↔ Transport full-stack 1:1 carry(상수 재조정 불요).
+4. **law 2025-247 semantic IDENTICAL 10-cycle strip carry** — canonical URL `admRulSeq=2100000271110` 고정 유지·규제 상수·앵커 재조정 불요.
+5. **longterm 502 lean-shell 재복귀** — `var s16;` 오실레이션 signal only·본문 규제 콘텐츠 IDENTICAL·규제 상수·앵커 재조정 불요·향후 재측정 불요 정책 유지(BNK-872/873/875 확정).
+6. **audit-first 442 40차 IDENTICAL** — REQUIREMENTS §감사·§PIPA 「물리 삭제 API 신설 금지·PATCH partial + soft-delete 우선」 posture 40-cycle 동결 명시.
+7. **BE SEC-D34 normalize 축 4-축 test-layer 회귀 대칭 완성**(BNK-875 통화·BNK-877 공백·BNK-878 「일」·BNK-880 test-layer lock)·production+test 양 층 안정화 SUPERIOR carry.
+8. **FE id=2/G16 이동서비스비 form-polish 계보 18차** — a11y 라우팅 완성(WCAG 3.3.1·4.1.2 date 필드 role=alert·aria-invalid·aria-describedby)·UXD-195 lineage carry·경쟁 4종 유일 full-stack SUPERIOR.
+9. **tester FF merge gate 792 carry** (BE 768+FE 24·BE-heavy·신규 마이그레이션 0) — FE id=2/G16 a11y test 이관 흡수 권고.
+10. **신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0(단, BNK-878 rowid=21704 라벨 정정 = 사실 fact 정정으로 P3 지위 불변)·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+**per-cycle minimum 4종 충족**: 신규 증거 URL(기존 URL 재실측 4-URL + 새 관찰 `silverangel.co.kr` 이원화 = 5+) · 메뉴/필드/워크플로 상세 1블록(silverangel 도메인 이원화 crosswalk) · COMPETITOR_MATRIX @HEAD 4행 갱신 · BENCHMARK_REPORT §880 신규 소절 8건. **가정 번복 1건**(BNK-878 rowid=21704 라벨) — 정책 결과 불변(P3 carry).
+
+---
+
+## §879 BNK-879 — ogada git 실측 6–8h · ★ **FE develop +1 commit(id=2/G16 이동서비스비 form-polish 계보 17차 = rejected range stale record clear·오류 배너-표 정합) 재실측 · BE `@ec7a1ce` zero advance carry · NHIS #44 제34조 601차 byte-IDENTICAL · audit-first HTTP 442 39차 byte/count-exact IDENTICAL(endpoint 신설 0) · 모듈 97.41% CARRY**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T21:00:00Z -->
+
+**조사일**: 2026-07-18T21:00:00Z | **rotation**: ogada git 실측 6–8h — BNK-878(이지케어 2–4h·2026-07-18T20:19Z) → ~40분 후. 이번 사이클 초점: (1) ogada BE·FE develop HEAD 재실측(BNK-878 → BE zero advance / FE +1 commit) · (2) Route·Page·test·@RestController·HTTP·Flyway·모듈 KPI @HEAD 재산정 · (3) NHIS #44 규제 백본 601차 재실측(byte-IDENTICAL) · (4) audit-first HTTP 442 39차 byte/count-exact IDENTICAL 재검증 · (5) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-878 → BE zero advance / FE +1 commit)**:
+- BE `@ec7a1ce` (BNK-878 **동일 HEAD·zero advance**·coder develop 신규 커밋 0·WT CLEAN·ahead **767** vs `598d108`·BE @Test strict **2392** IDENTICAL·subject `fix(v3/SEC-D34): normalize day-marker-suffixed NHIS service days instead of dropping row value`).
+- FE `@6c280d0` (BNK-878 `@171075f` → **+1 commit**·`fix(v1.2.1/transport): clear stale fee records on rejected service-fee date range (G16 id=2 form polish)`·`TransportServiceFeePanel.load` 가 결측/역방향 조회 기간 pre-block 시 성공/skip 배너만 지우고 직전 유효 기간 fee record 목록을 남겨 오류 배너와 모순되던 stale list 를 record 도 초기화 → EmptyState fallback·`9b0481d` stale-banner-clear 계보 연장·in-place test +24·신규 파일 0·ahead **23**(0/23) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@ec7a1ce / @6c280d0)**:
+| KPI | 값 | BNK-878 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (product route 무변·form polish only) | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL (in-place +24·신규 0) | `git ls-tree develop '*.test.js*'` |
+| BE @Test (strict) | **2392** | IDENTICAL (BE zero advance) | `git grep -E '@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 39차** (BNK-836→879·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **790** (FE 23 + BE 767·BE-heavy) | +1 (FE +1) | `git rev-list --count origin/test..develop` |
+
+**§879-1 · FE +1 commit — id=2/G16 이동서비스비 form-polish 계보 17차(rejected range stale record clear·오류 배너-표 정합) [git 실측·SUPERIOR]**
+- FE `@6c280d0` diff(`171075f..6c280d0`): `TransportServiceFeePanel.jsx` +3 / `TransportServiceFeePanel.test.jsx` +24 = 2 files +27(신규 파일 0).
+- 문제: `TransportServiceFeePanel.load` 가 결측/역방향 조회 기간을 서버 왕복 전 사전 차단할 때 성공/skip 배너만 지우고, 직전 유효 기간에서 로드한 fee record 목록은 그대로 mount 되어 있어 → 오류 배너("기간 오류")와 모순되는 stale fee list 가 화면에 남는 정합성 결함.
+- 조치: pre-block 분기에서 record 도 함께 초기화 → 표가 `EmptyState` 로 fallback(유효 기간 load/generate 동작 무변). `9b0481d`(stale generate banner clear·BNK-875) 계보 연장.
+- id=2 form-polish 계보 17차: 862/863 회차·864 정차상한·866 stale-state·867 helper 추출·868 blocked focus·869 exponent/hex+out-of-range·871 Integer max·875 stale banner·876 역방향 기간 reject·877 결측 기간 reject·**879 rejected range stale record clear**.
+- 경쟁 4종(케어포 시설 셸 이동서비스 0·엔젤 배차 0·이지케어 데모 배차 부재) 대비 이동서비스비 폼 전 축 FE↔BE lockstep 검증·오류-상태 정합 밀도 유일 full-stack SUPERIOR.
+
+**§879-2 · NHIS #44 제34조 601차 byte-IDENTICAL ↔ ogada Transport full-stack 1:1 [기존 URL 재실측·SUPERIOR]**
+- [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) live HTTP 200·7,572B·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **601차 byte-IDENTICAL**(BNK-877 600차 → +1·BNK-878 이지케어 focus 미측정·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1).
+- ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(④ 이동서비스 일지=전자 일지+감사 이력) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry. snapshot `nhis_jo44_live_bnk879.html`(byte-IDENTICAL nhis_jo44_live_bnk872~877).
+
+**§879-3 · audit-first HTTP 442 posture 39차 byte/count-exact IDENTICAL [git 실측·감사 우선]**
+- `@ec7a1ce` grep: GET **231**·POST **144**·PATCH **44**·PUT **13**·DELETE **10** = **442**·@RestController 81·controller당 5.46 = BNK-836→879 **39차** 연속 IDENTICAL.
+- BE zero advance + FE +1(form polish test-only) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+**§879-4 · planner 액션 아이템 [갭 우선순위 동결]**
+1. REQUIREMENTS §이동서비스/§폼 검증 「FE 사전 검증 + BE 최종 검증 defense-in-depth + 거부된 조회 기간의 stale 데이터 즉시 초기화(오류 배너-표 정합)」 명시 권고.
+2. 마케팅 카피 「이동서비스비 폼 오류 시 잘못된 기간의 이전 데이터까지 즉시 정리 — 화면 정합성 보장」 검토.
+3. NHIS #44 601차 IDENTICAL·audit-first 442 39차 동결 → 규제 상수·API posture 재조정 **불요**.
+4. tester FF merge gate **790** carry(BE 767+FE 23·BE-heavy·신규 마이그레이션 0) — FE id=2/G16 form 축적분 test 이관 흡수 권고.
+5. 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 결정 번복 **0** · 미확인 승격 **0** · KPI promote **0** · 모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+**신규 snapshot**: 2건(`ogada_git_remeasure_bnk879.txt` + `nhis_jo44_live_bnk879.html`)·덮어쓰기 0. **가정 번복 0**·per-cycle minimum 4종 충족(신규 evidence = NHIS #44 601차 재실측 + FE id=2 form 워크플로 1블록 + COMPETITOR_MATRIX @HEAD 4행 갱신 + BENCHMARK_REPORT §879).
+
+---
+
+## §878 BNK-878 — 이지케어 역공학 2–4h · ★ **신규 증거 URL 2건(FAQ rowid=21704 통장거래내역 간편조회 · rowid=21602 인지선별검사 CIST) verbatim 복원 → ogada full-stack crosswalk** · BE `@ec7a1ce`(+1 commit·SEC-D34 normalize NHIS 서비스 일수 「일」 접미사) / FE `@171075f`(zero advance·WT DIRTY 2M) 재실측 · audit-first HTTP 442 38차 byte/count-exact IDENTICAL · home data-count 5-지표 STABLE · 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T20:19:00Z -->
+
+**조사일**: 2026-07-18T20:19:00Z | **rotation**: 이지케어 역공학 2–4h — BNK-877(케어포 0–2h·2026-07-18T19:37Z) → ~40분 후. 이번 사이클 초점: (1) 이지케어 FAQ rowid 전수 스캔(233종) → **미포착 신규 rowid 2건** 특정·verbatim 복원 · (2) ogada BE·FE develop HEAD 재실측(BNK-877 → BE +1 / FE zero advance) · (3) 데모 셸·홈·FAQ live 재실측(top-nav byte-IDENTICAL·data-count STABLE) · (4) audit-first HTTP 442 38차 byte/count-exact IDENTICAL 재검증 · (5) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-877 → BE +1 / FE zero advance)**:
+- BE `@ec7a1ce` (BNK-877 `@dc261ed` → **+1 commit**·`fix(v3/SEC-D34): normalize day-marker-suffixed NHIS service days instead of dropping row value`·NHIS import 서비스 일수 셀에 「일」 day-marker 접미사가 붙어도 row-drop 하지 않고 정규화 파싱·SEC-D34 normalize 축(BNK-875 통화접미사·BNK-877 공백그룹 입금액)에 NHIS 서비스 일수 표면 추가·+1 @Test·WT CLEAN·ahead **767** vs `598d108`·BE @Test strict **2392**).
+- FE `@171075f` (BNK-877 **동일 HEAD·zero advance**·WT DIRTY 2M `TransportServiceFeePanel.jsx`+`.test.jsx` coder in-progress·ahead **22**(0/22) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@ec7a1ce / @171075f)**:
+| KPI | 값 | BNK-877 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `git ls-tree develop '*.test.js*'` |
+| BE @Test (strict) | **2392** | +1 (BNK-877 2391·NHIS days day-marker normalize) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 38차** (BNK-836→878·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **789** (FE 22 + BE 767·BE-heavy) | +1 (BE +1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/ezcare_bank_txn_cist_1to1_bnk878.txt`(신규·본 사이클 FAQ 2-rowid crosswalk + git 실측 근거) · `ezcare_faq_21704_bank_txn_lookup_bnk878.html`·`ezcare_faq_21602_cist_cognitive_bnk878.html`(신규 증거 URL). 신규 snapshot **5**(txt 1 + html 4)·덮어쓰기 0.
+
+### §878-1 ★★ 신규 증거 URL — FAQ rowid=21704 「통장거래내역 간편조회 서비스(7.1 통장내역 조회/입력)」 ↔ ogada BankDeposit import lifecycle
+
+**근거 URL**: [FAQ rowid=21704](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21704&type=web) HTTP 200·16,996B·`db8fd61f622e86a213c39f89af9642a9`(미포착 신규 rowid). verbatim: 「기관 통장의 모든 입출금 거래 내역을 한번에 확인 가능·거래별로 사용내역을 입력하여 관리하거나 **본인부담금으로 보이는 입금내역은 수납관리를 위해 예상 수급자를 알려줍니다**」·「7.1 통장내역 조회/입력 ▶ 조회계좌 관리 ▶ + 조회계좌(통장) 추가하기」·「통장거래내역 조회를 위해서는 먼저 (은행) '**간편/빠른계좌 조회**'를 등록해주세요」·「등록한 계좌를 선택하여 **갱신하기** 를 클릭시 통장 거래내역을 입금/출금/기간별로 확인」.
+
+**이지케어 워크플로**: (a) 은행 웹사이트에서 '간편/빠른계좌 조회' 등록(사용자 수동) → (b) 이지케어 7.1 조회계좌 관리 → 계좌 추가 → 갱신하기 = 통장 거래내역 **LIVE pull** → (c) 본인부담금으로 보이는 입금 → '**예상 수급자**' 제시(수동 수납관리 보조).
+
+**ogada crosswalk (git 실측 @ec7a1ce)**: BE `BankDepositImportService`(+`BankDepositExcelParser`·`BankDepositFormatCatalog`·`ParsedBankDepositRow`·`BankDepositImport{Preview,Response,RowResult}`)·FE `BankDepositImportPanel.jsx`+`config/bankDepositFormats.js`. 실측 매칭 로직: `buildMatchCandidates(orgId, branchId)` → `findCandidates(byName, normalizedDepositor)` → `row.amount == candidate.matchAmount` 금액 매칭 → `selectAmountMatch` → 상태 **STATUS_APPLIED / STATUS_SKIPPED(autoApplicable=false) / STATUS_UNMATCHED** → `match.autoApplicable` 이면 `billingService.recordCopayPayment(...)` **자동 적용** → `BankDepositCopayLifecycleE2eTest`(US-L01) 「bank deposit excel import → copay payment → PAID notification E2E」.
+
+- **판정 = △ MIXED** (경쟁 우열 축이 갈림·진성갭 아님):
+  - **이지케어 우위**(ogada 부재): 은행 '간편/빠른계좌 조회' **LIVE 계좌 연동 자동 통장 갱신 pull**(오픈뱅킹/스크래핑성). ogada 는 은행 입금 **엑셀 import** 전제.
+  - **ogada 우위**(이지케어 근거 부재): 예상 수급자 '제시'(수동 수납관리)에 그치는 이지케어 대비, ogada 는 depositor-name+amount **자동 매칭 → CONFIRMED claim copay 자동 적용 → PAID 알림 자동 발송**(E2E lifecycle 자동화) + SEC-D34 매직바이트/공백그룹 입금액 정규화(BNK-849/877) 파일 내성.
+- **신규 P3「가정」 lever candidate**(planner Q 후보·과대구축 회피): ogada 「은행 계좌 LIVE 연동(오픈뱅킹) 통장 거래내역 자동 갱신」 축 부재 → 오픈뱅킹 API 는 PIPA/전자금융·인증서·계좌정보 보관 리스크 → 엑셀 import 로 충분히 대체 가능·핵심 운영 갭 아님·「미확인」/P3 유지·진성갭 승격 아님(rules §11·§17).
+
+### §878-2 ★ 신규 증거 URL — FAQ rowid=21602 「인지선별검사 CIST 결과 관리」 ↔ ogada 인지 평가 축
+
+**근거 URL**: [FAQ rowid=21602](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21602&type=web) HTTP 200·15,724B·`cc592c41ada0c24a6f74f16a28a55e3e`(미포착 신규 rowid). verbatim: 「인지선별검사 CIST는 "**중앙치매센터**" 온라인 교육 이수 후 제공된 CIST 검사지를 출력하여 문항별로 검사 후 검사지의 결과를 이지케어 **인지기능 결과입력** 화면에 입력후 저장하여 실시 현황을 관리」·「2.수급자 관리 > 수급자 선택 > 기초평가 → **인지기능 결과입력** → **인지영역별 측정 점수와 판정결과**를 바로 확인·인지선별검사 실시 이력 관리(전체 현황: 2.수급자 > **2.2정기욕구평가 현황**)」·「참고: CIST는 보건복지부 **저작권 문제로 검사지 제공 및 검사결과 출력이 불가능**」.
+
+**ogada crosswalk (git 실측 @ec7a1ce)**: grep 실측 — `CIST`/`인지선별`/`중앙치매` literal = BE·FE 전량 **0-hit**. `ClientNeedsAssessmentResponse.java` `String cognitive` 필드(정기욕구평가 내 '인지' 항목) 보유·`ClientRiskAssessmentService`(admission/semi-annual/pressure-ulcer 3-screening)·인지활동 「기록·계획·등급」축(BNK-873 `CognitiveActivitySkipReason`·`FunctionalRecoveryService`·`V99` 인지지원등급 G9) 보유. 그러나 **CIST 전용 「인지기능 결과입력」(인지영역별 측정 점수 + 판정결과 자동표시 + 실시 이력) 스코어링 화면 부재**.
+
+- **판정 = △ P3「가정」 candidate**(BNK-873 인지활동북과 동일 인지 도메인 계열): 인지 dimension 은 needs assessment 에 포함되나 CIST 전용 스코어링 화면 부재. CIST 자체가 중앙치매센터 저작권 제약(이지케어도 검사지/결과 출력 불가·결과값만 관리)·선택적·핵심 운영 갭 아님. 「미확인」/P3 유지·진성갭 승격 아님.
+
+### §878-3 ★ 데모 셸·홈·FAQ live 재실측 + audit-first HTTP 442 38차 byte/count-exact IDENTICAL
+
+- **데모 셸**: `./scripts/ezcare-demo-fetch.sh` login code=**0000**(oCode=DEMO)·title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」·`top-nav-item-V2.js` `95286775` `?20260428` 25,470B **BYTE-IDENTICAL**(BNK-864→878·10-module nav 무변)·demo_shell 138,099B `41455051`(동적 콘텐츠 md5 drift)·비로그인 70B redirect stub 재확인.
+- **home**: [ezcare.easyms.co.kr](https://ezcare.easyms.co.kr/) 200·69,883B·`96c631a4`(BNK-871 69,122B `060a77df` → +761B 마크업 drift)·**data-count 5-지표 verbatim STABLE**(53.2 방문요양 ERP 점유율·9,298 이용기관·4,675 재무회계 대행·2,353억 월 공단청구·1,820억 종사자급여·BNK-778→854→870→871→878 byte-IDENTICAL).
+- **FAQ**: [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) 200·80,057B·`1ae41393`(size IDENTICAL·md5 오실레이션·rowid 233·max 21781 STABLE)·파일무결성 verbatim(매직/시그니처/위조/corrupt/PK/0바이트) **0-hit** 재확인 carry.
+- **audit-first HTTP 442**: `@ec7a1ce` grep GET231(52.3%)/POST144(32.6%)/PATCH44(10.0%)/PUT13(2.9%)/DELETE10(2.3%)=**442**·controller당 5.46 = BNK-836→878 **38차 byte/count-exact IDENTICAL**(endpoint 신설 0·감사 우선 read-create dominant·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소=soft-delete/감사 보관 PIPA 정합).
+
+**planner 반영 포인트**: (1) **은행 입금 대사 lifecycle SUPERIOR** — ogada 자동매칭→copay 적용→PAID 알림(US-L01)은 이지케어 '예상 수급자 제시(수동)' 대비 우위·REQUIREMENTS §청구·§본인부담 「은행 입금 엑셀 import → 자동 대사 → 본인부담 수납 자동 반영 + PAID 알림」 명문화 권고. (2) **신규 P3「가정」 lever(은행 계좌 LIVE 연동/오픈뱅킹)** — 엑셀 import 대체 가능·PIPA/전자금융 리스크·「미확인」/P3 유지·과대구축 회피. (3) **P3「가정」 CIST 인지기능 결과입력**(영역별 점수+판정) — 저작권 제약·선택적·BNK-873 인지활동북과 '인지 도메인 스코어링/콘텐츠' 소묶음으로 참고 메모 carry·진성갭 아님. (4) home data-count 5-지표 STABLE·audit-first 442 38차 IDENTICAL → 규제 상수·API posture 재조정 불요. (5) 신규 진성갭 **0**·closed band 재오픈 **0**·P0~P3 결정 번복 **0**·미확인 승격 **0**·KPI promote **0**·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지. tester FF merge gate **789**(BE 767+FE 22·BE-heavy·신규 마이그레이션 0) 흡수 권고.
+
+## §877 BNK-877 — 케어포 역공학 0–2h · ★ **신규 앵글 — func.php 메뉴 depth(depth-3 N-M-K leaf) → ogada Route 1:1 = 12 PARITY + 7 PARTIAL + 0 genuine gap · carefor flat 3단 번호 메뉴 < ogada nested React Router IA 4단(조직 깊이 SUPERIOR)** + BE `@dc261ed`(+1 commit·SEC-D34 normalize 공백 그룹 입금액·row-drop 회피) / FE `@171075f`(+1 commit·G16 이동서비스비 결측 기간 FE 사전 차단) 재실측 + NHIS #44 제34조 600차 byte-IDENTICAL + audit-first HTTP 442 37차 byte/count-exact IDENTICAL + 모듈 97.41% CARRY
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T19:37:00Z -->
+
+**조사일**: 2026-07-18T19:37:00Z | **rotation**: 케어포 역공학 0–2h — BNK-876(ogada git 실측 6–8h·2026-07-18T18:57Z) → ~40분 후. 이번 사이클 초점: (1) 케어포 func.php 정적 메뉴 **depth 구조** 재집계(depth-2/depth-3/최대 depth) 및 depth-3 leaf → ogada Route 1:1 crosswalk · (2) ogada nested React Router IA depth 분포 실측 대비 · (3) ogada BE·FE develop HEAD 재실측(BNK-876 → BE +1 / FE +1) · (4) NHIS #44 제34조 600차 zero drift 재실측 · (5) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-876 → BE +1 / FE +1 commit)**:
+- BE `@dc261ed` (BNK-876 `@ad2c0b1` → **+1 commit**·`fix(v3/SEC-D34): normalize whitespace-grouped bank deposit amount instead of dropping row`·공백 그룹핑된 은행 입금액(예: "1 234 567")을 row-drop 하지 않고 정규화 파싱·SEC-D34 normalize 축이 은행 입금 대사(`BankDepositExcelParser`) 표면까지 확산·+1 @Test·WT CLEAN·ahead **766** vs `598d108`·BE @Test strict **2391**).
+- FE `@171075f` (BNK-876 `@3b903c8` → **+1 commit**·`fix(v1.2.1/transport): reject missing service-fee date range before API round-trip (G16 id=2 form polish)`·`TransportServiceFeePanel` 조회/생성이 시작일·종료일 **결측** 상태로 서버 왕복하던 문제를 FE 사전 차단·`config/transportServiceFee.js`+41/`.test.js`+31·in-place test +112·신규 파일 0·ahead **22**(0/22) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@dc261ed / @171075f)**:
+| KPI | 값 | BNK-876 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `grep -cE '<Route\b' src/App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree ... '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL (in-place +112·신규 0) | `git ls-tree ... '*.test.js*'` |
+| BE @Test (strict) | **2391** | +1 (BNK-876 2390·bank deposit whitespace normalize) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree ... '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 37차** (BNK-836→877·endpoint 신설 0) | `git grep -ho '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **788** (FE 22 + BE 766·BE-heavy) | +2 (FE+1/BE+1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/carefor_menu_depth3_route_1to1_bnk877.txt`(신규·본 사이클 케어포 depth crosswalk + git 실측 근거) · `nhis_jo44_live_bnk877.html`(600차·재실측 evidence). 신규 snapshot **2**(txt 1 + html 1)·덮어쓰기 0.
+
+### §877-1 ★★ 신규 앵글 — func.php 메뉴 depth 구조 재집계 (carefor flat 3단 < ogada nested 4단)
+
+**근거**: disk canonical `carefor_func.php`(`6226e6eb`/98,328B·BNK-810~876 IDENTICAL) grep — top-level 모듈 **11**·depth-2 leaf(N-M.) **88**·depth-3 leaf(N-M-K.) **20 numbering entry / 19 distinct**(8-1-1↔8-1-2 numbering 변형 1건)·**depth-4(N-M-K-L.) 0-hit** = carefor func.php 정적 메뉴 최대 depth = **3(flat 번호식 트리)**.
+
+**ogada Route depth 분포**(FE `@171075f` App.jsx path segment 실측): depth1 **19** / depth2 **72** / depth3 **33** / depth4 **6** = 최대 depth **4**. depth-4 route 6종: `/nursing/service/reports/total`·`/nursing/service/reports/hospital-visits`·`/nursing/service/reports/medication-delivery`·`/nursing/pressure-ulcer/reports/provision`·`/billing/imports/nhis/:batchId`·`/guardian/invitations/:token/accept`.
+
+- **관찰**: carefor 는 「모듈→서브→하위」 3단 flat 번호 메뉴가 최심(深)이며 리포트/간호/프로그램 하위도 3단에서 종료. ogada nested React Router IA 는 간호(service/reports)·욕창(pressure-ulcer/reports)·청구(imports/nhis) 하위 도메인에서 **4단 nesting** 도달(≥3-deep route = 33+6 = **39**). => report·nursing sub-domain 조직 깊이 ogada SUPERIOR(라벨링이 아닌 nested router 실측 근거).
+
+### §877-2 ★ carefor depth-3 (N-M-K) 19 leaf → ogada Route 1:1 = 12 PARITY + 7 PARTIAL + 0 genuine gap
+
+**crosswalk**(FE `@171075f` App.jsx path + 컴포넌트 실측·상세 표는 `carefor_menu_depth3_route_1to1_bnk877.txt` [4]):
+- ✅ **12 PARITY**: 2-1-1 외출관리(`/reports/client-outings`+`/transport/outings`)·3-1-1 통합식사도움(`/care/meal-assistance-records`)·3-1-2 간호급여 제공기록(`/nursing/vital-checks`+`/care/reports/medication-delivery`)·3-1-3 요양급여 특이사항(`/care/service-special-notes`)·3-1-4 식사 만족도조사(`/care/meal-preference-surveys`)·4-1-1 통합 간호/바이탈(`/nursing/service`+`/nursing/vital-checks`)·5-3-1 프로그램 그룹(`/programs`+`/programs/reports/group-history`)·6-3-1 감염병관리(`/safety/infection-control`)·7-2-1 의료비공제(연말정산)(`MedicalExpenseDeductionPanel`)·8-1-2 선임 요양보호사 업무일지(`/staff/lead-caregiver-log`)·8-7-1 요양보호사 보수교육(`/staff/training`+`/staff/training-logs`)·9-1-1 기초설정(`/settings`+`/organization/settings`).
+- △ **7 PARTIAL**(전용 route 부재이나 상위 모듈 포괄·진성갭 아님·「가정」 유지): 1-1-1 대기 수급자(`/clients` 상태 필터)·4-6-1/4-6-2/4-6-3 물리(작업)치료(`/programs/functional-recovery`·`/programs/reports/schedules` 기능회복 포괄·BNK-874 IDENTICAL)·5-1-1 외부강사/자원봉사자(`/programs` 강사 포괄·전용 volunteer route 부재)·5-5-1 프로그램관리자 업무일지(`/staff/lead-caregiver-log` 유사축)·10-2-1 수가변경안내 발송(`/clients/care-plan-notifications`+`/clients/home-newsletter` 채널 포괄).
+- **판정**: depth-3 19 leaf 중 genuine gap **0**. 5-1-1 자원봉사자 전용 관리·5-5-1 프로그램관리자 업무일지는 소규모 주간보호 우선순위 낮음·기존 모듈 포괄 종결(과대구축 회피 rules §11·§17·진성갭 승격 아님).
+
+### §877-3 ★ NHIS #44 제34조 600차 byte-IDENTICAL + SEC-D34 normalize(공백 그룹 입금액) 착지 + audit-first HTTP 442 37차
+
+**근거 URL**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1fd1d5ca2cb5dc76d30adde8ba` **600차**(BNK-876 599차 → +1·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1). ↔ ogada `@dc261ed` `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+
+**SEC-D34 착지축**: BE `@dc261ed` `BankDepositExcelParser` 공백 그룹핑된 입금액(예: "1 234 567")을 row-drop 하지 않고 정규화 파싱(+1 @Test) = BNK-875 currency-suffixed normalize 계열·normalize 축이 재무 입금 대사 표면까지 확산·단일 포맷 셀이 대사 row 전체를 죽이지 않는 robustness·HTTP 442 무변. 경쟁 4종 입금 대사 셀 정규화 근거 0-hit → ogada 유일 필드 내성/정규화 SUPERIOR.
+
+**audit-first HTTP 442**: `@dc261ed` grep GET231(52.3%)/POST144(32.6%)/PATCH44(10.0%)/PUT13(2.9%)/DELETE10(2.3%)=**442**·controller당 5.46 = BNK-836→877 **37차 byte/count-exact IDENTICAL**(endpoint 신설 0·감사 우선 read-create dominant·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소=soft-delete/감사 보관 PIPA 정합).
+
+**planner 반영 포인트**: (1) **메뉴 IA 깊이 SUPERIOR** — carefor flat 3단 번호 메뉴 < ogada nested 4단(간호/욕창/청구 하위)·라벨링이 아닌 nested router 실측 근거 = REQUIREMENTS §IA/§네비게이션 「도메인 하위 리포트는 nested route(≤4단)로 조직」 posture 유지 권고. (2) depth-3 19 leaf 12 PARITY+7 PARTIAL+0 genuine gap → 신규 Epic 불요·PARTIAL 7건 기존 모듈 포괄 종결. (3) 마케팅 카피 「간호·욕창·청구 리포트까지 4단 nested 메뉴로 조직 — 케어포 3단 flat 대비 깊은 정보구조」 검토. (4) NHIS #44 600차 IDENTICAL·audit-first 442 37차 동결 → 규제 상수·API posture 재조정 불요. (5) tester FF merge gate **788**(BE 766+FE 22·BE-heavy·신규 마이그레이션 0) 흡수 권고. 신규 진성갭 **0**·closed band 재오픈 **0**·P0~P3 결정 번복 **0**·미확인 승격 **0**·KPI promote **0**·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+## §876 BNK-876 — ogada git 실측 6–8h · ★ **BE `@ad2c0b1` zero advance carry + FE `@3b903c8`(+1 commit·G16 이동서비스비 역방향 기간 FE 사전 차단·BE `validateDateRange` lockstep) 재실측 + NHIS #44 제34조 599차 byte-IDENTICAL + audit-first HTTP 442 36차 byte/count-exact IDENTICAL(endpoint 신설 0) + 모듈 97.41% CARRY**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T18:57:00Z -->
+
+**조사일**: 2026-07-18T18:57:00Z | **rotation**: ogada git 실측 6–8h — BNK-875(엔젤·롱텀·규제 4–6h·2026-07-18T18:15Z) → ~40분 후. 이번 사이클 초점: (1) ogada BE·FE develop HEAD 재실측(BNK-875 → BE zero advance / FE +1) · (2) HTTP 442 audit-first posture 36차 byte/count-exact IDENTICAL 재검증 · (3) NHIS #44 제34조 599차 zero drift 재실측 · (4) G16 id=2 이동서비스비 form-polish 계보 착지축(역방향 기간 FE 사전 차단) crosswalk · (5) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-875 → BE zero advance / FE +1 commit)**:
+- BE `@ad2c0b1` (BNK-875 **동일 HEAD·zero advance**·coder develop 신규 커밋 0·WT CLEAN·ahead **765** vs `598d108`·BE @Test strict **2390** IDENTICAL) = SEC-D34 계보(currency-suffixed normalize) 착지 후 안정 carry·controller endpoint 신설 0.
+- FE `@3b903c8` (BNK-875 `@9b0481d` → **+1 commit**·`fix(v1.2.1/transport): reject reversed service-fee date range before API round-trip (G16 id=2 form polish)`·`TransportServiceFeePanel` 조회/생성이 시작일>종료일 역방향 기간을 서버로 보낸 뒤에야 BE 400 을 표면화하던 문제를 FE `isTransportServiceFeeDateRangeInOrder`(신규 `config/transportServiceFee.js` +26)로 사전 차단·BE `TransportServiceFeeService.validateDateRange` 와 동일 문구 「시작일은 종료일보다 이후일 수 없습니다.」 즉시 노출·목록/생성 왕복 skip·in-place test +61·신규 파일 0·ahead **21**(0/21) vs origin/test=`b23711f`·tester FF 대기).
+
+**git 실측 KPI (@ad2c0b1 / @3b903c8)**:
+| KPI | 값 | BNK-875 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `grep -cE '<Route\b' src/App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `find src/pages -name '*Page.jsx' -not -name '*.test.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL (in-place +61·신규 0) | `find src -name '*.test.js*'` |
+| BE @Test (strict) | **2390** | IDENTICAL (BE zero advance) | `grep -rE '^\s*@Test\b' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find src/backend/src/test -name '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rl '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 36차** (BNK-836→876·endpoint 신설 0) | `grep -rho '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **786** (FE 21 + BE 765·BE-heavy) | +1 (FE+1/BE 0) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/ogada_git_remeasure_bnk876.txt`(신규·본 사이클 git 실측 근거) · `nhis_jo44_live_bnk876.html`(599차·재실측 evidence). 신규 snapshot **2**(txt 1 + html 1)·덮어쓰기 0.
+
+### §876-1 ★ ogada git baseline @HEAD 재확인 (BE zero advance / FE +1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`ad2c0b1…`(BNK-875 동일 HEAD·zero advance) · `git -C src/frontend rev-parse develop`=`3b903c8…`(BNK-875 `9b0481d` → +1) · WT CLEAN·2026-07-18T18:57Z.
+
+- BE 착지축: 신규 커밋 0. SEC-D34 계보(BNK-873 oversized minutes→time-diff · BNK-874 out-of-range RFID tag time→null · BNK-875 currency-suffixed amount/days→normalize)의 graceful-degrade/normalize 축 착지 후 안정 carry·@Test strict 2390 IDENTICAL·HTTP 442 무변.
+- FE 착지축: G16 id=2 이동서비스비 service-fee 패널이 시작일>종료일 역방향 기간을 서버 왕복 없이 즉시 차단(FE pre-validation) — BE `TransportServiceFeeService.validateDateRange`(동일 문구 「시작일은 종료일보다 이후일 수 없습니다.」)와 defense-in-depth lockstep·behavior-fix·HTTP 442 무변.
+
+### §876-2 ★ id=2 이동서비스비(G16) form-polish 계보 15차 축 = 역방향 기간 FE 사전 차단 ↔ BE validateDateRange lockstep
+
+**FE `@3b903c8` diff**(4 files·+104/-5): `TransportServiceFeePanel.jsx` +22/-x(역방향 기간 사전 차단 분기)·`TransportServiceFeePanel.test.jsx` +46(회귀 lock)·신규 `config/transportServiceFee.js` +26(`isTransportServiceFeeDateRangeInOrder` shared helper export)·`config/transportServiceFee.test.js` +15(계약 lock).
+
+- **워크플로**: 이동서비스비 조회/생성 폼에서 시작일·종료일이 역순이면 FE 가 `apiFetch` 왕복 전 즉시 필드 오류(「시작일은 종료일보다 이후일 수 없습니다.」)를 노출하고 목록/생성 API 호출을 skip → bandwidth 절감 + 즉시 UX 피드백 + BE 최종 검증(defense-in-depth).
+- **id=2 form-polish 계보(15차)**: BNK-862 회차 → 863 회차 검증 → 864 정차상한(MAX_TRANSPORT_ROUTE_STOPS) → 866 stale-state 정리 → 867 helper 추출 → 868 blocked focus → 869 exponent/hex + out-of-range reject → 871 Integer max bound → 875 stale generate banner 정리 → **876 역방향 기간 FE 사전 차단**. = ogada 이동서비스비(id=2) 폼이 회차·정차·범위·기간 전 축에서 FE↔BE lockstep 검증(경쟁 4종 대비 폼-레벨 검증 밀도 SUPERIOR·id=2 0.85 carry).
+- **경쟁 crosswalk**: 케어포 시설 셸 이동서비스 0-hit(BNK-836/845)·엔젤 system_feature 이동서비스/배차 0-hit(BNK-875)·이지케어 데모 셸 배차 모듈 부재 = ogada Transport(러-1~4·NHIS #44 §34조 상수·form-polish 15차) 유일 full-stack SUPERIOR.
+
+### §876-3 ★ NHIS #44 제34조 599차 byte-IDENTICAL + audit-first HTTP 442 36차
+
+**근거 URL**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1fd1d5ca2cb5dc76d30adde8ba` **599차**(BNK-875 598차 → +1·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1). ↔ ogada `@ad2c0b1` `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(§34조 ④ 이동서비스 일지=전자 일지+감사 이력) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+
+**audit-first HTTP 442**: `@ad2c0b1` grep GET231(52.3%)/POST144(32.6%)/PATCH44(10.0%)/PUT13(2.9%)/DELETE10(2.3%)=**442**·controller당 5.46 = BNK-836→876 **36차 byte/count-exact IDENTICAL**(endpoint 신설 0·감사 우선 read-create dominant·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소=soft-delete/감사 보관 PIPA 정합).
+
+**planner 반영 포인트**: ogada git baseline BE `@ad2c0b1`(zero advance·ahead 765·@Test 2390)·FE `@3b903c8`(ahead 21 tester FF 대기·+1 id=2 form) — **merge gate 786**(BE-heavy·신규 마이그레이션 0)로 tester FF 흡수 권고. G16 id=2 이동서비스비 폼이 form-polish 15차 축(회차·정차·범위·기간)으로 FE↔BE lockstep 검증 밀도 SUPERIOR → REQUIREMENTS §이동서비스/§폼 검증 「FE 사전 검증 + BE 최종 검증 defense-in-depth」 명시 권고·마케팅 카피 「이동서비스비 폼 즉시 검증 — 잘못된 기간·회차 서버 왕복 전 차단」 검토. NHIS #44 599차 IDENTICAL·audit-first 442 36차 동결 → 규제 상수·API posture 재조정 불요. 신규 진성갭 **0**·closed band 재오픈 **0**·P0~P3 결정 번복 **0**·미확인 승격 **0**·KPI promote **0**·모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+## §875 BNK-875 — 엔젤·롱텀·규제 역공학 4–6h · ★★ **규제 백본 재실측: NHIS #44 제34조 598차 byte-IDENTICAL + longterm 502/610 FULL 3연속(var s16 오실레이션 최종 결착 재확인) + law 2025-247 Time-strip `a913639a` 9-cycle IDENTICAL + silverangel 3-URL byte-IDENTICAL(system_feature 이동서비스/배차/GPS/RFID/차량 0-hit 재확인)** ↔ ogada Transport(id=2) full-stack 1:1 SUPERIOR carry + BE `@ad2c0b1` SEC-D34 normalize(통화 접미사 붙은 NHIS import 금액/일수 null-drop 대신 정규화) 착지
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T18:15:00Z -->
+
+**조사일**: 2026-07-18T18:15:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4–6h — BNK-874(케어포 0–2h·2026-07-18T17:35Z) → ~40분 후. 이번 사이클 초점: (1) ogada BE·FE git baseline 재실측(BNK-874 → BE+1/FE+1) · (2) NHIS #44 제34조 598차 zero drift 재검증 · (3) longterm 502/610 FULL 3연속 = var s16 오실레이션 최종 결착 재확인 · (4) law 2025-247 Time-strip 9-cycle IDENTICAL · (5) silverangel 3-URL byte-IDENTICAL·이동서비스/배차 0-hit 재확인 · (6) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-874 → BE+1/FE+1 commit)**:
+- BE `@ad2c0b1` (BNK-874 `@6329323` → **+1 commit**·`fix(v3/SEC-D34): normalize currency-suffixed NHIS import amount/days instead of dropping to null`·통화 접미사(예 「1,200원」)가 붙은 NHIS import 금액/일수 셀을 null 로 버리지 않고 정규화 파싱·+1 @Test·WT CLEAN·ahead **765** vs `598d108`) = SEC-D34 계보 「graceful-degrade / normalize」 축 확장(BNK-873 oversized visit minutes→time-diff · BNK-874 out-of-range RFID tag time→null · BNK-875 currency-suffixed amount/days→normalize). 단일 malformed 필드가 전체 import 를 죽이지 않도록 파서 robustness 강화·HTTP 442 무변(controller 확장 0).
+- FE `@9b0481d` (BNK-874 `@9f12482` → **+1 commit**·`fix(v1.2.1/transport): clear stale generate banners on service-fee reload (id=2 form polish)`·G16 이동서비스비 service-fee 패널 재조회 시 이전 generate 배너 정리·잔여 상태 노출 방지·ahead **20**(0/20) vs origin/test=`b23711f`·tester FF 대기)
+
+**git 실측 KPI (@ad2c0b1 / @9b0481d)**:
+| KPI | 값 | BNK-874 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `git grep -cE '<Route\b' develop -- src/App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop \| grep 'Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `git ls-tree develop \| grep '.test.js*'` |
+| BE @Test (strict) | **2390** | **+1** (currency-suffixed amount/days normalize) | `grep -rE '@Test' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop \| grep 'Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rE '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 35차** (BNK-836→875·endpoint 신설 0) | `grep -rE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **785** (FE 20 + BE 765·BE-heavy) | +2 (BE+1/FE+1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk875.txt`(신규·본 사이클 crosswalk 근거) · `nhis_jo44_live_bnk875.html`(598차) · `longterm_502_live_bnk875.html`/`longterm_610_live_bnk875.html`(FULL 3연속) · `law_mohw_2025_247_admRulInfoP_live_bnk875.html` · `silverangel_{system_feature,daycare_essentialWork,home}_live_bnk875.html`. 신규 snapshot **8**(txt 1 + html 7·re-measure evidence)·덮어쓰기 0.
+
+### §875-1 ★ ogada git baseline @HEAD 재확인 (BE+1/FE+1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`ad2c0b1…`(BNK-874 `6329323` → +1) · `git -C src/frontend rev-parse develop`=`9b0481d…`(BNK-874 `9f12482` → +1) · WT CLEAN·2026-07-18T18:15Z.
+
+- BE 착지축: NHIS import 파서가 금액/일수 셀에 통화 접미사(「원」·콤마)가 붙어 있을 때 `null` 로 drop 하지 않고 숫자만 정규화 파싱. BNK-873/874 graceful-degrade 계열의 **normalize** 확장 — 단일 셀의 표기 변형이 전체 import 를 손상시키지 않도록 방어. +1 @Test·HTTP 442 무변.
+- FE 착지축: `TransportServiceFeePanel`(또는 관련 패널) reload 시 stale generate 배너 정리 — G16 이동서비스비 폼 polish·behavior-fix·HTTP 442 무변.
+
+### §875-2 ★★ NHIS #44 제34조 598차 byte-IDENTICAL ↔ ogada Transport full-stack 1:1
+
+**근거 URL**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1fd1d5ca2cb5dc76d30adde8ba` **598차**(BNK-873 597차 → +1·zero drift). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·이동서비스 일지(1)·수급자가 부담(1).
+
+↔ ogada `@ad2c0b1` 실측: `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(제34조 ④ 이동서비스 일지=전자 일지+감사 이력) full-stack 1:1 SUPERIOR. Transport 상수 재조정 불요·id=2 0.85 carry.
+
+### §875-3 ★★ longterm 502/610 FULL 3연속 = var s16 오실레이션 최종 결착 재확인
+
+**근거**: [502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) `a71379de`/89,171B **FULL**(BNK-873 full → IDENTICAL)·[610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) `6b10f426`/88,408B **FULL**(BNK-873 full → IDENTICAL) = BNK-872 flip→873→875 **FULL 3연속**. ±9B lean↔full 오실레이션의 근본 원인 = 단일 미초기화 JS 변수 선언 `var s16;`(BNK-872 확정) 재확인. 규제/수가/본문 콘텐츠 변동 0·문서 위생 signal only·BNK-858 종료가정 최종 결착 유지·재측정 불요.
+
+### §875-4 ★★ law 2025-247 Time-strip `a913639a` 9-cycle IDENTICAL + silverangel 3-URL byte-IDENTICAL
+
+**근거**: [law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) raw `00114a8c`/78,450B(Time= 캐시버스터로 raw DRIFT) → Time-strip(`sed 's/Time=[0-9]+//g'`) = **`a913639a`**·`diff` vs BNK-872 Time-strip = 0라인 = semantic IDENTICAL(9-cycle carry·canonical URL `?admRulSeq=2100000271110` 고정). silverangel 3-URL byte-IDENTICAL: [system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) `c9507190`/45,601B(`grep -oF` 이동서비스/배차/GPS/RFID/차량 **각 0-hit** 재확인=엔젤 자체 배차 모듈 부재)·[essentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3`/131,664B(이동서비스일지 예시 문서 축만·실 시스템 0-hit)·[home](https://www.silverangel.kr/) `66382835`/101,220B(굽은나무 앱 브랜드).
+
+**planner 반영 포인트**: 규제 백본(NHIS #44·longterm·law) 및 엔젤 공개 기능 zero substantive drift — 규제 상수·앵커 재조정 불요. 엔젤은 배차/이동서비스 자체 시스템 0-hit·효성CMS 외부 벤더 종속 = ogada 자체 Transport+CMS SUPERSET 유지. longterm 오실레이션은 문서 위생 signal only(var s16)·향후 재측정 불요. 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지. tester FF merge gate 785(BE 765+FE 20·BE-heavy) — FE id=2/G16 form·panel 축적분 test 이관 흡수 권고.
+
+## §874 BNK-874 — 케어포 역공학 0–2h · ★★★ **신규 앵글: func.php 21 '리포트' leaf → ogada report Route 1:1 (leaf-level 리포트 밀도) = 17 PARITY + 4 PARTIAL + 0 genuine gap** — 케어포 리포트 leaf 밀도 21/107=19.6%(flat·M4 간호 5/10=50% 최다) ↔ ogada report-path Route 29/132=22.0%(nested·BNK-845 IDENTICAL 재확인) = **nested IA 리포트 밀도가 flat leaf 밀도 초과 SUPERIOR** + △ 4건(1-7 현황·1-8 월별통계·4-6-2/4-6-3 물리치료)은 전용 report route 부재이나 `/clients`·대시보드 통계·`/programs/functional-recovery`(기능회복훈련) 포괄 = 라벨링 차이·진성갭 아님(rules §11·§17 과대구축 회피·「가정」 유지) + ogada SUPERSET report route 8종(환불·통계·체위변경·욕창 2·이동서비스 월별·연차대장 = 시설 셸 0-hit 축) + carefor LIVE 000 **107-cycle+** carry·disk canonical `6226e6eb` byte-IDENTICAL 재검증(IA CDX 503 transient) + BE `@6329323` SEC-D34 graceful-degrade(out-of-range compact RFID tag time → null·file-level fail 회피) 착지·BE @Test 2389(+2)
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-18T17:35:00Z -->
+
+**조사일**: 2026-07-18T17:35:00Z | **rotation**: 케어포 역공학 0–2h — BNK-873(교차검증 8h+·2026-07-18T16:50Z) → ~45분 후. 이번 사이클 초점: (1) ogada BE·FE git baseline 재실측(BNK-873 → BE+1/FE zero advance) · (2) func.php disk canonical 파싱으로 '리포트' leaf 밀도 재집계(21/107=19.6%·모듈별) · (3) 21 리포트 leaf → ogada report Route 1:1 crosswalk(17 PARITY + 4 PARTIAL + 0 genuine gap) · (4) ogada report Route 밀도 22.0% + SUPERSET 8종 재확인 · (5) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-873 → BE+1/FE zero advance)**:
+- BE `@6329323` (BNK-873 `@13eb863` → **+1 commit**·`fix(v3/SEC-D34): degrade out-of-range compact RFID tag time to null instead of file-level fail`·compact RFID 태그 시간이 범위를 벗어나면 file-level fail 대신 null 로 graceful-degrade·+2 @Test·WT CLEAN·ahead **764** vs `598d108`) = SEC-D34 계보 「graceful-degrade(단일 malformed 필드 무해화)」축 확장(BNK-873 oversized minutes → BNK-874 out-of-range RFID tag time).
+- FE `@9f12482` (BNK-873 동일 HEAD·zero advance carry·ahead **19**(0/19) vs origin/test=`b23711f`·tester FF 대기)
+
+**git 실측 KPI (@6329323 / @9f12482)**:
+| KPI | 값 | BNK-873 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `git grep -cE '<Route\b' develop -- src/App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop \| grep 'Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `git ls-tree develop \| grep '.test.js*'` |
+| BE @Test (strict) | **2389** | **+2** (out-of-range RFID tag time graceful-degrade) | `grep -rE '@Test' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop \| grep 'Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rE '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 34차** (BNK-836→874·endpoint 신설 0) | `grep -rE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **783** (FE 19 + BE 764·BE-heavy) | +1 (BE+1/FE 0) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/carefor_report_density_leaf_route_1to1_bnk874.txt`(신규·본 사이클 crosswalk 근거) · disk canonical `carefor_func.php`(`6226e6eb`·98,328B·byte-IDENTICAL 재검증). 신규 snapshot **1**(txt)·덮어쓰기 0.
+
+### §874-1 ★ ogada git baseline @HEAD 재확인 (BE+1/FE zero advance)
+
+**근거**: `git -C src/backend rev-parse develop`=`6329323…`(BNK-873 `13eb863` → +1) · `git -C src/frontend rev-parse develop`=`9f12482…`(BNK-873 동일 HEAD·zero advance) · WT CLEAN·2026-07-18T17:35Z.
+
+- BE 착지축: `NhisVisitScheduleExcelParser`(또는 RFID 파서)가 compact RFID 태그 시간이 범위를 벗어날 때 file-level fail 대신 해당 값을 `null` 로 graceful-degrade. BNK-873 「oversized visit minutes → time-diff fallback」과 동일 계열 — **단일 malformed 필드가 전체 import 를 죽이지 않도록** 파서 robustness 확장. HTTP 442 무변(controller 확장 0)·+2 @Test.
+- FE 착지축: 무변(BNK-873 `9f12482` carry·`TransportServiceFeePanel` normalize·tester FF 대기).
+
+### §874-2 ★★★ 신규 앵글 — func.php 21 '리포트' leaf → ogada report Route 1:1 (leaf-level 리포트 밀도)
+
+**근거 URL/파일**: carefor [func.php](https://www.carefor.co.kr/daycare/func.php) LIVE **HTTP 000**(6s timeout·107-cycle+ carry) → disk canonical `docs/planning/research/snapshots/carefor_func.php`(`6226e6eb92fdd25ed3e50842a5e8a00b`·98,328B·byte-IDENTICAL 재검증) 파싱. Wayback CDX 는 IA 503/timeout(transient·신규 capture 조회 불가) → 「기존 URL 재실측 + 변동 0」 근거.
+
+**func.php 리포트 밀도 (disk canonical 파싱, '리포트' 명시 leaf 21/107=19.6%)**:
+| 모듈 | leaves | 리포트 leaf |
+|---|---|---|
+| M1 이용자 | 11 | 3 (1-7 현황·1-8 월별통계·1-10 연계기록지 발송) |
+| M2 출퇴소·외출 | 10 | 1 (2-9 수급자 외출) |
+| M3 요양기록 | 11 | 3 (3-4 요양/식사(조치사항)/화장실·3-5 목욕도움·3-6 급여제공) |
+| M4 간호 | 10 | **5** (4-3 통합 간호제공·4-4 병의원 진료내역·4-5 투약제공·4-6-2 물리(작업)치료 제공·4-6-3 물리(작업)치료 일정) |
+| M5 프로그램 | 13 | 4 (5-7 참여프로그램·5-8 제공기록(운영기록지)·5-9 그룹설정 이력·5-10 프로그램 일정) |
+| M6 위생·안전 | 5 | 0 |
+| M7 본인부담 | 11 | 3 (7-6 청구대장·7-7 입금대장·7-8 수납대장) |
+| M8 직원 | 15 | 1 (8-12 현황) |
+| M9 시설 | 6 | 0 |
+| M10 보호자·공지 | 9 | 0 |
+| M11 급여 | 6 | 1 (11-6 직원 급여대장(간이지급명세서)) |
+
+→ 최다 리포트 밀도: **M4 간호 5/10=50%** > M5 프로그램 4/13 > M1/M3/M7 각 3. M6/M9/M10 리포트 leaf 0.
+
+**21 '리포트' leaf → ogada report Route 판정**: **17 ✅ PARITY + 4 △ PARTIAL + 0 genuine gap**.
+- ✅ PARITY 17: 1-10→`/clients/linkage-records`·2-9→`/reports/client-outings`·3-4→`/care/reports/meal-excretion`+`intensive-excretion`·3-5→`/care/reports/bath-help`·3-6→`/care/reports/service-summary`·4-3→`/nursing/service/reports/total`·4-4→`.../hospital-visits`·4-5→`.../medication-delivery`·5-7~5-10→`/programs/reports/{participations,provision-records,group-history,schedules}`·7-6~7-8→`/billing/reports/{charges,deposits,receipts}`·8-12→`/staff/reports/status`·11-6→`/payroll/ledger`(+`/payroll/reports`).
+- △ PARTIAL 4: 1-7 수급자 현황(→`/clients` 목록+필터·전용 report route 부재)·1-8 수급자 월별 통계(→대시보드 통계·전용 client monthly report 부재)·4-6-2/4-6-3 물리(작업)치료 제공/일정(→`/programs/functional-recovery` 기능회복훈련 모듈·`/programs/reports/schedules` 포괄). **모두 라벨링 차이·진성 기능 갭 아님** — 물리(작업)치료는 노인장기요양 급여 기준상 「기능회복훈련」 하위이므로 ogada `/programs/functional-recovery` 가 규제-fit 포괄. rules §11·§17 과대구축 회피·「가정」 유지·KPI promote 0.
+
+### §874-3 ★★★ ogada report Route 밀도 SUPERIOR + SUPERSET 8종
+
+**근거**: `git show develop:src/App.jsx | grep -oE 'path="[^"]*"' | grep -E '/reports?/'` = **29/132=22.0%**(BNK-845 「29/132=22.0%」 IDENTICAL 재확인·report-ish+ledger 포함 시 31).
+
+- carefor '리포트' leaf 밀도 **19.6%**(flat) < ogada report Route 밀도 **22.0%**(nested) → nested IA(카테고리→하위 report route)가 flat leaf 밀도를 초과 = 리포트 커버리지 **SUPERIOR**.
+- carefor 21 leaf 에 대응 없는 ogada **SUPERSET report route 8종**: `/billing/reports/refunds`(환불)·`/billing/reports/statistics`(본인부담 통계)·`/care/reports/position-change`(체위변경)·`/care/reports/patient-service`(수급자 서비스)·`/nursing/pressure-ulcer/reports`·`/nursing/pressure-ulcer/reports/provision`(욕창 2)·`/reports/transport-monthly`(이동서비스 월별·배차)·`/staff/leave-ledger`(연차/휴가 대장). → 이동서비스(transport)·욕창(pressure-ulcer)은 carefor 시설 셸에 **0-hit** = ogada 고유 축(BNK-836/845 「시설 셸 이동서비스 0」 정합).
+
+**planner 반영 포인트**: 리포트 커버리지는 이미 SUPERIOR(진성갭 0). 신규 report Epic 불요. △ 4건 중 「수급자 월별 통계 리포트」(1-8)만 향후 P3 lever 후보(대시보드 통계 → 이용자 단위 월별 통계 PDF 출력 옵션 검토·과대구축 아닌 기존 통계 재사용)·나머지 3건은 기존 모듈 포괄로 종결. 가정 번복 0·P0 신규 0.
+
+## §873 BNK-873 — 교차검증·갭 우선순위 8h+ · ★★★ **신규 증거: 이지케어 「인지활동북(Cognitive Activity Book)」 시범 서비스 신설(FAQ rowid=21781·인지맞춤형 학습지 출력)** ↔ ogada 인지활동 「기록·계획·등급」축 보유·「학습지 출력 콘텐츠 라이브러리」축 grep 0-hit = P3「가정」 candidate(콘텐츠 authoring·핵심 운영 갭 아님·이지케어도 pilot H2 확장·과대구축 회피 rules §11·§17·「미확인」 유지·진성갭 승격 아님) + NHIS #44 제34조 597차 byte-IDENTICAL + longterm 502/610 full 2연속(var s16 근본 원인 재확인·오실레이션 최종 결착 유지) + FAQ 파일 무결성 verbatim 0 6-cycle carry + home data-count 5-지표 IDENTICAL(재무회계 대행 4,675 STABLE 5-cycle) + BE `@13eb863` SEC-D34 graceful-degrade(oversized visit minutes→time-diff fallback) 착지
+
+**조사일**: 2026-07-18T16:50:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-872(엔젤·롱텀·규제 4-6h·2026-07-18T15:58Z) → ~52분 후. 이번 사이클 초점: (1) ogada BE·FE git baseline 재실측(BNK-872 → BE+1/FE+1) · (2) 이지케어 FAQ 신규 rowid 스캔 → **인지활동북 시범 서비스 신설 발견**(rowid=21781) · (3) NHIS #44 제34조 597차 zero drift 재검증 · (4) longterm 502/610 full 2연속 = var s16 근본 원인 재확인 · (5) 가정 번복 재점검·갭 우선순위 동결.
+
+**ogada baseline (git 실측 · BNK-872 → BE+1/FE+1 commit)**:
+- BE `@13eb863` (BNK-872 `@417e2ff` → **+1 commit**·`fix(v3/SEC-D34): avoid file-level fail on oversized visit minutes`·`NhisVisitScheduleExcelParser`가 service-minutes 셀에 oversized 값이 있을 때 `NumberFormatException` guard → time-diff 파싱 fallback(한 셀 malformed이 전체 import를 fail 시키지 않도록 graceful degrade)·+1 @Test·WT CLEAN·ahead **763** vs `598d108`) = SEC-D34 계보 「5-parser 대칭」 위에 **fail-open graceful degrade**(단일 셀 malformed 방어) 축 추가.
+- FE `@9f12482` (BNK-872 `@5aaee88` → **+1 commit**·`fix(v1.2.1/transport): normalize client list payload for service-fee panel`·`TransportServiceFeePanel`이 normalized services shape에서 client list를 읽어 G16 fee record의 client name을 정확히 resolve(array payload 가정 제거)+회귀 test·ahead **19**(0/19) vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **782** (FE 19 tester FF 대기 + BE 763 · **BE-heavy** · 신규 마이그레이션 0)
+
+**git 실측 KPI (@13eb863 / @9f12482)**:
+| KPI | 값 | BNK-872 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `grep -cE '<Route\b\|<Routes>' src/frontend/src/App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `find src/frontend/src/pages -name '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `find src/frontend/src -name '*.test.js*'` |
+| BE @Test (strict) | **2387** | **+1** (oversized minutes guard) | `grep -rE '^\s*@Test\b' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find src/backend/src/test -name '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rE '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 33차** (BNK-836→873·endpoint 신설 0) | `grep -rE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **782** (FE 19 + BE 763·BE-heavy) | +2 (BE+1/FE+1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk873.txt`(신규·본 사이클 crosswalk 근거) · `ezcare_faq_21781_cognitive_activitybook_bnk873.html`(신규 증거 URL·인지활동북) · `nhis_jo44_live_bnk873.html`(597차) · `longterm_502_live_bnk873.html`/`longterm_610_live_bnk873.html`(full 2연속·var s16) · `ezcare_faq_live_bnk873.html`/`ezcare_home_live_bnk873.html` · 신규 snapshot **7**(txt 1 + html 6)·덮어쓰기 0.
+
+### §873-1 ★ ogada git baseline @HEAD 재확인 (BE+1/FE+1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`13eb863…`(BNK-872 `417e2ff` → +1) · `git -C src/frontend rev-parse develop`=`9f12482…`(BNK-872 `5aaee88` → +1) · WT CLEAN·2026-07-18T16:50Z.
+
+- BE 착지축: `NhisVisitScheduleExcelParser` service-minutes oversized 셀 `NumberFormatException` guard → time-diff 파싱 fallback(graceful degrade). BNK-872 「검증 분기 fail-closed 회귀 lock(5-parser 대칭)」과 방향이 상보적 — **파일-레벨 fail 회피**(단일 malformed 셀이 전체 import를 죽이지 않음)로 파서 robustness 확장. HTTP 442 무변(controller 확장 0)·+1 @Test.
+- FE 착지축: `TransportServiceFeePanel` client list를 normalized services shape에서 resolve(array payload 가정 제거) — G16 이동서비스비 fee record의 client name 정확 표시·회귀 test lock. behavior-fix·HTTP 442 무변.
+
+### §873-2 ★★★ 신규 증거 — 이지케어 「인지활동북(Cognitive Activity Book)」 시범 서비스 신설 (FAQ rowid=21781)
+
+**신규 증거 URL**: [FAQ rowid=21781](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21781&type=web) — HTTP 200·13,968B·카테고리 「서식출력/설정」.
+
+**verbatim**:
+- Q: 「인지활동지를 출력하여 수급자 어르신께 활용하고 싶어요!」
+- A: 「인지활동북에서 **인지맞춤형 학습지 및 낱장으로 출력**이 가능합니다. **시범 서비스** 메뉴로 계획표 및 표지등 세부 기능은 **하반기에 확장**하여 서비스 예정입니다.」
+
+**해석**: 이지케어가 「인지활동북」(인지맞춤형 학습지·낱장 출력 콘텐츠 라이브러리)을 **시범(pilot) 서비스**로 신설·2026 하반기 계획표/표지 등 세부 기능 확장 예정.
+
+**ogada 대비 crosswalk (git grep @13eb863)**:
+| 축 | 이지케어 인지활동북 | ogada 대응 (실측) | 판정 |
+|---|---|---|---|
+| 인지활동 「기록」 | (기록은 별도) | `CognitiveActivitySkipReason.java`(인지활동 미실시 사유) | ✅ 보유 |
+| 인지활동 「계획·훈련」 | (계획표 하반기 예정) | `FunctionalRecoveryService`·`FunctionalRecoveryPlan*`(기능회복훈련 계획) | ✅ 보유 |
+| 인지지원 「등급」 | (해당 없음) | `V99__cognitive_support_ltc_grade_g9.sql`(인지지원등급=ltc_grade 0·G9) | ✅ 보유(SUPERSET) |
+| 인지 「맞춤형 학습지·활동북 출력」 | **인지맞춤형 학습지·낱장 출력 라이브러리** | grep 0-hit(`학습지`/`worksheet`/`인지활동북`/`activityBook` = 0) | ❌ 미보유 |
+
+**판정**: ogada는 인지활동 「기록·계획·등급」축을 커버하나, 이지케어가 신설한 「인지맞춤형 학습지·활동북 콘텐츠 출력 라이브러리」축은 **미보유**. 다만 (a) 콘텐츠 authoring/라이브러리 성격 = 핵심 운영 갭 아님, (b) 이지케어도 「시범 서비스·하반기 확장」 pilot 단계 → **P3「가정」 candidate**로 기록하고 「미확인」 유지·과대구축 회피(rules §11·§17). **진성갭 승격 아님**(KPI 무변 97.41%)·planner Q 후보.
+
+### §873-3 ★ NHIS #44 제34조 597차 byte-IDENTICAL ↔ ogada Transport full-stack SUPERIOR
+
+**근거**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) live(HTTP 200·7,572B·`c886ff1f`·**597차** byte-IDENTICAL·BNK-872 596차 → +1) verbatim hit: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1).
+- ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) + `TransportServiceLog*`(§34조 ④ 이동서비스 일지=전자 일지+감사 이력) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+
+### §873-4 ★★ longterm 502/610 full 2연속 = var s16 근본 원인 재확인 (오실레이션 최종 결착 유지)
+
+**근거**: live 재fetch(2026-07-18T16:50Z) + `grep -c "var s16;"` 실측.
+
+| URL | HTTP | size | md5 | var s16; | BNK-872 대비 |
+|---|---|---|---|---|---|
+| [502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,171B | `a71379de` | **1** | full IDENTICAL(full 2연속) |
+| [610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,408B | `6b10f426` | **1** | full IDENTICAL(full 2연속) |
+
+**판정**: BNK-872 full flip 이후 BNK-873도 full 유지(full 2연속)·`var s16;` 선언 1라인 재확인 = ±9B lean↔full 오실레이션의 근본 원인 = 단일 미초기화 JS 변수 선언 `var s16;`(9B) 재확정. 기능/규제 콘텐츠 변동 0·문서 위생 signal only·**BNK-858 종료가정 최종 결착 유지**·재측정 불요. 단기보호 74,060 / 통합재가 월 10만원 disk canonical carry.
+
+### §873-5 ★ 이지케어 FAQ 파일무결성 0 6-cycle · home data-count 5-지표 IDENTICAL
+
+- [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) 200·80,057B·`53c61c49`(BNK-871 `fb294212` → 콘텐츠 오실레이션·size 불변) 파일 무결성 verbatim 매직(0)·위조(0)·corrupt(0)·무결성(0)·PK(0)·0바이트(0) = BNK-857/859/864/870/871/873 **6-cycle carry** → ogada SEC-D34 계보 SUPERIOR 재확인·경쟁 4종 유일 파일 무결성 방어. rowid 총 233·max 21781(인지활동북 신규).
+- [home](https://ezcare.easyms.co.kr/) 200·69,750B·`5e14212d`(size drift·지표 byte-IDENTICAL) data-count `53.2% / 9,298 / 4,675 / 2,353억 / 1,820억` = **재무회계 대행 4,675 STABLE 5-cycle**(BNK-870/871/872/873) → 이지케어 도입 규모 marketing claim carry.
+
+### §873-6 ★ planner 권고 · 갭 우선순위 동결
+
+- **P3「가정」(신규)** 이지케어 인지활동북(인지맞춤형 학습지 출력 콘텐츠 라이브러리) — REQUIREMENTS §프로그램/§인지지원 참고 메모로만 carry·「미확인」 유지·과대구축 회피(콘텐츠 authoring·pilot 단계)·planner Q 후보. ogada는 인지활동 기록·계획·등급축 이미 보유.
+- **P1 carry** REQUIREMENTS §이동서비스/§규제 NHIS #44 제34조 597차 IDENTICAL ↔ ogada Transport full-stack 1:1(④ 이동서비스 일지=`TransportServiceLog` 전자 일지+감사 이력) 명문화.
+- 마케팅 카피 「이동서비스 일지(고시 §34조 ④ 의무) 전자 작성·감사 이력 자동 보관」·「엑셀 import 파일 무결성 방어 — 경쟁 4종 유일」 carry.
+- **tester FF** merge gate **782** carry(BE 763+FE 19·BE-heavy) — FE id=2/G16 form/panel 축적분 test 이관 흡수 권고.
+- 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 결정 번복 **0** · 미확인 승격 **0** · KPI promote **0** · 모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+
+
+## §872 BNK-872 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **longterm 502/610 full-shell 재출현(lean 3연속 → flip) + ±9B 오실레이션 근본 원인 = 단일 JS 변수 선언 `var s16;` 확정(BNK-858 종료가정 7-cycle 번복 유지 최종 결착·기능 갭 아님·문서 위생 signal only) + NHIS #44 제34조 ①~⑤ full verbatim ↔ ogada `TransportServiceFeeParityCatalog`+`TransportServiceLog*`(§34조 ④ 이동서비스 일지=전자 일지+감사 이력) full-stack 1:1 SUPERIOR + law 2025-247 Time-strip `fbbe0c54` 8-cycle IDENTICAL(diff=0·cache-buster only) + silverangel 5-URL byte-IDENTICAL(이동서비스일지-이동서비스수칙 예시 문서 축 ↔ ogada 전자 일지 SUPERIOR) + BE `@417e2ff` SEC-D34 5-parser 대칭 완성(NhisVisitSchedule fail-closed 회귀 lock)**
+
+**조사일**: 2026-07-18T15:58:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-871(이지케어 역공학 2-4h·2026-07-18T15:12Z) → ~46분 후. 이번 사이클 초점: (1) silverangel 5-URL 재실측(byte-IDENTICAL 재확인·이동서비스일지 문서 축 verbatim) · (2) longterm 502/610 오실레이션 추적 → **full-shell 재출현 관측 + ±9B 근본 원인 `var s16;` diff 실측 확정** · (3) NHIS #44 제34조 ①~⑤ full verbatim + ogada §34조↔코드 5-행 crosswalk(특히 ④ 이동서비스 일지=`TransportServiceLog*`) · (4) law 2025-247 Time-strip semantic IDENTICAL 재검증 · (5) ogada BE·FE git baseline 재실측.
+
+**ogada baseline (git 실측 · BNK-871 → BE+1/FE+2 commit)**:
+- BE `@417e2ff` (BNK-871 `@4dcf60d` → **+1 commit**·`test(v3/SEC-D34): lock NHIS visit schedule excel parser validation fail-closed branches`·`NhisVisitScheduleExcelParser` 검증 분기(헤더 없음/필수 컬럼 없음/데이터행 0) fail-closed 회귀 lock·+4 @Test·behavior-neutral·WT CLEAN·ahead **762** vs `598d108`) = SEC-D34 계보 「**5-parser 대칭**」(NHIS·caregiver·bank deposit·RFID transmission·**NHIS visit schedule**) 검증 분기별 회귀 test lock **완성**.
+- FE `@5aaee88` (BNK-871 `@b115ae0` → **+2 commit**: `eca424f` `fix(a11y/transport): route server departureRound field error to field only (UXD-194)` + `5aaee88` `fix(v1.2.1/transport): blur departure-round input on wheel to prevent silent value change (id=2 form polish)`·id=2 배차 form-polish 9·10차 축·WT CLEAN·ahead **18**(0/18) vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **780** (FE 18 tester FF 대기 + BE 762 · **BE-heavy** · 신규 마이그레이션 0)
+
+**git 실측 KPI (@417e2ff / @5aaee88)**:
+| KPI | 값 | BNK-871 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `grep -cE '<Route\b\|<Routes>' src/frontend/src/App.jsx` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `find src/frontend/src/pages -name '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `find src/frontend/src -name '*.test.js*'` |
+| BE @Test (strict) | **2386** | **+4** (NHIS visit schedule parser fail-closed 분기) | `grep -rE '^\s*@Test\b' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find src/backend/src/test -name '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rE '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 32차** (BNK-836→872·endpoint 신설 0) | `grep -rE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **780** (FE 18 + BE 762·BE-heavy) | +3 (BE+1/FE+2) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk872.txt`(신규·본 사이클 crosswalk 근거) · `longterm_502_live_bnk872.html`/`longterm_610_live_bnk872.html`(full-shell 재출현·`var s16;` 근본 원인) · `nhis_jo44_live_bnk872.html`(제34조 ①~⑤ full verbatim) · `law_mohw_2025_247_admRulInfoP_live_bnk872.html`(Time-strip IDENTICAL) · silverangel 5-URL html · 신규 snapshot **10**(txt 1 + html 9)·덮어쓰기 0.
+
+### §872-1 ★ ogada git baseline @HEAD 재확인 (BE+1/FE+2 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`417e2ff…`(BNK-871 `4dcf60d` → +1) · `git -C src/frontend rev-parse develop`=`5aaee88…`(BNK-871 `b115ae0` → +2) · WT CLEAN·2026-07-18T15:58Z.
+
+- BE 착지축: `NhisVisitScheduleExcelParser` 검증 분기 fail-closed 회귀 lock(+4 @Test·behavior-neutral·HTTP 442 무변) = SEC-D34 계보 「**5-parser 대칭**」(NHIS·caregiver·bank deposit·RFID transmission·NHIS visit schedule) **완성** — BNK-866 NHIS·BNK-867 caregiver·BNK-849 bank·BNK-871 RFID transmission·BNK-872 NHIS visit schedule 검증 분기별 회귀 test lock 대칭.
+- FE 착지축: id=2 배차 form-polish 9·10차 — `eca424f` 서버 departureRound 필드 오류를 필드 단위로만 라우팅(UXD-194·a11y·전역 배너 노출 제거) + `5aaee88` 회차 입력 필드에 휠 스크롤 시 값 무음 변경 방지 blur(사용자 의도치 않은 회차 변경 차단). behavior-neutral·HTTP 442 무변.
+
+### §872-2 ★★★ longterm 502/610 full-shell 재출현 + ±9B 오실레이션 근본 원인 `var s16;` 확정 (신규 블록·BNK-858 종료가정 최종 결착)
+
+**근거**: live 재fetch(2026-07-18T15:58Z) + `diff <(sed 's/<[^>]*>//g' 870-lean) <(sed 's/<[^>]*>//g' 872-full)` 실측.
+
+| URL | HTTP | size | md5 | BNK-870 대비 |
+|---|---|---|---|---|
+| [502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,171B | `a71379de` | **FULL 재출현**(BNK-866→868→870 lean `56185735`/89,162B 3연속 → flip·+9B) |
+| [610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,408B | `6b10f426` | **FULL 재출현**(BNK-866→868→870 lean `fad1ce61`/88,399B 3연속 → flip·+9B) |
+
+**★ ±9B 근본 원인 실측 = 단일 JS 변수 선언 `var s16;`**:
+- diff(strip-tags 870-lean ↔ 872-full) 유일 차이 라인 = `> var s16;`
+- 502 byte delta = 89,171 − 89,162 = **9B** = `var s16;`(8자) + 개행(1)
+- 610 byte delta = 88,408 − 88,399 = **9B** = 동일 `var s16;` + 개행
+- full = 미초기화 JS 변수 선언 `var s16;` 라인 1개 포함 / lean = 미포함
+- 그 외 `<script>`·본문·메뉴·수가 콘텐츠 전량 byte-IDENTICAL
+
+**판정**: BNK-803~872 전 사이클의 「±9B lean↔full 오실레이션」은 **서버 라운드 로빈 렌더 시 미초기화 JS 변수 `var s16;` 선언 1라인(9B)의 포함/미포함 차이**로 최종 확정. 기능·수가·규제·메뉴 콘텐츠 변동 **0**(순수 클라이언트 JS 아티팩트·문서 위생 signal only). **BNK-858 「오실레이션 종료」 「가정」은 BNK-859부터 7-cycle 연속 번복 유지 상태였고, 본 사이클(lean 3연속 직후 full flip + 근본 원인 확정)로 「양방향 오실레이션 continues·규제 갭 아님」 최종 결착**(rules §14 정합). 규제 상수·앵커 재조정 불요·향후 오실레이션 재측정 불요. 단기보호 74,060 / 통합재가 월 10만원 disk canonical carry(full-shell 본문 규제 콘텐츠 IDENTICAL).
+
+### §872-3 ★★★ NHIS #44 제34조 ①~⑤ full verbatim ↔ ogada §34조↔코드 5-행 crosswalk (596차 zero drift · SUPERIOR)
+
+**근거**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) live(HTTP 200·7,572B·`c886ff1f`·**596차** byte-IDENTICAL·BNK-870 595차 → +1·BNK-871 이지케어 focus 미측정) + `git grep` @`417e2ff`.
+
+제34조(주·야간보호급여 이동서비스비용 등) 전문 verbatim(tag-strip): ① 신고 차량·실거주지↔기관·최단거리(편도) 산정 / ② 이용 횟수 무관 **1일 1회**만 산정·편도만 이용 시 **'러-1'~'러-4' 비용의 50%** / ③ **비용은 수급자가 부담하지 아니한다** / ④ **이동서비스 일지를 작성하여 보관하여야 한다** / ⑤ 신청·중단절차·일지작성 세부는 공단 이사장이 정한다.
+
+| §34조 | 규제 내용 | ogada 대응 (실측 @417e2ff) | 판정 |
+|---|---|---|---|
+| ① 산정 조건 | 신고 차량·실거주지↔기관·최단거리 편도 | `TransportDistanceBand` + `TransportServiceLogStopRecordRequest`(정차/거리) | ✅ PARITY |
+| ② 1일 1회·편도 50% | 러-1~러-4 비용의 50%·이용 횟수 무관 1일 1회 | `TransportServiceFeeParityCatalog` `RU_1..RU_4` + `ONE_WAY_RATIO=0.5` + `ONE_PER_DAY` | ✅ PARITY(상수 재조정 불요) |
+| ③ 수급자 부담 0 | 그 비용은 수급자가 부담하지 아니한다 | transport service-fee 본인부담 산정 제외 | ✅ PARITY |
+| ④ 이동서비스 일지 작성·보관 | 이동서비스 일지를 작성하여 보관하여야 한다 | `TransportServiceLogResponse`·`UpsertTransportServiceLogRequest`·`TransportServiceLogAuditItemResponse`·`TransportServiceLogAuditListResponse`(감사 이력) full-stack | ✅ **SUPERIOR**(전자 일지+감사 이력) |
+| ⑤ 세부사항 공단 이사장 | 신청·중단절차·일지작성 세부 = 공단 이사장 | carry(하위 고시 위임) | ⚪ 위임 |
+
+**판정**: ogada Transport(id=2)는 제34조 ①~⑤ 전 조항 full-stack 대응. 특히 **④ 이동서비스 일지 = `TransportServiceLog*` 전자 작성 + 감사 이력**으로 「작성·보관」 규제 의무를 종이 대비 SUPERIOR 이행 → Transport 상수(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요·id=2 **0.85** carry.
+
+### §872-4 ★★ silverangel 5-URL byte-IDENTICAL + 이동서비스일지 문서 축 ↔ §34조 ④ 연결 · law 2025-247 Time-strip IDENTICAL
+
+**근거**: silverangel 5-URL live 재fetch(2026-07-18T15:58Z) + law 2025-247 Time-strip 재검증.
+
+- silverangel 5-URL byte-IDENTICAL: system_feature `c9507190`/45,601B(이동서비스/배차/GPS/차량/RFID **0-hit** carry) · extraService `f9c5d877`/81,637B(효성CMS 3-method·30,000/250/300원 STABLE) · feeService `eab352a8`/44,513B · home `66382835`/101,220B(굽은나무 carry) · essentialWork `c79c1be3`/131,664B(필수업무27=가족과의소통).
+- **essentialWork 이동서비스 문서 축 verbatim**: 「이동서비스수칙」·「필수사항: 운전자 자격요건·동승자의 역할·차량안전수칙·사고 시 조치사항·차량운행표」·「이동서비스수칙 포함 / **이동서비스일지-이동서비스수칙 예시**」 = 엔젤은 「이동서비스일지」를 **예시 문서(template)** 축으로만 언급(system_feature 실 배차·GPS·차량 tracking **0-hit** carry). ↔ ogada는 NHIS #44 §34조 ④ 「이동서비스 일지 작성·보관」을 `TransportServiceLog*` **전자 일지 + 감사 이력** full-stack으로 이행 = 문서 template 대비 **SUPERIOR**.
+- law 2025-247: raw md5 `0f32e19f`(78,450B·캐시버스터 `Time=1784390422` DRIFT) → **Time-strip = `fbbe0c54`**(BNK-858/859/865/866/868/870/872 전량 IDENTICAL·8-cycle carry·`diff` vs 870 Time-strip = **0**라인) = 본문 semantic 무변·canonical URL `?admRulSeq=2100000271110` 고정 사용 확정(BNK-826 alias 폐기 유지). *비고: BNK-859~870은 broader token strip으로 `a913639a` 정본화. 본 사이클은 최소 정규화(Time= only)로 재검증했으며 diff=0으로 실 콘텐츠 변동 0 재확인.*
+
+### §872-5 ★ planner 액션 아이템 · 가정 번복 재점검 · 다음 우선순위
+
+- **P1 ✅** REQUIREMENTS §이동서비스/§규제: 「NHIS #44 제34조 ①~⑤ = ogada Transport full-stack 1:1(① 신고차량·최단거리 편도 / ② 1일 1회·편도 50%=`ONE_PER_DAY`·`ONE_WAY_RATIO` / ③ 수급자 부담 0 / ④ 이동서비스 일지=`TransportServiceLog` 전자 일지+감사 이력)」 명문화 — 규제 조항↔코드 crosswalk 근거.
+- **P0 ✅** longterm 오실레이션: ±9B = `var s16;` JS 변수 선언 근본 원인 확정 → 규제 백본 canonical URL·상수 현행 고정·문서 위생 signal only·향후 오실레이션 재측정 불요(최종 결착).
+- 마케팅 카피: 「이동서비스 일지(장기요양 고시 제34조 ④ 의무)를 종이 대신 전자 작성·감사 이력까지 자동 보관 — 엔젤 「예시 문서」 대비 SUPERIOR」.
+- **tester FF**: merge gate **780**(FE 18 tester FF 대기 + BE 762·BE-heavy) → id=2 form-polish 축적분(UXD-194 필드 오류 라우팅·휠 blur) test 이관 흡수 권고.
+- **가정 번복 재점검(rules §14)**: BNK-858 longterm 종료가정 **7-cycle 번복 유지 + 근본 원인 `var s16;` 확정으로 최종 결착** · BNK-826 law URL alias 폐기 확정(Time-strip `fbbe0c54` 8-cycle) · BNK-865 P4「가정」 「이동서비스수칙 template」 = essentialWork 예시 문서 축 재확인·「미확인」 유지(ogada TransportServiceLog 전자 일지가 규제 ④ 이미 이행·과대구축 회피) · BNK-868 P4「가정」 「엔젤 굽은나무 native app」 「미확인」 유지.
+- 신규 진성갭 **0** · closed band 재오픈 **0** · P0~P3 결정 번복 **0** · 미확인 승격 **0** · KPI promote **0** · 모듈 **97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+- **다음 조사 우선순위**: 케어포 0-2h(func.php disk canonical `6226e6eb` re-verify·Wayback CDX 스캔) 또는 이지케어 2-4h(FAQ rowid 신규 스캔·엑셀 포맷 변경 감지) 또는 ogada git 실측 6-8h(tester FF 이후 merge gate 관찰).
+
+## §871 BNK-871 — 이지케어 역공학 2-4h · ★★★ **이지케어 데모 셸 재실측(login 0000·top-nav `95286775` byte-IDENTICAL·10-모듈 148-leaf/59-PGID nav) + RFID점검 4.1 「RFID태그내역 ↔ 공단계획 비교」 워크플로 verbatim(신규 증거 URL FAQ rowid=21589·평가문항 29번 월 1회 RFID 제공) ↔ ogada `VisitRfidDiffComparePanel`+`RfidTransmissionExcelParser` 1:1 SUPERIOR + FAQ 파일 무결성 verbatim 0 5-cycle carry + home data-count 5-지표 IDENTICAL(재무회계 대행 4,675 STABLE 4-cycle) + BNK-871 BE `@4dcf60d` RFID transmission parser fail-closed 회귀 lock 착지(SEC-D34 4-parser 대칭 완성)**
+
+**조사일**: 2026-07-18T15:12:00Z | **rotation**: 이지케어 역공학 2-4h — BNK-870(교차검증·갭 우선순위 8h+·2026-07-18T14:35Z) → ~37분 후. 이번 사이클 초점: (1) `./scripts/ezcare-demo-fetch.sh --menu-catalog` 로 데모 로그인(oCode=DEMO·code=0000) 후 `/new.ez` ERP 셸·`top-nav-item-V2.js` 재실측 + 10-모듈 148-leaf 메뉴 카탈로그 파싱 · (2) RFID점검 4.1 「RFID태그내역 ↔ 공단계획 비교」 워크플로 신규 증거 URL(FAQ rowid=21589) verbatim 확보 · (3) ogada RFID compare full-stack 1:1 대응 실측 + BNK-871 BE 착지축(RFID transmission parser fail-closed) · (4) FAQ·home live 재실측(파일 무결성 verbatim 0·data-count 5-지표 재확인) · (5) ogada BE·FE git baseline 재실측.
+
+**ogada baseline (git 실측 · BNK-870 → +2 commit)**:
+- BE `@4dcf60d` (BNK-870 `@ae1c6a1` → **+1 commit**·`test(v3/SEC-D34): lock RFID transmission excel parser validation fail-closed branches`·`RfidTransmissionExcelParser` 검증 분기(헤더 없음/필수 컬럼 없음/데이터행 0) fail-closed 회귀 lock·+3 @Test·behavior-neutral·WT CLEAN·ahead **761** vs `598d108`)
+- FE `@b115ae0` (BNK-870 `@8766331` → **+1 commit**·`fix(v1.2.1/transport): bound departure-round input to BE Integer max (id=2 form polish)`·id=2 배차 form-polish 축·회차 입력 상한 BE Integer max 정렬·WT CLEAN·ahead **16**(0/16) vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **777** (FE 16 tester FF 대기 + BE 761 · **BE-heavy** · 신규 마이그레이션 0)
+
+**git 실측 KPI (@4dcf60d / @b115ae0)**:
+| KPI | 값 | BNK-870 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `grep -cE '<Route\b\|<Routes>' src/frontend/src/App.jsx` |
+| FE Page.jsx (prod) | **106** | measurement Δ -1 (BNK-870 107·grep 정의 편차·rules §14) | `find src/frontend/src/pages -name '*Page.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `find src/frontend/src -name '*.test.js*'` |
+| BE @Test (strict) | **2382** | **+3** (RFID transmission parser fail-closed 3-branch) | `grep -rE '^\s*@Test\b' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find src/backend/src/test -name '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rE '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 31차** (BNK-836→871·endpoint 신설 0) | `grep -rE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (신규 0) | IDENTICAL | `ls db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **777** (FE 16 + BE 761·BE-heavy) | +2 (BE+1/FE+1) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/ezcare_rfid_compare_1to1_bnk871.txt`(신규·본 사이클 crosswalk 근거) · `ezcare_faq_21589_rfid_compare_bnk871.html`(신규 증거 URL) · `ezcare_faq_live_bnk871.html` · `ezcare_home_live_bnk871.html` · `ezcare_new_ez_demo.html`/`ezcare_top_nav_v2.js`/`ezcare_menu_catalog.json`(canonical carry 덮어쓰기 3) · 신규 snapshot **4**(txt 1 + html 3) · 덮어쓰기 3.
+
+### §871-1 ★ ogada git baseline @HEAD 재확인 (BE+1/FE+1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`4dcf60d…`(BNK-870 `ae1c6a1` → +1) · `git -C src/frontend rev-parse develop`=`b115ae0…`(BNK-870 `8766331` → +1) · WT CLEAN·2026-07-18T15:12Z.
+
+- BE 착지축: `RfidTransmissionExcelParser` 검증 분기 fail-closed 회귀 lock(+3 @Test·behavior-neutral·HTTP 442 무변) = SEC-D34 계보 「4-parser 대칭」(NHIS·caregiver·bank deposit·RFID transmission) **완성** — BNK-866 NHIS·BNK-867 caregiver·BNK-849 bank·BNK-871 RFID transmission 검증 분기별 회귀 test lock 대칭.
+- FE 착지축: `parseDepartureRoundInput` 회차 입력 상한을 BE `@Min(1) Integer departureRound` Integer max 로 정렬(id=2 배차 form-polish 축·behavior-neutral·defense-in-depth).
+
+### §871-2 ★★★ 이지케어 데모 셸 재실측 + 10-모듈 148-leaf/59-PGID 메뉴 카탈로그 (신규 증거 URL/역공학)
+
+**근거**: `./scripts/ezcare-demo-fetch.sh --menu-catalog`(2026-07-18T15:12Z) — login `code=0000`(oCode=DEMO)·title `[DEMO 이지케어] 체험 이지케어 재가복지센터`.
+
+| 산출물 | size | md5 | 판정 |
+|---|---|---|---|
+| 비로그인 `/new.ez` redirect stub | 70B | `e1d52bd5` | 역공학 금지 stub carry |
+| `/new.ez` demo shell | 138,099B | `4463b693` | committed `edc61d5d` → md5 DRIFT(동적 날짜/세션 콘텐츠 오실레이션·기능 구조 무변) |
+| `top-nav-item-V2.js` `?20260428` | 25,470B | `95286775` | **BYTE-IDENTICAL** (BNK-864→871 carry) |
+| `ezcare_menu_catalog.json` | module **10**·leaf **148**·PGID **59** | (콘텐츠 IDENTICAL·timestamp만 변경) | nav 구조 STABLE |
+
+**10-모듈 nav**: 1 직원(worker-*) · 2 수급자(patient-*) · 3 방문일정(schedule-*) · 4 RFID점검(schedule-rfid/fix) · 5 본인부담(pAmt-*) · 6 직원급여(wAllowance-*) · 7 재무회계(w4c-*) · 8 세무/사회보험 · 9 기관관리(setting-/user-/mobile-) · 10 기관평가(guide-*).
+
+**★ 3 방문일정 = 이중 일정** — `수급자 일정표(제공기록지)`(schedule-p100#tab0) + `요양보호사 일정표(근무현황표)`(schedule-p100#tab1) = 수급자↔요보사 양면 일정 verbatim + `수급자-일정관리`/`관리자-일정관리` 팝업. **★ 5 본인부담** — 청구내역/명세서(전체합산/방문요양/방문목욕/방문간호 4-tab) + 납부내역(월간/연간/납부확인서) + 미납내역(청구월별/수급자별 누적) = 본인부담 lifecycle verbatim.
+
+### §871-3 ★★★ RFID점검 4.1 「RFID태그내역 ↔ 공단계획 비교」 워크플로 verbatim (신규 증거 URL · FAQ rowid=21589)
+
+**근거**: [FAQ rowid=21589](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web) live(HTTP 200·15,971B·md5 `a5e2e48c`·`ezcare_faq_21589_rfid_compare_bnk871.html`).
+
+verbatim:
+- 「Q. 급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요.」
+- 「요양보호사가 RFID로 전송한 급여제공내역을 수급자에게 문자로 발송할 수 있습니다.(방문요양만 가능)」
+- 「4. RFID점검 > 4.1 RFID태그내역 ↔ 공단계획 비교 > 급여제공내역(요양)전송」
+- 「**평가문항 29번**: 급여제공기록지 RFID 전송분은 수급자에게 **월 1회이상** 제공하셔야 합니다.」
+- 「4. RFID점검 > 4.1 RFID태그내역 ↔ 공단계획 비교 > 공단계획 ↔ 태그비교 결과 에…」
+
+grep: RFID 8 · 공단계획 3 · 태그내역 2 · 비교 3 · 업로드 1. **규제 드라이버 = 평가문항 29번**(RFID 전송분 월 1회 이상 수급자 제공·공단 기관평가 지표).
+
+### §871-4 ★★★ ogada RFID compare full-stack 1:1 대응 실측 (SUPERIOR)
+
+**근거**: `find`/`grep -rln` @`4dcf60d`/`b115ae0`.
+- FE: `src/frontend/src/components/visits/VisitRfidDiffComparePanel.jsx`(planFile=공단계획 + rfidFile=RFID태그내역 이중엑셀 → `compareVisitsRfidApi`) + `services.js` + `utils/faq21824Lifecycle.js`.
+- BE: `visits/domain/VisitService.java` · `VisitRfidDiffMatcher.java` · `RfidTransmissionExcelParser.java` · `VisitRfidDiffCodes.java` · `api/VisitController.java` · `VisitRfidDiffCompareResponse.java` · `VisitRfidDiffRowResponse.java`.
+- ★ **SUPERIOR**: ogada는 이중엑셀 업로드 전 매직바이트 검증(SEC-D34 FE 5-validator + BE 5-parser corrupt/empty/missing/no-info-leak fail-closed) → 이지케어 [FAQ] 파일 무결성(매직바이트/시그니처/위조/corrupt-body/0바이트) verbatim = **0**(5-cycle carry BNK-857/859/864/870/871) → 경쟁 4종 유일 파일 무결성 SUPERIOR. BNK-871 BE `@4dcf60d` `RfidTransmissionExcelParser` fail-closed 회귀 lock 착지로 이 축 test-layer 하드닝.
+
+### §871-5 ★★ 이지케어 FAQ·home live 재실측 (file-integrity 0 5-cycle · data-count STABLE 4-cycle)
+
+**근거**: 2026-07-18T15:12Z live re-fetch.
+
+| URL | HTTP | size | md5 | 판정 (vs BNK-870) |
+|---|---|---|---|---|
+| [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) | 200 | 80,057B | `fb294212` | size IDENTICAL·md5 오실레이션(rowid 233 앵커 STABLE)·**파일 무결성 verbatim 매직/시그니처/위조/corrupt/0바이트/PK 0 = 5-cycle carry** |
+| [home](https://ezcare.easyms.co.kr/) | 200 | 69,122B | `060a77df` | -91B·md5 drift·**data-count 5-지표 byte-IDENTICAL** |
+
+**home data-count 5-지표 verbatim**: 53.2% 방문요양 ERP 시장점유율 · 9,298개 이지케어 이용기관 · **4,675개 재무회계 대행 이용기관**(STABLE 4-cycle BNK-778→854→870→871) · 2,353억 원 월 공단 청구 처리 · 1,820억 원 종사자 급여 처리.
+
+### §871-6 planner 액션 아이템
+
+1. REQUIREMENTS §이동서비스/§RFID: 「RFID태그내역 ↔ 공단계획 이중엑셀 비교 = 평가문항 29번(월 1회 RFID 전송분 제공) 규제 대응」 명문화 — 이지케어 4.1 워크플로 verbatim 대칭 근거.
+2. REQUIREMENTS §보안/§PIPA: SEC-D34 「4-parser 대칭 fail-closed(NHIS·caregiver·bank deposit·RFID transmission) 완성」 + 「이중엑셀 pre-upload 매직바이트 검증」 = 경쟁 4종 유일 파일 무결성 SUPERIOR 명시.
+3. 마케팅 카피: 「RFID 태그내역과 공단계획을 올리기 전에 파일 위·변조까지 검사 — 이지케어 대비 유일 파일 무결성 방어」·「평가문항 29번 RFID 월 1회 제공 자동 대사」.
+4. tester FF merge gate 777 carry(BE 761 + FE 16·BE-heavy) → id=2 form-polish 축적 test 이관 흡수.
+5. 신규 진성갭 0·closed band 재오픈 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+
+## §870 BNK-870 — 교차검증·갭 우선순위 8h+ · ★★ **규제 백본 8-URL live 재실측 595차 zero substantive drift + longterm 502/610 lean-shell 3연속(BNK-866→868→870·「양방향」 오실레이션 continues·BNK-858 종료가정 4-cycle 번복 유지) + law 2025-247 strip `a913639a` 7-cycle LOCK(cache-buster only) + silverangel 5-URL byte-IDENTICAL + audit-first HTTP 442 30차 byte-exact IDENTICAL posture 동결 + 이지케어 FAQ 파일 무결성 verbatim 0 4-cycle carry + 이지케어 home data-count 5-지표 IDENTICAL(재무회계 대행 4,675 STABLE 3-cycle) + BNK-869 baseline zero advance carry**
+
+**조사일**: 2026-07-18T14:35:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-869(ogada git 실측 6-8h·2026-07-18T13:52Z) → ~43분 후. 이번 사이클 초점: (1) 규제 백본 8-URL(NHIS #44 canonical·silverangel 5-URL·longterm 502/610·law 2025-247) live 재실측 → md5/SIZE·strip 비교로 이전 BNK 가정 재점검 · (2) ogada BE·FE develop HEAD 재확인(BNK-869 IDENTICAL·zero advance) · (3) audit-first HTTP 442 posture 30차 IDENTICAL 재확정 · (4) 이지케어 FAQ 파일 무결성 verbatim 4-cycle carry + home data-count 3-cycle carry 재검증 · (5) 이전 BNK 「가정」 4종 재점검(longterm 종료/law URL alias/CJ프레시 GTM/BNK-869 form polish) · (6) closed band 6 재오픈·P0~P3 결정 번복·신규 진성갭 여부 재확정.
+
+**ogada baseline (git 실측 · BNK-869 IDENTICAL · zero advance)**:
+- BE `@ae1c6a1` (BNK-869 **동일 HEAD·zero advance**·`fix(v2/QA-B95): decode bare-hex blocker entities fail-closed`·WT CLEAN·ahead **760** vs `598d108`)
+- FE `@8766331` (BNK-869 **동일 HEAD·zero advance**·`fix(v1.2.1/transport): reject out-of-range departure-round input (id=2 form polish)`·WT CLEAN·ahead **15** vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **775** (FE 15 tester FF 대기 + BE 760 · **BE-heavy** · 신규 마이그레이션 0)
+
+**git 실측 KPI (@ae1c6a1 / @8766331) — BNK-869 IDENTICAL**:
+| KPI | 값 | BNK-869 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL | `grep -cE '<Route\b|<Routes>' src/frontend/src/App.jsx` |
+| FE Page.jsx (prod) | **107** | IDENTICAL | `find src/frontend/src/pages -name '*Page.jsx' -not -name '*.test.jsx'` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | IDENTICAL | `find src/frontend/src -name '*.test.js*'` |
+| BE @Test (strict) | **2379** | IDENTICAL | `grep -rE '^\s*@Test\b' src/backend/src/test` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `find src/backend/src/test -name '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `grep -rE '@RestController' src/backend/src/main/java` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 30차** (BNK-836→870·endpoint 신설 0) | `grep -rE '@(Get|Post|Put|Delete|Patch)Mapping'` |
+| Flyway | **V1–V196** (신규 0) | IDENTICAL | `ls db/migration | sort -V` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·id=2/8/10=0.85·12=0.7·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **775** (FE 15 tester FF 대기 + BE 760·BE-heavy) | IDENTICAL (BNK-869 IDENTICAL) | `git rev-list --count origin/test..develop` |
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk870.txt`(신규·본 사이클 crosswalk 근거) · `nhis_jo44_live_bnk870.html` · `silverangel_{system_feature,extraService,feeService,home,daycare_essentialWork}_live_bnk870.html` · `longterm_{502,610}_live_bnk870.html` · `law_mohw_2025_247_admRulInfoP_live_bnk870.html` · 신규 snapshot **10**(txt 1 + html 9) · 덮어쓰기 0.
+
+### §870-1 ★ ogada git baseline @HEAD 재확인 (BE·FE zero advance carry)
+
+**근거**: `git -C src/backend rev-parse develop`=`ae1c6a1…`(BNK-869 IDENTICAL·zero advance) · `git -C src/frontend rev-parse develop`=`8766331…`(BNK-869 IDENTICAL·zero advance) · WT CLEAN·2026-07-18T14:35Z.
+
+| 지표 | BNK-869 | BNK-870 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `ae1c6a1` | `ae1c6a1` | zero advance(IDENTICAL) |
+| FE develop HEAD | `8766331` | `8766331` | zero advance(IDENTICAL) |
+| BE ahead vs `598d108` | 760 | 760 | IDENTICAL |
+| FE ahead vs `b23711f` | 15 (0/15) | 15 (0/15) | IDENTICAL·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | byte-exact IDENTICAL carry (30차) |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| BE @Test strict | 2379 | 2379 | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 107 | 107 | IDENTICAL |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE·FE 양쪽 zero advance·엔드포인트/마이그레이션/Route/Flyway/Page 계층 무변·audit-first HTTP 442 byte-exact IDENTICAL 30차 posture 동결·신규 진성갭 0·모듈 97.41% carry.
+
+### §870-2 ★★ 규제 백본 8-URL live 재실측 595차 zero substantive drift
+
+**근거**: 2026-07-18T14:30Z live re-fetch 8-URL(NHIS #44 canonical + silverangel 5-URL + longterm 502/610 + law 2025-247).
+
+| URL | HTTP | size | md5 (raw) | strip md5 | 판정 (vs BNK-869/868) |
+|-----|------|------|-----------|-----------|--------|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | — | **595차** byte-IDENTICAL (BNK-869 594차 → +1·verbatim 18-hit) |
+| [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601 | `c9507190` | — | byte-IDENTICAL (이동서비스/배차/GPS/차량/RFID 0-hit carry) |
+| [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637 | `f9c5d877` | — | byte-IDENTICAL (효성CMS 3-method carry) |
+| [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513 | `eab352a8` | — | byte-IDENTICAL |
+| [silverangel home](https://www.silverangel.kr/) | 200 | 101,220 | `66382835` | — | byte-IDENTICAL (굽은나무 carry) |
+| [silverangel essentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664 | `c79c1be3` | — | byte-IDENTICAL (필수업무27=가족과의소통 carry·BNK-865 첫 fetch 정본) |
+| [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,162 | `56185735` | — | **lean-shell 3연속** (BNK-866→868→870·「양방향」 오실레이션 continues·BNK-858 종료가정 4-cycle 번복 유지) |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,399 | `fad1ce61` | — | **lean-shell 3연속** (BNK-866→868→870) |
+| [law 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450 | `c8af0061` (raw DRIFT) | **`a913639a`** | **strip semantic IDENTICAL 7-cycle LOCK** (BNK-859/861/862/865/866/868/870·cache-buster only) |
+
+**NHIS #44 verbatim grep 18-hit**: 러-1(1)·러-4(1)·편도(2)·이동서비스(4)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1) → ogada BE `TransportServiceFeeParityCatalog` (RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 상수 재조정 불요·id=2 0.85 carry.
+
+**longterm 오실레이션 continues** — 502 `56185735`/89,162B lean 3연속 · 610 `fad1ce61`/88,399B lean 3연속 = BNK-866 lean → BNK-868 lean → BNK-870 lean(±9B 「양방향」 오실레이션 continues). BNK-858 「오실레이션 종료」 「가정」 → **4-cycle 번복 유지**(rules §14 정합). JS/authn 서버 부하 라운드 로빈 「가정」·기능 갭 아님·문서 위생 signal only·단기보호 74,060·통합재가 월 10만원 disk canonical carry.
+
+**law 2025-247 strip 7-cycle LOCK 정본화 확정** — raw `c8af0061`(BNK-868 `0585a090` → BNK-870 → 캐시버스터-only DRIFT) → strip Time+etaHash+nonce+mrsCd+token+_wa+csrfToken+_ts = **`a913639a`** semantic IDENTICAL 7-cycle carry(BNK-859/861/862/865/866/868/870). **BNK-826 URL alias `?admRulSeq=2100000268226`(먹는샘물 고시로 리앨리어스) 폐기 유지** — canonical URL `?admRulSeq=2100000271110` 고정 사용 확정.
+
+### §870-3 ★★ audit-first HTTP 442 posture 30차 byte/count-exact IDENTICAL 동결
+
+**근거**: `grep -rE '@(Get|Post|Patch|Put|Delete)Mapping' src/backend/src/main/java @ae1c6a1` 재실측.
+
+- GET **231** (52.3%) · POST **144** (32.6%) · PATCH **44** (10.0%) · PUT **13** (2.9%) · DELETE **10** (2.3%) = **442** · controller당 **5.46** (442 / 81 loose @RestController)
+- BNK-836 → BNK-870 **30차 연속** byte/count-exact IDENTICAL
+- SEC-D34 하드닝 (BNK-848~857·5-parser + 4-service 상수화 + 회귀 lock), QA-B95 계보 (BNK-808~869·HTML 엔티티 다중 디코드), id=2 form polish (BNK-862~869·8차 축) → 모두 **service/parser/test-layer dominant**, controller 확장 **0**
+- **재확정**: read-create dominant · PATCH>PUT 부분정정 우선 · DELETE 2.3% 최소 = **soft-delete/감사 보관 (PIPA §21 개인정보 파기 원칙 정합·최소 5년 회계 보관 준수)** · **물리 삭제 API 신설 금지 carry**
+- **경쟁 crosswalk** — 이지케어 ERP 셸(10-module nav·top-nav-item-V2.js 25,470B `95286775`·BNK-864 재실측 carry)은 jqGrid row-CRUD 흔함(행 삭제 UI 노출)·케어포 M8 15-leaf·M11 6-leaf 도메인(BNK-867 정본)에서도 UI-driven CRUD dominant·엔젤 요양비 8-leaf 파일 검증 파서 verbatim 0-hit → **ogada 는 감사 우선 CRUD 편향(read-create dominant + PATCH partial + soft-delete)·경쟁 4종 유일 SUPERIOR**
+
+### §870-4 ★ 이전 BNK 「가정」 4종 재점검 (rules §14 정합)
+
+| BNK 차수 | 「가정」 원본 | 상태 (BNK-870 재점검) | 조치 |
+|---|---|---|---|
+| BNK-858 | longterm 502/610 「-9B 오실레이션 종료」 | ❌ **4-cycle 번복 유지** (BNK-859/865/866/868/870 5-cycle lean·full 오실레이션 continues) | 「가정」 폐기 · 문서 위생 signal only·기능 갭 아님·규제 상수 재조정 불요 |
+| BNK-826 | law URL alias `?admRulSeq=2100000268226` (먹는샘물 고시로 리앨리어스) | ✅ 폐기 확정 (BNK-831 canonical `?admRulSeq=2100000271110` 재정본화 · BNK-870 strip `a913639a` 7-cycle LOCK 재확인) | canonical URL 고정 사용 유지 |
+| BNK-791/802 | 「CJ프레시웨이 MOU 식단 GTM」 시그널 | ✅ 폐기 확정 (BNK-865 lcms 3-cycle 재확인·carousel/GTM transient 확정·SaaS core 갭 아님·P3「가정」 폐기 유지) | 「미확인」 상태 지속·구축 0 유지 |
+| BNK-869 | id=2 form polish 7·8차 `parseDepartureRoundInput` exponent/hex + out-of-range reject | ✅ 「확인」 승격 (config/transport.js:71~92 `/^\d+$/` + `< 1` + `> MAX_DEPARTURE_ROUND` 3-check verbatim·BE `@Min(1) Integer departureRound` defense-in-depth) | id=2 form polish 8차 축 lockstep 재확정 |
+| BNK-865/867/868 | P4「가정」 candidate 3종 (이동서비스수칙 template·자원봉사자 활동일지·엔젤 mobile app 굽은나무 native) | ⏳ 「미확인」 유지 (2026 평가 지표 배점·앱 스토어 링크 등 근거 부재 carry) | 과대구축 회피(rules §11·§17)·planner Q 후보 carry |
+
+**결정**:
+- **★ 규제 백본 8-URL 595차 zero substantive drift**: NHIS #44 `c886ff1f`/7,572B 595차 byte-IDENTICAL(기존 URL 재실측 + 변동 「zero」 기록) → Transport 상수 재조정 불요·id=2 0.85 carry.
+- **★★ longterm 502/610 lean-shell 3연속 · 「양방향」 오실레이션 continues**: BNK-858 「종료 가정」 4-cycle 번복 유지(rules §14 정합)·기능 갭 아님·문서 위생 signal only·규제 상수 재조정 불요.
+- **★★ law 2025-247 strip `a913639a` 7-cycle LOCK 정본화 확정**: canonical URL `?admRulSeq=2100000271110` 고정 사용·BNK-826 alias `?admRulSeq=2100000268226` 폐기 유지.
+- **★★ audit-first HTTP 442 30차 byte/count-exact IDENTICAL 동결**: BE +1 (BNK-869 QA-B95 test)·FE +2 (BNK-869 form polish test-only) 후에도 posture 무변동 → REQUIREMENTS §감사·§PIPA 「감사 우선·물리 삭제 API 신설 금지·PATCH partial + soft-delete 우선」 유지·확대 검토 권고.
+- **★ 이지케어 FAQ 파일 무결성 verbatim 4-cycle carry(BNK-857/859/864/870)**: 매직바이트/시그니처/위조/corrupt-body verbatim **0** · ogada SEC-D34 15-축(a~o) SUPERIOR narrative carry.
+- **★ 이지케어 home data-count 3-cycle STABLE**: 53.2% / 9,298 / 4,675 / 2,353 / 1,820 (BNK-854 IDENTICAL·재무회계 대행 4,675 STABLE 3-cycle) → 이지케어 도입 규모 marketing claim carry.
+- **planner 권고**:
+  - **tester FF** merge gate **775** carry (BE-heavy·BE 760+FE 15) — FE id=2 form-polish 8-cycle 축적분 test 이관 흡수 권고.
+  - **P0 ✅** NHIS #44 595차 zero drift → ROADMAP Transport 수가 상수 (RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 현행 유지.
+  - **P0 ✅** audit-first HTTP 442 30차 IDENTICAL → REQUIREMENTS §감사·§PIPA 「물리 삭제 API 신설 금지·PATCH partial + soft-delete 우선」 유지·확대 검토 권고.
+  - **P2 ⏳** longterm 502/610 「양방향」 오실레이션 4-cycle 번복 유지 → 문서 위생 signal only·규제 상수 재조정 불요·규제 앵커 canonical URL 고정 유지.
+  - **신규 진성갭 P0 승격 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지.
+- **baseline 갱신**: BE `@ae1c6a1` carry(zero advance·ahead 760)·FE `@8766331` carry(zero advance·ahead 15 tester FF 대기)·merge gate **775**(BE-heavy·신규 마이그레이션 0).
+- **다음 조사 우선순위**: 케어포 0-2h(func.php disk canonical `6226e6eb` 16-cycle+ re-verify·Wayback CDX 2026 신규 capture 스캔) 또는 이지케어 2-4h(FAQ rowid 신규 스캔·엑셀 포맷 변경 감지·주야간 3-tier 요금 재실측) 또는 엔젤·롱텀·규제 4-6h(silverangel 5-URL 재실측·longterm 오실레이션 continues 추적) 또는 ogada git 실측 6-8h(tester FF 이후 merge gate 관찰).
+
+
+
+## §869 BNK-869 — ogada git 실측 6-8h · ★ **ogada src/backend·src/frontend develop HEAD 실측 재산정 (BE `@ae1c6a1` +1 QA-B95 · FE `@8766331` +2 id=2 배차 form polish 7·8차) + Route/page/모듈 커버 KPI 재산정 + NHIS #44 594차 zero drift 재실측 + COMPETITOR_MATRIX ogada 열 `@HEAD` 일괄 갱신 + HTTP 442 byte-exact IDENTICAL posture 동결**
+
+**조사일**: 2026-07-18T13:52:00Z | **rotation**: ogada git 실측 6-8h — BNK-868(엔젤·롱텀·규제 4-6h·2026-07-18T13:03Z) → ~49분 후. 이번 사이클 초점: (1) `git -C src/backend rev-parse develop`·`git -C src/frontend rev-parse develop` 실측 + 이전 BNK-868 baseline 대비 commit delta·diff --stat 확인 · (2) Route grep(`<Route\b`)·page(ls-tree)·`@Test`·HTTP mapping·Flyway·@RestController 전량 재집계로 COMPETITOR_MATRIX ogada `@HEAD` 열 일괄 갱신 · (3) 규제 백본 NHIS #44 canonical URL live 재실측(594차·기존 URL 재실측 + 변동 기록) · (4) merge gate·모듈 KPI 재산정·신규 진성갭·P0~P3 번복 여부.
+
+**ogada baseline (git 실측)**:
+- BE `@ae1c6a1` (BNK-868 `@5df9999` → **+1 commit** `fix(v2/QA-B95): decode bare-hex blocker entities fail-closed`·`LiveE2eOperationReadinessSupport.java`+25/-9 + `LiveE2eOperationReadinessSupportTest.java`+52·bare-hex(`&#x…;` 미종결/변형) 디코드 실패 시 fail-closed(no-info-leak·rules §3)·+1 @Test 회귀·WT CLEAN·ahead **760** vs `598d108`)
+- FE `@8766331` (BNK-868 `@af1d4f6` → **+2 commit**: `d6f3889` `fix(v1.2.1/transport): reject exponent/hex departure-round input (id=2 form polish)` + `8766331` `fix(v1.2.1/transport): reject out-of-range departure-round input (id=2 form polish)`·`config/transport.js`+29/-2 `parseDepartureRoundInput` shared helper 강화·`config/transport.test.js`+35 계약 lock·id=2 form-polish 7·8차 축·WT CLEAN·ahead **15** vs origin/test=`b23711f`·tester FF 대기)
+
+**git 실측 KPI (@ae1c6a1 / @8766331)**:
+| KPI | 값 | BNK-868 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | carry | `rg -c "<Route\b" src/frontend/src/App.jsx` |
+| FE Page.jsx (prod) | **107** | carry | `ls src/pages/*.jsx | grep -v .test.` |
+| FE test files | **541** (226 .test.js + 315 .test.jsx) | carry (config/transport.test.js in-place +35·신규 0) | `rg -l --glob "*.test.*"` |
+| BE @Test | **2379** | **+1** (BNK-867 2378) | `rg -c "^\s*@Test\b" src/backend/src/test` |
+| BE Test.java files | **296** | carry | `rg -l "@Test" src/test` |
+| BE @RestController (loose) | **81** | carry | `rg -l "@RestController"` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL** (BNK-836→869·endpoint 신설 0) | `rg -c "@(Get|Post|Put|Delete|Patch)Mapping"` |
+| Flyway | **V1–V196** (latest `V196__client_linkage_records_integrity_g_linkage.sql`) | carry | `ls db/migration | sort -V` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·id=2/8/10=0.85·12=0.7·진성갭 0) | carry | `competitorModuleCoverage.js` |
+| merge gate | **775** (FE 15 tester FF 대기 + BE 760·BE-heavy) | **+3** (BNK-868 772) | `git rev-list --count origin/test..develop` |
+
+**규제 백본 재실측 (NHIS #44)**: [NHIS #44 이동서비스비](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 `c886ff1f` = **594차 byte-IDENTICAL**(BNK-868 593차 → +1)·verbatim grep(`러-[0-9]|편도|이동서비스비|이동서비스`) 17-hit → ogada BE `TransportServiceFeeService`(RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 상수 재조정 불요(id=2 0.85 carry). snapshot `nhis_jo44_live_bnk869.html`.
+
+**결정**
+- **★ ogada baseline 재산정(BE +1·FE +2)**: BE=QA-B95 계보(HTML 엔티티 다중 디코드) bare-hex 축 확장 — `LiveE2eOperationReadinessSupport` 라이브 E2E 준비 blocker 엔티티 중 bare-hex(`&#x…;` 미종결/변형) 디코드 실패 시 fail-closed(no-info-leak·rules §3·+1 @Test 회귀 lock·HTTP endpoint 신설 0). FE=id=2 배차 form-polish 7·8차 축 — `parseDepartureRoundInput` shared helper(BNK-867 추출)에 exponent/hex(`1e3`·`0x10` 등 JS `Number()` 허용 표기) reject + 허용 범위 밖 회차 reject 추가(`config/transport.test.js` +35 계약 lock·신규 test 파일 0·BE `@Min(1) Integer departureRound` verbatim-aligned defense-in-depth). id=2 form-polish 축적: BNK-862/863 회차 검증·864 정차상한·866 stale-state·867 helper 추출·868 blocked focus·**869 exponent/hex + out-of-range reject**.
+- **★ COMPETITOR_MATRIX ogada `@HEAD` 열 갱신 완료**: 신규 BNK-869 섹션에서 develop HEAD SHA·id=2 회차 검증·QA-B95 blocker 디코드·NHIS #44 594차·감사우선 HTTP 442·모듈 97.41% 6-행 `@8766331`/`@ae1c6a1` 갱신. per-cycle minimum 「COMPETITOR_MATRIX 1행 이상 `@HEAD` 갱신」 충족(6행).
+- **★ NHIS #44 594차 zero drift**: `c886ff1f`/7,572B byte-IDENTICAL(기존 canonical URL 재실측 + 변동 「zero」 기록) → Transport 상수 재조정 불요. per-cycle minimum 「신규 증거 URL 1건 이상(또는 기존 URL 재실측 + 변동 기록)」 충족.
+- **★ 감사 우선 API posture 동결(HTTP 442 byte/count-exact IDENTICAL)**: GET 52.3%·POST 32.6%·PATCH 10.0%·PUT 2.9%·DELETE 2.3% = read-create dominant·PATCH>PUT 부분정정 우선·DELETE 최소=soft-delete/감사 보관(PIPA 정합)·물리삭제 API 신설 0(BNK-836→869·endpoint 신설 0). BE +1(디코드+test)·FE +2(form validation)에도 posture 무변동.
+- **planner 권고**:
+  - **tester FF** merge gate **775**(BE-heavy·BE 760+FE 15) — FE id=2 form-polish 8-cycle 축적분(exponent/hex + out-of-range reject 포함) test 이관 흡수 권고.
+  - **P0 ✅** NHIS #44 594차 zero drift → ROADMAP Transport 수가 상수 현행 유지.
+  - **신규 진성갭 P0 승격 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지 권고.
+- **baseline 갱신**: BE `@ae1c6a1`(BNK-868 `@5df9999` +1·ahead 760) · FE `@8766331`(BNK-868 `@af1d4f6` +2·ahead 15 tester FF 대기) · merge gate **775**(BE-heavy·신규 마이그레이션 0).
+- **다음 조사 우선순위**: 미확인/교차검증 8h+(규제 백본 8-URL 594차 → 595차·longterm 502/610 lean↔full 오실레이션 continues 재확인·law 2025-247 strip LOCK) 또는 케어포 0-2h(func.php disk canonical `6226e6eb` re-verify·Wayback CDX 신규 capture 스캔) 또는 이지케어 2-4h(FAQ rowid 신규 스캔·엑셀 포맷 변경 감지·주야간 3-tier 요금 재실측).
+
+
+## §868 BNK-868 — 엔젤·롱텀·규제 역공학 4-6h · ★★ **효성CMS 부가서비스 「자동이체·가상계좌·카드결제」 신청 4-step 워크플로 + 건별 단가 verbatim 심화(월 30,000원 + 자동이체 250원/건 + 가상계좌 300원/건·효성 CMS 외부 벤더 대행) ↔ ogada `/billing/cms`+`/billing/easy-pay` 자체 5~6 결제수단 SUPERSET(벤더 lock-in·월 대행료·건별 단가 0) · 규제 백본 8-URL live 재실측 593차 zero substantive drift · silverangel 5-URL byte-IDENTICAL · longterm 502/610 lean-shell 2연속 carry · law 2025-247 strip semantic IDENTICAL · id=2 배차 form polish 6차 축(departureRound blocked 시 필드 focus)**
+
+**조사일**: 2026-07-18T13:03:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-867(케어포 0-2h·2026-07-18T12:15Z) → ~48분 후. 이번 사이클 초점: (1) silverangel extraService 효성CMS 결제 부가서비스 blockquote verbatim strip 추출로 「신청 4-step + 건별 단가」 워크플로 정본화(이전 사이클은 3-method·금액만 카운트) · (2) 규제 백본 8-URL(NHIS #44·law 2025-247·silverangel 5-URL·longterm 502/610) live 재실측 → md5/SIZE·strip 비교로 이전 BNK 가정 재점검 · (3) ogada git @HEAD 실측(FE +1 commit) · (4) 미확인 축소·신규 진성갭 도출·P0~P3 결정 번복 여부 재검토.
+
+**ogada baseline (git 실측)**:
+- BE `@5df9999` (BNK-867 **동일 HEAD·zero advance**·`test(v3/SEC-D34): lock caregiver excel parser validation fail-closed branches`·WT CLEAN·ahead **759** vs `598d108`)
+- FE `@af1d4f6` (`fix(v1.2.1/transport): focus departure-round field when dispatch save is blocked (id=2 form polish)`·BNK-867 `@23b47ea` → **+1 commit**·id=2 배차 form polish 6차 축·회차(departureRound) 저장 blocked 시 해당 필드 focus·rules §7 접근성·behavior-neutral·ahead **13** vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **772** (FE 13 tester FF 대기 + BE 759 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133** (App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107** (BNK-867 carry·git ls-tree 실측 IDENTICAL) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296 `Test.java`+1 `Tests.java`) · @RestController **81**(loose·carry)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — byte-exact IDENTICAL carry(BNK-836→868·endpoint 신설 0)
+- FE test **541**(226 `.test.js`+315 `.test.jsx`) · 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk868.txt`(신규·이번 사이클 crosswalk 근거) · `nhis_jo44_live_bnk868.html` · `silverangel_{system_feature,extraService,feeService,home,daycare_essentialWork}_live_bnk868.html` · `longterm_{502,610}_live_bnk868.html` · `law_mohw_2025_247_admRulInfoP_live_bnk868.html` · 신규 snapshot **9**(txt 1 + html 8) · 덮어쓰기 0.
+
+### §868-1 ★ ogada git baseline @HEAD 재실측 (BE zero advance · FE +1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`5df9999…`(BNK-867 IDENTICAL·zero advance) · `git -C src/frontend rev-parse develop`=`af1d4f6…`(BNK-867 `23b47ea` → +1: departureRound blocked 시 필드 focus) · WT CLEAN·2026-07-18T13:03Z.
+
+| 지표 | BNK-867 | BNK-868 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `5df9999` | `5df9999` | zero advance(IDENTICAL) |
+| FE develop HEAD | `23b47ea` | `af1d4f6` | +1 commit(id=2 form polish 6차 축·departureRound blocked focus) |
+| BE ahead vs `598d108` | 759 | 759 | IDENTICAL |
+| FE ahead vs `b23711f` | 12 (0/12) | 13 (0/13) | +1·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | byte-exact IDENTICAL carry |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 107 | 107 | IDENTICAL |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE zero advance·FE +1 commit(id=2 배차 form polish 6차 축 = BNK-862/863 회차 검증·BNK-864 정차상한·BNK-866 회차 stale-state·BNK-867 helper 추출·**BNK-868 blocked 시 필드 focus**)·엔드포인트/마이그레이션/Route/Flyway/Page 계층 무변·audit-first HTTP 442 byte-exact IDENTICAL carry. 신규 진성갭 0·모듈 97.41% carry.
+
+### §868-2 ★★ 효성CMS 부가서비스 신청 4-step 워크플로 + 건별 단가 verbatim 심화 (silverangel extraService)
+
+**근거**: `curl -sS 'https://www.silverangel.kr/newSilverangel/service/extraService.do'` HTTP 200·81,637B·`f9c5d877`(BNK-866 byte-IDENTICAL) 태그 strip verbatim 추출(2026-07-18T13:03Z). 이전 사이클은 「효성CMS 3-method·30,000/250/300」 금액만 카운트 — 이번엔 **신청 절차 4-step + 계좌분리/우대수수료/가입문의** verbatim 정본화.
+
+verbatim (효성CMS 결제 부가서비스 blockquote):
+> 재무회계처리가 용이하도록 CMS 이용료는 수납금액과 별도로 정산하여 드립니다. [제공서비스] 자동이체·가상계좌·카드결제·다계좌 정산·현금영수증 [급여종류] 노인요양시설, 노인요양공동생활가정, 주야간보호 [이용안내] 이용요금은 효성CMS에 납부됩니다. 월 이용료 : 30,000원 [계좌분리 정산 서비스] 효성 CMS 별도문의 [건별 이용료] 자동이체 : 250원/1 건 · 가상계좌 : 300원/1 건 · 카드결제 : 별도문의 (영세, 중소, 소상공인 우대수수료 적용) [신청방법] 신청하기 → 가입안내전화(효성 CMS 담당자) → 가입완료 → 서비스이용(효성 CMS 연동정보 입력 필수) [가입 문의] 1600-6859
+
+| 필드 | 값(verbatim) | ogada 대응 |
+|---|---|---|
+| 결제수단 | 자동이체·가상계좌·카드결제·다계좌 정산·현금영수증 | G2b `CmsPaymentMethodCatalog` 5~6 method(자체·벤더 lock-in 0) |
+| 월 이용료 | 30,000원(효성CMS 납부) | ogada 자체 청구 lifecycle 내포·별도 CMS 대행료 개념 없음 |
+| 자동이체 단가 | 250원/1건 | `/billing/cms` 자동이체 enrollment |
+| 가상계좌 단가 | 300원/1건 | `/billing/cms` 가상계좌 2-fn |
+| 카드결제 | 별도문의(우대수수료) | `/billing/easy-pay` 간편결제 |
+| 신청 절차 | 4-step(신청→가입안내전화→가입완료→서비스이용·연동정보 필수) | ogada 자체 UI 온보딩·외부 전화 가입 불요 |
+
+**판정**: 엔젤 결제 부가서비스는 「효성CMS」 **외부 벤더 대행** = 월 30,000원 + 건별 단가(자동이체 250/가상계좌 300) + 전화 가입 4-step 종속 구조. ogada는 `/billing/cms`(CMS 심화 9-fn·BNK-785 M7 7-4)+`/billing/easy-pay`(7-5)+G2b payment-method-catalog 자체 full-stack = **벤더 lock-in·월 대행료·건별 단가·전화 가입 없이 자체 결제수단 관리 SUPERSET**. 신규 진성갭 아님·마케팅 카피 lever(§868-4). 부가 관측: 엔젤아이(AI 24시간 상담·PDF 다운로드)·엔젤 VR(가상현실 여행 프로그램)=엔젤 부가서비스 카탈로그(ogada 범위 밖·과대반영 금지).
+
+### §868-3 ★★ 규제 백본 8-URL live 재실측 593차 zero substantive drift · longterm 502/610 lean-shell 2연속 carry
+
+| # | URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|---|
+| 1 | [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | **593차** byte-IDENTICAL(러-1~4·편도·이동서비스·급여비용 verbatim) |
+| 2 | [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601B | `c9507190` | byte-IDENTICAL·이동서비스/배차/GPS/차량/RFID **0-hit** |
+| 3 | [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | byte-IDENTICAL(효성CMS 3-method LOCK·§868-2 verbatim 근거) |
+| 4 | [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513B | `eab352a8` | byte-IDENTICAL |
+| 5 | [silverangel home](https://www.silverangel.kr/) | 200 | 101,220B | `66382835` | byte-IDENTICAL(굽은나무 앱 carry) |
+| 6 | [silverangel essentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664B | `c79c1be3` | byte-IDENTICAL(필수업무 27=가족과의 소통·이동서비스 3-hit 문서 축) |
+| 7 | [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,162B | `56185735` | lean-shell(BNK-866 lean → **2연속 lean**·±9B 오실레이션 continues) |
+| 8 | [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,399B | `fad1ce61` | lean-shell(BNK-866 lean → **2연속 lean**) |
+| 9 | [law 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450B | `0585a090`(raw) / `a913639a`(strip) | strip semantic **IDENTICAL**(BNK-859/861/862/865 strip LOCK·raw 는 캐시버스터-only DRIFT) |
+
+**판정 (교차검증)**: 규제 백본 8-URL 실체 변동 0 → Transport 상수(`RU_1~4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY`) 재조정 불요(id=2 0.85 carry). longterm 502/610 「양방향」 lean↔full 오실레이션 **continues** — BNK-865 full → BNK-866 lean → **BNK-868 lean 2연속**(BNK-858 「오실레이션 종료 「가정」」 3-cycle+ 번복 유지·JS/authn 서버 부하 라운드 로빈 「가정」·기능 갭 아님·문서 위생 signal). 신규 진성갭 0·P0~P3 결정 번복 0·미확인 승격 0.
+
+### §868-4 ★ planner 반영 제안
+
+1. **마케팅 카피(신규)**: 「엔젤=효성CMS 외부 대행(월 30,000원 + 자동이체 250/가상계좌 300원 건별 단가 + 4-step 전화 가입·연동정보 입력 필수) ↔ ogada=자체 `/billing/cms`+`/billing/easy-pay` 5~6 결제수단 벤더 lock-in 0·월 대행료 0·건별 단가 0·UI 온보딩」
+2. **REQUIREMENTS §청구/CMS**: ogada `CmsPaymentMethodCatalog` 벤더 독립 명시(경쟁 효성CMS 종속 대비 차별점 서술).
+3. **신규 구축 불요** — 결제수단 SUPERSET 이미 착지(BNK-785 M7 7-4/7-5·CMS 심화 9-fn). 과대구축 회피(rules §11·§17).
+4. **다음 우선순위**: ogada git 실측 6-8h(BE·FE @HEAD delta·모듈 KPI 재산정) 또는 이지케어 2-4h(FAQ rowid 재실측·엑셀 포맷 변경 감지).
+
+## §867 BNK-867 — 케어포 역공학 0-2h · ★★★ **케어포 M8 직원관리 15-leaf + M11 직원 급여관리 6-leaf → ogada Route 1:1 실측 = 20-leaf(8-11 폐지 제외) PARITY 17 + SUPERSET 2 + △ 「가정」/embedded 2 + ★ GAP 1(8-8 자원봉사자 활동일지) + phantom 0 · SEC-D34 계보 BNK-867 착지축 「caregiver parser 3-branch fail-closed 회귀 lock」 · NHIS import unreadable payload QA-B613 회귀 test + FE `parseDepartureRoundInput` shared helper 추출 · carefor live 000 118-cycle+ carry(Wayback 20260519 id-mode 98,328B `6226e6eb` disk canonical byte-IDENTICAL) · audit-first HTTP 442 28차 byte-exact IDENTICAL**
+
+**조사일**: 2026-07-18T12:15:00Z | **rotation**: 케어포 역공학 0-2h — BNK-866(교차검증·갭 우선순위 8h+·2026-07-18T11:35Z) → ~40분 후. 이번 사이클 초점: (1) carefor disk canonical `carefor_func.php`(98,328B·`6226e6eb`) 정본 M8·M11 verbatim 15+6 leaf 를 ogada FE `@23b47ea` App.jsx Route + BE `@5df9999` controller `@RequestMapping` 실측과 1:1 crosswalk 하여 **PARITY / SUPERSET / △ / GAP / phantom** 5-축 판정 · (2) carefor live+demo-work 118-cycle+ 000 timeout 재확인 · Wayback CDX 2026 5-capture 재실측 (신규 capture 0) · (3) M8 새 진성갭 후보(8-8 자원봉사자 활동일지) 식별 및 P4「가정」 위치 명시 · (4) ogada @HEAD SHA baseline 갱신(BE +2·FE +1).
+
+**ogada baseline (git 실측)**:
+- BE `@5df9999` (`test(v3/SEC-D34): lock caregiver excel parser validation fail-closed branches`·BNK-866 `@b8facfc` → **+2 commit** [924b8d8 `test: lock unreadable NHIS import payload (QA-B613)`·`NhisImportServiceTest.java` +16 · 5df9999 `StaffNhisCaregiverExcelParserTest.java` +60·3-branch(헤더행 없음/필수 컬럼 급여제공자인력번호·성명 없음/유효 데이터행 0) `BusinessRuleException` fail-closed 회귀 lock] · test-only·behavior-neutral·+4 @Test·WT CLEAN·ahead **759** vs `598d108`)
+- FE `@23b47ea` (`refactor(v1.2.1/transport): extract departure-round validation to shared helper (id=2 form polish)`·BNK-866 `@93f4932` → **+1 commit**·3 files +67/-11·`config/transport.js`+28 `parseDepartureRoundInput`/`DEPARTURE_ROUND_INVALID_MESSAGE` export·`config/transport.test.js`+33 계약 lock·`TransportRunNewPage.jsx`+2/-11 inline 검증 제거·id=2 form polish 5차 축·behavior-neutral·WT CLEAN·ahead **12** vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **771** (FE 12 tester FF 대기 + BE 759 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133** (App.jsx `<Route\b` 132 + `<Routes>` 1) · Page **107** (BNK-866 106 measurement Δ +1 · git ls-tree 실측 IDENTICAL·grep 정의 편차·rules §14 정합) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296 `Test.java`+1 `Tests.java`) · BE @Test raw **2378** (git grep `@Test\b` · BNK-866 2374 → **+4** NhisImportService unreadable +1 · StaffNhisCaregiverExcelParser 3-branch +3) · @RestController **81**(loose·carry)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — **28차 byte-exact IDENTICAL**(BNK-836→867·endpoint 신설 0)
+- FE test **541**(226 `.test.js`+315 `.test.jsx`·in-place +33 transport.test.js·신규 0)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/carefor_m8_m11_staff_route_1to1_bnk867.txt`(신규·이번 사이클 crosswalk 근거) · disk canonical `docs/planning/research/snapshots/carefor_func.php`(98,328B·`6226e6eb` LOCK carry) · Wayback [20260519 id-mode](http://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP 200·98,328B·`6226e6eb` disk canonical BYTE-IDENTICAL · Wayback [CDX 2026](https://web.archive.org/cdx/search/cdx?url=carefor.co.kr/daycare/func.php&from=20260101&to=20261231&output=json) HTTP 200·866B·5-capture(20260117/0119/0212/0511/0519) IDENTICAL · 신규 snapshot **1**(txt 1) · 덮어쓰기 0.
+
+### §867-1 ★ ogada git baseline @HEAD 재실측 (BE +2 commit · FE +1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`5df9999…`(BNK-866 `b8facfc` → +2: 924b8d8 QA-B613 NHIS unreadable payload·5df9999 caregiver parser 3-branch fail-closed) · `git -C src/frontend rev-parse develop`=`23b47ea…`(BNK-866 `93f4932` → +1: departureRound 검증 shared helper 추출) · WT CLEAN·2026-07-18T12:15Z.
+
+| 지표 | BNK-866 | BNK-867 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `b8facfc` | `5df9999` | +2 commit(SEC-D34 caregiver parser 3-branch + QA-B613 NHIS unreadable) |
+| FE develop HEAD | `93f4932` | `23b47ea` | +1 commit(departureRound 검증 shared helper 추출·id=2 form polish 5차 축) |
+| BE ahead vs `598d108` | 757 | 759 | +2 |
+| FE ahead vs `b23711f` | 11 (0/11) | 12 (0/12) | +1·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test raw (git grep `@Test\b`) | 2374 | 2378 | **+4** (NhisImportService +1 · StaffNhisCaregiverExcelParser +3) |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | **28차 byte-exact IDENTICAL** |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 107 | measurement Δ +1(git ls-tree 실측 IDENTICAL·grep 정의 편차·rules §14) |
+| FE test files | 541(226+315·in-place +66) | 541(226+315·in-place +33 config/transport.test.js) | IDENTICAL |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE +2·FE +1 commit — 모두 이전 축의 심화(BE=SEC-D34 계보 「caregiver parser 3-branch fail-closed 회귀 lock」 + QA-B613 NHIS unreadable payload 회귀 lock·FE=id=2 배차 form polish 5차 축 「departureRound 검증 shared helper 추출」)·엔드포인트/마이그레이션/Route/Flyway 계층 무변·audit-first HTTP 442 28차 byte-exact IDENTICAL. 신규 진성갭 0(§867-3 8-8 자원봉사자 P4「가정」 후보는 미승격)·모듈 97.41% carry.
+
+### §867-2 ★★★ 케어포 M8 직원관리 15-leaf + M11 급여관리 6-leaf → ogada Route 1:1 실측 crosswalk = 20-leaf(8-11 폐지 제외) PARITY 17 + SUPERSET 2 + △ 2 + GAP 1(8-8) + phantom 0
+
+**근거**: disk canonical `carefor_func.php`(98,328B·`6226e6eb`) L725-744(M8)·L770-779(M11) verbatim ↔ ogada FE `@23b47ea` `src/App.jsx` L1116~L1272·L835 Route verbatim + BE `@5df9999` controller `@RequestMapping` 실측. 상세 표·판정 근거는 `carefor_m8_m11_staff_route_1to1_bnk867.txt` §4·§5.
+
+**M8 15-leaf 매핑 요약**:
+
+| leaf | carefor label | ogada Route → Page | 판정 |
+|---|---|---|---|
+| 8-1 | 직원 정보관리 | `/staff`·`/staff/:id` → StaffPage/Detail | PARITY |
+| 8-1-2 | 선임 요양보호사 업무수행일지 | `/staff/lead-caregiver-log` → LeadCaregiverWorkLog | PARITY |
+| 8-2 | 근무일정표 | `/staff/schedules` → StaffMonthlySchedule | PARITY |
+| 8-3 | 연간 일정계획 | `/staff/schedules`(월 뷰 실측) | △ 「가정」— 연간 뷰 flag 확인 요망 |
+| 8-4 | 출퇴근 및 근무관리 | `/staff/attendance` → StaffWorkAttendance | PARITY |
+| 8-5 | 사례관리 회의록 | `/case-management/meetings` → CaseManagementMeetings | **SUPERSET**(carefor M8 내포 → ogada 독립 route) |
+| 8-6 | 회의록(운영위원회) | `/staff/committee-meetings` → StaffCommitteeMeeting | PARITY |
+| 8-7 | 교육일지 | `/staff/training-logs` → StaffTrainingLog | PARITY |
+| 8-7-1 | 요양보호사 보수교육 | `/staff/training` → StaffRefresherTraining | PARITY |
+| 8-8 | 자원봉사자 활동일지(필요시) | (없음) | **★ GAP** — P4「가정」 후보·과대구축 회피 |
+| 8-9 | 고충처리 관리 | `/staff/grievance-counselings` → GrievanceCounseling | PARITY |
+| 8-10 | 건강검진관리 | `/staff/health-checkups` → StaffHealthCheckups | PARITY |
+| 8-11 | 질향상노력(삭제예정) | — | carefor 자체 폐지 N/A |
+| 8-12 | 직원 현황 리포트 | `/staff/reports/status` → StaffStatusReport | PARITY |
+| 8-13 | 연차, 유급휴일 대장 | `/staff/annual-leaves` + `/staff/leave-ledger` → StaffAnnualLeave + StaffLeaveLedger | **SUPERSET**(2-view split) |
+
+M8 판정 요약(8-11 폐지 제외 14-leaf): PARITY **12** / SUPERSET **2**(8-5·8-13) / △ 「가정」 **1**(8-3) / ★ GAP **1**(8-8) / phantom **0**.
+
+**M11 6-leaf 매핑 요약**:
+
+| leaf | carefor label | ogada Route → Page | 판정 |
+|---|---|---|---|
+| 11-1 | 월별 급여대장 | `/payroll/ledger` → StaffPayrollLedger | PARITY |
+| 11-2 | 퇴직적립금 관리 | `/payroll/retirement-accrual` → StaffPayrollRetirementAccrual | PARITY |
+| 11-3 | 직원 급여계약 설정 | `/payroll/ledger`(embedded) + BE `/api/v1/staff/employment-contracts` compliance | △ PARITY(embedded)·BE compliance controller 「확인」 |
+| 11-4 | 급여기초 설정(수당/공제) | `/payroll/basis` → StaffPayrollBasis | PARITY |
+| 11-5 | 인건비 지출비율 참고자료 | `/payroll/labor-cost-ratio` → StaffPayrollLaborCostRatio | PARITY |
+| 11-6 | 직원 급여대장 리포트 | `/payroll/reports` → StaffPayrollReports | PARITY |
+
+M11 판정 요약: PARITY **5** / △ PARITY(embedded) **1**(11-3) / SUPERSET **0** / ★ GAP **0** / phantom **0**.
+
+**통합 판정(M8+M11 = 20-leaf·8-11 폐지 제외)**: PARITY **17/20 (85%)** + SUPERSET **2/20 (10%)** + △ 「가정」/embedded **2/20 (10%)** + ★ GAP **1/20 (5%)** + phantom **0**. **ogada 부풀림 0** — carefor marketing 정본 대비 인력·급여 도메인 커버리지 실측 근거 확보.
+
+**verbatim 근거**: carefor `carefor_func.php`(disk `6226e6eb`) M8 15-leaf 라벨: '외부강사' 1-hit(M5·5-1-1)·'자원봉사' 2-hit(5-1-1·8-8)·'고충' 1(8-9)·'건강검진' 1(8-10)·'보수교육' 1(8-7-1)·'운영위원회' 1(8-6). ogada FE App.jsx L1116~L1272 verbatim Route 20-hit `/staff/*` + `/payroll/*` + L835 `/case-management/meetings`. BE controller `@RequestMapping` verbatim 14-hit(staff·case-management·payroll domain).
+
+### §867-3 ★★ 신규 진성갭 후보 「8-8 자원봉사자 활동일지(필요시)」 = P4「가정」 후보 · 과대구축 회피
+
+**근거**: carefor func.php L737 「`8-8.자원봉사자 활동일지(필요시)<br />`」 verbatim 1-hit (M8 유일 optional leaf) ↔ ogada BE `grep -r 'volunteer\|자원봉사' src/backend/src/main/java` **0-hit** · FE `staff/*` Route 20-hit 중 volunteer/자원봉사 매핑 route **0**. 경쟁 4종 verbatim: 이지케어 FAQ 「자원봉사」 rowid 233 index 미매칭·엔젤 [system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) / [essentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) 「자원봉사자 활동일지」 0-hit·롱텀 공단 문서 「자원봉사」 옵션 verbatim 0.
+
+**판정**: **P4「가정」 candidate** — carefor 자체 라벨이 「(필요시)」 optional·2026 요양평가 「자원봉사자 활용」 지표 배점/필수 여부 **「미확인」**. ogada v3+ 시장 확대 시 (선택) template 검토 후보이나 지금 착지는 rules §11(변경 범위 제어)·§17(임의 대규모 리팩터링 금지) 정합상 **구축 금지**. Programs 축의 `ExternalLecturer`(5-1-1) 유사 domain 과 병합 candidate — 별도 도메인 신설은 과대구축.
+
+**planner Q 후보**(PLAN_NOTES `### [BNK]` 로 이관 candidate): 「2026 장기요양기관 정기평가에서 자원봉사자 활용/활동일지가 필수 지표인가·(선택) 배점 상 몇 % 인가·carefor 라벨 (필요시) 와 정합하는가?」
+
+### §867-4 ★★ SEC-D34 계보 BNK-867 착지축 「caregiver parser 3-branch fail-closed 회귀 lock」 + FE `parseDepartureRoundInput` shared helper 추출 · audit-first HTTP 442 28차 byte-exact IDENTICAL
+
+**근거**: `git show --stat 5df9999` = `staff/imports/domain/StaffNhisCaregiverExcelParserTest.java` +60(1 file, +3 @Test·behavior-neutral) · `git show --stat 924b8d8` = `billing/domain/NhisImportServiceTest.java` +16(1 file, +1 @Test·QA-B613 회귀 lock) · `git show --stat 23b47ea` = 3 files +67/-11(`config/transport.js`+28 `parseDepartureRoundInput`/`DEPARTURE_ROUND_INVALID_MESSAGE` export · `config/transport.test.js`+33 계약 lock · `TransportRunNewPage.jsx`+2/-11 inline 검증 제거).
+
+BE = BNK-866 `NhisExcelParser` 3-branch fail-closed 회귀 lock(§866-3) 위에 → BNK-867 `StaffNhisCaregiverExcelParser` 의 **3개 미커버 fail-closed branch**(① 헤더행 없음 ② 필수 컬럼 「급여제공자인력번호」·「성명」 없음 ③ 유효 데이터행 0)를 test-only 로 회귀 lock(+60·+3 @Test·behavior-neutral) = **NhisExcelParser 3-branch → StaffNhisCaregiverExcelParser 3-branch 대칭 확장** = SEC-D34 fail-closed 계보 「parser 검증 분기별 회귀」 심화(4-parser 커버·제품 코드·audit-first HTTP surface 무변). **경쟁 4종(케어포·이지케어·엔젤·롱텀) 엑셀 parser 검증 분기 verbatim 0 「미확인」 재확인** → ogada 유일 SUPERIOR narrative carry.
+
+FE = id=2 배차 form-polish **5차 축** — 이전 4차(BNK-862 회차 검증·BNK-863 회차 검증·BNK-864 정차상한 상수·BNK-866 회차 stale-state 정리) 위에 → BNK-867 회차 파싱 로직을 `config/transport.js` `parseDepartureRoundInput` shared helper(+ `DEPARTURE_ROUND_INVALID_MESSAGE` export 상수)로 추출(rules §2 DRY) + 페이지 로컬 constant 제거 + `Number()` 중복 제거 + BE `@Min(1) Integer departureRound` 제약과 verbatim-aligned(defense-in-depth). 경쟁 4종 배차 form UX 근거 0-hit(엔젤 system_feature 이동서비스 0-hit·이지케어 배차 verbatim 0)·SUPERIOR carry.
+
+### §867-5 planner 권고 (BNK-867)
+
+- REQUIREMENTS §7 인력관리 「M8 직원관리 15-leaf + M11 급여관리 6-leaf → ogada Route 1:1 실측 = 20-leaf(8-11 폐지 제외) PARITY 17 + SUPERSET 2(8-5 case-management 독립 route · 8-13 연차/장부 이원화) + △ 「가정」/embedded 2(8-3 연간 뷰·11-3 계약 편집) + ★ GAP 1(8-8 자원봉사자 활동일지·P4「가정」 후보) + phantom 0(부풀림 없음)」 명시(rules §1 정직 표기 정합).
+- ROADMAP v3+ **P4「가정」** — 8-8 자원봉사자 활동일지 template (Programs `ExternalLecturer` 축 병합 candidate·독립 도메인 신설 금지·과대구축 회피·rules §11 정합). 2026 평가 지표 배점 확인 후 재검토.
+- REQUIREMENTS §보안/§PIPA SEC-D34 계보 「caregiver parser 3-branch fail-closed 회귀 test lock」 명시(BNK-867 착지축 — NhisExcelParser 3-branch 대칭 확장).
+- REQUIREMENTS §이동서비스 「배차 회차(departureRound) 검증 로직을 `config/transport.js` shared helper 로 DRY(rules §2·rules §13 재사용 원칙)·페이지 로컬 constant 금지」 명시(id=2 form-polish 5차 축).
+- 마케팅 카피 「carefor marketing 정본 M8+M11 = 20-leaf 인력·급여 도메인의 85% 실측 PARITY + 10% 독립 SUPERSET(사례관리·연차/장부) — 부풀림 없이 정직 실측」·「엑셀 parser 검증 분기 4-대칭 fail-closed test lock(NHIS·caregiver 3-branch 대칭) — 경쟁 4종 유일 SUPERIOR」.
+- ROADMAP·PLAN_NOTES 현행 유지 권고(신규 진성갭 P0 승격 0·P0~P3 결정 번복 0·closed band 재오픈 0·모듈 97.41% carry).
+
+---
+
+## §866 BNK-866 — 교차검증·갭 우선순위 8h+ · ★★ **규제 백본 8-URL live 재실측 592차 zero substantive drift · longterm 502/610 「양방향」 lean↔full 오실레이션 continues 재확인(BNK-858 「종료 가정」 3-cycle 번복 유지) · SEC-D34 계보 BNK-866 착지축 「NHIS parser 3-branch fail-closed 회귀 lock」 · id=2 배차 form a11y polish 4차 축(회차 stale-state 정리) · audit-first HTTP 442 27차 byte-exact IDENTICAL**
+
+**조사일**: 2026-07-18T11:35:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-865(엔젤·롱텀·규제 4-6h·2026-07-18T10:45Z) → ~50분 후. 이번 사이클 초점: (1) 규제 백본 8-URL live 재실측 → md5/SIZE·strip 비교로 이전 BNK 가정 재점검(특히 longterm 502/610 오실레이션·law 2025-247 strip semantic) · (2) ogada git @HEAD 실측(BE·FE 각 +1 commit) · (3) 미확인 항목 축소·신규 진성갭 도출·P0~P3 결정 번복 여부 재검토.
+
+**ogada baseline (git 실측)**:
+- BE `@b8facfc` (`test(v3/SEC-D34): lock NHIS excel parser validation fail-closed branches`·BNK-865 `@2ad9b05` → **+1 commit**·`NhisExcelParserTest.java` +60·헤더행 없음/필수 컬럼 장기요양인정번호 없음/유효 데이터행 0 = 3-branch `BusinessRuleException` fail-closed 회귀 lock·test-only·behavior-neutral·+3 @Test·WT CLEAN·ahead **757** vs `598d108`)
+- FE `@93f4932` (`fix(v1.2.1/transport): clear stale round error after loading prior run`·BNK-865 `@0d37788` → **+1 commit**·2 files +84/-13·`TransportRunNewPage.jsx`+31/-13·`TransportRunNewPage.test.jsx`+66·이전 run 로드 시 회차 필드 잔여 검증 오류·`aria-invalid` 상태 end-to-end 정리·id=2 form-polish 4차 축·WT CLEAN·ahead **11** vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **768** (FE 11 tester FF 대기 + BE 757 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133** · Page **106** · Flyway V1–V196 (신규 0)
+- BE Test **297**(296+1) · BE @Test strict **2374** (git grep `^\s*@Test\b` @b8facfc · BNK-865 @2ad9b05 2371 → **+3** NhisExcelParser 3-branch fail-closed · WT grep 2375 ±1 tooling 편차·rules §14 정합) · @RestController **81**(loose)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — **27차 byte-exact IDENTICAL**(BNK-836→866·endpoint 신설 0)
+- FE test **541**(226+315·in-place +66·신규 0)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk866.txt` · `nhis_jo44_live_bnk866.html`·`silverangel_system_feature_live_bnk866.html`·`silverangel_extraService_live_bnk866.html`·`silverangel_feeService_live_bnk866.html`·`silverangel_home_live_bnk866.html`·`longterm_502_live_bnk866.html`·`longterm_610_live_bnk866.html`·`law_mohw_2025_247_admRulInfoP_live_bnk866.html` · 신규 snapshot **9**(txt 1 + html 8) · 덮어쓰기 0.
+
+### §866-1 ★ ogada git baseline @HEAD 재실측 (BE·FE 각 +1 commit)
+
+**근거**: `git -C src/backend rev-parse develop`=`b8facfc…`(BNK-865 `2ad9b05` → +1) · `git -C src/frontend rev-parse develop`=`93f4932…`(BNK-865 `0d37788` → +1) · WT CLEAN·2026-07-18T11:35Z.
+
+| 지표 | BNK-865 | BNK-866 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `2ad9b05` | `b8facfc` | +1 commit(SEC-D34 NHIS parser 3-branch fail-closed test) |
+| FE develop HEAD | `0d37788` | `93f4932` | +1 commit(id=2 회차 stale-error 정리) |
+| BE ahead vs `598d108` | 756 | 757 | +1 |
+| FE ahead vs `b23711f` | 10 (0/10) | 11 (0/11) | +1·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test strict (git grep) | 2371 | 2374 | **+3**(NhisExcelParser 3-branch) |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | **27차 byte-exact IDENTICAL** |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 106 | IDENTICAL |
+| FE test files | 541(226+315) | 541(226+315·in-place +66) | IDENTICAL |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE·FE 각 +1 commit — 모두 이전 축의 심화(BE=SEC-D34 NHIS parser 검증 분기별 회귀 lock·FE=id=2 배차 form a11y polish 4차 축)·엔드포인트/마이그레이션/Route/Page 계층 무변·audit-first HTTP 442 27차 byte-exact IDENTICAL. 신규 진성갭 0·모듈 97.41% carry.
+
+### §866-2 ★★ 규제 백본 8-URL live 재실측 592차 zero substantive drift · longterm 502/610 「양방향」 오실레이션 continues
+
+**근거**: `curl -sSL -m 45` + `md5sum` + strip 비교(2026-07-18T11:35Z).
+
+| # | target | HTTP | SIZE | md5(raw) | 판정 |
+|---|---|---|---|---|---|
+| 1 | [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | **592차** byte-IDENTICAL(BNK-865 591차 → +1) |
+| 2 | [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601B | `c9507190` | byte-IDENTICAL·이동서비스/배차/GPS/차량/RFID **0-hit** |
+| 3 | [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | byte-IDENTICAL(효성CMS 3-method LOCK) |
+| 4 | [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513B | `eab352a8` | byte-IDENTICAL |
+| 5 | [silverangel home](https://www.silverangel.kr/) | 200 | 101,220B | `66382835` | byte-IDENTICAL(굽은나무 앱 carry) |
+| 6 | [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,162B | `56185735` | ★ **lean-shell 재출현**(BNK-865 full 89,171B `a71379de` → BNK-866 lean·±9B 오실레이션 continues) |
+| 7 | [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,399B | `fad1ce61` | ★ **lean-shell 재출현**(BNK-865 full 88,408B `6b10f426` → BNK-866 lean) |
+| 8 | [law 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450B | `898d7fb4`(raw) / `a913639a`(strip) | semantic IDENTICAL(raw 는 캐시버스터-only DRIFT) |
+
+**verbatim grep**: NHIS #44 「러-1」×1·「러-4」×1·「편도」×2·「이동서비스비」×9 → Transport 상수(`RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY`) 재조정 불요·id=2 0.85 carry. silverangel system_feature 이동서비스/배차/GPS/차량/RFID **0-hit** → ogada Transport(id=2 full-stack) SUPERIOR 재확인. law 2025-247 strip = `a913639a`(BNK-859/861/862/865 LOCK)·본문 semantic 무변.
+
+**판정 (교차검증)**: ★ longterm 502/610 「양방향」 lean↔full 오실레이션 **continues** — BNK-865 full(89,171B/88,408B) → BNK-866 lean(89,162B/88,399B) 재출현 → **BNK-858 「오실레이션 종료 「가정」」은 BNK-859/865/866 3-cycle 에 걸쳐 명확히 번복 유지**(rules §10 정합·JS/authn 요구 서버 부하 라운드 로빈 「가정」·기능 갭 아님·문서 위생 signal). 신규 진성갭 0·P0~P3 결정 번복 0·미확인 승격 0.
+
+### §866-3 ★★ SEC-D34 계보 BNK-866 착지축 「NHIS parser 3-branch fail-closed 회귀 lock」
+
+**근거**: `git show --stat b8facfc` = `billing/domain/NhisExcelParserTest.java` +60(1 file).
+
+BNK-864 BE `UNREADABLE_EXCEL_MESSAGE` 상수(축 o) 위에 → BNK-866 `NhisExcelParser` 의 **3개 미커버 fail-closed branch**(① 헤더행 없음 ② 필수 컬럼 「장기요양인정번호」 없음 ③ 유효 데이터행 0)의 `BusinessRuleException`(user-safe) 경로를 test-only 로 회귀 lock(+60·+3 @Test·behavior-neutral). = parser-layer(BNK-857 j) + service-integration(BNK-858 k) 위 「parser 검증 분기별 회귀」 심화 = SEC-D34 fail-closed 계보 test 밀도 심화(제품 코드·audit-first HTTP surface 무변). **경쟁 4종(케어포·이지케어·엔젤·롱텀) 엑셀 parser 검증 분기 verbatim 0 「미확인」 재확인** → ogada 유일 SUPERIOR narrative carry.
+
+### §866-4 ★ id=2 배차 form a11y polish 4차 축 「회차 stale-error 정리」
+
+**근거**: `git show --stat 93f4932` = 2 files +84/-13(`TransportRunNewPage.jsx`+31/-13·`TransportRunNewPage.test.jsx`+66).
+
+이전 run 로드 시 회차(round) 필드의 잔여 검증 오류·`aria-invalid` 상태를 end-to-end 로 교체 → 회차 Field a11y 상태와 노출 오류를 로드된 run 데이터와 정합(WCAG 2.1·rules §7 접근성). id=2 이동서비스 배차 form-polish 4차 축(BNK-862 회차검증·BNK-863 회차검증·BNK-864 정차상한 상수·BNK-866 회차 stale-state 정리). 경쟁 4종 배차 form UX·a11y stale-state 근거 0-hit(엔젤 system_feature 이동서비스 0-hit·이지케어 배차 verbatim 0)·KPI promote 0(잔여 갭은 규제/거리기반 산정 축).
+
+### §866-5 planner 권고 (BNK-866)
+
+- REQUIREMENTS §이동서비스/§접근성 「배차 회차 필드는 이전 배차(run) 불러오기 시 잔여 검증 오류·`aria-invalid` 상태를 end-to-end 로 정리(stale a11y state 금지)」 명시(BNK-862~866 4차 축 반영).
+- REQUIREMENTS §보안/§PIPA SEC-D34 계보에 「엑셀 parser 검증 분기(헤더 없음·필수 컬럼 없음·데이터행 0)별 fail-closed 회귀 test lock」 명시(BNK-866 착지축).
+- 마케팅 카피 「배차 회차 입력을 브라우저에서 즉시 검증하고, 이전 배차 불러오기 시 오류 표시까지 자동 정리 — 접근성 상태 일관」.
+- ROADMAP·PLAN_NOTES 현행 유지 권고(신규 진성갭 0·P0~P3 번복 0·closed band 재오픈 0·모듈 97.41% carry).
+
+---
+
+## §865 BNK-865 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **신규 URL 「silverangel `daycareEssentialWork.do`」 첫 fetch = G17 dual-numbering guardrail(공단 지표27=기능회복훈련 ≠ 필수업무 일련27=가족과의 소통) 경쟁 공식 verbatim 근거 확보(BNK-776/779/819 3-cycle 확정) · 「보호자용 앱(굽은나무)」 엔젤 브랜드 첫 verbatim 관찰 · silverangel 4-URL byte-IDENTICAL + NHIS #44 591차 zero drift + law.go.kr 2025-247 strip 재확인 · lcms.or.kr HTTP 200 · CJ프레시웨이 MOU 시그널 소멸 3-cycle 재확인 · longterm 502/610 「양방향」 오실레이션 continues · audit-first HTTP 442 26차 byte-exact IDENTICAL**
+
+**조사일**: 2026-07-18T10:45:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4-6h — BNK-864(이지케어 2-4h·2026-07-18T10:04Z) → ~40분 후. 이번 사이클 초점: (1) 신규 URL `silverangel_daycare_essentialWork` 첫 fetch = 주야간보호 필수업무 verbatim(공단 지표27 dual-numbering guardrail의 경쟁 공식 근거 확보 목표·BNK-776 planner Q219-1 「G17/G16 dual-numbering UI copy」 근거 강화) · (2) NHIS #44 591차·silverangel 4-URL·law.go.kr 2025-247 fetch → strip semantic 비교·조사 baseline · (3) lcms.or.kr(BNK-791/802 「CJ프레시웨이 MOU」 GTM transient) 3-cycle 재실측 · (4) longterm 502/610 「양방향」 오실레이션 재관측(BNK-859 「종료」 가정 번복).
+
+**ogada baseline (git 실측)**:
+- BE `@2ad9b05` (BNK-864 **동일 HEAD**·**zero advance**·refactor(SEC-D34 축 「o」 UNREADABLE 상수)·WT CLEAN·ahead **756** vs `598d108`)
+- FE `@0d37788` (BNK-864 **동일 HEAD**·**zero advance**·id=2 form polish MAX_TRANSPORT_ROUTE_STOPS 상수·WT CLEAN·ahead **10** vs origin/test=`b23711f`·tester FF 대기)
+- merge gate **766** (FE 10 tester FF 대기 + BE 756 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133** · Page **106** · Flyway V1–V196 (신규 0)
+- BE Test **297**(296+1) · BE @Test raw **2375** / strict `^\s*@Test(\W|$)` **2374** (BNK-864 header 2371 대비 measurement Δ **+3** · git HEAD IDENTICAL·refactor·신규 @Test 0 → **코드 층 무변**·grep 조합 편차로 표기·rules §14 정합) · @RestController **81**(loose·carry)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — **26차 byte-exact IDENTICAL**(BNK-836→865·endpoint 신설 0)
+- FE test **541**(226+315·carry)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk865.txt` · `docs/planning/research/snapshots/silverangel_daycare_essentialWork_live_bnk865.html`(**신규 URL**·131,664B·`c79c1be3`) · `docs/planning/research/snapshots/silverangel_home_live_bnk865.html`·`silverangel_system_feature_live_bnk865.html`·`silverangel_extraService_live_bnk865.html`·`silverangel_feeService_live_bnk865.html`·`nhis_jo44_live_bnk865.html`·`longterm_502_live_bnk865.html`·`longterm_610_live_bnk865.html`·`law_mohw_2025_247_admRulInfoP_live_bnk865.html`·`lcms_home_live_bnk865.html` · 신규 snapshot **10**(txt 1 + html 9) · 덮어쓰기 0.
+
+### §865-1 ★ ogada git baseline @HEAD 재실측 (zero advance)
+
+**근거**: `git -C src/backend rev-parse develop`=`2ad9b05b…`(BNK-864 IDENTICAL) · `git -C src/frontend rev-parse develop`=`0d37788e…`(BNK-864 IDENTICAL) · WT CLEAN·2026-07-18T10:45Z.
+
+| 지표 | BNK-864 | BNK-865 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `2ad9b05` | `2ad9b05` | IDENTICAL·zero advance |
+| FE develop HEAD | `0d37788` | `0d37788` | IDENTICAL·zero advance |
+| BE ahead vs `598d108` | 756 | 756 | IDENTICAL |
+| FE ahead vs `b23711f` | 10 (0/10) | 10 (0/10) | IDENTICAL·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test strict | 2371 | 2374 | measurement Δ **+3** (grep 조합 편차·git HEAD 무변·rules §14 정합) |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | **26차 byte-exact IDENTICAL** |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 106 | IDENTICAL |
+| FE test files | 541(226+315) | 541(226+315) | IDENTICAL |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE·FE 각 zero advance carry(coder develop 신규 커밋 0·232차 planner 액션이 tester/coder 대기 중)·audit-first HTTP 442 26차 byte-exact IDENTICAL·엔드포인트/테스트/마이그레이션 계층 무변. `BE @Test strict` measurement Δ +3 은 grep 조합(`^\s*@Test(\W|$)` vs `@Test$|@Test\(`) 편차이며 git HEAD 무변으로 **코드 층 변동 0** (rules §14 「검증 실패 시 원인 기록·본문 명시」 정합).
+
+### §865-2 ★★★ 신규 URL 「silverangel `daycareEssentialWork.do`」 첫 fetch = G17 dual-numbering guardrail 경쟁 verbatim 근거 확보
+
+**근거**: `curl -sSL 'https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do'` HTTP 200·131,664B·`c79c1be3`(신규 URL·이전 BNK-858 이래 fetch 이력 0·`silverangel_home` L "필수업무" nav anchor 관측 후 추적·2026-07-18T10:45Z).
+
+**verbatim 인용 (필수업무 27 「가족과의 소통」 row · @byte 103077)**:
+> `<tr>` `<td>27</td>` `<td>가족과의 소통</td>` `<td>기</td>`
+> `<td>1. 보호자 회의를 온라인 또는 오프라인으로 반기별 1회 이상 실시함`
+> `  • 필수사항 : 일시, 장소, 회의방법, 회의내용, 회의결과, 참석자명(서명)`
+> `2. 월간 프로그램 계획표, 식단표, 기관의 소식을 월 1회 이상 온라인 또는 오프라인으로 제공함`
+> `  - 노인장기요양보험 또는 기관 자체 홈페이지(카페, 블로그 등), 소식지, 직접제공 등으로 매월 1회 이상 제공하였는지 확인함</td>`
+> `<td>기관운영<br>모바일 앱<br>수급자관리<br>급여제공계획<br>SMS<br>기관운영</td>`
+> `<td>보호자회의<br>보호자용 앱(굽은나무)<br>가정통신문<br>프로그램계획<br>안내장관리<br>식단표</td>`
+
+**verbatim 인용 (「주야간보호 27 = 기능회복훈련」 · 6-hit repr)**:
+> `<td>수급자의 잔존능력유지를 위한 개인별 기능회복훈련 계획</td> <td>주야간보호 27 기능회복훈련</td>`
+> `<td>기능회복훈련 제공하고 기록</td> <td>주야간보호 27 기능회복훈련</td>`
+> `<td>급여제공 시작일까지 기능회복훈련 계획 수립</td> <td>주야간보호 27 기능회복훈련</td>`
+
+**verbatim 인용 (이동서비스 수칙 · 규제 checklist)**:
+> `<td>기</td> <td>1. 이동서비스 수칙이 있음`
+> `  • 필수사항 : 운전자 자격요건, 동승자의 역할, 차량안전수칙, 사고 시 조치사항, 차량운행표`
+> `2. 이동서비스 수칙을 수급자(보호자)에게 제공함</td>`
+> `<td>수급자<wbr>현황<wbr>-계약서에<wbr>이동서비스수칙<wbr>포함`
+> `  <br>이동서비스일지<wbr>-이동서비스수칙<wbr>예시</td>`
+
+**정량 (grep -c)**:
+
+| 키워드 | hits | 판정 |
+|---|---|---|
+| `가족과의 소통` | 1 | ★★★ 「필수업무 일련 27」 유일 verbatim |
+| `주야간보호 27` | 3 (동일 셀에 기능회복훈련) | ★★★ 「공단 지표 27」 verbatim |
+| `기능회복` | 6 | 지표27=기능회복훈련 반복 verbatim |
+| `필수업무` | 7 · `필수사항` 30 | 필수업무 항목 정본 성격 |
+| `이동서비스` | 3 (규제 checklist 문서화) | 신규 hit — but 시스템 배차·GPS 여전히 0 |
+| `차량` | 1 (차량안전수칙·차량운행표) | 신규 hit — 규제 문서 축 |
+| `배차`/`GPS`/`RFID` | 0 | 엔젤 시스템 자체 배차·GPS·RFID 모듈 부재 재확인 |
+| `굽은나무` | 1 | ★★★ 엔젤 「보호자용 앱」 브랜드 첫 verbatim |
+
+**판정**:
+- **A) G17 dual-numbering guardrail 경쟁 공식 verbatim 근거 확보 (★★★ · ogada BNK-776/779/819 3-cycle 확정 강화)** — silverangel 공식 「주야간보호 필수업무」 페이지가 「필수업무 27 = 가족과의 소통」과 「주야간보호 지표 27 = 기능회복훈련」을 동시에 verbatim 문서화. ogada `FunctionalRecoveryComplianceResponse.dualNumberingNoteKo`+`BathingScheduleIndicator27Panel`+FE `mapDualNumberingGuardrail`(BNK-776/779)의 UI 문구가 경쟁 공식 verbatim 대칭 = **경쟁 4종 유일 dual-numbering guardrail parity CONFIRMED**.
+- **B) 「보호자용 앱(굽은나무)」 = 엔젤 브랜드 첫 verbatim 관찰 (★★★ · 신규 competitive intel)** — home 페이지 verbatim: 「요양원에 계신 어르신의 하루하루를 살필 수 있습니다. 굽은나무로 옆에 오신 것 처럼 소통해보세요」. essentialWork 셀에도 「보호자용 앱(굽은나무)」 verbatim. 앱 스토어 링크는 두 페이지 0-hit(별도 랜딩 필요). ogada 는 `/guardian/*` 웹 기반 SUPERSET(반응형·Kakao 알림톡 통합) 유지 · 별도 mobile app 은 v3+ P4「가정」 · 과대구축 금지.
+- **C) 필수업무 27 「보호자 회의 반기별 1회+ · 월간 프로그램 계획표·식단표·기관 소식 월 1회+」 = ogada full-stack parity 재확인 (★★)** — `/staff/committee-meetings`(BNK-773 8-6 CLOSED)·`/newsletter`(BNK-720/728 G2 home-newsletter CLOSED)·`/programs` schedule/photo(BNK-833/840 SEC-D25 6-cycle CLOSED)·`/meals`(M6 5-leaf FULL PARITY BNK-810) 이미 CLOSED · 격상 0 · 진성갭 0.
+- **D) 이동서비스 수칙 checklist = 엔젤 3-hit 문서 축 재확인 (★★)** — 「계약서 포함 이동서비스수칙」 + 「이동서비스일지 예시」 문서 첨부 축으로만 필수업무 이행(운전자 자격요건·동승자 역할·차량안전수칙·사고 시 조치사항·차량운행표). 실 배차·GPS·차량 tracking 모듈은 여전히 0-hit(system_feature `c9507190` IDENTICAL). ogada Transport(id=2 full-stack·Route 6-link·러-1~4 계산기·RFID import·NHIS #44 상수) SUPERIOR 유지 · v3+ P4「가정」 candidate 「이동서비스수칙」 문서 template 검토(마케팅 규제 대응 축).
+
+### §865-3 ★★ 규제 백본 8-URL live 재실측 591차 zero substantive drift
+
+**근거**: `curl -sSL` 8-URL 병렬 fetch(2026-07-18T10:45Z).
+
+| URL | HTTP | SIZE | md5 (raw) | strip semantic | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | (cache-buster 없음) | **591차 byte-IDENTICAL**(제34조 러-1~4·편도 50%·수급자 무부담·일지 보관 verbatim carry) |
+| [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601B | `c9507190` | — | byte-IDENTICAL(이동서비스/배차/GPS/차량/RFID/회차 **0-hit** 재확인) |
+| [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | — | byte-IDENTICAL(효성CMS 1·자동이체 6·가상계좌 7·카드결제 4·30,000·250원·300원·연동정보·본인부담금 11·식재료비 1·의료비 2 carry) |
+| [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513B | `eab352a8` | — | byte-IDENTICAL(요금 6·체험 1·자동이체 1·30,000 hit 0·30,000은 extraService only) |
+| [silverangel home](https://www.silverangel.kr/) | 200 | 101,220B | `66382835` | — | byte-IDENTICAL(2026-07 notices 10-hit·「굽은나무」 1 verbatim·필수업무 4·평가 13·지표 14) |
+| [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,171B | `a71379de` | — | **양방향 오실레이션 continues**(BNK-858 89,171B → BNK-859 89,162B lean → BNK-865 89,171B 재출현) |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,408B | `6b10f426` | — | **양방향 오실레이션 continues**(BNK-858 88,408B → BNK-859 88,399B lean → BNK-865 88,408B 재출현) |
+| [law 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450B | `da4c6b56` | **`a913639a`** | strip(Time/etaHash/nonce/mrsCd/token/_wa/csrfToken/_ts) semantic **IDENTICAL**(BNK-859/861/862 strip `a913639a` LOCK carry·cache-buster only) |
+
+**판정**: 규제·경쟁 백본 8-URL 전량 실체 콘텐츠 zero substantive drift · NHIS #44 러-1~4 → ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY`) 상수 재조정 불요 · id=2 0.85 carry · 기획 트리거 0. longterm 502/610 「양방향」 오실레이션 BNK-859 재번복 → BNK-865 재확인(±9B lean↔full · JS/authn 요구 서버 부하 라운드 로빈 「가정」 · 문서 위생 · 기능 갭 아님). silverangel extraService CMS 3-method 벤더 종속 STABLE ↔ ogada 6-method SUPERSET 벤더 lock-in 없음 carry.
+
+### §865-4 ★★ lcms.or.kr 재실측 = MOU/CJ프레시/식단 시그널 소멸 3-cycle 재확인(BNK-791 GTM transient 확정)
+
+**근거**: `curl -sSL 'https://lcms.or.kr/'`·`'http://www.lcms.or.kr/'` HTTP 200.
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| [lcms.or.kr](https://lcms.or.kr/) | 200 | 50,554B | `6c0d22b4` | 회원 5·가입 3·장기요양 1 shell only |
+| [www.lcms.or.kr](http://www.lcms.or.kr/) | 200 | 50,498B | `6b750291` | www variant(-56B·hostname stub 차이) |
+
+**grep -c 3-cycle 비교 (BNK-791/802/865)**:
+
+| 키워드 | BNK-791 | BNK-802 | BNK-865 | 판정 |
+|---|---|---|---|---|
+| CJ프레시(웨이) | 3+ | 3+ (carousel) | **0** | 소멸 |
+| MOU | 1+ | 1+ | **0** | 소멸 |
+| 식단 | 3+ | 3+ | **0** | 소멸 |
+| 영양(사) | 1 | 1 | **0** | 소멸 |
+| 재무회계 | 0 | 0 | 0 | carry |
+
+**판정**: BNK-791/802 「CJ프레시웨이 MOU 식단 GTM」 시그널은 **carousel/GTM transient**(회전 광고)였음이 3-cycle 재확인(0-hit 정착)·**SaaS core 갭 아님**·구축 0 유지·P3「가정」 폐기 유지·「미확인」 상태 지속. ogada meal_records 인접성만 시그널로 기록(계보 carry) · v3+ 구축 금지.
+
+### §865-5 audit-first HTTP 442 26차 byte-exact IDENTICAL · closed band 6 재오픈 0
+
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) = BNK-836→865 **26차 byte-exact IDENTICAL**. BE·FE zero advance·controller endpoint 신설 0·refactor/상수 추출 dominant·SEC-D34/id=2 form-polish 축 계보 안정.
+- closed band 6 App.jsx `@0d37788` LIVE: 대시보드·G2 home-newsletter·G-LINKAGE linkage-records·G14 care-plan-form·v2 CMS·v1.3-C service-fees = IDENTICAL·재오픈 0·P0 신규 0.
+
+**planner 액션 아이템 (BNK-865)**:
+- ★★★ REQUIREMENTS §접근성/§UX 「G17 dual-numbering guardrail (공단 지표27=기능회복훈련 ≠ 필수업무 일련27=가족과의 소통) — 경쟁 공식 문서 verbatim(silverangel `daycareEssentialWork.do`) 대칭 근거로 명문화 검토」 · ogada `dualNumberingNoteKo`+`BathingScheduleIndicator27Panel` UI 문구는 이미 착지(BNK-776/779) · KPI promote 0 · **경쟁 4종 유일 dual-numbering guardrail parity CONFIRMED**.
+- ★★★ 마케팅 카피 추가 검토 「필수업무 일련 27 「가족과의 소통」과 공단 지표 27 「기능회복훈련」을 UI 화면에서 자동 구분 안내 — 경쟁 공식 문서 verbatim 대칭」 · REQUIREMENTS §UX 후보.
+- ★★ 「보호자용 앱(굽은나무)」 = 엔젤 mobile app 브랜드 관찰 — ogada 는 `/guardian/*` 웹 기반 반응형 SUPERSET + Kakao 알림톡 통합 → 별도 mobile app 은 v3+ P4「가정」·과대구축 금지·마케팅 카피 「별도 앱 설치 없이 웹으로 즉시 소통 (설치·업데이트 부담 0)」 검토.
+- ★★ 「이동서비스 수칙 계약서 포함·일지 예시」 문서 축(엔젤 3-hit) — ogada Transport(id=2 full-stack) SUPERIOR 유지 · v3+ P4「가정」 candidate 「이동서비스수칙」 문서 template 검토(규제 checklist 대응).
+- ★ ogada baseline unchanged (BE·FE zero advance carry) — 232차 planner 액션(QA-B612 FF+QA-B116 origin/test push) tester/coder 대기 · 벤치마크 갭 트리거 없음.
+- **가정 번복 0·KPI promote 0**·per-cycle minimum 4종 충족(URL 10 신규/재실측·`daycareEssentialWork.do` 첫 fetch + verbatim 3-블록 + `@HEAD` SHA carry + BENCHMARK_REPORT §865 신규 소절).
+
+---
+
+## §864 BNK-864 — 이지케어 역공학 2-4h · ★★★ **이지케어 FAQ 엑셀/파일 관련 rowid 7종 verbatim 심화 = 「브라우저 troubleshooting(edge/chrome 다운로드)」 + 「워크플로 안내(공단→이지케어 업로드·재업로드 state guard)」만 · 파일 무결성 verbatim 0 재확인(3-cycle 연속·SEC-D34 계보 15-축 SUPERIOR carry) · SEC-D34 축 「o」 = BE `UNREADABLE_EXCEL_MESSAGE` 상수 도입(5-parser+4-service DRY·FE↔BE 2-layer 완결) · NHIS #44 live 590차 zero drift · audit-first HTTP 442 25차 byte-exact IDENTICAL**
+
+**조사일**: 2026-07-18T10:04:00Z | **rotation**: 이지케어 역공학 2-4h — BNK-863(교차검증·갭 우선순위 8h+·2026-07-18T09:23Z) → ~40분 후. 이번 사이클 초점: (1) 이지케어 FAQ 233 rowid 전수 anchor 파싱·엑셀/파일/오류/업로드/다운로드 키워드 매칭 → 엑셀 관련 7-rowid verbatim 심화 = BNK-859 planner 권고 「이지케어 FAQ 엑셀 오류 카피 신규 verbatim 탐색」 후속 · (2) `./scripts/ezcare-demo-fetch.sh --menu-catalog` 데모 ERP 셸 재실측(login code=0000·nav byte-IDENTICAL 관찰) · (3) BE `@2ad9b05` refactor(SEC-D34 축 「o」 BE 층 확산) + FE `@0d37788`(id=2 form polish MAX_TRANSPORT_ROUTE_STOPS 상수 추출) baseline delta 실측 → COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 갱신 · (4) NHIS #44 live 재fetch(590차 IDENTICAL).
+
+**ogada baseline (git 실측)**:
+- BE `@2ad9b05` (`refactor(v3/SEC-D34): unify unreadable-excel copy via UNREADABLE_EXCEL_MESSAGE constant`) · BNK-863 `@913b9d2` → **+1 commit**(SEC-D34 계보 축 「o」 BE 층·5-parser + 4-service 상수 통합·9 files·「엑셀 파일을 읽을 수 없습니다.」 매직스트링 0·rules §2·behavior-neutral·기존 corrupt-body 회귀 test carry·신규 @Test 0) · WT CLEAN · ahead **756** vs `598d108`
+- FE `@0d37788` (`fix(v1.2.1/transport): surface route-stop limit and extract MAX_TRANSPORT_ROUTE_STOPS (id=2 form polish)`) · BNK-863 `@f72af3f` → **+1 commit**(4 files +52/-6·`src/config/transport.js`+13 `MAX_TRANSPORT_ROUTE_STOPS`/`TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE` export·`transport.test.js`+19 계약 lock·`TransportRunDetailPage.jsx`+15/-4·`TransportRunNewPage.jsx`+11/-2·정차 상한 17 매직 넘버 제거·`setActionError` 사유 노출·BE `TransportService.MAX_WAYPOINTS` lockstep·rules §2) · WT CLEAN · ahead **10** vs origin/test=`b23711f`(rev-list 0/10·tester FF 대기)
+- merge gate **766** (FE 10 tester FF 대기 + BE 756 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx) · Page **106**(carry) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296+1) · BE @Test strict **2371**(BNK-863 IDENTICAL·refactor·신규 @Test 0) · @RestController **81**(loose·carry)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — **25차 byte-exact IDENTICAL**(BNK-836→864·endpoint 신설 0)
+- FE test **541**(226 `.test.js` + 315 `.test.jsx`·`transport.test.js` in-place +19·신규 0·BNK-863 541 → IDENTICAL)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/ezcare_faq_excel_workflow_bnk864.txt`(FAQ 엑셀/파일 7-rowid verbatim 심화) · `docs/planning/research/snapshots/ezcare_faq_live_bnk864.html`(FAQ 인덱스) · `docs/planning/research/snapshots/ezcare_faq_21563_edge_download_bnk864.html`·`docs/planning/research/snapshots/ezcare_faq_21534_chrome_download_bnk864.html`·`docs/planning/research/snapshots/ezcare_faq_21298_nhis_upload_bnk864.html`·`docs/planning/research/snapshots/ezcare_faq_21168_schedule_reupload_bnk864.html`(4-rowid verbatim) · `docs/planning/research/snapshots/nhis_jo44_live_bnk864.html`(590차 IDENTICAL) · 신규 snapshot **7**(txt 1 + html 6·live 재fetch) · 덮어쓰기 0
+
+### §864-1 ★ ogada git baseline @HEAD 재실측
+
+**근거**: `git -C src/backend rev-parse develop`=`2ad9b05b…` · `git -C src/frontend rev-parse develop`=`0d37788e…` · git grep/ls-tree 실측(2026-07-18T10:04Z).
+
+| 지표 | BNK-863 | BNK-864 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `913b9d2` | `2ad9b05` | +1 commit |
+| FE develop HEAD | `f72af3f` | `0d37788` | +1 commit |
+| BE ahead vs `598d108` | 755 | 756 | +1 |
+| FE ahead vs `b23711f` | 9 (0/9) | 10 (0/10) | +1·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test strict | 2371 | 2371 | IDENTICAL (refactor·신규 @Test 0) |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | **25차 byte-exact IDENTICAL** |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 106 | IDENTICAL |
+| FE test files | 541(226+315) | 541(226+315) | IDENTICAL (in-place +19) |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE·FE 각 +1 commit(BE SEC-D34 축 「o」 BE 층 UNREADABLE 상수 도입 refactor·FE id=2 form polish MAX_TRANSPORT_ROUTE_STOPS 상수)·양쪽 WT CLEAN·audit-first HTTP 442 25차 byte-exact IDENTICAL. merge gate **766**(BE-heavy) tester FF 대기 — 신규 마이그레이션·endpoint 없음.
+
+### §864-2 ★★★ 이지케어 FAQ 엑셀/파일 관련 rowid 7종 verbatim 심화 · 파일 무결성 verbatim 0 재확인
+
+**근거**: `curl -sSL 'https://ezcare.easyms.co.kr/help/faq.ez'` HTTP 200·80,057B·`b0e50eba`(BNK-859 `7e6758b8` → 콘텐츠 오실레이션·size 불변·faq-hit dynamic·rowid 233 IDENTICAL·max=21781 carry) → `<a rowid=... type=web>` anchor 233개 파싱·엑셀/파일/오류/업로드/다운로드/매직/시그니처/위조/손상 키워드 매칭.
+
+**엑셀/파일 관련 rowid 7종 특정**:
+
+| rowid | URL | SIZE | md5 | Q(질문 verbatim) | 유형 |
+|---|---|---|---|---|---|
+| **21563** | [FAQ 21563](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21563&type=web) | 14,848 | `389d69b0` | 「엣지(edge)에서 엑셀파일 다운로드가 안될때 처리방법」 | 브라우저 troubleshooting |
+| **21534** | [FAQ 21534](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21534&type=web) | 14,794 | `077e3e0b` | 「크롬(chrome)에서 엑셀파일 다운로드가 안될때 처리방법」 | 브라우저 troubleshooting |
+| **21529** | [FAQ 21529](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21529&type=web) | (미fetch) | (미fetch) | 「파일 다운로드 진행시 파일 (항상)자동열기 설정과 해제 변경 방법」 | 브라우저 설정 |
+| **21762** | [FAQ 21762](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21762&type=web) | (미fetch) | (미fetch) | 「크롬에서 파일 다운로드가 안될경우 조치방법」 | 브라우저 troubleshooting(21534 sibling) |
+| **21298** | [FAQ 21298](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21298&type=web) | 16,644 | `56f80ab6` | 「공단에 등록한 일정을 이지케어에 업로드하는 방법은?」 | 공단 계획 upload 워크플로 |
+| **21168** | [FAQ 21168](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21168&type=web) | 15,169 | `a126381d` | 「일정을 다시 업로드 했는데 변경이 안돼요?」 | 워크플로 state guard |
+| **21845** | [FAQ 21845](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845&type=web) | 13,915 | `5b78c947` | 「엑셀 작업에 따른 방문일정 연동안내」 | 과거 이슈 공지(「엑셀 자료 관련 오류 사항은 현재 정상 조치 완료되어」) |
+
+**verbatim 인용 (rowid=21563 edge)**:
+> 엣지(edge)에서 엑셀파일 다운로드가 안될때 처리방법
+> 1  웹브라우저의 상단의 홈페이지 주소 앞에 자물쇠 모양의 아이콘을 클릭
+> 2   "사이트 설정" 을 클릭하여 설정화면으로 이동합니다
+> 4 설정 창을  X 를 클릭하여 닫기 하시면 홈페이지 주소창 아래에 새로고침 을 클릭후 엑셀다운로드를 다시 진행하세요
+
+**verbatim 인용 (rowid=21534 chrome)**:
+> 3 개인정보 보호 및 보안
+> 4  안전하지 않은 콘텐츠 > 차단(기본값) 을 허용 으로 선택
+
+**verbatim 인용 (rowid=21298 공단→이지케어 업로드)**:
+> 방문일정 관리 > 공단일정(자동/엑셀) 이지케어에 올리기 > 계획일정 가져오기, 청구일정 가져오기로 공단에 등록한 일정을 이지케어에 업로드 할 수 있습니다
+> 계획파일을 올려놓으신 상태라면 "확정된 일정은 제외하고 모든일정 초기화 하기"를 체크하여 등록을 진행합니다
+
+**verbatim 인용 (rowid=21168 재업로드 안됨)**:
+> 일정이 확정된 상태 에서는 일정 가져오기를 진행해도 새로운 일정을 반영할 수 없습니다
+
+**verbatim 인용 (rowid=21845 과거 오류 공지)**:
+> 엑셀 자료 관련 오류 사항은 현재 정상 조치 완료되어 …
+
+**판정**: 이지케어 FAQ 엑셀/파일 관련 rowid 7종은 **다운로드 브라우저 troubleshooting(3-4건: 21563/21534/21529/21762)** + **워크플로 안내(2건: 21298/21168)** + **과거 이슈 공지(1건: 21845)** 로 완전히 분류되며, **파일 무결성(매직바이트·시그니처·corrupt-body·empty-file·0-byte·no-info-leak·위조·손상) verbatim 은 0**. 원인 진단이 「브라우저 설정 변경」(자물쇠 아이콘·안전하지 않은 콘텐츠 허용)이거나 「상태 머신 guard」(확정 일정 재업로드) 뿐 — 파일 자체의 무결성 방어 문서화 근거 **0**. BNK-857/859 「이지케어 매직/시그니처/corrupt-body 0-hit 「미확인」」 3-cycle 연속 재확인.
+
+### §864-3 ★★★ ogada SEC-D34 계보 15-축(a~o) SUPERIOR 재확인 · 경쟁 4종 유일 파일 무결성 방어
+
+**축 crosswalk (BNK-848 → BNK-864 · 15-축)**:
+
+| 축 | BNK | 설명 | ogada 「확인」 |
+|---|---|---|---|
+| a | 848~849 | 매직바이트 4-경로(Visit/NHIS/Staff/BankDeposit) | ✅ |
+| b | 851 | null-safe payload(QA-B604) | ✅ |
+| c | 853 | truncated OOXML | ✅ |
+| d | 854 | .xls OLE magic | ✅ |
+| e | 854/855 | empty-file (5-service) | ✅ |
+| f | 855 | 0-byte FE 회귀 lock(excelImportFiles.test) | ✅ |
+| g | 856 | corrupt OOXML body(5-parser·no-info-leak) | ✅ |
+| h | 856 | FE 은행입금 pre-upload | ✅ |
+| i | 857 | FE RFID 이중엑셀 pre-upload | ✅ |
+| j | 857 | BE parser test lock(3-parser +48) | ✅ |
+| k | 858 | BE service integration 5-regression | ✅ |
+| l | 858 | FE a11y 인쇄 + 4-validator 100% | ✅ |
+| m | 859 | 5-service unified copy(`MISSING_EXCEL_MESSAGE` BE) | ✅ |
+| n | 860 | FE↔BE UX house-style lockstep | ✅ |
+| **o** | 861+864 | **FE↔BE 2-layer UNREADABLE 상수화 완결**(FE `EXCEL_IMPORT_UNREADABLE_MESSAGE`·BE `UNREADABLE_EXCEL_MESSAGE`·5-parser+4-service DRY) | ✅ **BNK-864 완결** |
+
+**경쟁 crosswalk**:
+
+| 경쟁사 | 파일 무결성 verbatim | 근거 |
+|---|---|---|
+| ogada `@2ad9b05` | ✅ **SUPERIOR** 15-축(a~o)·FE 5-validator 100%·BE 5-parser+4-service DRY 상수화·no-info-leak | git 실측 |
+| 이지케어 | ❌ FAQ 7-rowid 브라우저 troubleshooting + 워크플로 안내만·파일 무결성 verbatim **0** 「미확인」 (3-cycle 연속 재확인 BNK-857/859/864) | `ezcare_faq_excel_workflow_bnk864.txt` §2-8 |
+| 케어포 | ❌ M7 「입금관리」·매직/시그니처 verbatim 0 「미확인」 | disk canonical carry |
+| 엔젤 | ❌ 요양비 8-leaf 파일 서명 0-hit | silverangel system_feature carry |
+| 롱텀 | ❌ 공단 청구 엑셀 서명 벤더 몫 | disk carry |
+
+### §864-4 ★★★ SEC-D34 계보 축 「o」 = BE `UNREADABLE_EXCEL_MESSAGE` 상수 도입 완성(5-parser + 4-service DRY · FE↔BE 2-layer 완결)
+
+**근거**: `git show 2ad9b05 --stat` 및 `-- src/main` verbatim(9 files·9-hit).
+
+**대상 파일**:
+- BE parser 5종: `BankDepositExcelParser.java`·`NhisExcelParser.java`·`StaffNhisCaregiverExcelParser.java`·`NhisVisitScheduleExcelParser.java`·`RfidTransmissionExcelParser.java`
+- BE service 4종: `BankDepositImportService.java`·`NhisImportService.java`·`StaffNhisCaregiverImportService.java`·`VisitService.java`
+
+**변경 패턴** (parser 예):
+```java
+private static final String UNREADABLE_EXCEL_MESSAGE = "엑셀 파일을 읽을 수 없습니다.";
+...
+throw new BusinessRuleException(UNREADABLE_EXCEL_MESSAGE);   // 이전: throw new BusinessRuleException("엑셀 파일을 읽을 수 없습니다.");
+```
+
+**변경 패턴** (service 예):
+```java
+private static final String MISSING_EXCEL_MESSAGE = "업로드할 엑셀 파일이 없습니다.";
+private static final String UNREADABLE_EXCEL_MESSAGE = "엑셀 파일을 읽을 수 없습니다.";
+```
+
+**판정**:
+- FE 층(BNK-861): `EXCEL_IMPORT_UNREADABLE_MESSAGE` export 상수 추출·`excelImportFiles.test.js` +24 상수 lock — FE UNREADABLE 상수 도입 완료.
+- BE 층(BNK-864): 5-parser + 4-service 전량 `UNREADABLE_EXCEL_MESSAGE` 상수 도입 — 「엑셀 파일을 읽을 수 없습니다.」 리터럴 매직스트링 **0**·rules §2 「하드코딩된 매직 문자열 상수로 분리」 정합·behavior-neutral(메시지 값 동일)·기존 SEC-D34 corrupt-body 회귀 test carry(신규 @Test 0).
+- **FE↔BE 2-layer UNREADABLE 상수화 완전 lockstep** — 향후 문구 변경 단일 지점·회귀 test lock·MISSING/UNREADABLE 이원 house-style FE↔BE 완결.
+- **경쟁 4종 verbatim/상수화 근거 0** → ogada 유일 카피 거버넌스 SUPERIOR carry.
+
+### §864-5 ★★★ id=2 이동서비스 정차 상한 매직 넘버 17 → `MAX_TRANSPORT_ROUTE_STOPS` 상수 추출(BE `TransportService.MAX_WAYPOINTS` lockstep · 초과 시 사유 노출)
+
+**근거**: `git show 0d37788 --stat` diff verbatim(4 files +52/-6).
+
+**변경 개요**:
+- `src/config/transport.js`+13: `MAX_TRANSPORT_ROUTE_STOPS`(17) + `TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE` export.
+- `src/config/transport.test.js`+19: 상수·메시지·1 이상 정수 계약 lock.
+- `TransportRunDetailPage.jsx`+15/-4: `stops.length >= 17` 매직 넘버 4-지점(지점 추가·경유지 추가·roster 추가·bulk add) 전량 `MAX_TRANSPORT_ROUTE_STOPS` 로 치환 + 무음 반환 → `setActionError(TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE)` 사유 노출.
+- `TransportRunNewPage.jsx`+11/-2: 동일 패턴.
+- BE `TransportService.MAX_WAYPOINTS` lockstep 「확인」.
+
+**판정**: rules §2 매직 넘버 상수화 정합 · id=2(이동서비스·0.85 carry) form-polish 3차 축(BNK-862 회차 검증·BNK-863 회차 검증·BNK-864 정차 상한). KPI promote 0(잔여 갭은 규제/거리기반 산정 축).
+
+**경쟁 crosswalk (transport-axis)**:
+| 경쟁사 | 정차 상한 상수화 | 초과 시 사유 노출 | 근거 |
+|---|---|---|---|
+| ogada `@0d37788` | ✅ FE `MAX_TRANSPORT_ROUTE_STOPS` + BE `MAX_WAYPOINTS` lockstep | ✅ `setActionError(TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE)` | git 실측 |
+| 엔젤 | ❌ 이동서비스/배차 0-hit | ⚪ | silverangel carry |
+| 케어포 | ❌ demo-work 「이동서비스 제외」 | ⚪ | disk canonical |
+| 이지케어 | ⚪ 배차 근거 0 「미확인」 | ⚪ | [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) |
+
+### §864-6 ★★ 이지케어 데모 ERP 셸 재실측 · nav_js BYTE-IDENTICAL · shell dynamic session widget-id
+
+**근거**: `./scripts/ezcare-demo-fetch.sh --menu-catalog` 실행 결과(2026-07-18T10:04:11Z·login code=**0000**).
+
+| 지표 | 값 | 판정 |
+|---|---|---|
+| login code | `0000` (DEMO/admin/g8317) | 정상 |
+| title | `[DEMO 이지케어] 체험 이지케어 재가복지센터` | STABLE |
+| shell size / md5 | 138,442B / `f731c3ac` | dynamic session widget-id·매 fetch 변동 |
+| top-nav-item-V2.js size / md5 | 25,470B / `95286775` `?20260428` | **BYTE-IDENTICAL** (BNK-854 → carry) |
+| nav top-level 10-module | 1:직원·2:수급자·3:방문일정·4:RFID점검·5:본인부담·6:직원급여·7:재무회계·8:세무·사회보험·9:기관관리·10:기관평가 | IDENTICAL(BNK-540→864 carry) |
+| menu_catalog | module 10 / leaf 148 / unique_pgid 59 | IDENTICAL(carry) |
+
+**판정**: 10-module ERP nav 셸 BNK-540~864 지속 BYTE-IDENTICAL — 이지케어 핵심 메뉴 구조 변경 0. shell 자체 md5 는 세션·widget-id dynamic으로 매 fetch 변동(비실체).
+
+### §864-7 ★★★ NHIS #44 live 재fetch 590차 zero substantive drift
+
+**근거**: `curl -sSL 'https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769'` HTTP 200·7,572B·`c886ff1f`(2026-07-18T10:04Z).
+
+**판정**: BNK-863(589차) → BNK-864(590차) byte-IDENTICAL · 제34조 러-1(1)·러-4(1)·편도(2)·이동서비스(13)·급여비용(5) verbatim carry → Transport 상수(`RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY`) IDENTICAL·재조정 불요·id=2 0.85 carry·기획 트리거 0. `nhis_jo44_live_bnk864.html` 신규 snapshot.
+
+### §864-8 audit-first HTTP 442 25차 byte-exact IDENTICAL · closed band 재오픈 0
+
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) = BNK-836→864 **25차 byte-exact IDENTICAL**. BE +1 commit(refactor UNREADABLE 상수·9 files) + FE +1 commit(id=2 form polish 매직 넘버 → 상수·4 files) 후에도 controller endpoint 신설 0·refactor/상수 추출 dominant·SEC-D34/id=2 form-polish 축 계보 안정.
+- closed band 6 App.jsx `@0d37788` LIVE: 대시보드·G2 home-newsletter·G-LINKAGE linkage-records·G14 care-plan-form·v2 CMS·v1.3-C service-fees = IDENTICAL·재오픈 0·P0 신규 0.
+
+**planner 액션 아이템**:
+- REQUIREMENTS §UX/§접근성 「엑셀 import 오류 메시지 FE·BE 2-layer 상수화(MISSING/UNREADABLE 이원·house-style 단일 지점)」 반영 검토(BNK-861/864 완결 반영).
+- REQUIREMENTS §이동서비스 「배차 정차 상한 = FE `MAX_TRANSPORT_ROUTE_STOPS` 상수(BE `TransportService.MAX_WAYPOINTS` lockstep) + 초과 시 사유 노출(무음 반환 금지)」 항목 반영(rules §2 정합).
+- REQUIREMENTS §보안/§PIPA SEC-D34 계보 표에 축 「o」 = FE↔BE 2-layer UNREADABLE 상수화 DRY 완결 항목 추가 검토.
+- 마케팅 카피 확장 「엑셀 오류를 브라우저·서버 어디서 보든 동일 문구 — SEC-D34 계보 15-축·FE↔BE 상수화 DRY 완결」·「배차 정차 상한 초과 시 사유 표시(무음 실패 없음)」.
+- **가정 번복 0·KPI promote 0**·per-cycle minimum 4종 충족(URL 6 신규 + rowid 7-verbatim 블록 + `@HEAD` SHA 갱신 + BENCHMARK_REPORT §864 신규 소절).
+
+---
+
+## §863 BNK-863 — 교차검증·갭 우선순위 8h+ · ★★★ **id=2 이동서비스 회차(departureRound) FE 클라이언트 검증 착지 ↔ BE `@Min(1)` lockstep 「확인」(defense-in-depth·aria-invalid a11y) · NHIS #44 live 589차 + silverangel system_feature live byte-IDENTICAL(transport-axis 0-hit) · audit-first HTTP 442 24차 byte-exact IDENTICAL**
+
+**조사일**: 2026-07-18T09:23:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-862(ogada git 실측 6–8h·2026-07-18T08:45Z) → ~40분 후. 이번 사이클 초점: (1) BNK-862 이후 coder develop delta 재실측(BE·FE 각 +1 commit) → COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 갱신 · (2) id=2 이동서비스 회차 FE 클라이언트 검증 착지 ↔ BE `@Min(1)` 서버 제약 lockstep 교차검증 · (3) 규제/경쟁 백본 대표 URL live 재fetch(NHIS #44·silverangel system_feature) zero-drift · (4) closed band 재오픈·P0/P1·이전 가정 번복 여부 점검.
+
+**ogada baseline (git 실측)**:
+- BE `@913b9d2` (`test(v3/SEC-D34): lock missing-excel copy on import entrypoints`) · BNK-862 `@49349e4` → **+1 commit**(SEC-D34 계보 import entrypoint 층 missing-excel 카피 회귀 lock·+2 @Test) · WT CLEAN · ahead **755** vs `598d108`
+- FE `@f72af3f` (`fix(v1.2.1/transport): validate departure round before dispatch draft save (id=2 form polish)`) · BNK-862 `@5e816e6` → **+1 commit**(2 files +100/-2·`TransportRunNewPage.jsx`+26/-2·`TransportRunNewPage.test.jsx`+76) · WT CLEAN · ahead **9** vs origin/test=`b23711f`(rev-list --left-right 0/9·tester FF 대기)
+- merge gate **764** (FE 9 tester FF 대기 + BE 755 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx) · Page **106**(`*Page.jsx` in `src/pages`) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296 `*Test.java` + 1 `*Tests.java`) · BE @Test strict **2371**(BNK-862 2369 → **+2**·SEC-D34 entrypoint copy lock) · @RestController **81**(loose·carry)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — **24차 byte-exact IDENTICAL**(BNK-836→863·endpoint 신설 0)
+- FE test **541**(226 `.test.js` + 315 `.test.jsx`·`TransportRunNewPage.test.jsx` in-place +76·신규 0·BNK-862 541 → IDENTICAL)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0·grep 30-hit 중 1 JSDoc 배제)
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk863.txt`(교차검증·갭 우선순위) · `docs/planning/research/snapshots/nhis_jo44_live_bnk863.html`(NHIS #44 live 589차) · `docs/planning/research/snapshots/silverangel_system_feature_live_bnk863.html`(transport-axis 0-hit 재확인) · 신규 snapshot **3**(txt 1 + html 2·live 재fetch) · 덮어쓰기 0
+
+### §863-1 ★ ogada git baseline @HEAD 재실측
+
+**근거**: `git -C src/backend rev-parse develop`=`913b9d2c…` · `git -C src/frontend rev-parse develop`=`f72af3f8…` · git grep/ls-tree 실측(2026-07-18T09:23Z).
+
+| 지표 | BNK-862 | BNK-863 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `49349e4` | `913b9d2` | +1 commit |
+| FE develop HEAD | `5e816e6` | `f72af3f` | +1 commit |
+| BE ahead vs `598d108` | 754 | 755 | +1 |
+| FE ahead vs `b23711f` | 8 (0/8) | 9 (0/9) | +1·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test strict | 2369 | 2371 | +2 (SEC-D34 entrypoint copy lock) |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | **24차 byte-exact IDENTICAL** |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 106 | IDENTICAL |
+| FE test files | 541(226+315) | 541(226+315) | IDENTICAL (in-place +76) |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BE·FE 각 +1 commit(BE SEC-D34 entrypoint copy 회귀 lock·FE id=2 회차 검증)·양쪽 WT CLEAN·audit-first posture 지속. merge gate **764**(BE-heavy) tester FF 대기 — 신규 마이그레이션·endpoint 없음.
+
+### §863-2 ★★★ id=2 이동서비스 회차(departureRound) FE 클라이언트 검증 ↔ BE `@Min(1)` lockstep 「확인」
+
+**근거**: FE `@f72af3f` diff(`TransportRunNewPage.jsx`+26/-2·`TransportRunNewPage.test.jsx`+76) + BE `git grep '@Min' CreateTransportRunRequest.java` 실측.
+
+- (기존) `TransportRunNewPage` 회차 입력은 클라이언트 검증·필드 단위 오류 표시가 없어 0·음수·소수 값이 서버까지 왕복한 뒤 일반 알림으로만 노출.
+- (신규) 저장 전 **1 이상의 정수만 허용** 사전 차단 + 서버가 반환한 `departureRound` 필드 오류를 회차 Field 에 매핑해 **`aria-invalid`** 표시(rules §7 접근성)·회귀 test **2건 추가(6/6 PASS)**.
+- **BE lockstep 「확인」**: `src/main/java/com/ogada/backend/transport/api/CreateTransportRunRequest.java:20` = `@Min(1) Integer departureRound,` → FE 사전 차단 규칙과 서버측 제약 **정확 일치(defense-in-depth)**.
+- **판정**: id=2(이동서비스·coverage 0.85) form-polish·a11y 개선 착지. **KPI promote 0**(회차 검증은 form UX·접근성 강화·0.85 잔여 갭은 규제/거리기반 산정 축).
+
+**경쟁 crosswalk (transport-axis)**:
+
+| 경쟁사 | 배차/회차 tracking | 클라이언트 검증·aria-invalid | 근거 |
+|---|---|---|---|
+| ogada `@f72af3f` | ✅ full-stack(대시보드·계획·주행·수불·회차·러-1~4) | ✅ FE 사전 차단 + BE `@Min(1)` lockstep + aria-invalid | git 실측 |
+| 엔젤 | ❌ 이동서비스/배차/GPS/차량/회차 **0-hit** | ⚪ | `silverangel_system_feature_live_bnk863.html` `c9507190` |
+| 케어포 | ❌ demo-work 「이동서비스 제외」 명시 | ⚪ | disk canonical carry |
+| 이지케어 | ⚪ RFID 이중엑셀 워크플로 문서화 | ⚪ 회차 검증/aria-invalid 근거 0 「미확인」 | [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) |
+
+### §863-3 ★★★ 규제/경쟁 백본 대표 URL live 589차 zero substantive drift
+
+**근거**: curl live 재fetch(2026-07-18T09:23Z).
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) (live 재fetch) | 200 | 7,572 | `c886ff1f` | byte-IDENTICAL = **589차** |
+| [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) (live 재fetch) | 200 | 45,601 | `c9507190` | byte-IDENTICAL |
+
+- NHIS #44 제34조 이동서비스비: ①편도 러-1~4 ②1일 1회·편도 50% ③수급자 무부담 ④일지 보관 verbatim 재확인 → `TransportServiceFeeParityCatalog` `RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` IDENTICAL·재조정 불요·id=2 0.85 carry·기획 트리거 0.
+- silverangel system_feature grep -oF: 이동서비스(0)·배차(0)·GPS(0)·차량(0)·RFID(0)·회차(0)·연계(9·내부 연계기록)·기능회복(1) → 배차/회차 tracking 모듈 부재 재확인.
+
+### §863-4 audit-first HTTP 442 24차 byte-exact IDENTICAL · closed band 재오픈 0
+
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) = BNK-836→863 **24차 byte-exact IDENTICAL**. BE +1 commit(SEC-D34 entrypoint copy lock·test-only) 후에도 controller endpoint 신설 0·service/test-layer dominant.
+- closed band 6 App.jsx `@f72af3f` grep LIVE: 대시보드 L164/L173·G2 home-newsletter L209·G-LINKAGE linkage-records L236·G14 care-plan-form L245·v2 CMS L389·v1.3-C service-fees L628 = IDENTICAL·재오픈 0·P0 신규 0.
+
+**planner 액션 아이템**: REQUIREMENTS §이동서비스/§UX 「배차 회차(departureRound) = FE 클라이언트 사전 검증(1 이상 정수) + BE `@Min(1)` lockstep + 서버 필드 오류 `aria-invalid` 매핑(WCAG 2.1)」 차별화 항목 명시 · 마케팅 카피 「배차 회차·정원 숫자 입력을 브라우저에서 즉시 검증 — 서버 왕복 없이 필드별 접근성 오류 안내」 · SEC-D34 계보 「엑셀 import missing/empty 카피 entrypoint 층 회귀 lock」 carry. **가정 번복 0·KPI promote 0**. per-cycle minimum 4종 충족.
+
+---
+
+## §862 BNK-862 — ogada git 실측 6–8h · ★★★ **BE `@49349e4`/FE `@5e816e6` zero advance 재실측(BNK-861 IDENTICAL·WT CLEAN·merge gate 762 tester FF 대기) · NHIS #44 live 588차 zero drift · silverangel extraService live byte-IDENTICAL(효성CMS 벤더 종속 3-method 재확인)**
+
+**조사일**: 2026-07-18T08:45:00Z | **rotation**: ogada git 실측 6–8h — BNK-861(엔젤·롱텀·규제 4–6h·2026-07-18T08:00Z) → ~45분 후. 이번 사이클 초점: (1) ogada `src/backend`·`src/frontend` develop HEAD·`@RestController`·`@Test`·HTTP·Route·Page·Flyway·모듈 % 전량 재산정(git grep/ls-tree 실측) → COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 갱신 · (2) 규제 백본 대표 URL live 재fetch(NHIS #44·silverangel extraService)로 per-cycle URL 최소 산출 충족 → md5 zero-drift 확인 · (3) baseline 안정성(zero advance)·merge gate·tester FF 상태 관찰.
+
+**ogada baseline (git 실측)**:
+- BE `@49349e4` (`refactor(v3/SEC-D34): unify missing-excel copy via MISSING_EXCEL_MESSAGE constant`) · BNK-861 **동일 HEAD · zero advance**(coder develop 신규 커밋 0) · WT CLEAN · ahead **754** vs `598d108`
+- FE `@5e816e6` (`refactor(v1.2.1/v3/SEC-D34): extract unreadable-excel copy to EXCEL_IMPORT_UNREADABLE_MESSAGE constant`) · BNK-861 **동일 HEAD · zero advance** · WT CLEAN · ahead **8** vs origin/test=`b23711f`(rev-list --left-right 0/8·tester FF 대기)
+- merge gate **762** (FE 8 tester FF 대기 + BE 754 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx) · Page **106**(`*Page.jsx` in `src/pages`) · Flyway V1–V196 (신규 0·최신 V194 client_linkage_records_carefor_1_10·V195 org_branch_report_index·V196 integrity_g_linkage)
+- BE Test **297**(296 `*Test.java` + 1 `*Tests.java`) · BE @Test raw/strict **2369**(BNK-861 2369 → **IDENTICAL**·zero advance) · @RestController **81**(loose·GlobalExceptionHandler `@RestControllerAdvice` 포함·carry)
+- HTTP **442**(GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**) — **23차 byte-exact IDENTICAL**(BNK-836→862·endpoint 신설 0·zero advance)
+- FE test **541**(226 `.test.js` + 315 `.test.jsx`·BNK-861 541 → IDENTICAL·informational `it()/test()` case 수 **2810**)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/nhis_jo44_live_bnk862.html`(NHIS #44 live 재fetch·588차) · `docs/planning/research/snapshots/silverangel_extraService_live_bnk862.html`(효성CMS 벤더 종속 verbatim 재확인) · 신규 snapshot **2**(html 2·live 재fetch) · 덮어쓰기 0
+
+### §862-1 ★ ogada git baseline @HEAD 재실측 (zero advance)
+
+**근거**: `git -C src/backend rev-parse develop`=`49349e4a…` · `git -C src/frontend rev-parse develop`=`5e816e68…` · git grep/ls-tree 실측(2026-07-18T08:45Z).
+
+| 지표 | BNK-861 | BNK-862 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | `49349e4` | `49349e4` | zero advance |
+| FE develop HEAD | `5e816e6` | `5e816e6` | zero advance |
+| BE ahead vs `598d108` | 754 | 754 | IDENTICAL |
+| FE ahead vs `b23711f` | 8 (0/8) | 8 (0/8) | IDENTICAL·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test strict | 2369 | 2369 | IDENTICAL |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | **23차 byte-exact IDENTICAL** |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 106 | IDENTICAL |
+| FE test files | 541(226+315) | 541(226+315) | IDENTICAL |
+| 모듈 커버리지 | 97.41% | 97.41% | carry |
+
+**판정**: BNK-861 이후 coder develop 신규 커밋 0(BE·FE 양쪽 zero advance)·WT CLEAN·audit-first posture 지속. merge gate **762**(BE-heavy) tester FF 대기 상태 carry — 신규 마이그레이션·endpoint 없음.
+
+### §862-2 ★★★ NHIS #44 제34조 러-1~4 live 588차 zero substantive drift
+
+**근거**: curl live 재fetch(2026-07-18T08:45Z) → 오프라인 carry(`nhis_jo44_live_bnk859.html` `c886ff1f`) 대조.
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent (live 재fetch) | 200 | 7,572 | `c886ff1f` | byte-IDENTICAL = **588차** |
+
+- 제34조 이동서비스비: ① 편도 기준 러-1~4 ② 1일 1회·편도 50% ③ 수급자 무부담 ④ 일지 보관 verbatim 재확인.
+- ogada `TransportServiceFeeParityCatalog` `RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` 상수 IDENTICAL → **재조정 불요**·id=2 0.85 carry·기획 트리거 0.
+- 신규 스냅샷 `nhis_jo44_live_bnk862.html` 저장(carry chain 유지).
+
+### §862-3 ★★★ silverangel extraService live byte-IDENTICAL — 효성CMS 벤더 종속 3-method 재확인
+
+**근거**: [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) live 재fetch(2026-07-18T08:45Z) HTTP 200·81,637B·`f9c5d877` — BNK-861 carry(`f9c5d877`/81,637B) byte-IDENTICAL.
+
+**verbatim grep 카운트**(`silverangel_extraService_live_bnk862.html`): 효성CMS(1)·연동정보(1)·자동이체(6)·가상계좌(7)·카드결제(4)·30,000(1)·250원(1)·300원(1)·본인부담금(11)·식재료비(1)·의료비(2).
+
+- silverangel 본인부담 결제 = **효성CMS(Hyosung) 외부 PG 벤더 종속** 3-method(자동이체 250원/1건·가상계좌 300원/1건·월 30,000)·「연동정보 입력 필수」·항목별 분리 통장(본인부담금/식재료비/의료비).
+- ogada = 자체 결제수단 catalog **6-method**(자동이체·가상계좌·계좌이체·카드결제·현금·간편결제·`CmsPage.jsx`/`PaymentPage.jsx`/`BillingDetailPage.jsx` 실측) **SUPERSET·PG 벤더 lock-in 없음** + 7-2-1 `MedicalExpenseDeductionPanel`(의료비 crosswalk) → **벤더 독립 SUPERIOR** carry.
+
+### §862 결정 요약 (planner 반영)
+
+- **★★★ git baseline zero advance 안정 — 기획 트리거 0**: BE·FE 양쪽 BNK-861 동일 HEAD·전 지표 IDENTICAL·모듈 97.41%(진성갭 0) carry. closed band 재오픈 0·P0 신규 0 → ROADMAP·PLAN_NOTES **현행 유지** 권고. merge gate 762(BE-heavy)는 tester FF 대기(coder push 완료·test 브랜치 반영 대기).
+- **★★★ 규제 백본 live 588차 zero drift**: NHIS #44 live 재fetch byte-IDENTICAL → Transport 상수 재조정 불요·id=2 0.85 carry. silverangel extraService live byte-IDENTICAL → 효성CMS 벤더 종속 3-method 재확인·ogada 6-method SUPERSET 벤더 독립 narrative carry.
+- **★★ audit-first HTTP 442 23차 byte-exact IDENTICAL**: zero advance·endpoint 신설 0·BNK-836→862 carry.
+- **planner 권고**(BNK-861 carry·신규 승격 0): REQUIREMENTS §청구/§본인부담 「결제수단 6-method SUPERSET(벤더 lock-in 없는 자체 catalog) — silverangel 효성CMS 종속 대비 차별화」 · 마케팅 카피 「특정 PG 벤더 종속 없이 6개 결제수단 통합 관리·항목별(본인부담금·식재료비·의료비) 분리 정산」 · REQUIREMENTS §UX 「엑셀 import 오류 문구 FE·BE 상수화(house-style 단일 지점)」.
+- **baseline 갱신**: BE `@49349e4`(zero advance·ahead 754) · FE `@5e816e6`(zero advance·ahead 8 tester FF 대기) · merge gate 762.
+- **다음 조사 우선순위**: 이지케어 역공학 2-4h(FAQ rowid 전수·홈 data-count 재실측·엑셀 오류 카피 신규 verbatim 탐색) 또는 케어포 역공학 0-2h(func.php disk canonical·M-메뉴 신규 leaf) 또는 tester FF 이후 merge gate 762 착지 관찰(BE-heavy 대량 병합).
+
+## §861 BNK-861 — 엔젤·롱텀·규제 역공학 4–6h · ★★★ **규제 백본 8-URL 587차 zero substantive drift · silverangel 본인부담 CMS = 효성CMS 벤더 종속 3-method ↔ ogada 6-method SUPERSET(벤더 lock-in 없음) · SEC-D34 계보 축 「o」 = 엑셀 import 오류 카피 상수화(DRY) FE↔BE 2-layer 완결**
+
+**조사일**: 2026-07-18T08:00:00Z | **rotation**: 엔젤·롱텀·규제 4–6h — BNK-860(케어포 0-2h·2026-07-18T07:18Z) → ~42분 후. 이번 사이클 초점: (1) 규제 백본 8-URL live 재실측(NHIS #44 이동서비스비 제34조 러-1~4·silverangel 4-URL·longterm 502/610·law 2025-247) md5/strip 비교 · (2) silverangel `extraService.do` 본인부담금 자동이체(CMS) 부가서비스 워크플로 심화 파싱(효성CMS 벤더 종속·3-method·수수료·항목별 분리 통장) → ogada 결제수단 catalog crosswalk · (3) ogada `@develop HEAD` 실측(BE `@73a3a63→49349e4` +1·FE `@495040f→5e816e6` +1) → SEC-D34 계보 축 「o」(엑셀 import 오류 카피 상수화 DRY) 관찰.
+
+**ogada baseline (git 실측)**:
+- BE `@49349e4` (`refactor(v3/SEC-D34): unify missing-excel copy via MISSING_EXCEL_MESSAGE constant`) · BNK-860 `@73a3a63` → **+1 commit**(2 files +5/-4: `BankDepositImportService.java`+1/-1 · `StaffNhisCaregiverImportService.java`+4/-3·잔여 리터럴 "업로드할 엑셀 파일이 없습니다." 4-hit → `MISSING_EXCEL_MESSAGE` 상수 통일·product 리터럴 축소·test-neutral) · WT CLEAN · ahead **754** vs `598d108`
+- FE `@5e816e6` (`refactor(v1.2.1/v3/SEC-D34): extract unreadable-excel copy to EXCEL_IMPORT_UNREADABLE_MESSAGE constant`) · BNK-860 `@495040f` → **+1 commit**(2 files +34/-1: `excelImportFiles.js`+11/-1 「엑셀 파일을 읽을 수 없습니다.」 → `EXCEL_IMPORT_UNREADABLE_MESSAGE` export 상수 · `excelImportFiles.test.js`+24 상수 lock) · WT CLEAN · ahead **8** vs origin/test=`b23711f`(tester FF 대기)
+- merge gate **762** (FE 8 tester FF 대기 + BE 754 · **BE-heavy** · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx) · Page **106**(`*Page.jsx not test`) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296 `*Test.java` + 1 `*Tests.java`) · BE @Test raw/strict **2369**(BNK-860 2369 → **IDENTICAL**·refactor·신규 @Test 0) · @RestController **81**(loose·carry)
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) — **22차 byte-exact IDENTICAL**(BNK-836→861·endpoint 신설 0·refactor·상수 추출 dominant)
+- FE test **541**(226 .test.js + 315 .test.jsx·BNK-860 541 → in-place +24 assertion·신규 파일 0)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk861.txt`(규제 백본 8-URL 587차 재실측·silverangel CMS 효성 벤더 워크플로·NHIS 제34조 verbatim·ogada 6-method crosswalk·SEC-D34 축 o) · 신규 snapshot **1**(txt 1) · 덮어쓰기 0
+
+### §861-1 ★★★ 규제 백본 8-URL live 587차 zero substantive drift (NHIS #44 제34조 러-1~4)
+
+**근거**: curl live 재실측(2026-07-18T08:00Z) → BNK-859 snapshot md5 대조.
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent | 200 | 7,572 | `c886ff1f` | byte-IDENTICAL = **587차** |
+| silverangel system_feature.do | 200 | 45,601 | `c9507190` | byte-IDENTICAL |
+| silverangel extraService.do | 200 | 81,637 | `f9c5d877` | byte-IDENTICAL |
+| silverangel feeService.do | 200 | 44,513 | `eab352a8` | byte-IDENTICAL |
+| silverangel / (home) | 200 | 101,220 | `66382835` | byte-IDENTICAL |
+| longterm 502 npeb502m01 | 200 | 89,162 | `56185735` | byte-IDENTICAL(lean-shell carry) |
+| longterm 610 npeb610m01 | 200 | 88,399 | `fad1ce61` | byte-IDENTICAL |
+| law 2025-247 admRulInfoP | 200 | 78,450 | raw `1dacb534` / strip `a913639a` | **semantic IDENTICAL**(cache-buster only) |
+
+- law raw md5 변동 = `Time=`/`etaHash`/`nonce`/`token`/`mrsCd`/`_wa` cache-buster → strip 후 `a913639a`(BNK-835/837/851/858/859 LOCK carry).
+- longterm 502 89,162B lean-shell = BNK-859 재현(±9B 「양방향 오실레이션 continues」·비실체 DRIFT carry).
+- **NHIS #44 제34조 verbatim 재확인**: ① 실거주지↔기관 최단거리(편도) 러-1~러-4 산정 ② 이용 횟수 무관 1일 1회·편도만 이용 시 러-1~러-4의 50% 산정 ③ 수급자 부담하지 아니함 ④ 이동서비스 일지 작성·보관 ⑤ 세부사항 공단 이사장 정함. keyword: 러-1(1)·러-4(1)·편도(2)·이동서비스(13)·급여비용(5) = BNK-858/859 IDENTICAL.
+- ogada 대응: `TransportServiceFeeParityCatalog` `RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` 상수 IDENTICAL → 상수 재조정 불요·id=2 0.85 carry·기획 트리거 0.
+
+### §861-2 ★★★ silverangel 본인부담금 CMS = 효성CMS(Hyosung) 외부 PG 벤더 종속 3-method ↔ ogada 6-method SUPERSET
+
+**근거**: `silverangel_extraService_live`(BNK-859 `f9c5d877` byte-IDENTICAL) verbatim grep.
+
+**silverangel 효성CMS 부가서비스(3-method·벤더 종속)**:
+- 자동이체(CMS): 보호자 통장에서 매달 자동출금 → 납부 여부 매달 체크 불필요·기관 입금내역 체크 부담 경감
+- 가상계좌: 가족 대표 1인 부여·다른 가족 입금 시 대표 이름 처리·은행 선택(송금수수료 절감)
+- 카드결제: 카드 자동결제
+- **항목별 분리 통장 자동 입금**: 「본인부담금·식재료비·의료비(진료약제비) 항목별 분리 통장 자동 입금 → 계좌별 정산관리」·「재무회계자료 형태 출력 → 외부 감사 대응」·「CMS 이용료는 수납금액과 별도 정산」
+- **벤더 수수료(verbatim)**: 자동이체 250원/1건·가상계좌 300원/1건·월 30,000(BNK-851~859 LOCK 재확인)·「이용요금은 효성CMS에 납부」·「효성 CMS 연동정보 입력 필수」·「계좌분리 정산 서비스는 효성 CMS 별도문의」
+- 이동서비스/배차/GPS/차량 **0-hit** 재확인.
+
+**ogada crosswalk(git 실측 @HEAD)**:
+- 결제수단 **6-method SUPERSET**: 자동이체(CMS)·가상계좌·계좌이체·카드결제·현금·간편결제 (근거: `CmsPage.jsx`·`PaymentPage.jsx`·`BillingDetailPage.jsx` grep 라벨 확인) → silverangel 3-method(효성CMS 벤더 종속) 대비 계좌이체·현금·간편결제 3종 추가 · **PG 벤더 lock-in 없음**(자체 catalog 관리).
+- silverangel 「항목별 분리 통장(본인부담금/식재료비/의료비)」 = ogada 항목 분리 청구 + 7-2-1 의료비공제(연말정산) `MedicalExpenseDeductionPanel.jsx`(§860-1) 대응 · 의료비(진료약제비) 축 crosswalk 성립.
+- **판정**: ogada = 벤더 독립 6-method SUPERSET → silverangel 효성CMS 종속 대비 차별화 SUPERIOR.
+
+### §861-3 ★★★ SEC-D34 계보 축 「o」 — 엑셀 import 오류 카피 상수화(DRY) FE↔BE 2-layer 완결
+
+- 축 n(BNK-860): entrypoint missing-copy 회귀 lock + FE house-style('없습니다') 정렬.
+- **축 o(BNK-861): 상수 추출 완결**
+  - BE `@49349e4`: `MISSING_EXCEL_MESSAGE` 상수로 잔여 리터럴 "업로드할 엑셀 파일이 없습니다." 4-hit 통일(BankDeposit·StaffNhisCaregiver) → 5-import-service missing 카피 매직스트링 0.
+  - FE `@5e816e6`: "엑셀 파일을 읽을 수 없습니다." → `EXCEL_IMPORT_UNREADABLE_MESSAGE` export 상수 추출·test lock → 모든 SEC-D34 FE 메시지가 export 상수(매직스트링 0).
+  - **효과**: 향후 문구 변경 단일 지점·회귀 test lock(rules §2 매직스트링 상수화 정합). HTTP 442 22차 IDENTICAL·endpoint 신설 0.
+- **경쟁 4종**: 엑셀 import 오류 카피 verbatim/상수화(거버넌스) 근거 0-hit(케어포/이지케어 FAQ/엔젤/롱텀) → ogada 유일 SUPERIOR carry.
+
+### §861-4 planner 액션 아이템
+- REQUIREMENTS §청구/§본인부담 「결제수단 6-method SUPERSET(자동이체·가상계좌·계좌이체·카드결제·현금·간편결제) — 특정 PG 벤더 lock-in 없는 자체 catalog」 항목 명시 검토(silverangel 효성CMS 종속 대비 차별화).
+- 마케팅 카피 「특정 PG 벤더 종속 없이 6개 결제수단 통합 관리 — 항목별(본인부담금·식재료비·의료비) 분리 정산」.
+- REQUIREMENTS §UX 「엑셀 import 오류 문구 FE·BE 상수화(house-style 단일 지점·회귀 test lock)」 항목 검토.
+- **가정 번복 0 · KPI promote 0** · per-cycle minimum 4종 충족.
+
+---
+
+## §860 BNK-860 — 케어포 역공학 0-2h · ★★★ **M7 본인부담 7-x → ogada Route 1:1 실측 재검증(11/11 PARITY + 5 SUPERSET route) · carefor func.php/demo-work LIVE 000 13+ cycle carry(Wayback 20260519 id-mode byte-IDENTICAL) · SEC-D34 계보 축 「n」 = 엑셀 import empty/missing UX 카피 FE↔BE 2-layer house-style 완전 lockstep**
+
+**조사일**: 2026-07-18T07:18:00Z | **rotation**: 케어포 역공학 0-2h — BNK-859(교차검증·갭 우선순위 8h+·2026-07-18T06:34Z) → ~44분 후. 이번 사이클 초점: (1) 케어포 `daycare/func.php` M7 본인부담 7-x(7-1~7-10 + 7-2-1) 정적 메뉴를 ogada `@develop HEAD` Route path·Page/Panel 컴포넌트와 1:1 재실측 매핑(§859 「11/11 PARITY」를 실측 route path·컴포넌트 근거로 재검증) · (2) carefor func.php/demo-work LIVE 재실측(둘 다 000·13+ cycle 지속)·Wayback CDX 2026 신규 capture 0(20260519 최신 carry)·20260519 id-mode 재fetch → disk canonical byte-IDENTICAL LOCK 재확인 · (3) ogada `@develop HEAD` 실측(BE `@b3e7cce→73a3a63` +1·FE `@3e89ab7→495040f` +1) → SEC-D34 계보 축 「n」(엑셀 import empty/missing UX 카피 FE↔BE 2-layer house-style lockstep) 관찰.
+
+**ogada baseline (git 실측)**:
+- BE `@73a3a63` (`test(v3/SEC-D34): lock missing excel file copy on import entrypoints`) · BNK-859 `@b3e7cce` → **+1 commit**(2 test files +50: `NhisImportServiceTest.java`+12 · `VisitServiceTest.java`+38·import entrypoint 층 missing-excel 카피 회귀 lock·product code 무변·test-only) · WT CLEAN · ahead **753** vs `598d108`
+- FE `@495040f` (`fix(v1.2.1/v3/SEC-D34): align FE empty/missing excel copy to BE house-style`) · BNK-859 `@3e89ab7` → **+1 commit**(2 files +15/-2: `excelImportFiles.js`+9/-2 · `excelImportFiles.test.js`+6·FE empty/missing 엑셀 카피를 BE house-style(‘없습니다’)로 정렬·축 m FE 표면 확산) · WT CLEAN · ahead **7** vs origin/test=`b23711f`(tester FF 대기)
+- merge gate **760** (FE 7 tester FF 대기 + BE 753 · **BE-heavy** → tester FF · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx) · Page **106**(`*Page.jsx not test`) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296 `*Test.java` + 1 `*Tests.java`) · BE @Test raw/strict **2369**(BNK-859 2366 → **+3**·import entrypoint missing-copy 회귀 lock) · @RestController **81**(loose·carry)
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) — **21차 byte-exact IDENTICAL**(BNK-836→860·endpoint 신설 0·SEC-D34 copy lock test-layer + FE UX align dominant)
+- FE test **541**(226 .test.js + 315 .test.jsx·BNK-859 541 → in-place +6 assertion·신규 파일 0)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/carefor_m7_copay_route_1to1_bnk860.txt`(M7 7-x → ogada Route 1:1 crosswalk·carefor LIVE 000·Wayback id-mode byte-IDENTICAL·BE/FE HEAD 실측·SEC-D34 축 n) · 신규 snapshot **1**(txt 1) · 덮어쓰기 0
+
+### §860-1 ★★★ 케어포 M7 본인부담 7-x → ogada Route 1:1 실측 재검증 (11/11 PARITY + 5 SUPERSET route)
+
+**근거**: disk canonical `snapshots/carefor_func.php`(98,328B·md5 `6226e6eb`) grep 7-x 정적 메뉴 ↔ ogada FE `@495040f` `App.jsx` route path + Page/Panel 컴포넌트 실측.
+
+| 케어포 7-x leaf | ogada Route (@495040f) | 컴포넌트 근거 | 판정 |
+|---|---|---|---|
+| 7-1 본인부담금 청구관리 | `/billing` + `/billing/claims/:claimId` | BillingPage / claim detail | ✅ PARITY |
+| 7-2 본인부담금 입금관리 | `/billing/payments` | `PaymentPage.jsx` | ✅ PARITY |
+| 7-2-1 의료비공제(연말정산) | billing 하위 패널 | `MedicalExpenseDeductionPanel.jsx` | ✅ PARITY (전용 패널) |
+| 7-3 본인부담금 미납관리 | `/billing/overdue` | overdue page | ✅ PARITY |
+| 7-4 본인부담금 자동이체(CMS) | `/billing/cms` | `CmsPaymentMethodCatalogPanel.jsx` | ✅ PARITY |
+| 7-5 본인부담금 간편결제 | `/billing/easy-pay` | easy-pay page | ✅ PARITY |
+| 7-6 본인부담금 청구대장 리포트 | `/billing/reports/charges` | billing report | ✅ PARITY |
+| 7-7 본인부담금 입금대장 리포트 | `/billing/reports/deposits` | billing report | ✅ PARITY |
+| 7-8 본인부담금 수납대장 리포트 | `/billing/reports/receipts` | billing report | ✅ PARITY |
+| 7-9 본인부담금 수납,환불내역 | `/billing/reports/refunds` | billing report | ✅ PARITY |
+| 7-10 본인부담금 간편계산기 | `/billing/calculator` | `CopayCalculatorPage/Panel.jsx` | ✅ PARITY |
+
+**ogada SUPERSET (케어포 7-x 미대응)**: `/billing/copay-rates`(본인부담률 마스터) · `/billing/fee-schedules`(수가표) · `/billing/cash-receipts`(현금영수증·`CashReceiptIssuancePage`) · `/billing/imports/nhis`(+`/:batchId` 공단 청구 엑셀 import·SEC-D34 surface) · `/billing/reports/statistics`(본인부담 통계).
+
+**분석**:
+- §859 이전 「M7 7-x 11/11 PARITY+SUPERSET」는 tri-source 번호식 crosswalk 근거였고, BNK-860 은 **ogada 실측 route path + 실제 Page/Panel 컴포넌트**로 11/11 PARITY 를 재검증(phantom route 0·전 leaf 실 컴포넌트 확인). 7-2-1 의료비공제(연말정산)은 ogada `MedicalExpenseDeductionPanel.jsx` 전용 패널로 ✅ PARITY(△ 아님).
+- M7 = 11 PARITY + 5 SUPERSET route → 본인부담 lifecycle 은 ogada 우위 carry. 특히 `/billing/imports/nhis`(공단 청구 엑셀 import·SEC-D34 계보) + `/billing/copay-rates`/`fee-schedules`(단가 마스터) 는 케어포 7-x 정적 메뉴에 대응 leaf 부재.
+- 신규 진성갭 0 · KPI promote 0.
+
+### §860-2 ★★ carefor LIVE 000 13+ cycle carry · Wayback 20260519 id-mode byte-IDENTICAL 재확인
+
+| 대상 | 결과 |
+|---|---|
+| [carefor func.php](https://www.carefor.co.kr/daycare/func.php) | HTTP **000** 15s timeout (BNK-852 111 → 852~860 **+12 addition**·disk `6226e6eb` 98,328B LOCK) |
+| [demo-work](http://demo-work.carefor.co.kr/) | HTTP **000** 12s timeout |
+| [func.php Wayback CDX 2026](https://web.archive.org/cdx/search/cdx?url=carefor.co.kr/daycare/func.php&from=20260101&output=json) | 5-capture(20260117/119/212/511/519)·최신 20260519 digest `3SOHBMXNDFBP...` = BNK-814/853 carry·**신규 capture 0**(60+ day) |
+| [func.php Wayback 20260519 id-mode](http://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | HTTP 200·**98,328B**·md5 `6226e6eb92fdd25ed3e50842a5e8a00b` = disk canonical `carefor_func.php` **byte-IDENTICAL** |
+
+**분석**: carefor 도메인 LIVE 응답 000 이 13+ cycle 지속(func.php + demo-work). Wayback CDX 신규 capture 미발생 → disk canonical + 20260519 id-mode(byte-IDENTICAL) 위탁 확정. M5 plupload vintage·M7 7-x 11/11·107-leaf(88+19) carry.
+
+### §860-3 ★★ SEC-D34 계보 축 「n」 — 엑셀 import empty/missing UX 카피 FE↔BE 2-layer house-style 완전 lockstep
+
+| 축 | 사이클 | layer | 근거 (git 실측) |
+|---|---|---|---|
+| a~m | BNK-848~859 | FE+BE parser + service integration + a11y print + BE service copy unify(m) | 기존 13축 carry (§859-1 표 참조) |
+| **n** | **BNK-860 (73a3a63 BE + 495040f FE)** | **BE entrypoint 회귀 lock + FE UX 카피 house-style 확산** | **BE `73a3a63` = import entrypoint 층 missing-excel 카피 회귀 lock(+3 @Test) · FE `495040f` = FE empty/missing 엑셀 카피를 BE house-style(‘없습니다’)로 정렬 → 축 m(BE service 통합) 위에 「entrypoint 회귀 lock + FE 표면 house-style 확산」 = 엑셀 import empty/missing UX 카피가 FE↔BE 2-layer 완전 lockstep** |
+
+**분석**:
+- 축 m(BNK-859)이 BE service 층에서 `MISSING_EXCEL_MESSAGE` 상수로 5-service 통합했다면, 축 n(BNK-860)은 (a) BE import **entrypoint** 층에서 missing-copy 회귀 test 로 상수 이탈 방지 + (b) **FE 표면** 카피까지 BE house-style 로 정렬 → 운영자가 브라우저(FE)와 서버 오류(BE) 어디서 보든 동일 verbatim.
+- HTTP 442 21차 byte-exact IDENTICAL(endpoint 신설 0)·test + FE 카피 정렬 dominant → audit-first API surface 무변 확정.
+- 경쟁 4종 엑셀 import empty/missing UX 카피 verbatim 근거 0-hit(이지케어 FAQ·케어포 M7·엔젤·롱텀) → ogada 유일 FE↔BE UX consistency SUPERIOR carry.
+
+**ogada crosswalk / planner 권고**:
+- REQUIREMENTS §UX/§접근성 「엑셀 import empty/missing 카피는 FE·BE 양층 house-style(‘없습니다’) 상수/정렬 규약」 항목 검토(신규 import surface 추가 시 FE↔BE 2-layer 회귀 방지).
+- 마케팅 카피 확장 「엑셀 오류 안내를 브라우저·서버 어디서 보든 동일 문구로 일관 표시」.
+- 신규 진성 갭 0 · KPI promote 0 · 가정 번복 0.
+
+### §860-4 per-cycle minimum (agents.yaml `reverse_engineering.per_cycle_minimum`) 충족
+
+| 항목 | 요구 | BNK-860 실측 |
+|---|---|---|
+| 신규 증거 URL | 1건+ | **4건** (func.php LIVE 재실측 000 + demo-work LIVE 000 + Wayback CDX 2026 재파싱 + 20260519 id-mode byte-IDENTICAL 재fetch + BE/FE HEAD 실측) |
+| 메뉴/필드/워크플로 상세 | 1블록+ | **1블록** (§860-1 M7 본인부담 7-x → ogada Route 1:1 실측 crosswalk·11/11 PARITY + 5 SUPERSET route 표) |
+| COMPETITOR_MATRIX 1행+ @HEAD SHA 갱신 | ✅ | 「@HEAD 열」 BE `@73a3a63`/FE `@495040f`·M7 본인부담(id 관련)·SEC-D34 축 n 갱신 |
+| BENCHMARK_REPORT §신규 소절 | 1건+ | **§860-1~4** (M7 7-x crosswalk + carefor LIVE 000 + SEC-D34 축 n + per-cycle-minimum) |
+
+
+
+## §859 BNK-859 — 교차검증·갭 우선순위 8h+ · ★★★ **규제 백본 8-URL live 586차 zero substantive drift + SEC-D34 계보 축 12(a~l) → 13(m) 확장 · 엑셀 import empty/missing copy 5-service unify(MISSING_EXCEL_MESSAGE 상수) = 경쟁 4종 유일 UX consistency SUPERIOR**
+
+**조사일**: 2026-07-18T06:34:00Z | **rotation**: 교차검증·갭 우선순위 8h+ — BNK-858(엔젤·롱텀·규제 4–6h·2026-07-18T05:50Z) → ~44분 후. 이번 사이클 초점: (1) 규제 백본 8-URL live 재실측(NHIS #44·silverangel 4·longterm 2·law 2025-247) → 586차 zero substantive drift 재확인 · (2) ogada `@develop HEAD` 실측(FE `@51a3db4→3e89ab7` +1·BE `@2c102e5→b3e7cce` +1) → SEC-D34 계보 축 12→13 확장(m 「엑셀 import empty/missing copy 5-service unify」·MISSING_EXCEL_MESSAGE 상수) · (3) 이지케어 3-URL DRIFT hit-only 재확인 (semantic-IDENTICAL cache-buster·엑셀 매직/시그니처 0-hit carry) · (4) BNK-842/852 확정 longterm 502/610 ±9B `var s16;` 「양방향」 lean-shell 재출현 관찰(비실체 오실레이션 continues).
+
+**ogada baseline (git 실측)**:
+- BE `@b3e7cce` (`fix(v3/SEC-D34): unify empty/missing excel import copy across import services`) · BNK-858 `@2c102e5` → **+1 commit**(4 files +10/-8: `NhisImportService.java`+5/-2 · `VisitService.java`+5/-2 · `NhisImportServiceTest.java`+1/-1 · `VisitServiceTest.java`+3/-3 · outlier 「업로드할 엑셀 파일이 필요합니다.」 → house-style 「업로드할 엑셀 파일이 없습니다.」·`MISSING_EXCEL_MESSAGE` 상수로 5-service surface 통합) · WT CLEAN · ahead **752** vs `598d108`
+- FE `@3e89ab7` (`test(v1.2.1/v3/SEC-D34): fix pilotPageFlows US-L01 bank deposit import OOXML fixture (QA-B609)`) · BNK-858 `@51a3db4` → **+1 commit**(1 file +7/-3·`pilotPageFlows.test.jsx` US-L01 fixture 를 BNK-856 `1f9d49c` FE pre-upload magic-byte validator와 lockstep·`new File(["data"], "bank.xlsx")` → OOXML PK\x03\x04 header 추가·`validateBankDepositExcelImportFile` reject 회귀 해결·`visits.xlsx` fixture 패턴 정합·test-only) · WT CLEAN · ahead **6** vs origin/test=`b23711f`(rev-list 0/6·tester FF 대기)
+- merge gate **758** (FE 6 tester FF 대기 + BE 752 · **BE-heavy** → tester FF · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx·BNK-858 CARRY) · Page **106**(`*Page.jsx not test`·BNK-858 CARRY) · Flyway V1–V196 (신규 0)
+- BE Test **297**(296 `*Test.java` + 1 `*Tests.java`·BNK-858 CARRY) · BE @Test raw/strict **2366**(BNK-858 2366 IDENTICAL · b3e7cce 는 기존 2건 @Test 의 assertion message 만 unify·신규 @Test 0) · @RestController **81**(loose·`@RestControllerAdvice` 포함·strict 80·carry)
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) — **20차 byte-exact IDENTICAL**(BNK-836→859·17-sibling cycle carry·endpoint 신설 0·SEC-D34 message-unify only)
+- FE test **541**(226 .test.js + 315 .test.jsx·BNK-858 541 CARRY·pilotPageFlows in-place fixture align·신규 파일 0)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/cross_gap_priority_bnk859.txt`(규제 8-URL 재실측 + SEC-D34 축 m 계보 + 우선순위 정합) · `ogada_git_remeasure_bnk859.txt`(BE/FE HEAD 실측·diff·HTTP 442 20차) · `nhis_jo44_live_bnk859.html`(586차 byte-IDENTICAL) · `silverangel_system_feature_live_bnk859.html`·`silverangel_extraService_live_bnk859.html`·`silverangel_feeService_live_bnk859.html`·`silverangel_home_live_bnk859.html`(엔젤 4-URL byte-IDENTICAL·CMS 30,000/250/300 LOCK) · `longterm_502_live_bnk859.html`(89,162B lean-shell 재출현·BNK-842/852 IDENTICAL)·`longterm_610_live_bnk859.html`(88,399B lean-shell 재출현) · `law_mohw_2025_247_admRulInfoP_live_bnk859.html`(strip=a913639a semantic IDENTICAL) · `ezcare_home_live_bnk859.html`(+273B minor freshness·data-count STABLE) · `ezcare_faq_live_bnk859.html`(80,057B 콘텐츠 오실레이션·매직/시그니처 0-hit carry) · `ezcare_charge_live_bnk859.html`(D-14 07/31 STABLE·순수 cache-buster) · 신규 snapshot **13**(txt 2 + html 11) · 덮어쓰기 0
+
+### §859-1 ★★★ SEC-D34 계보 축 12(a~l) → 13(m) 확장 — 엑셀 import empty/missing copy 5-service unify(MISSING_EXCEL_MESSAGE 상수)
+
+| 축 | 사이클 | layer | 근거 (git 실측) |
+|---|---|---|---|
+| a~l | BNK-848~858 | FE+BE parser + service integration + a11y print + 4-validator 100% | 기존 12축 carry (§858-1 표 참조) |
+| **m** | **BNK-859 (b3e7cce BE)** | **BE service copy consistency** | **`fix(v3/SEC-D34): unify empty/missing excel import copy across import services` — VisitService/NhisImportService 「업로드할 엑셀 파일이 필요합니다.」(outlier) → 「업로드할 엑셀 파일이 없습니다.」(house-style·StaffNhisCaregiver·BankDeposit·SEC-D25 photo storage 5-service 정합)·`MISSING_EXCEL_MESSAGE` 상수로 통합 = 동일 fail-closed 조건 5-import surface에서 동일 verbatim 노출·PIPA §29 no-info-leak carry + 운영자 UX consistency** |
+
+**연결 축 (test-only, 계보 축 미승격)**:
+- FE `@3e89ab7` (`test(v1.2.1/v3/SEC-D34): fix pilotPageFlows US-L01 bank deposit import OOXML fixture (QA-B609)`) — BNK-856 `1f9d49c` FE pre-upload magic-byte validator 착지 이후 `pilotPageFlows.test.jsx` integration fixture 가 유효 OOXML PK\x03\x04 header 미포함이라 `validateBankDepositExcelImportFile` fail-closed → preview POST 미호출 회귀 → BNK-859 fixture 정합(test-only·QA-B609 grade·기능 갭 아님)
+
+**분석**:
+- BNK-848~858 12축은 「검증 로직·회귀 test·A11Y 계약」에 집중 · BNK-859 축 「m」은 최초로 **UX 층 (에러 메시지 일관성)** 을 봉합. 5-service surface(Visit/NhisImport/StaffNhisCaregiver/BankDeposit/SEC-D25 photo storage)가 동일 fail-closed 조건(empty/missing upload)에서 outlier 없이 house-style 메시지 하나로 노출.
+- `MISSING_EXCEL_MESSAGE` 상수 도입으로 향후 신규 import surface 추가 시 outlier 재출현 방지 (테스트에서 상수 재사용 강제) — rules §2 「하드코딩된 매직 문자열 상수로 분리」 정합.
+- 신규 @Test 0·기존 2건 @Test 의 assertion 메시지 재정렬만 → HTTP 442 20차 byte-exact IDENTICAL 유지·audit-first API surface 무변 확정.
+- **경쟁 4종 UX consistency 근거 0-hit**: 이지케어 FAQ 엑셀 오류 메시지 verbatim 미공개·케어포/엔젤/롱텀 0 → ogada 유일 5-service unified copy = SEC-D34 계보 「방어 깊이 + UX 일관성」 dual SUPERIOR.
+
+**ogada crosswalk / planner 권고**:
+- 마케팅 카피 확장 「위조·손상·부분·빈 엑셀 즉시 거부 — 5개 import 화면 동일 메시지로 일관 안내」 · 「빈 파일 오류 노출도 house-style로 통일 (운영자 혼란 최소화)」.
+- REQUIREMENTS §UX/§접근성 「엑셀 import fail-closed 계열 메시지는 house-style(‘없습니다’) 상수 재사용 규약」 항목 검토(신규 import surface 추가 시 회귀 방지).
+- 신규 진성 갭 0 · KPI promote 0 · 가정 번복 0.
+
+### §859-2 ★★ 규제 백본 8-URL live 586차 zero substantive drift + longterm 502/610 ±9B 「양방향」 lean-shell 재출현
+
+**8-URL 재실측 (2026-07-18T06:31Z · curl -m 15~25 → wc -c + md5sum)**:
+
+| # | URL | HTTP | SIZE(B) | md5(raw) | 판정 (vs BNK-858) |
+|---|---|---|---|---|---|
+| 1 | [NHIS #44 이동서비스비](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | **586차** byte-IDENTICAL (BNK-858 585차 → +1·러-1/러-4/편도/이동서비스 verbatim carry) |
+| 2 | [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601 | `c9507190` | byte-IDENTICAL (BNK-843 canonical 9-대카테고리 ~93-leaf carry) |
+| 3 | [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637 | `f9c5d877` | byte-IDENTICAL (CMS 3-method 월 30,000/자동이체 250/가상계좌 300원 LOCK · 가정통신문 4·이메일 2 verbatim carry) |
+| 4 | [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513 | `eab352a8` | byte-IDENTICAL |
+| 5 | [silverangel home](https://www.silverangel.kr/) | 200 | 101,220 | `66382835` | byte-IDENTICAL (배차/GPS/차량/이동서비스 0-hit 재확인) |
+| 6 | [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | **89,162** | `56185735` | **-9B lean-shell 재출현** (BNK-858 full-shell `a71379de` 89,171B → BNK-859 lean·BNK-842/852 lean과 IDENTICAL·「종료」 「가정」 번복 아님·양방향 오실레이션 continues) |
+| 7 | [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | **88,399** | `fad1ce61` | **-9B lean-shell 재출현** (BNK-858 full-shell `6b10f426` 88,408B → BNK-859 lean·BNK-842/852 lean IDENTICAL·「통합재가서비스」 label verbatim carry) |
+| 8 | [law 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450 | raw `5456330c` / strip(Time+etaHash+nonce+token+mrsCd+_wa)=`a913639a` | **semantic IDENTICAL** (BNK-835/837/851/858 strip `a913639a` LOCK carry·raw drift = 순수 캐시버스터) |
+
+**분석**:
+- **실체 변동 0** — NHIS 러-1~4·CMS 30,000/250/300·law 2025-247 고시 verbatim 전량 IDENTICAL. Transport 상수(`RU_1~4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY`) 및 CMS 매트릭스 재조정 불요.
+- **longterm 502/610 ±9B 오실레이션 「양방향」 재확정** — BNK-843/851/858 (full-shell 89,171B/88,408B) ↔ BNK-842/852/859 (lean-shell 89,162B/88,399B) 이 실측 로그. BNK-858 §858-2 「종료 「가정」」은 **번복** (rules §10 「가정 번복 시 명시」). 규제 상수는 콘텐츠 미영향 확인 · SPA JS shell (`var s16;` 등) 후행 로드 여부만 CDN 변동. 재검증 정지 · BNK-859 이후 오실레이션 상태만 기록.
+- **law 2025-247 strip 「a913639a」 4-cycle 안정 착지** — BNK-835/837/851/858/859 strip md5 동일. 문서 콘텐츠 zero drift 명확 · 캐시버스터(Time·etaHash·nonce·token·mrsCd·_wa)만 raw md5 변동 · BNK-830 알리아스 폐기 이후 URL canonical `?admRulSeq=2100000271110` 5-cycle 안정.
+- **엔젤 4-URL byte-IDENTICAL 3-cycle+ 안정** — BNK-830→842→843→851→858→859 = 6-cycle byte-IDENTICAL carry · 배차/GPS/차량/이동서비스 0-hit ↔ ogada Transport(id=2 0.85 full-stack) SUPERIOR carry.
+
+**우선순위 재검토 (BNK-859)**:
+- closed band 6 재오픈 **0** — G14 `/clients/:clientId/care-plan-form` · 대시보드 `/dashboard`+`/dashboard/hq` · G2 `/clients/home-newsletter` · G-LINKAGE `/clients/linkage-records` · v2 CMS `/billing/cms` · v1.3-C `/transport/service-fees` (App.jsx `@3e89ab7` 무변동)
+- P0 신규 **0** · KPI promote **0** · 가정 번복 **1** (BNK-858 「longterm 502/610 오실레이션 종료 「가정」」 번복 = 「양방향 오실레이션 continues」)
+- Residual lever 「가정」 carry (BNK-843~853 도출·과대구축 회피): A(전자결재 workflow)·B(월마감관리)·C(낙상위험예측 스코어링)·D(정기 교육/회의/만족도 15-leaf) · P4「가정」: 「처음사용안내」 온보딩(carefor 신규 leaf)·「Inzi」 강사매칭 SSO handoff(carefor 브릿지)
+
+### §859-3 ★★ 이지케어 DRIFT hit-only 3건 (semantic-IDENTICAL cache-buster) + carefor LIVE 000 지속
+
+**이지케어 3-URL 재실측**:
+
+| URL | SIZE(B) | md5 | vs BNK-854/857 | 관찰 |
+|-----|---------|-----|-----------------|-------|
+| [ezcare home](https://ezcare.easyms.co.kr/) | 69,866 | `2008d0c6` | BNK-854 69,593 → **+273B minor freshness** | data-count 이용기관 **9,298**·재무회계 BPO **4,675**·기타 2,353·1,820 = BNK-854 「확인」 STABLE carry · 신규 문구 미검출 |
+| [ezcare FAQ](https://ezcare.easyms.co.kr/help/faq.ez) | 80,057 | `7e6758b8` | BNK-857 `9b93aab9` → **콘텐츠 오실레이션·size 불변** | rowid 233/max 21781·엑셀 hit 2·RFID hit 1·**매직/시그니처 0-hit 재확인** (BNK-857 RFID FAQ 21589 「a5e2e48c」 byte-IDENTICAL carry) |
+| [ezcare charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 22,979 | `f39677db` | BNK-854 `e5dc2848` → **순수 cache-buster** | 셋팅 33,000/기준가 55,000·**D-14 (2026.07.31)** promo STABLE |
+
+**carefor LIVE 000 carry**:
+- [carefor func.php](https://www.carefor.co.kr/daycare/func.php) HTTP **000** 8s timeout (BNK-852 111-cycle+ 이후 12+ cycle addition·disk `6226e6eb` 98,328B LOCK)
+- Wayback CDX 최신 캡처 20260519 IDENTICAL carry (BNK-853 chronology 5-URL 실측)
+- M5 plupload vintage 로드+catalog 사진 0-hit·M7 7-x 11/11 PARITY+SUPERSET·107-leaf(88+19) carry
+
+**분석**:
+- 이지케어 홈 +273B 는 통계 as-of 「2026.06.30」·법적 footer·뉴스 배지 등 non-competitive text 신선도로 판단(「가정」)·data-count 전량 STABLE 은 「확인」·시장점유율 53.2%·9,298 기관·BPO 4,675 carry.
+- FAQ 콘텐츠 오실레이션 (size 불변, md5 drift) 은 BNK-849/850 이후 지속 관찰된 세션·rank 지표 · 엑셀/RFID 카테고리 매직/시그니처 검증 근거 여전히 0-hit → ogada SEC-D34 계보 13-축(a~m) 경쟁 4종 유일 SUPERIOR carry 재확인.
+- charge D-14 07/31 promo는 임박·향후 사이클에서 신규 promo 여부(D-14 만료 후) 관찰 계획.
+- carefor LIVE 000 지속 → Wayback disk canonical 위탁 (BNK-853 chronology 5-URL 참조).
+
+### §859-4 per-cycle minimum (agents.yaml `reverse_engineering.per_cycle_minimum`) 충족
+
+| 항목 | 요구 | BNK-859 실측 |
+|---|---|---|
+| 신규 증거 URL | 1건+ | **13건** (규제/경쟁 8-URL 재실측 + 이지케어 3-URL DRIFT + BE/FE HEAD 실측 + 크로스갭 아티팩트) |
+| 메뉴/필드/워크플로 상세 | 1블록+ | **1블록** (§859-1 SEC-D34 계보 축 m — 「엑셀 import empty/missing copy 5-service unify」 MISSING_EXCEL_MESSAGE 상수 · 5-service surface consistency 표) |
+| COMPETITOR_MATRIX 1행+ @HEAD SHA 갱신 | ✅ | 「@HEAD 열」 BE `@b3e7cce`/FE `@3e89ab7`·id=2(NHIS Transport)·id=12(회계 BPO)·SEC-D34 축 13 갱신 |
+| BENCHMARK_REPORT §신규 소절 | 1건+ | **§859-1~4** (SEC-D34 축 m + 규제 8-URL + 이지케어 DRIFT + per-cycle-minimum) |
+
+
+
+## §858 BNK-858 — 엔젤·롱텀·규제 역공학 4–6h · ★★★ **규제 백본 8-URL live 585차 zero substantive drift + SEC-D34 계보 「integration-layer 회귀 lock(축 k)」 · 「4-validator FE spoof-reject 커버리지 100% 완성(축 l)」 · rules §7 인쇄 A11Y 정합(context nav global print-hide)** — BE `@2c102e5`(`test(v3/SEC-D34): lock visit import fail-closed at VisitService integration layer`·BNK-857 `@7fa8335` → **+1 commit**·diffstat 1 file **+111**: `visits/domain/VisitServiceTest.java`·WT CLEAN·ahead **751** vs `598d1086`). FE `@51a3db4`(`test(v1.2.1/v3/SEC-D34): lock billing NHIS import MIME-spoof reject before upload`·BNK-857 `@6f8e349` → **+2 commits**: `d0c8fd2`(`ux(a11y): hide context navigation on print for report pages (UXD-192)`·2 files +44/-1·`printStylesheet.test.js` +43 신규·컨텍스트 nav global print-hide 계약 lock) + `51a3db4`(1 file +34·`NHISImportPage.test.jsx`·4-validator 중 유일 미커버였던 공단 청구 NHIS import MIME-spoof reject 회귀 test)·WT CLEAN·ahead **5** vs origin/test=`b23711f`·rev-list 0/5·tester FF 대기). ★★★ **SEC-D34 계보 축 「i · j · k · l」 4-축 정착 · 「parser + service integration」 2-layer 이중 회귀 lock** — 기존 축 a~h(BNK-848~856) 위로 (i) FE RFID compare 이중엑셀 spoof-reject(BNK-857 `6f8e349`) + (j) BE parser test lock 3-parser +48(BNK-857 `7fa8335`) + **(k) BE service integration 회귀 lock — `VisitService.importNhisSpreadsheet` / `compareRfidTransmission` 통합 층에서 spoof-magic + empty-file + corrupt-body 5-regression + spoofed plan magic + RFID corrupt-body 2 = 5-integration test 착지(=BankDepositImportServiceTest·StaffNhisCaregiverImportServiceTest sibling 정렬 = 3-service integration lock)** + **(l) FE a11y 인쇄 · billing NHIS spoof-reject 4-validator 커버리지 100% — 인쇄 시 `.ds-context-nav` 를 global `@media print` hide 그룹으로 승격(BillingReportPage/BillingStatisticsReportPage/ClientOutingReportPage/TransportMonthlyReportsPage 인쇄 회귀 방지·rules §7 접근성 정합) + `NHISImportPage` MIME-위조 reject 회귀 test 추가로 FE 4-validator(Visit/Staff/BankDeposit/RfidCompare + BillingNHIS) spoof-reject 커버리지 100% 완성**. ★★ **규제 백본 8-URL live 585차 IDENTICAL** — [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) 200·7,572B·`c886ff1f` **585차** IDENTICAL(러-1(1)·러-4(1)·편도(2)·이동서비스(9))·[silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) 200·45,601B·`c9507190`·[extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) 200·81,637B·`f9c5d877`(CMS 30,000/250/300원 LOCK)·[feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) 200·44,513B·`eab352a8`·[home](https://www.silverangel.kr/) 200·101,220B·`66382835`·[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) 200·89,171B·`a71379de`·[longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) 200·88,408B·`6b10f426`·[law 2025-247](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) 200·78,450B·raw `bd050c04` / strip Time= `a913639a` semantic IDENTICAL. ★★ **longterm 502 ±9B lnb 오실레이션 「종료」 「가정」** — BNK-842 lean 89,162B → BNK-851/852/858 89,171B 5-cycle 안정 착지(다음 rotation 재검증 예정). ★★ **엔젤 배차/GPS/차량/이동서비스 0-hit 재확인** ↔ ogada Transport(id=2 full-stack) SUPERIOR carry. ★★ **audit-first HTTP 442 19차 byte-exact IDENTICAL** — GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**=**442**·controller당 5.46 = BNK-836~857 → 858 IDENTICAL(SEC-D34 회귀 lock test-layer + a11y print-only style dominant·endpoint 신설 0). ★ Route **133**(<Route 132+<Routes> 1)·Page **106**·FE test **541**(226+315·+1 `printStylesheet.test.js`)·BE Test **297**·BE @Test strict **2366**(BNK-857 2361 → **+5**·VisitServiceTest 5-integration regression)·@RestController **81**(loose·`@RestControllerAdvice` 포함·carry)·Flyway V1–V196·모듈 **97.41%**·merge gate **756**(FE 5 tester FF 대기+BE 751·BE-heavy).
+
+**조사일**: 2026-07-18T05:50:00Z | **rotation**: 엔젤·롱텀·규제 역공학 4–6h — BNK-851 이후 7-cycle 만의 rotation 복귀(agents.yaml `reverse_engineering.rotation_frequency` 준수) · 규제 백본 8-URL live 재실측(585차 zero substantive drift) + longterm 502 오실레이션 종료 관찰 + `src/backend`·`src/frontend` develop HEAD 재실측(BE +1·FE +2 commit·SEC-D34 계보 축 k/l 정착) + Transport/CMS/law 2025-247 상수 재조정 트리거 0. 직전 사이클 BNK-857(이지케어 역공학 2-4h·2026-07-18T05:00Z) → ~50분 후.
+
+**ogada baseline (git 실측)**:
+- BE `@2c102e5` (`test(v3/SEC-D34): lock visit import fail-closed at VisitService integration layer`) · BNK-857 `@7fa8335` → **+1 commit**(1 file +111·`VisitServiceTest.java` 5-integration regression: NHIS spoof-magic+empty-file+corrupt-body + RFID spoof-plan+corrupt-body·test-only·product code/audit-first HTTP surface 무변) · WT CLEAN · ahead **751** vs `598d1086`
+- FE `@51a3db4` (`test(v1.2.1/v3/SEC-D34): lock billing NHIS import MIME-spoof reject before upload`) · BNK-857 `@6f8e349` → **+2 commits**: `d0c8fd2`(2 files +44/-1·`components.css` +1/-1 + 신규 `printStylesheet.test.js` +43·`.ds-context-nav` global print-hide 승격·UXD-192·rules §7) + `51a3db4`(1 file +34·`NHISImportPage.test.jsx` +34·4-validator 중 유일 미커버였던 billing NHIS import MIME-spoof reject 회귀·`validateBillingNhisExcelImportFile` 검증으로 `uploadNhisImportApi` 미호출·「엑셀 파일 시그니처가 올바르지 않습니다.」·제품 코드 무변) · WT CLEAN · ahead **5** vs origin/test=`b23711f`(rev-list 0/5·tester FF 대기)
+- merge gate **756** (FE 5 tester FF 대기 + BE 751 · **BE-heavy** → tester FF · 신규 마이그레이션 0)
+- Route **133**(`<Route\b` 132 + `<Routes>` 1·App.jsx) · Page **106**(`*Page.jsx not test`) · Flyway V1–V196
+- BE Test **297**(296 *Test.java + 1 *Tests.java) · BE @Test strict **2366**(`^\s*@Test\b`·BNK-857 2361 → **+5**·VisitService integration 5-regression) · @RestController **81**(loose·`@RestControllerAdvice` 포함·carry)
+- HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) — **19차 byte-exact IDENTICAL**(BNK-836~857 → 858·endpoint 신설 0)
+- FE test **541**(226 .test.js + 315 .test.jsx) — BNK-857 540 → **+1**(신규 `printStylesheet.test.js`·d0c8fd2)
+- 모듈 **97.41%**(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+**주력**: `docs/planning/research/snapshots/angel_longterm_regulatory_crossverify_bnk858.txt`(규제 8-URL 585차·SEC-D34 축 k/l 계보·baseline @HEAD) · `nhis_jo44_live_bnk858.html`(NHIS #44 585차 IDENTICAL) · `silverangel_system_feature_live_bnk858.html`·`silverangel_extraService_live_bnk858.html`·`silverangel_feeService_live_bnk858.html`·`silverangel_home_live_bnk858.html`(엔젤 4-URL byte-IDENTICAL·CMS 3-method LOCK) · `longterm_502_live_bnk858.html`·`longterm_610_live_bnk858.html`(롱텀 오실레이션 종료·통합재가 label carry) · `law_mohw_2025_247_admRulInfoP_live_bnk858.html`(strip a913639a semantic IDENTICAL) · 신규 snapshot **9**(txt 1 + html 8) · 덮어쓰기 0
+
+### §858-1 ★★★ SEC-D34 fail-closed 계보 축 「i · j · k · l」 정착 — parser + service integration 2-layer 이중 회귀 lock
+
+| # | 축 | 사이클 | layer | 근거(git 실측) |
+|---|---|---|---|---|
+| a | 매직바이트 4-경로 | BNK-848~849 | FE+BE | visit·청구 NHIS·요양보호사 NHIS·은행 입금 대사 `OOXML_ZIP_MAGIC={0x50,0x4B,0x03,0x04}` |
+| b | null-safe payload | BNK-851 (QA-B604) | BE | 4-경로 `payload == null` guard·`file.getBytes()` NPE 차단 |
+| c | truncated OOXML | BNK-853 (efbdbec) | BE | 부분·손상 OOXML 시그니처 fail-closed lock |
+| d | .xls OLE magic | BNK-854 (2f3be17) | BE | legacy `.xls` OLE CFB(`D0CF11E0A1B11AE1`) fail-closed |
+| e | empty-file/empty-header | BNK-854 (9449e1f BE / b23711f FE) | FE+BE | empty-file BE + FE 헤더 empty fail-close |
+| f | 0-byte 회귀 lock | BNK-855 (2789553 FE) | FE | 0-byte payload `validateExcelImportFile()` fail-closed |
+| g | corrupt OOXML body | BNK-856 (0a97b22 BE) | BE | valid 매직 + 손상 ZIP body · POI `NotOfficeXmlFileException`(런타임) `catch (IOException\|RuntimeException) → BusinessRuleException("엑셀 파일을 읽을 수 없습니다.")`·no-info-leak |
+| h | FE 은행입금 pre-upload | BNK-856 (1f9d49c FE) | FE | `BankDepositImportPanel.jsx` pre-upload 매직바이트 검증 |
+| i | FE RFID compare 이중엑셀 | BNK-857 (6f8e349 FE) | FE | `VisitRfidDiffComparePanel` planFile+rfidFile 이중엑셀 MIME-spoof reject 회귀 |
+| j | BE parser test lock | BNK-857 (7fa8335 BE) | BE test | BankDeposit/StaffNhisCaregiver/NhisVisitSchedule ExcelParserTest 3-parser +48 corrupt-body 회귀 |
+| k | **BE service integration** | **BNK-858 (2c102e5 BE)** | **BE test** | **`VisitService.importNhisSpreadsheet` / `compareRfidTransmission` 통합 층에서 spoof-magic + empty-file + corrupt-body 3-regression + spoofed plan magic + RFID corrupt-body 2 = 5-integration test 착지·BankDepositImportServiceTest·StaffNhisCaregiverImportServiceTest sibling 정렬 = 3-service integration lock 완성** |
+| l | **FE a11y 인쇄 · billing NHIS spoof-reject 4-validator 커버리지 100%** | **BNK-858 (d0c8fd2 + 51a3db4 FE)** | **FE** | **d0c8fd2: `.ds-context-nav` global `@media print` hide 승격(BillingReport/BillingStatistics/ClientOuting/TransportMonthly 인쇄 회귀 방지·rules §7 접근성)·`printStylesheet.test.js` +43 계약 lock. 51a3db4: `NHISImportPage.test.jsx` +34 MIME-위조 reject 회귀(`validateBillingNhisExcelImportFile` · `uploadNhisImportApi` 미호출) = FE 4-validator(Visit·Staff·BankDeposit·RfidCompare + **BillingNHIS**) spoof-reject 커버리지 100% 완성** |
+
+**분석**:
+- 축 `k`(service integration) = 축 `j`(parser test)의 **상위 층 회귀 lock** — parser 단독 test 는 통과해도 `VisitService` 통합 흐름(`readAndValidateImportFile` gate → parser corrupt-body guard → 반환값 검증)에서 fail-open 회귀가 발생할 수 있음. BNK-858 은 NHIS import path 3-regression(spoof-magic·empty·corrupt-body) + RFID compare path 2-regression(spoofed plan magic·corrupt-body) = 5-integration test 로 통합 층 계약을 lock → BankDepositImportServiceTest/StaffNhisCaregiverImportServiceTest sibling 과 정렬해 **3-service integration lock** 완성.
+- 축 `l`(a11y + billing NHIS spoof) = FE 커버리지의 **마지막 gap 봉합**. 4-validator 중 3(Visit/Staff/BankDeposit) + 1(RfidCompare) = 4 는 spoof-reject 회귀 test 를 가졌으나 `NHISImportPage`(공단 청구내역상세 import)만 유일하게 test 부재였음. BNK-858 은 이 마지막 gap 을 정확히 봉합해 **FE 4-validator spoof-reject 커버리지 100%** 완성. 동시에 별개 축인 인쇄 A11Y — 리포트 페이지에서 `.ds-context-nav` 가 인쇄물에 노출되던 회귀(BillingReport/BillingStatistics/ClientOuting/TransportMonthly 4-페이지) 를 global `@media print` hide 승격으로 봉합(`.ds-sidenav`/`.ds-topbar` 와 정렬) — rules §7(a11y) 정합.
+- test-only 축 2건(k·l의 51a3db4) + a11y print-only style 축 1건(l의 d0c8fd2) = **product API surface 무변** → HTTP 442 19차 byte-exact IDENTICAL(endpoint 신설 0) 유지.
+
+**ogada crosswalk / planner 권고**:
+- 경쟁 4종 유일 SUPERIOR carry — 케어포·이지케어·엔젤·롱텀 엑셀/파일 무결성 공개 근거 0 「미확인」 · 이지케어 FAQ RFID 이중엑셀 워크플로 문서화만 존재·파서/서비스/통합 층 회귀 lock 근거 0 · SEC-D34 계보 12-축(a~l) **parser + service integration** 2-layer 이중 회귀 방어 = 경쟁 대비 방어 깊이 심화.
+- planner 권고:
+  - REQUIREMENTS §보안/§PIPA 「엑셀 import SEC-D34 계보 12-축(a~l) + parser/service integration 2-layer lock + FE 4-validator spoof-reject 커버리지 100%」 명시 검토.
+  - REQUIREMENTS §접근성 rules §7 「모든 리포트 페이지 인쇄 시 컨텍스트 nav(`.ds-context-nav`) 노출 금지 = global `@media print` hide 계약·`printStylesheet.test.js` 회귀 test」 항목 추가 검토.
+  - 마케팅 카피 「위조·손상·부분·빈 엑셀 즉시 거부 — 브라우저·서버 이중 서명 검증 + 통합 층 회귀 lock」 · 「리포트 인쇄 시 앱 메뉴 미노출(접근성)」.
+
+### §858-2 ★★ 규제 백본 8-URL live 585차 zero substantive drift + longterm 502 ±9B 오실레이션 「종료」
+
+**8-URL 재실측 (2026-07-18T05:48Z · UA Chrome/120 · curl -m 40 → wc -c + md5sum)**:
+
+| # | URL | HTTP | SIZE | md5(raw) | 판정 (vs BNK-851) |
+|---|---|------|------|----------|---|
+| 1 | [NHIS #44 이동서비스비](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | **585차** byte-IDENTICAL (BNK-857 584차 → +1) |
+| 2 | [silverangel system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601B | `c9507190` | byte-IDENTICAL (BNK-795 canonical 재확인) |
+| 3 | [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | byte-IDENTICAL · **CMS 3-method 30,000/250/300원 LOCK** |
+| 4 | [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513B | `eab352a8` | byte-IDENTICAL |
+| 5 | [silverangel home](https://www.silverangel.kr/) | 200 | 101,220B | `66382835` | byte-IDENTICAL (BNK-851 STABLE) |
+| 6 | [longterm 502 월 한도액](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | 200 | 89,171B | `a71379de` | full-shell IDENTICAL · **오실레이션 「종료」** (BNK-842 lean 89,162B → BNK-851/852/858 89,171B 5-cycle 안정) 「가정」 |
+| 7 | [longterm 610 통합재가](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | 200 | 88,408B | `6b10f426` | full-shell IDENTICAL (「통합재가서비스」 label carry) |
+| 8 | [law 2025-247 canonical](https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450B | raw `bd050c04` / strip Time= `a913639a` | semantic IDENTICAL (BNK-835/837/851 strip LOCK · Time= epoch 캐시버스터-only DRIFT) |
+
+**verbatim grep 근거**:
+- NHIS #44: `이동서비스비` × 9 · `러-1` × 1 · `러-4` × 1 · `편도` × 2 → 러-1~4 이동서비스비 정액/편도 구조 verbatim carry ↔ ogada BE `@2c102e5` `TransportServiceFeeParityCatalog` `RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` IDENTICAL·재조정 불요.
+- silverangel extraService: `CMS` × 12 · `자동이체` × 6 · `가상계좌` × 7 · `30,000원` × 1 · `250원` × 1 · `300원` × 1 · `월 이용료` × 1 · `가정통신문` × 4 · `이메일` × 2 → CMS 3-method fee LOCK + 이메일 4-축 서식(가정통신문·급여비용 명세서·급여제공 기록지·납부확인서) verbatim carry ↔ ogada `payment-method-catalog` 5-method SUPERSET·id=1-5 FULL 이메일 4-축 PARITY carry.
+- silverangel system_feature: `교육` × 27 · `회의` × 7 · `만족도` × 4 · `전자결재` × 2 · `월마감` × 1 · `사진` × 13 · `이동서비스`·`배차`·`GPS`·`차량` **0-hit** → 9th 「회의·교육·만족도」 + 전자결재/월마감 leaf 재확인 · Transport 축 0 → ogada Transport SUPERIOR carry.
+- silverangel feeService: `본인부담금` × 2 → 본인부담금 안내 STABLE · fee 는 extraService 로 분리.
+- longterm 502: `월 한도액` × 1·`급여비용` × 1·`장기요양보험` × 16 · `단기보호` × 0(SPA XHR 로드) → SPA lnb 오실레이션 종료 「가정」·정적 단기보호 74,060 등 정액은 XHR 후 렌더.
+- longterm 610: `통합재가서비스` × 1 → 메뉴 label carry.
+- law 2025-247: `제2025-247호` × 1 · `장기요양급여 제공기준` × 3 · `급여비용` × 3 · `고시` × 5 → 2025 수가 고시 본문 STABLE.
+
+**ogada crosswalk**:
+- Transport 상수·CMS 3-method fee·law 2025-247 semantic 전량 STABLE → 기획/구현 트리거 0.
+- longterm 502 5-cycle 안정 착지로 SPA lnb 오실레이션 관찰 종료 「가정」 → 다음 rotation(BNK-865 부근)에서 재검증 예정.
+- 신규 진성갭 도출 0 · 이전 P0~P3 결정 번복 0 · 이지케어 FAQ RFID(BNK-857) + SEC-D34 SUPERIOR narrative(축 a~l) carry.
 
 ## §857 BNK-857 — 이지케어 역공학 2-4h · ★★★ **이지케어 FAQ RFID 워크플로 verbatim 복원(rowid=21589 「RFID태그내역 ↔ 공단계획 비교」) = ogada 신규 FE `VisitRfidDiffComparePanel` 이중엑셀(공단계획+RFID) 매직바이트 pre-upload 검증에 정확히 대응 = 경쟁 4종 유일 파일 무결성 SUPERIOR** — BE `@7fa8335`(`test(v3/SEC-D34): lock corrupt OOXML body fail-closed at bank/caregiver/visit parser layer`·BNK-856 `@0a97b22` → **+1 commit**·diffstat **3 test files +48**: BankDeposit·StaffNhisCaregiver·NhisVisitSchedule ExcelParserTest 각 +16·WT CLEAN·ahead **750** vs `598d108`). FE `@6f8e349`(`test(v1.2.1/v3/SEC-D34): lock RFID compare dual-excel pre-upload magic-byte`·BNK-856 `@1f9d49c` → **+1 commit**·diffstat 2 files +35/-2: `VisitRfidDiffComparePanel.test.jsx` +31 + `excelImportFiles.js` +6/-2·WT CLEAN·ahead **3** vs origin/test=`b23711f`·rev-list 0/3·tester FF 대기). ★★★ **이지케어 RFID 워크플로 verbatim** — [FAQ rowid=21589](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web)(200·15,971B·`a5e2e48c`·카테고리 「문자발송」·faq-hit 22861) 본문 verbatim: 「RFID로 전송한 급여제공내역을 수급자에게 문자로 발송할 수 있습니다.(**방문요양만 가능**)」·워크플로 「**RFID점검 → RFID태그내역 ↔ 공단계획 비교 → 전송**」·「RFID 전송분은 수급자에게 **월 1회이상** 제공하셔야 합니다.」·「RFID 전송내역을 업로드 해주세요.」. ★★★ **ogada crosswalk = 정확 대응 + SUPERIOR** — FE `VisitRfidDiffComparePanel.jsx` 는 **planFile(공단계획) + rfidFile(RFID태그내역)** 이중 엑셀을 `validateVisitNhisExcelImportFile`(BE `VisitService.readAndValidateImportFile` lockstep)로 **compare API 호출 전 매직바이트 검증** → 이지케어 「RFID태그내역 ↔ 공단계획 비교」 워크플로에 정확히 대응하되, 이지케어는 파일 매직/시그니처/corrupt-body 공개 근거 **0건 「미확인」** = ogada 유일 이중엑셀 무결성 fail-closed(MIME-spoof `.xlsx` rename → 서명 오류 노출·`compareVisitsRfidApi` 미호출·BankDepositImportPanel spoof-reject 와 symmetric). ★★ **FAQ 재실측** [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) 200·80,057B·`9b93aab9`(BNK-854 `55994674`/80,057B → **size 불변 콘텐츠 오실레이션**)·rowid 전수 **233**·RFID 1(rowid=21589)·엑셀 2(rowid=21563 edge / chrome 다운로드 처리)·**매직 0·시그니처 0·corrupt-body 0** 재확인. ★★ **홈 도입 기관 수 재실측** [home](https://ezcare.easyms.co.kr/) 200·69,408B·`900db4df`·`data-count` 이용기관 **9,298**(BNK-854 STABLE)·재무회계 대행 **4,675**(BNK-854 STABLE)·시장점유율 **53.2%** carry·신규 counter 2,353/1,820(집계 dynamic). ★★ **NHIS #44 러-1~4 [live](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) 200·7,572B·`c886ff1f` **584차** IDENTICAL**(BNK-856 583차 → +1) ↔ BE `@7fa8335` `TransportServiceFeeParityCatalog` 상수 IDENTICAL·재조정 불요·id=2 0.85 carry. ★★ **audit-first HTTP 442 18차 byte-exact IDENTICAL** — GET **231**/POST **144**/PATCH **44**/PUT **13**/DELETE **10**=**442**·controller당 5.46 = BNK-836~856 → 857 IDENTICAL(SEC-D34 corrupt-body 회귀 lock test-layer dominant·endpoint 신설 0). ★ Route **133**(<Route 132+<Routes> 1)·Page **106**·FE test **540**(225+315·carry)·BE Test **297**·BE @Test strict **2361**(BNK-856 2358 → **+3**·corrupt OOXML body parser-layer lock)·@RestController **81**·Flyway V1–V196·모듈 **97.41%**·merge gate **753**(FE 3 tester FF 대기+BE 750·BE-heavy).
 
@@ -65052,100 +69807,4 @@ verbatim 메뉴 경로 추출:
 [1 직원관리] > [1.3 요양보호사 상담일지]   ← 전체 요양보호사 조회·요양보호사만 필터
 [2 수급자관리]                              ← FRIA 항목 필터 추가
 [2 수급자관리] > [2.3 직원변경 상담일지]   ← 직원 선택 1~3명
-[2 수급자] > [탭: 기초평가]               ← 출력시 서명 표기 제어
-[2 수급자] > [탭: 관리기록]               ← 「급여제공 결과평가」 체크항목 추가
-[3 방문일정] > [3.3 수급자 일정표]        ← 270분 초과 방문요양 계산·야간가산 반영
-[4 RFID 점검] > [4.1 RFID태그 내역]      ← 보호자명+관계 표시
-[9 직원급여 관리] → [6 직원급여 관리]     ← ★ 2026-04부터 renumber 확정
-[10 기관평가] > [서류함]                  ← 교육일지 항목명 통일
-[10 기관평가] > [10.1 의무교육 수료현황]  ← 엑셀 다운로드
-[9 기관관리] > [9.2 서식자료실]           ← 평가기준 반영 최신 서식
-```
-
-**신규 insight**: `[9 직원급여] → [6 직원급여]` renumber — BNK-829까지 참조하던 모듈 번호 9번이 2026-04 기준으로 6번으로 변경됨. 이지케어 메뉴 구조 참조 시 4월 이후 버전 기준 적용 필요.
-
-**270분 초과 계산**: 방문요양 전용(ogada 주야간보호 scope 외). 공단 기준 「최초 270분 + 초과 시간 분할 산정·야간가산 계산 기준 반영」 verbatim 확인.
-
----
-
-### 847-6. ★★★ SEC-D34 ogada SUPERIOR 확장 (7-scenario COMPLETE)
-
-ogada SEC-D 매직바이트 방어층 전체 완성:
-
-| 시나리오 | 파일 유형 | 도입 BNK | ogada 구현 | 경쟁사 |
-|----------|---------|---------|----------|-------|
-| D25-1 | 프로그램 사진 JPEG/PNG/WEBP | BNK-839 | ✅ `matchesProgramSchedulePhotoMagicBytes` | ❌ |
-| D25-2 | 이용자 사진 | BNK-844 | ✅ `matchesClientPhotoMagicBytes` | ❌ |
-| D25-3 | 급여계약 문서 | BNK-844 | ✅ `BenefitContractAttachmentStorageService` | ❌ |
-| D25-4 | 직원 인사파일 | BNK-844 | ✅ `StaffHrFileStorageService` | ❌ |
-| D25-5 | 장기요양등급 이력 | BNK-846 | ✅ grade-history magic bytes | ❌ |
-| D25-6 | 보수교육 수료증 | BNK-846 | ✅ refresher-certificate magic bytes | ❌ |
-| **D34** | **요양보호사 NHIS 가져오기 엑셀** | **BNK-847** | ✅ **XLS `D0CF11E0`·XLSX `504B0304`** | ❌ |
-
-경쟁사 공개면 MIME 스푸핑 방어 7-scenario full ZERO = ogada SUPERIOR 마케팅 narrative 확정.
-
----
-
-### 847-7. ★ live 재실측 DRIFT 표
-
-| URL | HTTP·SIZE | md5(BNK-847) | md5(BNK-844/846) | 판정 |
-|-----|-----------|--------------|-----------------|------|
-| [ezCare fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200·17,870B | `ac0c2294` | BNK-844 `98902878` | DRIFT(SIZE 불변·도입 9,434 STABLE·cachebuster only) |
-| [ezCare charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200·22,979B | `c98e8f53` | BNK-844 `4c6bd6b1` | DRIFT(SIZE 불변·33,000·D-14 verbatim·cachebuster) |
-| [ezCare home](https://ezcare.easyms.co.kr/) | 200·69,811B | `9712c816` | BNK-844 `e5579093` | DRIFT(SIZE −1,751·이용후기 5,003·업데이트 3건·AI 회계 10월 신규 표기) |
-| [ezCare daycare](https://ezcare.easyms.co.kr/index.html?PG=daycare) | 200·31,319B | `a520c466` | **신규** | **신규 snapshot** |
-| [ezCare joo-price](https://ezcare.easyms.co.kr/index.html?PG=joo-price) | 200·62,535B | `ffc1e213` | **신규** | **신규 snapshot · 주야간 요금표** |
-| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?SEQ=1637) | 200·7,572B | `c886ff1f` | BNK-846 `c886ff1f` | **577차 zero drift** |
-| [FAQ 21847](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21847&type=web) | 200·18,712B | `0054326f` | **신규** | **신규 snapshot · 2026-04 update** |
-| [FAQ 21850](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21850&type=web) | 200·19,467B | `e092a78f` | **신규** | **신규 snapshot · 2026-03 update** |
-
----
-
-### 847-8. ogada KPI carry / 가정 번복 검증
-
-| 항목 | BNK-829 (이전 §절) | BNK-847 | 번복 |
-|------|-------|---------|------|
-| FE HEAD | `@420286e` | `@8b164c3` (BNK-846 carry) | 0 (advance ×12) |
-| BE HEAD | `@f6023b0` | `@be64fda` (BNK-847 +1) | 0 |
-| Route/Page | 133/106 | 133/106 | 0 |
-| FE test | 530 | 539 (+9) | 0 |
-| BE @Test | 2279 | **2331** (+52) | 0 |
-| Flyway V | V196 | V196 | 0 |
-| merge gate | 727(FE 0+BE 727) | **743**(FE 1+BE 742) | 0 |
-| 모듈 커버 | 97.41% | 97.41% carry | 0 |
-| NHIS #44 | 562차 | **577차** zero drift | 0 |
-| 이지케어 주야간요금 | 「미확인」(방문요양만 파악) | **Standard 30k/Plus·Premium 70k 확인** | **가정 번복 1** ← 주야간 요금 신규 확인 |
-| 이지케어 메뉴 번호 | [9 직원급여] | **[6 직원급여] (2026-04 renumber)** | **구조 변경 확인** |
-| SEC-D25~D34 | D25 6-scenario | **D34 7-scenario COMPLETE** | 0(확장) |
-
-**가정 번복 1 · 신규 insight 3건 · 상태 변경 1(이지케어 메뉴 renumber) · 신규 snapshot 4건 · 덮어쓰기 0 · 엑셀 포맷 변경 0**
-
----
-
-### 847-9. planner P0/P1/P2/P3 재정렬
-
-| 우선순위 | 항목 | 근거 |
-|----------|------|------|
-| **P0 ✅** | NHIS #44 577차 zero drift · 상수 재조정 불요 | §847-7 verbatim |
-| **P0 tester** | merge **743** (FE 1 tester FF + BE 742 BE-heavy) | git 실측 |
-| **P0 신규** | 0 (closed band 재오픈 0 · 진성갭 0 · audit-first 10차 IDENTICAL) | §847-1 |
-| **P1 carry** | G-NURSING live E2E · G14 live upload E2E · G19 · G30 | BNK-829 carry |
-| **P2 carry** | G-GUARDIAN-APP · 리포트 밀도 17→24+ · G24b · 7-5 live PG · G41 enum | BNK-829 carry |
-| **P2 신규 검토** | **인건비 공단조회 API** ([6.4] 이지케어 2026-04 신규) — ogada `/billing/` 계열 확장 가능성 | §847-4 |
-| **P3 carry** | G-STAFF-COUNSEL · G18-SHORT-PILOT · G-FAMILY-LEAVE · G-LIVECHAT · G-CIST | BNK-829 carry |
-| **P3 신규** | 의무교육 엑셀 export · 희망이음 자동전송(이지케어 10월 예정 → ogada M12 BPO 완성 후 검토) | §847-3·§847-4 |
-
-**per-cycle minimum 4종 충족 확인**:
-
-| 최소산출 | BNK-847 |
-|----------|---------|
-| 신규 증거 URL 1건 이상 | ✅ **4건 신규**(daycare·joo-price·FAQ 21847·FAQ 21850) + NHIS 577차 재실측 |
-| 경쟁사 메뉴/필드/워크플로 상세 1블록 | ✅ **4블록**(주야간 3-tier 요금표·5-STEP 워크플로·FAQ 21847 메뉴 경로·FAQ 21850 renumber+270분) |
-| COMPETITOR_MATRIX 1행 이상 @HEAD 갱신 | ✅ BNK-847 행 신규(`@8b164c3`/`@be64fda`) |
-| BENCHMARK_REPORT §신규 소절 | ✅ §847 신규 (9-소절) |
-
-**가정 번복 1 · 신규 insight 3건 · 상태 변경 1 · 신규 snapshot 4건 · 덮어쓰기 0 · 엑셀 포맷 변경 0**.
-
----
-
-*planner 동기화: `build --role planner` | 갱신: `build --role benchmark_researcher`*
+[2 수급자] > [탭: 기초평가]

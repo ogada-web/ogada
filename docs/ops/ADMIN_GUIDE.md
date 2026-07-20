@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T13:10:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T12:46:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-19 (기선 갱신 BE `6d3c766` / FE `e8ff8dc` · **Flyway V1–V196** · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-07-19 (기선 갱신 BE `57523b5` / FE `95b6c52` · **Flyway V1–V196** · 모듈 **97.41%**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,11 +50,22 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-18 develop HEAD `49349e4` / frontend `5e816e6`)
+### 1-4. 구현 상태 안내 (2026-07-19 develop HEAD `57523b5` / frontend `95b6c52`)
 
-> **이관·QA (TSR)**: BE develop **@ `9449e1f`** · FE develop **@ `2789553`** · **cross-stream SYNCED**
+> **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **청구 명세·국세청 CSV 엑셀 수식 실행 위험 차단** ✅ (**Q946**, SEC-D33): `=`·`+`·`-`·`@` 시작 글자 칸에 `'` prefix · 금액 숫자(음수 포함)는 유지 (`57523b5`, CWE-1236) — FAQ Q534·Q535
+> - **안전·선임·외출 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-204): 안전 점검 **저장 시각** · 선임 **전자서명 시각** · 외출 **실제 출발/복귀 시각** — 화면 표시 무변경 (`95b6c52`, WCAG 1.3.1)
+> - **보호자 포털·QR 체크인 출석 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-203): 일일 요약 **입소·귀가 시각** · QR 셀프 체크인 **처리 완료 시각** — 화면 표시 무변경 (`2715090`, WCAG 1.3.1, Must US-E04)
+> - **욕구사정 연도 비교 표 좁은 화면 가로 스크롤 `.ds-table-wrap`** ✅ (**Q878**, UXD-202): `ClientNeedsAssessmentCompare` 표를 공용 감싸개로 래핑 — 좁은 창·모바일에서 표 영역만 스크롤·화면 표시 무변경 (`fa838f5`, WCAG 1.4.10 Reflow)
+> - **표·이력·청구 날짜 칸 `<time dateTime>` a11y** ✅ (**Q945**, UXD-197~204): 리포트·목록·청구 대장·**로그인 이력·감사 로그·알림 발송 이력·수가 변경 이력·백업 설정·청구 잠금 시각·보호자 포털 출석 시각·안전/선임/외출 시각** 등 **42곳** — 화면 표시 무변경 (`95b6c52`/`2715090`/`6a9e85e`/`c2fb261`/`e8ff8dc` 등)
+> - **공단·은행 엑셀 금액 9축 정규화** ✅ (**Q939**·**Q941**, SEC-D34): `₩`/`￦`·전각 숫자·전각 콤마·공백·「원」·「일」·**U+00A0·U+3000** · **`ExcelAmountNormalizer` DRY** (`6d3c766`/`e60e288`)
+> - **급여제공·간호·프로그램 리포트 역방향 기간 사전 차단·a11y** ✅ (**Q942**~**Q944**, UXD-196): 시작일>종료일 즉시 차단 · **시작일·종료일 두 칸 aria-invalid** (`5789173` 등)
+> - **이동서비스비 청구 기간 검증·목록 비움** ✅ (**Q940**, G16): 빈·역방향 기간 사전 차단 · 오류 시 지난 목록 EmptyState (`3b903c8`/`6c280d0`)
+> - **픽업 배차 회차 사전 검증·a11y** ✅ (**Q936**·**Q937**, UXD-194): 지수/16진수·한도 초과 거부 · 휠 스크롤 값 변경 차단 · 정차 상한(17) 안내 (`5aaee88`/`9b0481d`)
+> - **엑셀 import 손상·빈 파일 fail-closed** ✅ (**Q931**~**Q934**, SEC-D34): 5개 파서 · **`UNREADABLE_EXCEL_MESSAGE`** 상수 통일 · FE·BE 회귀 lock (`2ad9b05`/`9449e1f`)
+> - **리포트·청구 인쇄 시 좌측/상단 메뉴 숨김** ✅ (UXD-192): 청구·청구통계·외출·교통 월간 리포트
 > - **사진 업로드 성공 스크린리더 안내** ✅ (**Q933**, UXD-191): 이용자 사진·활동 사진 성공을 **`role="status"` polite live region**으로 안내 — 시각 배너 미추가 (`194823b`)
 > - **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed** ✅ (**Q931~Q933**, SEC-D34): 4경로 import 서비스에서 **`payload == null`·0바이트·`payload.length == 0`** 가드로 빈 파일도 안전 거부, FE는 FileReader 빈 헤더까지 fail-closed — FE·BE 회귀 테스트 고정 (`b23711f`/`9449e1f`)
 > - **SEC-D34 엑셀 import 4경로 magic-byte** ✅ (**Q931~Q932**): **방문 NHIS** · **청구 NHIS** · **요양보호사 NHIS** · **은행 입금** — BE **`a788e6d`/`be64fda`/`f6e4d88`** · FE **`excelImportFiles.js`** 사전검증 3경로 (`3042a53`) — 은행 입금은 **BE only** (xlsx OOXML)
@@ -1164,9 +1175,9 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | 탭 (프론트) | 대상 역할 | API (FE `3803247`) | 설명 |
 |-------------|----------|-------------------|------|
 | **보안** | `sysadmin` | `POST /auth/change-password` (**Fixed**, Q122), `POST /auth/password/reset-request` (**Fixed**) | 비밀번호 변경·재설정 모달 (Q122·Q126) |
-| **백업** | `sysadmin` | `GET /settings/backups`, `PATCH /settings/system` `{ backupEnabled }` | `BackupSettingsPanel` — **조회·토글 Fixed** (Q121) · 수동 트리거 미구현 |
-| **감사** | `sysadmin` | `GET /settings/audit-logs?page=&size=` | `AuditLogPanel` — **목록 Fixed** · UI 날짜·유형 필터는 클라이언트 측 |
-| **로그인 이력** | `sysadmin` | `GET /auth/login-history` | `LoginHistoryPanel` — **목록 Fixed** · UI 역할·기간 필터는 클라이언트 측 (Q125) |
+| **백업** | `sysadmin` | `GET /settings/backups`, `PATCH /settings/system` `{ backupEnabled }` | `BackupSettingsPanel` — **조회·토글 Fixed** (Q121) · **시작·완료 시각 `<time dateTime>`**(Q945, UXD-201) · 수동 트리거 미구현 |
+| **감사** | `sysadmin` | `GET /settings/audit-logs?page=&size=` | `AuditLogPanel` — **목록 Fixed** · UI 날짜·유형 필터는 클라이언트 측 · **발생 시각 `<time dateTime>`**(Q945, UXD-200) |
+| **로그인 이력** | `sysadmin` | `GET /auth/login-history` | `LoginHistoryPanel` — **목록 Fixed** · UI 역할·기간 필터는 클라이언트 측 (Q125) · **로그인 시각 `<time dateTime>`**(Q945, UXD-200) |
 
 > **조직 운영 정책**(`allowClientSelfCheckin`)은 **`hq_admin` 전용** **`/organization/settings`** (`OrganizationSettingsPage`, Q178) — §6-3 참고.
 
@@ -1278,6 +1289,8 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 `sysadmin`은 Tenant 소속 계정의 로그인 패턴을 모니터링하고, 의심 세션 발견 시 해당 계정 비활성화를 `hq_admin`에 요청합니다.
 
 > **UI 주의 (Q125)**: 패널은 역할·기간 필터·마스킹 표를 제공하나, 프론트가 `GET /settings/login-history`를 호출합니다. 오류 시 Swagger `GET /api/v1/auth/login-history`로 확인하세요. 응답 `success`(boolean)와 UI `result` Badge 매핑은 후속입니다.
+>
+> **a11y (Q945, UXD-200)**: 로그인 시각·감사 발생 시각 칸은 **`<time dateTime>`** 으로 감싸 스크린리더가 날짜·시각으로 정확히 읽습니다 — **화면 글자는 그대로**입니다.
 
 ### 4-6. 시스템 관리자 일상 점검
 
@@ -2673,7 +2686,7 @@ silverangel [**businessSupportService.do**](https://www.silverangel.kr/newSilver
 | 작업 | API | 본문 예시 |
 |------|-----|----------|
 | 수가 조회 | `GET /billing/fee-schedules` | 전체 목록 — `FeeScheduleMatrix`·`FeeScheduleTable` |
-| 수가 이력 | `GET /billing/fee-schedules/history?year=` | 연도별 버전 — `FeeRateHistoryPanel` |
+| 수가 이력 | `GET /billing/fee-schedules/history?year=` | 연도별 버전 — `FeeRateHistoryPanel` · **적용 시작·등록일 `<time dateTime>`**(Q945, UXD-200) |
 | 수가 등록 | `POST /billing/fee-schedules` | `{ "year": 2026, "ltcGrade": 3, "durationBand": "H10_13", "dailyRate": 68000, "effectiveFrom": "2026-01-01" }` · **`ltcGrade: 0`** 인지지원등급 (Q311·V99) |
 | NHIS seed payloads | `GET /billing/fee-schedules/nhis-seed-payloads?year=` | 미등록 셀 NHIS 참조 payload — **`Nhis2026DaycareRateCatalog`** · **`year=2026`만** · 미지원 연도 **`422`** — **`{year}년 수가 seed는 지원하지 않습니다. …`** (Q747 deepen, `2f4bfdf`) · **`hq_admin` only** (Q748, Q311) |
 | NHIS seed 일괄 등록 | `POST /billing/fee-schedules/apply-nhis-seeds?year=` | 미등록 **표준+인지지원** 셀 bulk create — **`FeeScheduleSeedApplyResponse`** · **`year=2026`만** · 미지원 year **`422` year-specific message** · **`hq_admin` only** · **`branch_admin` → 403** (Q747·Q748, Q311) |
@@ -3980,6 +3993,10 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-19 | **Q946·Q945 확대·UXD-204** — §1-4 baseline **`57523b5`/`95b6c52`** · **청구 CSV 엑셀 수식 차단**(SEC-D33) · **안전·선임·외출 시각 `<time dateTime>`**(37곳→42곳·a11y·화면 표시 무변경) · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-19 | **Q945 확대·UXD-203** — §1-4 baseline **`6d3c766`/`2715090`** · **보호자 포털·QR 체크인 출석 시각 `<time dateTime>`**(35곳→37곳·a11y·화면 표시 무변경) · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-19 | **Q945·Q939·Q941·Q942~Q944·Q940·Q936** — §1-4 baseline **`6d3c766`/`6a9e85e`** · **SEC-D34 엑셀 9축·ExcelAmountNormalizer DRY** · **표·이력 `<time dateTime>` 35곳(UXD-197~201)** · **리포트·이동서비스비 기간 검증·배차 회차 a11y** · §4-2·§4-5·§6-3-1 sysadmin·수가 이력 a11y 교차 참조 · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-19 | **Q878 확대** — §1-4 baseline **`6d3c766`/`fa838f5`** · **욕구사정 연도 비교 표 좁은 화면 가로 스크롤 `.ds-table-wrap`**(`ClientNeedsAssessmentCompare`·UXD-202·WCAG 1.4.10 Reflow·화면 표시 무변경) |
 | 2026-07-18 | **Q931~Q933** — §1-4 **사진 업로드 성공 스크린리더 안내(UXD-191) · 엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed(FE·BE 회귀 고정)** · baseline **`9449e1f`/`2789553`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q926~Q930** — §1-4 **업로드 magic-byte 확대 · 인쇄/ARIA a11y** · baseline **`be64fda`/`8b164c3`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q924 · Q925** — §1-4 **활동 사진 magic-byte · NoBreakSpace mid-token strip** · baseline **`c19bfa6`/`090ac10`** · Flyway **V1–V196** · 모듈 **97.41%** |

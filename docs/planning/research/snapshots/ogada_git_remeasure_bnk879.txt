@@ -1,0 +1,72 @@
+BNK-879 ogada git remeasure (2026-07-18T21:00:00Z)
+rotation: ogada git 실측 6-8h
+
+## src/backend
+HEAD: ec7a1ce  (BNK-878 @ec7a1ce → 동일 HEAD·zero advance)
+subject: fix(v3/SEC-D34): normalize day-marker-suffixed NHIS service days instead of dropping row value
+ahead_of_test: 767 vs 598d108
+WT: CLEAN
+
+## BE inventory (@ec7a1ce)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (byte/count-exact IDENTICAL BNK-836→879 = 39차·endpoint 신설 0)
+- @RestController (loose incl. Advice): 81
+- @Test strict (git grep `@Test\b`): 2392 (BNK-878 2392 → IDENTICAL·BE zero advance)
+- Test.java files: 296 (+1 Tests.java = 297)
+- Flyway: V1–V196 (신규 0·latest V194/V195/V196)
+
+## src/frontend
+HEAD: 6c280d0  (BNK-878 @171075f → +1 commit)
+subject: fix(v1.2.1/transport): clear stale fee records on rejected service-fee date range (G16 id=2 form polish)
+ahead_of_test: 23 vs b23711f
+WT: CLEAN
+
+diff (171075f vs 6c280d0):
+ src/components/transport/TransportServiceFeePanel.jsx      |  3 +++
+ src/components/transport/TransportServiceFeePanel.test.jsx | 24 ++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+
+## FE inventory (@6c280d0)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (BNK-878 CARRY·product route 무변·form polish only)
+- Page.jsx (prod, excl .test.jsx): 106 (BNK-878 CARRY)
+- FE test files: 541 (226 .test.js + 315 .test.jsx·TransportServiceFeePanel.test.jsx in-place +24·신규 0)
+- 모듈 커버 KPI: 97.41% (28.25/29·비-1.0 실 id 2/8/10=0.85·12=0.7·진성갭 0)
+
+## merge gate
+FE 23 + BE 767 = 790 (BE-heavy)
+FE ahead 23 vs origin/test=b23711f (tester FF 대기·rev-list 0/23)
+BE ahead 767 vs origin/test=598d108
+
+## 규제 백본 재실측 (NHIS #44)
+NHIS #44 canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · 601차 byte-IDENTICAL(BNK-877 600차 → +1·zero drift·BNK-878 미측정)
+verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+→ Transport 상수(RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요 (id=2 0.85 carry)
+snapshot: nhis_jo44_live_bnk879.html (c886ff1f·byte-IDENTICAL nhis_jo44_live_bnk872~877)
+
+## BNK-878 → BNK-879 delta
+- BE zero advance (ec7a1ce carry·coder develop 신규 커밋 0·WT CLEAN·ahead 767·@Test 2392)
+- FE +1 commit (6c280d0) — id=2/G16 이동서비스비 form-polish 계보 확장:
+  · fix(v1.2.1/transport): clear stale fee records on rejected service-fee date range
+  · TransportServiceFeePanel.load 가 결측/역방향 조회 기간을 사전 차단할 때 성공/skip
+    배너만 지우고 직전 유효 기간의 fee record 목록은 그대로 두어, 오류 배너와
+    모순되는 stale fee list 가 남던 문제를 pre-block 분기에서 record 도 초기화 →
+    표가 EmptyState 로 fallback (유효 기간 load/generate 동작 무변)
+  · 9b0481d(stale generate banner clear·BNK-875) 계보 연장
+  · in-place test +24(TransportServiceFeePanel.test.jsx)·신규 파일 0·product route/page 무변
+  · id=2 form-polish 계보: BNK-862/863 회차·864 정차상한·866 stale-state·867 helper
+    ·868 blocked focus·869 exponent/hex+out-of-range·871 Integer max·875 stale banner
+    ·876 역방향 기간 reject·877 결측 기간 reject·879 rejected range stale record clear
+- HTTP 442 byte/count-exact IDENTICAL (BNK-836→879 = 39차·endpoint 신설 0)
+- 모듈 97.41% CARRY (28.25/29·id=2/8/10=0.85·12=0.7·진성갭 0)
+- NHIS #44 601차 zero drift·Transport 상수 재조정 불요
+- merge gate 790 (FE 23 + BE 767·BE-heavy·신규 마이그레이션 0)
+- 신규 진성갭 P0 승격 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0
+- per-cycle minimum 4종 충족(NHIS #44 601차 재실측 + FE id=2 form 워크플로 1블록 +
+  COMPETITOR_MATRIX @HEAD 갱신 + BENCHMARK_REPORT §879)

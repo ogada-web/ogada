@@ -1,0 +1,82 @@
+# BNK-917 — ogada git 실측 6-8h baseline (2026-07-20T00:47:00Z)
+# rotation: ogada git 실측 · COMPETITOR_MATRIX @HEAD 일괄 갱신
+# methodology: git rev-parse · Route/Page find+ls-files · @Test strict · HTTP Mapping count · NHIS #44 + ezcare home live-fetch
+
+## HEADs (git 실측 우선 · workspace_baseline.yaml 보다 우선)
+- frontend develop = 03c0a2ff8526ef58f46fd34cb0780e8c10db718e (@03c0a2f)
+  - BNK-916 @1841144 → +1 ADVANCE
+  - msg: fix(v1.2.1/nursing): pre-block reversed date range before pressure-ulcer provision report
+  - ahead 44 vs origin/test=b23711f (tester FF 대기) · WT CLEAN
+  - shortstat: 4 files +113/−4 (pressureUlcer.js +test · PressureUlcerPage.jsx +test)
+- backend develop = db1ff724ef1e30cdeecd0ad3e910acd1d1d22f54 (@db1ff72)
+  - BNK-916 @39b7c54 → +1 ADVANCE
+  - msg: fix(v3/SEC-D37): redact access-key and payroll amounts in notification payload at rest
+  - ahead 778 vs origin/test=598d108 · WT CLEAN
+  - shortstat: 4 files +234 (NotificationPayloadRedactor +Test · NotificationService +Test)
+
+## FE KPI
+- Route 133 = App.jsx <Route\b 132 + <Routes> 1
+- Page 106 = src/pages/*Page.jsx non-test (find=106 · git ls-files=106 · BNK-914 authoritative)
+- FE test file 550 = 234 .test.js + 316 .test.jsx (BNK-916 549 → +1 · pressureUlcer.test.js 신규)
+- path depth hist {0:1, 1:23, 2:73, 3:30, 4:4} max=4 · reportish paths≈29
+- top-level route modules n=26 (accounting..visits)
+
+## BE KPI
+- @RestController 81 · @Entity 92
+- Test file: *Test.java 299 + *Tests.java 1 = 300 (BNK-916 298+1 → +1 NotificationPayloadRedactorTest.java)
+- @Test strict (^\s*@Test\b) 2433 (BNK-916 2427 → +6 = RedactorTest +4 + ServiceTest +2)
+- HTTP endpoint 442 = GET231/POST144/PATCH44/PUT13/DELETE10 · **77차** byte/count-exact IDENTICAL (BNK-836→917 · endpoint 신설 0)
+- Flyway V1–V196 (신규 0)
+
+## merge gate
+- FE ahead 44 + BE ahead 778 = **822** (BE-heavy · tester FF 대기)
+
+## 모듈 커버
+- 97.41% CARRY (Route/Page/HTTP 무확장 · 신규 leaf 0 · SEC-D37/욕창 date pre-block = hardening only)
+
+## Transport 수가 상수 git grep (재확인)
+- TransportServiceFeeParityCatalog.ONE_WAY_RATIO = new BigDecimal("0.5")
+- TransportDistanceBand: RU_1(러-1 5km 미만)/RU_2(5~10)/RU_3(10~20)/RU_4(20km+)
+- 상수 재조정 불요
+
+## closed band 6-path App.jsx LIVE (재오픈 0)
+- /clients/:clientId/care-plan-form
+- /dashboard · /dashboard/hq
+- /transport/service-fees
+- /billing/cms
+- /clients/linkage-records
+- /clients/home-newsletter
+
+## FE ADVANCE — pressure-ulcer L03_M15 date-range pre-block (메뉴/필드/워크플로)
+- Route family LIVE: /nursing/pressure-ulcer/{assessment,plan,records,reports,reports/provision}
+- pamcode L03_M05 cohort · L03_M15 provision (케어포 view.provide_YC_nursing dual-source)
+- FE pre-block: resolvePressureUlcerDateRangeError ← careReports shared helper
+- verbatim message: 「종료일은 시작일 이후여야 합니다.」 (BE PressureUlcerService.resolveDateWindow lockstep)
+- Field render-prop: pu-provision-from-date / pu-provision-to-date · aria-invalid + aria-describedby cross-ref
+- form-polish lineage: care-report → nursing-report → program-report → safety(SEC-D41) → **pressure-ulcer provision**
+
+## BE ADVANCE — SEC-D37 NotificationPayloadRedactor (보안 at-rest)
+- After provider dispatch: accessKey (STAFF_ACCESS_KEY) · netPay/paymentTotal/deductionTotal (STAFF_PAYROLL_STATEMENT) → "***"
+- Providers still see plaintext at send time · DB dump TTL window 보호
+- fail-open on parse error · endpoint 신설 0 · HTTP 442 IDENTICAL
+- 경쟁 4종 공개 근거 0 → SUPERIOR「확인」(가정 아님 · 코드 실측)
+
+## Evidence URL 재실측
+1. NHIS #44 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+   - HTTP 200 · 7,572B · md5 c886ff1f · cmp vs bnk916 = BYTE-IDENTICAL · **638차**
+   - verbatim: 러-1~러-4 · 50% · 1일 1회
+2. 이지케어 Home https://ezcare.easyms.co.kr/
+   - HTTP 200 · 69,301B · md5 54160b6e
+   - data-count 53.2 / 9298 / 4675 / 2353 / 1820 = ZERO DRIFT vs bnk912~914 (adoption top-line)
+   - raw size/md5 DRIFT = testimonial/cache only「가정」 · 지표 무변「확인」
+
+## 갭 판정
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 번복 0 · 미확인 승격 0
+- P3/P4「가정」 candidate 14종 carry
+- npm test / mvn test: 본 사이클 미실행 (vitest run 타 프로세스 점유 확인 · KPI는 git/소스 계수로 재산정 · docs/qa/VITEST_CONCURRENCY.md)
+
+## per-cycle minimum
+- 신규/재실측 evidence URL 2+
+- 메뉴/필드/워크플로 1블록+ (pressure-ulcer L03_M15 + SEC-D37)
+- COMPETITOR_MATRIX @03c0a2f/@db1ff72 갱신
+- BENCHMARK_REPORT §917

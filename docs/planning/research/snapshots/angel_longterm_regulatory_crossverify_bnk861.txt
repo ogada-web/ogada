@@ -1,0 +1,96 @@
+# BNK-861 — 엔젤·롱텀·규제 역공학 4–6h (work-log snapshot)
+# 조사일: 2026-07-18T08:00:00Z  |  owner=BNK audience=PLN
+# rotation: BNK-860(케어포 0-2h) → 엔젤·롱텀·규제 4–6h
+# 초점: silverangel CMS 부가서비스 워크플로 심화 · law/NHIS 이동서비스비 러-1~4 재확인 · 규제 백본 8-URL live 재실측
+
+================================================================
+[1] 규제/경쟁 백본 8-URL live 재실측 (curl --max-time 25~30, 2026-07-18T08:00Z)
+================================================================
+URL                                                        HTTP  SIZE     md5(raw)         판정(vs BNK-859 snapshot)
+NHIS #44 joHistoryContent(SEQ=1637/CONTENTS=3281769)       200   7,572    c886ff1f...      byte-IDENTICAL = 587차
+silverangel system_feature.do                              200   45,601   c9507190...      byte-IDENTICAL
+silverangel newSilverangel/service/extraService.do         200   81,637   f9c5d877...      byte-IDENTICAL
+silverangel newSilverangel/service/feeService.do           200   44,513   eab352a8...      byte-IDENTICAL
+silverangel / (home)                                       200   101,220  66382835...      byte-IDENTICAL
+longterm 502 npeb502m01.web                                200   89,162   56185735...      byte-IDENTICAL(lean-shell carry)
+longterm 610 npeb610m01.web                                200   88,399   fad1ce61...      byte-IDENTICAL
+law.go.kr admRulInfoP 2025-247(admRulSeq=2100000271110)    200   78,450   1dacb534(raw)    strip=a913639a semantic IDENTICAL
+
+- law raw md5 변동은 Time=/etaHash/nonce/token/mrsCd/_wa cache-buster 만 → strip 후 a913639a (BNK-835/837/851/858/859 strip LOCK carry).
+- longterm 502 89,162B lean-shell = BNK-859 재현(BNK-858 full-shell 89,171B와 ±9B 「양방향 오실레이션 continues」 carry·비실체 DRIFT).
+- 결론: 규제 백본 zero substantive drift → Transport 상수 재조정 불요·id=2 0.85 carry·기획 트리거 0.
+
+================================================================
+[2] 신규 메뉴/필드/워크플로 블록 — silverangel 본인부담금 자동이체(CMS) 부가서비스 심화
+    출처: silverangel_extraService_live(=BNK-859 f9c5d877 byte-IDENTICAL) verbatim grep
+================================================================
+■ 결제수단(3-method) — 외부 벤더 「효성CMS」 종속
+  - 자동이체(CMS): 보호자 통장에서 매달 자동출금 → 납부 여부 매달 체크 불필요·기관 입금내역 체크 부담 경감
+  - 가상계좌: 가족 대표 1인이 부여받고 다른 가족이 입금해도 대표 이름으로 처리 · 은행 선택 가능(송금수수료 절감)
+  - 카드결제: 카드 자동결제
+■ 항목별 분리 통장 자동 입금(정산관리)
+  - "본인부담금, 식재료비, 의료비(진료약제비) 등 항목별로 나누어 분리된 각 통장으로 자동 입금 → 계좌별 정산관리"
+  - "한 눈에 보기 쉬운 재무회계자료 형태로 출력 → 외부 감사 대응"
+  - "CMS 이용료는 수납금액과 별도로 정산"
+■ 벤더 수수료(verbatim) — feeService/extraService
+  - 자동이체 : 250원 / 1건
+  - 가상계좌 : 300원 / 1건
+  - 월 이용료 표기 30,000 (CMS 30,000/자동이체 250/가상계좌 300 = BNK-851~859 LOCK 재확인)
+  - "이용요금은 효성CMS에 납부됩니다" · "효성 CMS 연동정보 입력 필수" · "계좌분리 정산 서비스는 효성 CMS 별도문의"
+■ 관찰: silverangel CMS는 효성CMS(Hyosung CMS) PG 벤더에 종속 — 연동정보 입력 필수 + 건당 수수료 + 월정액.
+  이동서비스/배차/GPS/차량 0-hit 재확인(system_feature 「사진」은 회의·교육·입소자 컨텍스트).
+
+================================================================
+[3] ogada crosswalk (git 실측 @HEAD)
+================================================================
+- ogada 결제수단 = 6-method SUPERSET: 자동이체(CMS)·가상계좌·계좌이체·카드결제·현금·간편결제
+  (근거: CmsPage.jsx·PaymentPage.jsx·BillingDetailPage.jsx grep — 자동이체/가상계좌/계좌이체/카드결제/현금/간편결제 라벨 확인)
+  → silverangel 3-method(효성CMS 벤더 종속) 대비 계좌이체·현금·간편결제 3종 추가 SUPERSET · 벤더 lock-in 없음(자체 catalog 관리)
+- silverangel 「항목별 분리 통장(본인부담금/식재료비/의료비)」 = ogada 항목 분리 청구 + 7-2-1 의료비공제(연말정산)
+  `MedicalExpenseDeductionPanel.jsx`(BNK-860 §860-1) 대응 · 의료비(진료약제비) 축 crosswalk 성립
+- /billing/cms (CmsPage lazy route)·/billing/copay-rates·/billing/calculator(CopayCalculatorPage) route 실측 carry
+
+================================================================
+[4] NHIS #44 이동서비스비 제34조 verbatim 재확인 (러-1~4)
+================================================================
+- 「제34조(주·야간보호급여 이동서비스비용 등)」 본문 grep 확인:
+  ① 실거주지↔장기요양기관 최단거리(편도)에 따라 러-1~러-4 산정
+  ② 이용 횟수 무관 1일 1회만 산정 · 편도만 이용 시 러-1~러-4 비용의 50% 산정
+  ③ 제공기관 신청에 따라 산정 · 수급자 부담하지 아니함
+  ④ 이동서비스 일지 작성·보관 의무
+  ⑤ 세부사항은 공단 이사장이 정함
+- keyword count: 러-1(1)·러-4(1)·편도(2)·이동서비스(13)·급여비용(5) = BNK-858/859 IDENTICAL
+- ogada 대응: TransportServiceFeeParityCatalog RU_1..RU_4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY 상수 IDENTICAL → 재조정 불요
+
+================================================================
+[5] ogada baseline git 실측 (@HEAD)
+================================================================
+- BE develop @49349e4  refactor(v3/SEC-D34): unify missing-excel copy via MISSING_EXCEL_MESSAGE constant
+  · BNK-860 @73a3a63 → +1 commit · 2 files +5/-4 (BankDepositImportService +1/-1 · StaffNhisCaregiverImportService +4/-3)
+  · 잔여 outlier 리터럴 "업로드할 엑셀 파일이 없습니다." 4-hit → MISSING_EXCEL_MESSAGE 상수로 통일 · ahead 754 vs origin/test
+- FE develop @5e816e6  refactor(v1.2.1/v3/SEC-D34): extract unreadable-excel copy to EXCEL_IMPORT_UNREADABLE_MESSAGE constant
+  · BNK-860 @495040f → +1 commit · 2 files +34/-1 (excelImportFiles.js +11/-1 · excelImportFiles.test.js +24)
+  · "엑셀 파일을 읽을 수 없습니다." → EXCEL_IMPORT_UNREADABLE_MESSAGE export 상수 + test lock · ahead 8 (tester FF 대기)
+- Route 133(<Route\b 132 + <Routes> 1) · Page 106(*Page.jsx not test) · Flyway V1–V196(신규 0)
+- BE Test 297(296 Test.java + 1 Tests.java) · BE @Test strict 2369(BNK-860 IDENTICAL·refactor·신규 @Test 0) · @RestController 81(loose)
+- FE test 541(226 .test.js + 315 .test.jsx·in-place +24 assertion·신규 파일 0)
+- HTTP 442(GET231/POST144/PATCH44/PUT13/DELETE10) — 22차 byte-exact IDENTICAL(BNK-836→861·endpoint 신설 0)
+- merge gate 762(FE 8 + BE 754·BE-heavy) · 모듈 97.41%(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+================================================================
+[6] SEC-D34 계보 축 「o」 — 엑셀 import 오류 카피 상수화(DRY) FE↔BE 2-layer
+================================================================
+- 축 n(BNK-860): entrypoint missing-copy 회귀 lock + FE house-style 정렬
+- 축 o(BNK-861): 상수 추출 완결
+  · BE: MISSING_EXCEL_MESSAGE 로 잔여 리터럴 통일 → 5-import-service missing 카피 매직스트링 0
+  · FE: EXCEL_IMPORT_UNREADABLE_MESSAGE 추출 → 모든 SEC-D34 FE 메시지가 export 상수(매직스트링 0)
+  · 효과: 향후 문구 변경 단일 지점·회귀 test lock(rules §2 코딩표준 매직스트링 상수화 정합)
+- 경쟁 4종: 엑셀 import 오류 카피 verbatim/상수화 근거 0-hit(케어포/이지케어 FAQ/엔젤/롱텀) → ogada SUPERIOR carry
+
+================================================================
+per-cycle minimum 충족:
+  · 기존 URL 재실측 8건(+ 변동 기록: raw law drift = cache-buster·semantic IDENTICAL) ✓
+  · 메뉴/필드/워크플로 1블록(silverangel CMS 효성 벤더 3-method + 항목별 분리 통장 워크플로) ✓
+  · COMPETITOR_MATRIX 1행+ @HEAD 갱신 ✓
+  · BENCHMARK_REPORT §861 소절 ✓
+신규 snapshot: txt 1 (이 파일) · 덮어쓰기 0 · 가정 번복 0 · KPI promote 0

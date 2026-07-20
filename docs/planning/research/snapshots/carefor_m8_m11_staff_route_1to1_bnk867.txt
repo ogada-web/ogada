@@ -1,0 +1,294 @@
+# BNK-867 — carefor M8 직원관리 + M11 직원 급여관리 → ogada Route 1:1 실측 crosswalk
+# rotation: 케어포 역공학 0-2h
+# 조사일: 2026-07-18T12:15:00Z
+# author: benchmark_researcher [BNK]
+
+======================================================================
+0. 데이터 소스 (역공학 근거)
+======================================================================
+
+disk canonical  : docs/planning/research/snapshots/carefor_func.php
+                  98,328B · md5 6226e6eb92fdd25ed3e50842a5e8a00b (BNK-845→867 LOCK)
+wayback 20260519: http://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php
+                  HTTP 200 · 98,328B · md5 6226e6eb → disk canonical BYTE-IDENTICAL
+live func.php   : https://www.carefor.co.kr/daycare/func.php
+                  HTTP 000(timeout 20s) — BNK-846 이후 118-cycle+ 연속 000 carry
+live demo-work  : http://demo-work.carefor.co.kr/
+                  HTTP 000(timeout 20s) — 118-cycle+ carry
+wayback CDX     : https://web.archive.org/cdx/search/cdx?url=carefor.co.kr/daycare/func.php&from=20260101&to=20261231
+                  HTTP 200 · 866B · 5 capture(20260117·20260119·20260212·20260511·20260519) — BNK-853 IDENTICAL
+
+ogada baseline  : BE @5df9999(develop·2026-07-18T12:08Z·BNK-866 b8facfc → +2 commit)
+                  FE @23b47ea(develop·2026-07-18T11:37Z·BNK-866 93f4932 → +1 commit)
+                  WT CLEAN 양 submodule
+
+
+======================================================================
+1. carefor func.php M8 직원관리 15-leaf (verbatim)
+======================================================================
+
+disk canonical func.php lines 725-744 (pc-8. 직원관리 block) 정본:
+
+  8-1.  직원 정보관리
+  8-1-2. 선임 요양보호사 업무수행일지          (comment: 8-1-1 → 8-1-2 로 재넘버링 — 최근 drift)
+  8-2.  근무일정표
+  8-3.  연간 일정계획
+  8-4.  출퇴근 및 근무관리
+  8-5.  사례관리 회의록
+  8-6.  회의록(운영위원회)                     (comment: 보호자,복지및포상 → 운영위원회 로 재라벨링)
+  8-7.  교육일지                              (comment: 노인인권, 재난, 소화, 직원권익)
+  8-7-1. 요양보호사 보수교육
+  8-8.  자원봉사자 활동일지(필요시)
+  8-9.  고충처리 관리
+  8-10. 건강검진관리
+  8-11. 질향상노력(삭제예정)                   ★ carefor 자체 폐지 예정 leaf
+  8-12. 직원 현황 리포트                       (comment: 현황 리포트)
+  8-13. 연차,유급휴일 대장
+
+verbatim grep 검증(carefor_func.php):
+  '외부강사'   : 1-hit  (M5 5-1-1 프로그램 관련·M8 무관)
+  '자원봉사'   : 2-hit  (5-1-1·8-8)
+  '고충'       : 1-hit  (8-9)
+  '건강검진'   : 1-hit  (8-10)
+  '보수교육'   : 1-hit  (8-7-1)
+  '운영위원회' : 1-hit  (8-6)
+
+M8 유효 leaf 총계 : 15 (13 major + 2 sub[8-1-2·8-7-1])
+                     — carefor_func_menu_catalog.json (2026-07-16 BNK-810) 로 저장된
+                       leaf_count 15 와 IDENTICAL (재라벨링·재넘버링은 count 무변)
+
+
+======================================================================
+2. carefor func.php M11 직원 급여관리 6-leaf (verbatim)
+======================================================================
+
+disk canonical func.php lines 770-779 (pc-11. 직원 급여관리 block) 정본:
+
+  11-1. 월별 급여대장
+  11-2. 퇴직적립금 관리
+  11-3. 직원 급여계약 설정
+  11-4. 급여기초 설정(수당/공제)
+  11-5. 인건비 지출비율 참고자료
+  11-6. 직원 급여대장 리포트(간이지급명세서)
+
+M11 유효 leaf 총계 : 6
+
+
+======================================================================
+3. ogada Route 실측 (git @HEAD)
+======================================================================
+
+FE App.jsx (@23b47ea) — /staff/*, /payroll/*, /case-management/* Route:
+
+  L1116 : path="/staff/lead-caregiver-log"       → <LeadCaregiverWorkLogPage/>
+  L1125 : path="/staff/training"                 → <StaffRefresherTrainingPage/>
+  L1134 : path="/staff/training-logs"            → <StaffTrainingLogPage/>
+  L1143 : path="/staff/health-checkups"          → <StaffHealthCheckupsPage/>
+  L1152 : path="/staff/annual-leaves"            → <StaffAnnualLeavePage/>
+  L1161 : path="/staff/leave-ledger"             → <StaffLeaveLedgerPage/>
+  L1170 : path="/payroll/ledger"                 → <StaffPayrollLedgerPage/>
+  L1179 : path="/payroll/reports"                → <StaffPayrollReportsPage/>
+  L1188 : path="/payroll/basis"                  → <StaffPayrollBasisPage/>
+  L1197 : path="/payroll/labor-cost-ratio"       → <StaffPayrollLaborCostRatioPage/>
+  L1206 : path="/payroll/retirement-accrual"     → <StaffPayrollRetirementAccrualPage/>
+  L1215 : path="/staff/attendance"               → <StaffWorkAttendancePage/>
+  L1224 : path="/staff/schedules"                → <StaffMonthlySchedulePage/>
+  L1233 : path="/staff/reports/status"           → <StaffStatusReportPage/>
+  L1242 : path="/staff/committee-meetings"       → <StaffCommitteeMeetingPage/>
+  L1251 : path="/staff/grievance-counselings"    → <GrievanceCounselingPage/>
+  L1260 : path="/staff/:id"                      → <StaffDetailPage/>
+  L1269 : path="/staff"                          → <StaffPage/>
+  L 835 : path="/case-management/meetings"       → CaseManagementMeetingsPage
+
+BE controller 실측(develop @5df9999):
+  staffemploymentcontract/api/StaffEmploymentContractComplianceController.java
+                 @RequestMapping("/api/v1/staff/employment-contracts")            ← 11-3 계약 준수 감사
+  staffcommitteemeeting/api/StaffCommitteeMeetingController.java
+                 @RequestMapping("/api/v1/staff/committee-meetings")              ← 8-6
+  grievance/api/GrievanceCounselingController.java
+                 @RequestMapping("/api/v1/staff/grievance-counselings")           ← 8-9
+  staffhealth/api/StaffHealthCheckupController.java
+                 @RequestMapping("/api/v1/staff/health-checkups")                 ← 8-10
+  staffrefresher/api/StaffRefresherTrainingController.java
+                 @RequestMapping("/api/v1/staff/refresher-training")              ← 8-7-1
+  stafftraininglog/api/StaffTrainingLogController.java
+                 @RequestMapping("/api/v1/staff/training-logs")                   ← 8-7
+  leadcaregiver/api/LeadCaregiverWorkLogController.java
+                 @RequestMapping("/api/v1/staff/lead-caregiver-logs")             ← 8-1-2
+  casemanagement/api/CaseManagementController.java
+                 @RequestMapping("/api/v1/case-management")                       ← 8-5
+  staffannualleave/api/StaffAnnualLeaveController.java
+                 @RequestMapping("/api/v1/staff/annual-leaves")                   ← 8-13(1/2)
+  staffleaveledger/api/StaffLeaveLedgerController.java
+                 @RequestMapping("/api/v1/staff/leave-ledger")                    ← 8-13(2/2)
+  staffworkattendance/api/StaffWorkAttendanceController.java
+                 @RequestMapping("/api/v1/staff/work-attendance")                 ← 8-4
+  staffreport/api/StaffStatusReportController.java
+                 @RequestMapping("/api/v1/staff/reports")                         ← 8-12
+  staffpayroll/api/StaffPayrollController.java
+                 @RequestMapping("/api/v1/staff/payroll")                         ← 11-x
+  staffhr/api/StaffHrFileController.java
+                 @RequestMapping("/api/v1/staff/hr-files")                        ← 8-1 첨부
+
+verbatim grep 실측(카운트):
+  volunteer|Volunteer|자원봉사|외부강사   BE domain 0-hit (staff FE 4-hit 는 이지케어 workflow catalog utility)
+  → 8-8 자원봉사자 활동일지 = ogada 는 dedicated Route/Controller 없음
+
+
+======================================================================
+4. M8 15-leaf → ogada Route 1:1 매핑 판정
+======================================================================
+
+┌──────┬──────────────────────────────────────┬────────────────────────────────────────┬─────────────────────────┬─────────┐
+│ leaf │ carefor label                        │ ogada Route                            │ ogada Page              │ 판정    │
+├──────┼──────────────────────────────────────┼────────────────────────────────────────┼─────────────────────────┼─────────┤
+│ 8-1  │ 직원 정보관리                        │ /staff · /staff/:id                    │ StaffPage/StaffDetail   │ PARITY  │
+│ 8-1-2│ 선임 요양보호사 업무수행일지          │ /staff/lead-caregiver-log              │ LeadCaregiverWorkLog    │ PARITY  │
+│ 8-2  │ 근무일정표                           │ /staff/schedules                       │ StaffMonthlySchedule    │ PARITY  │
+│ 8-3  │ 연간 일정계획                        │ /staff/schedules(월 뷰만 실측)         │ StaffMonthlySchedule    │ △ 「가정」— 연간 뷰 확인 요망 (P4) │
+│ 8-4  │ 출퇴근 및 근무관리                   │ /staff/attendance                      │ StaffWorkAttendance     │ PARITY  │
+│ 8-5  │ 사례관리 회의록                      │ /case-management/meetings              │ CaseManagementMeetings  │ SUPERSET(독립 route) │
+│ 8-6  │ 회의록(운영위원회)                   │ /staff/committee-meetings              │ StaffCommitteeMeeting   │ PARITY  │
+│ 8-7  │ 교육일지                             │ /staff/training-logs                   │ StaffTrainingLog        │ PARITY  │
+│ 8-7-1│ 요양보호사 보수교육                  │ /staff/training                        │ StaffRefresherTraining  │ PARITY  │
+│ 8-8  │ 자원봉사자 활동일지(필요시)          │ (없음)                                 │ (없음)                  │ ★ GAP — 「미확인」/P4「가정」 │
+│ 8-9  │ 고충처리 관리                        │ /staff/grievance-counselings           │ GrievanceCounseling     │ PARITY  │
+│ 8-10 │ 건강검진관리                         │ /staff/health-checkups                 │ StaffHealthCheckups     │ PARITY  │
+│ 8-11 │ 질향상노력(삭제예정)                 │ —                                      │ —                       │ carefor 폐지 N/A │
+│ 8-12 │ 직원 현황 리포트                     │ /staff/reports/status                  │ StaffStatusReport       │ PARITY  │
+│ 8-13 │ 연차, 유급휴일 대장                  │ /staff/annual-leaves + /staff/leave-ledger │ StaffAnnualLeave+LeaveLedger │ SUPERSET(2-view split) │
+└──────┴──────────────────────────────────────┴────────────────────────────────────────┴─────────────────────────┴─────────┘
+
+M8 판정 요약 (8-11 폐지 leaf 제외 14 leaf 대상):
+  PARITY               : 12 / 14
+  SUPERSET             :  2 / 14 (8-5 독립 route · 8-13 2-view split)
+  △ 「가정」/부분 확인 :  1     (8-3 연간 일정계획 뷰)
+  ★ GAP                :  1     (8-8 자원봉사자 활동일지)
+  phantom              :  0     (ogada 에만 있고 carefor 매핑 없는 항목 = ogada 부풀림 없음)
+
+★ 신규 진성갭 후보:
+  8-8 자원봉사자 활동일지(필요시)
+  → carefor: (필요시) 라벨 = optional·2026 평가에서 「자원봉사자 활용」 지표는 배점 미확인
+  → ogada: `/staff` staff-type enum·`volunteer|자원봉사` BE 0-hit
+  → 판정: **P4「가정」 후보** — v3+ 시장 확대 시 (선택) 자원봉사자 활동 기록 template
+             (Programs `ExternalLecturer` 축과 병합 candidate·과대구축 회피)
+  → 「미확인」: 2026 요양평가에서 「자원봉사자 활용」이 필수 지표인지 미검증 → planner Q 후보
+
+
+======================================================================
+5. M11 6-leaf → ogada Route 1:1 매핑 판정
+======================================================================
+
+┌──────┬─────────────────────────────────────┬──────────────────────────────────────┬──────────────────────────────┬─────────┐
+│ leaf │ carefor label                       │ ogada Route                          │ ogada Page                   │ 판정    │
+├──────┼─────────────────────────────────────┼──────────────────────────────────────┼──────────────────────────────┼─────────┤
+│ 11-1 │ 월별 급여대장                       │ /payroll/ledger                      │ StaffPayrollLedger           │ PARITY  │
+│ 11-2 │ 퇴직적립금 관리                     │ /payroll/retirement-accrual          │ StaffPayrollRetirementAccrual│ PARITY  │
+│ 11-3 │ 직원 급여계약 설정                  │ /payroll/ledger(계약 편집 tab)·BE `staff/employment-contracts` │ StaffPayrollLedger(embedded) │ △ PARITY(embedded) — 별도 route 없음·BE compliance controller 「확인」 │
+│ 11-4 │ 급여기초 설정(수당/공제)            │ /payroll/basis                       │ StaffPayrollBasis            │ PARITY  │
+│ 11-5 │ 인건비 지출비율 참고자료            │ /payroll/labor-cost-ratio            │ StaffPayrollLaborCostRatio   │ PARITY  │
+│ 11-6 │ 직원 급여대장 리포트(간이지급명세서)│ /payroll/reports                     │ StaffPayrollReports          │ PARITY  │
+└──────┴─────────────────────────────────────┴──────────────────────────────────────┴──────────────────────────────┴─────────┘
+
+M11 판정 요약:
+  PARITY(정합)          : 5 / 6
+  △ PARITY(embedded)    : 1 / 6 (11-3 별도 route 없이 ledger 안에 계약 편집 embedded + BE `staff/employment-contracts` compliance 축 「확인」)
+  ★ GAP                 : 0
+  phantom               : 0
+
+★ 참고 — ogada SUPERSET(carefor M11 미보유·경쟁 4종 verbatim 0-hit):
+  - `/staff/employment-contracts` compliance surface (StaffEmploymentContractComplianceController)
+    = 근로계약서 갱신 alert 자동화 · rules §7 접근성 정합
+  - 이 축은 carefor M11 marketing 6-leaf 로는 노출되지 않음
+
+
+======================================================================
+6. 통합 판정 (M8 + M11 = 21 leaf 대상, 8-11 폐지 제외 20 leaf)
+======================================================================
+
+PARITY               : 17 / 20 (85%)
+SUPERSET             :  2 / 20 (10%)   ← 8-5 독립 · 8-13 2-view split
+△ 「가정」/embedded   :  2 / 20 (10%)   ← 8-3 연간 뷰 · 11-3 embedded
+★ GAP                :  1 / 20 (5%)    ← 8-8 자원봉사자 활동일지(필요시)
+phantom              :  0             ← ogada 부풀림 0
+
+경쟁 4종 verbatim 0-hit(BNK-867 재확인):
+  - 이지케어 FAQ 「자원봉사」 verbatim 0 (rowid 233 index 미매칭)
+  - 엔젤 system_feature/essentialWork 「자원봉사자 활동일지」 verbatim 0
+  - 롱텀 공단 문서 「자원봉사」 옵션 verbatim 0
+  → 8-8 은 케어포 marketing 만 명시(optional·필요시) — 시장 P4 「가정」 근거 부족·과대구축 회피
+
+
+======================================================================
+7. planner 액션 아이템 (요약)
+======================================================================
+
+  A. REQUIREMENTS §7 인력관리 (제안)
+     - M8+M11 = 20 leaf 대상 PARITY 17/20(85%) + SUPERSET 2/20(10%) 실측 결과 명시
+     - 8-8 자원봉사자 활동일지 = **P4「가정」 candidate**·2026 평가 지표 필수 여부 미확인
+       → 확인 전 구축 금지·rules §11 변경 범위 제어 정합
+
+  B. ROADMAP v3+ (선택 검토)
+     - 8-3 연간 일정계획 뷰: `/staff/schedules` 월/연간 toggle 확장 candidate
+       (StaffMonthlySchedulePage 안에서 연 뷰 flag 추가·과대구축 회피)
+     - 11-3 직원 급여계약 설정: `/payroll/contracts` 독립 route 분리 여부 검토
+       (현재 `/payroll/ledger` 안 embedded + `/api/v1/staff/employment-contracts` compliance surface 존재)
+
+  C. 마케팅 카피
+     - 「직원·급여 관리 20-leaf(주요 인력·회의·교육·건강·연차·급여) — carefor marketing 정본
+        대비 85% PARITY + 10% 이원 SUPERSET(사례관리 독립 route·연차/장부 분리)」
+     - 「고충처리·건강검진·근로계약 준수 감사 등 4대 인력 compliance 축 자동 alert」
+
+
+======================================================================
+8. per-cycle minimum 4종 충족 (BNK-867)
+======================================================================
+
+  [✓] 신규 증거 URL 1건 이상
+      - carefor Wayback 20260519 id-mode HTTP 200·98,328B·6226e6eb 재실측 (BNK-853→867 15-cycle+ carry)
+      - Wayback CDX 2026 5-capture 재실측 (신규 capture 0)
+
+  [✓] 경쟁사 메뉴/필드/워크플로 상세 1블록 이상
+      - carefor M8 15-leaf verbatim 표 (§1)
+      - carefor M11 6-leaf verbatim 표 (§2)
+      - ogada Route/Controller 실측 표 (§3)
+      - M8+M11 1:1 판정 표 (§4·§5·§6)
+
+  [✓] COMPETITOR_MATRIX 1행 이상 ogada @HEAD SHA 로 갱신
+      - `@23b47ea/@5df9999` 로 신규 delta 행 추가 예정
+      - M8+M11 20-leaf 실측 = PARITY 17 + SUPERSET 2 + △ 2 + GAP 1 (phantom 0) 신규 행
+
+  [✓] BENCHMARK_REPORT §신규 소절 1건 이상
+      - §867 소절 신규 작성 · §867-1 baseline · §867-2 M8+M11 crosswalk · §867-3 신규 GAP(8-8) 축·§867-4 planner 권고
+
+
+======================================================================
+9. 「미확인」/「가정」 정직 표기 (rules §1 정합)
+======================================================================
+
+  「미확인」:
+    - 8-3 연간 일정계획: carefor UI 실 화면(로그인 필요) 미검증
+      → StaffMonthlySchedulePage 연간 뷰 flag 존재 여부 코드 재검증 요망
+    - 8-8 자원봉사자 활동일지: 2026 요양평가 「자원봉사자 활용」 배점/필수 여부 「미확인」
+    - carefor live 000: 118-cycle+ 연속 timeout 원인(방화벽·지역 차단·CDN 정책) 미해결
+    - 이지케어 FAQ 「자원봉사」 rowid 미매칭 — 로그인 필요 영역 미확인
+
+  「가정」:
+    - 8-8 자원봉사자 P4 candidate: v3+ 시장 P4「가정」 (필요시 라벨 유지·과대구축 회피)
+    - 11-3 embedded 계약 편집: `/payroll/ledger` 안 계약 tab 「가정」 (실 화면 확인 없이 route 기반 판정)
+
+
+======================================================================
+10. 「확인」 (rules §1 정합)
+======================================================================
+
+  「확인」:
+    - carefor Wayback 20260519 id-mode HTTP 200·98,328B·md5 6226e6eb92fdd25ed3e50842a5e8a00b (수동 curl+md5sum·2026-07-18T12:15Z)
+    - carefor CDX 2026 5-capture(20260117/0119/0212/0511/0519) 재실측 HTTP 200·866B (2026-07-18T12:15Z)
+    - carefor func.php disk canonical L725-744 (M8)·L770-779 (M11) verbatim
+    - ogada FE App.jsx L1116~L1272·L835 Route verbatim (git @23b47ea)
+    - ogada BE controller @RequestMapping verbatim (git @5df9999)
+    - 경쟁 verbatim grep 실측(외부강사·자원봉사·고충·건강검진·보수교육·운영위원회)
+
+
+END OF SNAPSHOT

@@ -1,0 +1,90 @@
+BNK-902 — 엔젤·롱텀·규제 역공학 4-6h 실측 로그
+조사일: 2026-07-19T14:28:00Z
+rotation_30min: 4-6h (엔젤·롱텀·law.go.kr·이동서비스비·2026 수가)
+
+========================================================================
+[0] ogada git baseline 실측 (@develop HEAD)
+========================================================================
+$ git -C src/backend rev-parse --short develop
+6d3c766
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped
+        excel amounts instead of dropping row
+  BNK-890 → 902 = 13-cycle 동일 HEAD·zero advance
+$ git -C src/backend rev-list --count origin/test..develop  → 774 (ahead)
+
+$ git -C src/frontend rev-parse --short develop
+c2fb261   (BNK-901 e8ff8dc → +1 commit·ADVANCE)
+  last: fix(a11y/lists): wrap monitoring/history panel date-time columns
+        in <time dateTime> (UXD-200)
+$ git -C src/frontend rev-list --count origin/test..develop  → 36 (ahead·tester FF 대기)
+
+FE Route: <Route\b> 132 + <Routes> 1 = 133 (carry)
+FE <time dateTime> non-test jsx 파일: 93 (BNK-898 85 files → +8·UXD-200 monitoring/history panel)
+FE test: 228 .test.js + 316 .test.jsx = 544 (BNK-901 543 → +1·UXD-200 test)
+BE HTTP verbs: GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442 (IDENTICAL·62차)
+BE @RestController: 81
+Page 107 (subset 106·carry)·Flyway V1–V196·모듈 97.41% carry
+merge gate 810 (FE 36 + BE 774·BE-heavy·auto-merge FF 대기)
+
+========================================================================
+[1] 엔젤 silverangel system_feature (배차 축 부재 재확인)
+========================================================================
+URL: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · SIZE 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+$ cmp silverangel_system_feature_live_bnk902.html silverangel_system_feature_live_bnk897.html
+  → BYTE-IDENTICAL (BNK-897 → 902 재실측·canonical carry·18차 byte-IDENTICAL 계열)
+$ grep -c -E '이동서비스|배차|GPS|RFID|차량|송영' silverangel_system_feature_live_bnk902.html
+  → 0 (transport 6-term ALL 0-hit·엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인)
+판정: ogada Transport(TransportServiceFeeParityCatalog·TransportServiceLog·배차/회차) 자체 시스템 SUPERIOR
+
+========================================================================
+[2] 롱텀(공단) 단기보호(502) · 통합재가(610) 교차검증
+========================================================================
+URL 502: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+HTTP 200 · SIZE 89,171B · md5 a71379de460cc451e9a30f73aa437eec
+  → FULL variant 재출현(BNK-882 lean 5618573/89,162B → flip·+9B)
+$ diff <(grep -v 'var s16' 502_bnk902) <(grep -v 'var s16' 502_bnk882)  → 0-line
+  = 단일 미초기화 JS 변수 선언 `var s16;` ±9B 오실레이션(BNK-872 근본원인 확정)·본문 규제 콘텐츠 IDENTICAL·문서 위생 signal only·기능 갭 아님
+  (단기보호 74,060·통합재가 월한도 등 심층 수가 값은 JS/ajax 로딩·shell 캡처 미노출·canonical value carry from BNK-553「미확인」)
+
+URL 610: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+HTTP 200 · SIZE 88,408B · md5 6b10f426123b1f827c46ebf420a87772
+$ cmp longterm_610_live_bnk902.html longterm_610_live_bnk875.html  → BYTE-IDENTICAL (FULL carry)
+$ grep -c '통합재가' longterm_610_live_bnk902.html  → 1 (통합재가 verbatim 존재)
+
+========================================================================
+[3] 규제 백본 — NHIS #44 제34조 이동서비스비 러-1~4
+========================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+$ cmp nhis_jo44_live_bnk902.html nhis_jo44_live_bnk900.html  → BYTE-IDENTICAL
+  = 624차 byte-IDENTICAL(BNK-901 623차 → +1)·러-1~4 verbatim
+↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)
+  + TransportServiceLog*(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·상수 재조정 불요
+
+========================================================================
+[4] 규제 백본 — law.go.kr 2025-247 (장기요양급여 제공기준 고시)
+========================================================================
+URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · SIZE 78,450B · raw md5 9e7c6eb958642f945a1efcc2adab7d7b (DRIFT·cache-buster `?Time=`)
+$ sed 's/Time=[0-9]*/Time=STRIPPED/g' | md5sum
+  bnk902 strip → ad1db6e06903bc34e70e139a19d854cd
+  bnk897 re-strip → ad1db6e06903bc34e70e139a19d854cd
+$ diff strip(bnk902) strip(bnk897)  → 0-line (BNK-886 lineage `Time=[0-9]+` strip default·canonical URL 고정)
+verbatim: 장기요양급여 3-hit · 2025-247 4-hit (무변)
+판정: raw md5 DRIFT = cache-buster only·semantic 콘텐츠 IDENTICAL·규제 앵커 재조정 불요
+
+========================================================================
+[5] carefor func.php LIVE (out-of-rotation·carry)
+========================================================================
+carefor func.php LIVE HTTP 000 timeout carry·disk canonical carefor_func.php 6226e6eb/98,328B LOCK「미확인」
+
+========================================================================
+[6] 교차검증 · 갭 우선순위 판정
+========================================================================
+- 신규 진성갭 승격 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0
+- BE @Test strict 2413 = BNK-889→902 IDENTICAL(14-cycle·drift 경보 없음)
+- audit-first HTTP 442 = BNK-836→902 62차 byte/count-exact IDENTICAL·endpoint 신설 0
+- P3/P4「가정」 candidate 14종 전부 carry(승격 0)
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- per-cycle minimum: 신규 evidence URL 5(NHIS/silverangel/502/610/law 재실측) · 메뉴/필드/워크플로 1블록(엔젤 배차 0-hit + 롱텀 502 flip 규명) · COMPETITOR_MATRIX 1행+ @HEAD 갱신 · BENCHMARK_REPORT §902 소절 → 4종 충족

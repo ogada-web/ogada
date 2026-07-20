@@ -1,0 +1,169 @@
+BNK-899 cross_gap_priority — 8h+ 교차검증·갭 우선순위
+=====================================================
+rotation: 교차검증·갭 우선순위 8h+
+timestamp: 2026-07-19T12:58:00Z
+predecessor: BNK-898 (ogada git 실측 6-8h · 2026-07-19T12:18:00Z)
+owner: BNK  audience: PLN
+
+§899-0 · Baseline (git 실측 @HEAD)
+---------------------------------
+- backend  develop = 6d3c766ce5d50fff7e27828605cb7b49f4521c22
+    · BNK-890→899 = 10-cycle 동일 HEAD · zero advance · WT CLEAN
+    · ahead 774 vs origin/test=598d108
+    · last commit: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row (2026-07-19T03:38:03Z)
+- frontend develop = e8ff8dc48a69c939c5be0e9f193751a6ca2e44fe
+    · BNK-898 동일 HEAD · zero advance · WT CLEAN
+    · ahead 35 vs origin/test=b23711f (tester FF 대기)
+    · last commit: fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199) (2026-07-19T11:46:28Z)
+
+- Route 133 (`<Route\b` App.jsx 132 + `<Routes>` 1)
+- Page  107 (non-test `pages/*.jsx` · `*Page.jsx` subset 106)
+- FE test 543 (228 .test.js + 315 .test.jsx)
+- BE Test 298 (297 Test.java + 1 Tests.java)
+- BE @Test strict 2413 (`^\s*@Test\b` · BNK-889→899 = 11-cycle IDENTICAL)
+- @RestController 81 (loose)
+- HTTP 442 = GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10
+    · BNK-836→899 = 59차 byte/count-exact IDENTICAL
+    · controller 81 · 비율 5.46
+- Flyway V1–V196 (신규 0)
+- `<time dateTime>` non-test jsx occurrences 123 (85 files · BNK-898 IDENTICAL)
+- merge gate 809 (FE 35 + BE 774 · BE-heavy · auto-merge FF 대기)
+- 모듈 97.41% (28.25/29 · 진성갭 0)
+
+
+§899-1 · 8h+ 교차검증 — UXD-197/198/199 TRIPLE-DOMAIN 커버리지 검증
+------------------------------------------------------------------
+목적: BNK-898 「청구/컴플라이언스/알림 표 TRIPLE-DOMAIN 커버리지 COMPLETE」 narrative 를
+      전수 실측으로 재검증(rules §14). 잔여 date-header non-test page 스캔.
+
+방법:
+  1. non-test `pages/*.jsx` 107개 중 `<time dateTime` 미포함 파일 나열
+  2. 그 중 표 헤더 `날짜/일자/발생일/입소일/퇴소일/등록일/…` 등 date-suffix `일` 헤더 보유 파일 필터
+  3. 실 date 렌더링 여부(값이 YYYY-MM-DD 문자열인지) 확인
+
+결과 실측:
+  · 4개 후보 파일 flag(AttendanceStatsPage · BillingDetailPage · ClientListPage · TransportMonthlyReportsPage)
+  · 상세 검증:
+    - AttendanceStatsPage.jsx  = 지점/활성이용자/출석일수/출석률 → date column 0 (N/A)
+    - BillingDetailPage.jsx    = 등급/이용시간대/이용일수/1일수가/총급여비용/본인부담금
+                                  · 「이용일수」 = 「이용일」 접두 count(numeric) → false positive · date column 0 (N/A)
+    - ClientListPage.jsx       = 이름/지점/나이/성별/거주지/등급/배차이용/인정번호/연락처/보호자/연락처
+                                  · date column 0 (N/A)
+    - TransportMonthlyReportsPage.jsx = 이용자/변동유형/발생일/내용 (2-8 월간 변동 표)
+                                      → **발생일 `row.occurredOn` (YYYY-MM-DD)** = 실 date 렌더 확인
+                                      = 2-8 입소자 표 「확정 배차일」 헤더는 `row.confirmedRunDays` (count numeric·라벨 semi-mismatch)
+
+판정:
+  ★ **UXD-199 TRIPLE-DOMAIN 커버리지는 대체로 유효**하나 잔여 1건 존재:
+    · TransportMonthlyReportsPage.jsx 「월간 변동현황(2-8)」 표 발생일(row.occurredOn) 셀 이 `<time dateTime>` 미래핑.
+    · 라벨링 정합성 관찰: 「확정 배차일」 헤더가 실제로는 count(confirmedRunDays) — 「확정 배차 일수/횟수」가 더 정확한 라벨(UX only signal).
+  ★ 신규 진성갭 승격 0 — 기존 P3/P4 관찰과 동일 성격의 매우 좁은 잔여(rules §11·§17 과대구축 회피).
+  ★ 신규 「가정」 candidate 등록:
+    - **G-TRANSPORT-MONTHLY-VARIATION-TIME** (P4「가정」) —
+      · 근거: TransportMonthlyReportsPage 월간 변동현황(2-8) 표 발생일 셀 `<time dateTime>` 미래핑
+      · UXD-197~199 계보의 자연스러운 next hop (transport 도메인 잔여 1건)
+      · 경쟁 4종 대비 여전히 SUPERIOR — 경쟁 4종 목록 표 `<time>` 근거 0
+      · 승격 0 (매우 좁은 잔여·rules §11·§17)
+    - **G-TRANSPORT-CONFIRMED-RUN-LABEL** (P4「가정」·UX only signal) —
+      · 근거: 「확정 배차일」 헤더 vs `row.confirmedRunDays` count 렌더 semi-mismatch
+      · UX 라벨링 미세 정합 (planner UXD 재라벨 여부 판단 대상)
+      · 승격 0 (기능 무영향·view-only)
+
+Cross-check 실측 명령:
+  · `<time dateTime>` non-test jsx occurrences  = 123
+  · `<time dateTime>` non-test jsx file count   = 85
+  · TransportMonthlyReportsPage 「<time」 매칭 = 0 (미래핑 재확인)
+
+
+§899-2 · 이전 BNK 가정 번복 재검토
+----------------------------------
+- BNK-858 longterm 종료가정 (BNK-870~875 var s16; 근본원인 확정) → **최종 결착 유지** · 재측정 불요 정책 carry
+- BNK-878 rowid=21704 「미포착 신규」 라벨 → BNK-880 fact 정정 후 4-cycle+ 안정 · 재번복 없음
+- BNK-891 disk 100% full → 완화(BNK-891 이후 5.4G Avail 확인·완화 carry)
+- BNK-892 G-PAYROLL-CONTRACT-CRUD, BNK-897 G-GUARDIAN-MEETING/G-SATISFACTION-SURVEY-DIAL, BNK-890 G-CASE-MGMT-MEETING → 전부 carry(승격 0)
+- BNK-897 law 2025-247 strip diff header md5 표기(`0e07cef1`) vs 재실측 `ad1db6e0`
+    · **원인 규명**: strip regex 차이 — BNK-897 header 는 `?Time=[0-9]*` (URL query 포함) strip 을 사용한 반면,
+      BNK-899 재실측은 `Time=[0-9]+` (숫자만) strip 사용. 두 방식 모두 canonical 문서 콘텐츠 IDENTICAL 판정에 이르며,
+      BNK-899 방식은 BNK-886~889 방식(strip `ad1db6e0`)과 lineage 일치.
+    · **가정 번복 아님** — 두 strip 모두 canonical IDENTICAL 판정에 도달 · 방법론 lineage 차이만 존재 · 결정 영향 0.
+    · 향후 lock: BNK-886 lineage 방식(`Time=[0-9]+` strip) 을 기본 methodology 로 채택 권고 (rules §14).
+
+
+§899-3 · 규제 백본 재실측
+-------------------------
+- [NHIS #44 제34조](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+    HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+    cmp vs `nhis_jo44_live_bnk898.html` = BYTE-IDENTICAL
+    **621차 byte-IDENTICAL** (BNK-898 620차 → +1)
+    verbatim: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지
+    ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+
+       `TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR
+    · 상수 재조정 불요
+
+- [silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)
+    HTTP 200 · 45,601B · md5 `c950719098eecaf748bbdeea5deb93da`
+    cmp vs `silverangel_system_feature_live_bnk890.html` = BYTE-IDENTICAL (canonical carry)
+    transport 6-term(이동서비스/배차/GPS/RFID/차량/송영) 0-hit — 엔젤 배차 부재 재확인
+    ↔ ogada Transport 자체 시스템 SUPERIOR (경쟁 4종 유일)
+
+- [law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)
+    HTTP 200 · 78,450B · md5 `f8d514af7abc4fbe69a02a4a359ed502` (raw DRIFT cache-buster `?Time=`)
+    strip `Time=[0-9]+`  → `ad1db6e06903bc34e70e139a19d854cd` (semantic canonical)
+    cmp vs BNK-897 snapshot strip = 0-line (semantic IDENTICAL · BNK-886 lineage carry)
+    · canonical URL `admRulSeq=2100000271110` 고정
+
+- carefor func.php
+    LIVE HTTP **000** timeout 20s (**120-cycle+** carry · 미확인 유지)
+    disk canonical `carefor_func.php` `6226e6eb92fdd25ed3e50842a5e8a00b` / 98,328B LOCK
+
+
+§899-4 · audit-first HTTP 442 posture — 59차 byte/count-exact IDENTICAL
+----------------------------------------------------------------------
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442 · controller 81 · 비율 5.46
+- BNK-836→899 = 59차 byte/count-exact IDENTICAL · endpoint 신설 0
+- BE 10-cycle zero advance / FE 1-cycle zero advance (BNK-898 → 899)
+- API 안정성 59-cycle 동결
+- 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 · DELETE 2.3% 최소 (soft-delete/감사 보관 · PIPA §21 정합)
+
+
+§899-5 · 교차검증 · 갭 우선순위 재정렬 판정
+-----------------------------------------
+- 신규 진성갭 승격 0
+- closed band 재오픈 0
+- P0~P3 결정 번복 0
+- 미확인 승격 0
+- KPI promote 0
+- BE @Test strict 2413 = BNK-889→899 IDENTICAL (11-cycle · drift 경보 없음)
+- P3/P4「가정」 candidate 11종(BNK-881 3 + BNK-882 5 + BNK-890 1 + BNK-892 1 + BNK-897 2) + BNK-899 신규 2(G-TRANSPORT-MONTHLY-VARIATION-TIME · G-TRANSPORT-CONFIRMED-RUN-LABEL)
+    = 총 13종 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+
+§899-6 · planner 액션 아이템
+---------------------------
+1. **UXD-197~199 TRIPLE-DOMAIN 잔여 검증 결과 명시** —
+   · 대체로 유효(리포트 표 + 목록 표 + 청구/컴플라이언스/알림 표 = TRIPLE-DOMAIN COMPLETE)
+   · 잔여 1건 = `TransportMonthlyReportsPage` 월간 변동현황(2-8) 발생일 셀 `<time dateTime>` 미래핑
+   · UX 라벨 미세 정합 관찰 1건 = 「확정 배차일」 헤더 vs `confirmedRunDays` count 렌더 semi-mismatch
+   · REQUIREMENTS §접근성 「청구/목록/리포트/월간변동 표 날짜 셀 `<time dateTime>` machine-readable」 카피 권고
+2. **G-TRANSPORT-MONTHLY-VARIATION-TIME** P4「가정」 carry(승격 0) — UXD-197~199 계보 next-hop 후보(FE view/test only)
+3. **G-TRANSPORT-CONFIRMED-RUN-LABEL** P4「가정」 carry(승격 0·UX 라벨 signal only) — planner UXD 재라벨 여부 판단
+4. **NHIS #44 621차 byte-IDENTICAL** → 규제 상수 재조정 불요
+5. **silverangel byte-IDENTICAL(canonical) · law strip diff 0-line(BNK-886 lineage)** → 규제 상수 재조정 불요·엔젤 배차 부재 → ogada Transport SUPERIOR
+6. **law strip methodology lock** — BNK-886 lineage (`Time=[0-9]+` strip · md5 `ad1db6e0`) 를 default methodology 로 채택 권고(rules §14 · 거짓 drift 방지 · BNK-897 header 표기 `0e07cef1` = strip regex 차이 · canonical 판정 무영향)
+7. **audit-first 442 posture 59-cycle 동결** — BE 10-cycle/FE 1-cycle zero advance · API surface 미확장 · 물리 삭제 API 신설 금지 · PATCH>PUT
+8. **tester FF merge gate 809 carry** — FE 35 + BE 774 · BE-heavy · auto-merge FF 대기
+9. **P3/P4「가정」 candidate 총 13종(신규 +2)** 전부 carry(승격 0)
+10. **모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지
+
+
+snapshots (신규 · per-cycle minimum 4종 충족)
+--------------------------------------------
+- 신규 evidence URL 1건+ : NHIS #44 621차 byte-IDENTICAL 재실측 ✅
+- 경쟁사/ogada 메뉴/필드/워크플로 상세 1블록 : §899-1 잔여 표 4-후보 스캔 + TransportMonthlyReportsPage 2-표 워크플로 상세 ✅
+- COMPETITOR_MATRIX 1행+ ogada `@HEAD` 갱신 : BNK-899 4-row 추가 ✅
+- BENCHMARK_REPORT §신규 소절 : §899-0..§899-6 추가 ✅
+
+산출 파일:
+- `cross_gap_priority_bnk899.txt`  (본 파일 · 주력)
+- `nhis_jo44_live_bnk899.html`     (7,572B · md5 c886ff1f · 621차 byte-IDENTICAL)

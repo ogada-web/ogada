@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-18T02:21:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-19T17:30:00+09:00 -->
 # 위협 모델 (security/THREAT_MODEL.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **방법**: STRIDE + 데이터 흐름 기반  
 > **시스템**: ogada — 주간보호센터 B2B SaaS (멀티테넌트)  
 > **스택**: React SPA ↔ Spring Boot API ↔ PostgreSQL  
-> **2026-07-18 31차 갱신**: develop **`a742788`/`592a483`**(양 스트림 **CLEAN** · SEC-D35 Fixed) · `origin/test`=`598d108`/`592a483`(P0·SEC-D14·**735 BE + 0 FE** unpushed·SEC-D18: BE +30 · FE **★ FULLY SYNCED**). **★ v3 program schedule photo**(§2.25) · **★ SEC-D43 path allowlist deepen** · J03 Kakao template-catalog · **31차 신규 BLOCK급 audit Open 0건**. SEC-D4·D25(+1)·D41·D42·D44~D46 carry. 상세 `SECURITY_AUDIT.md` §1.33.
+> **2026-07-19 33차 갱신**: develop **`6d3c766`/`6a9e85e`**(양 스트림 **CLEAN** · SEC-D35 Fixed) · `origin/test`=`598d108`/`b23711f`(P0·SEC-D14·**774 BE + 37 FE** unpushed·SEC-D18·QA-B116) · **local test==develop `6d3c766`**(SEC-D34 excel-amount normalize FF-merged·검증 코드 정합). **SEC-D34 excel amount 정규화**(Tampering/DoS 완화 — 신규 `ExcelAmountNormalizer` 단일 패스 정규화·통화/fullwidth/공백 strip·`NumberFormatException`→null 구조 fail-closed 불변·인젝션/ReDoS 표면 無·row-level graceful-degrade·회귀 없음) · **FE a11y `<time dateTime>` 래핑**(UXD-196~201·신규 fetch/XSS/storage 도입 0·T-I5 유지) · **SEC-D26 Fixed 유지**(npm audit prod·dev 0건) · **33차 신규 BLOCK급 audit Open 0건**. SEC-D4·A06-1·D25·D41·D42·D44~D46 carry. 상세 `SECURITY_AUDIT.md` §1.35.
 
 ---
 
@@ -714,4 +714,4 @@ flowchart TB
 3. 파일럿 배포 시 MFA 요구 여부
 
 ---
-*다음 갱신: BE origin/test push(SEC-D18 **735**)·Safety GET date range(SEC-D41)·magic-byte(SEC-D25·program photo 포함)·batch-unconfirm entropy(SEC-D44)·payroll payload redact(SEC-D45)·FacilityNotice host allowlist(SEC-D46)·org-scoped BPO credential(SEC-D43 residual)·safety payload_json PII(SEC-D42·P3)·poi-ooxml 상향(SEC-D4)·CSV 수식 sanitize(SEC-D33)·요양보호사 import(SEC-D34)·Spring Boot 패치(A06-1)·form-data dev(SEC-D26)·`.gitignore` `*.env`(SEC-D22) 또는 신규 src 변경 후*
+*다음 갱신: BE origin/test push(SEC-D18 **774**·QA-B116)·FE origin/test push(**37**)·Safety GET date range(SEC-D41)·magic-byte(SEC-D25·program photo 포함)·batch-unconfirm entropy(SEC-D44)·payroll payload redact(SEC-D45)·FacilityNotice host allowlist(SEC-D46)·org-scoped BPO credential(SEC-D43 residual)·safety payload_json PII(SEC-D42·P3)·poi-ooxml 상향(SEC-D4)·CSV 수식 sanitize(SEC-D33)·Spring Boot 패치(A06-1) 또는 신규 src 변경 후*

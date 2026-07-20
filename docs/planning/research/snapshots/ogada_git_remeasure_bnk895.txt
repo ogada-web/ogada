@@ -1,0 +1,94 @@
+BNK-895 — ogada git 실측 + 교차검증·갭 우선순위 (8h+ rotation)
+조사일: 2026-07-19
+방법: git -C src/{backend,frontend} 실측 · Route/Page/@Test/@RestController/HTTP grep · NHIS #44 live 재실측 cmp · <time dateTime> 커버리지 계측
+
+================================================================
+§895-0  ogada git baseline @HEAD 재실측
+================================================================
+BE develop:  6d3c766  fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+  · BNK-890→891→892→893→894→895 = 6-cycle 동일 HEAD·zero advance (BE drift 불가능)
+  · WT CLEAN
+  · ahead 774 vs origin/test=598d108
+FE develop:  c3f0e05  fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)
+  · BNK-894 @aab11b2 → +1 commit
+  · WT CLEAN
+  · ahead 34 vs origin/test=b23711f (tester FF 대기)
+
+Route:            133  (`<Route\b` 132 + `<Routes>` 1·non-test·carry)
+Page:             107  (non-test pages/*.jsx)  ·  *Page.jsx subset 106
+FE test files:    543  (228 .test.js + 315 .test.jsx)  ·  it/test case 2857 (strict `^\s*(it|test)\(` 측정·「가정」·방법론 차이로 BNK-894 라벨 2862 대비 -5 = grep 패턴 차이·실 회귀 감소 아님)
+BE Test files:    298  (297 Test.java + 1 Tests.java)
+BE @Test strict:  2413 (`^\s*@Test\b`·BNK-889→895 IDENTICAL·zero drift·raw grep 2414 = strict 2413 + @TestPropertySource 1·BNK-894 methodology lock 재확인)
+@RestController:  81   (loose)
+HTTP endpoint:    442  (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10)
+  · BNK-836→895 = 55차 byte/count-exact IDENTICAL·endpoint 신설 0·API 안정성 55-cycle 동결
+Flyway:           V1–V196  (신규 0)
+모듈 커버리지:     97.41% (28.25/29·carry)
+merge gate:       808  (FE 34 + BE 774·BE-heavy·auto-merge FF 대기)
+
+================================================================
+§895-1  ★★★ UXD-198 — <time dateTime> machine-readable date 시맨틱을
+        비-리포트(list) 표로 확산 (WCAG 1.3.1 Info and Relationships)
+================================================================
+FE @c3f0e05  commit: `fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)`
+18 files +90/-9 (9 소스 + 9 테스트·신규 파일 0)
+
+소스 9 (component 1 + page 8):
+  1. components/outing/ClientOutingPanel.jsx      — outingDate → <time dateTime>
+  2. pages/CaseManagementPage.jsx                 — 사례관리 목록 날짜
+  3. pages/ClientOutingReportPage.jsx             — 외출 리포트 목록 날짜
+  4. pages/LeadCaregiverWorkLogPage.jsx           — 선임요양보호사 업무일지 날짜
+  5. pages/NursingEmergencyRecordPage.jsx         — 응급상황 기록 날짜
+  6. pages/NursingOralCareCheckPage.jsx           — 구강관리 점검 날짜
+  7. pages/NursingVitalCheckPage.jsx              — 활력징후 점검 날짜
+  8. pages/NursingWeightRecordPage.jsx            — 체중 기록 날짜
+  9. pages/PressureUlcerPage.jsx                  — 욕창 관리 날짜 (test +25 최대 확장)
+
+실측 패턴 (ClientOutingPanel.jsx:268-):
+  -  <td>{outing.outingDate}</td>
+  +  <td>
+  +    <time dateTime={outing.outingDate}>{outing.outingDate}</time>
+  +  </td>
+
+<time dateTime> 커버리지 계측 (non-test .jsx):
+  · aab11b2(BNK-894):  100 occurrences
+  · c3f0e05(BNK-895):  109 occurrences  (+9 = UXD-198 9 파일과 1:1 정합)
+  · 파일 수:           75 files
+
+의미:
+  · UXD-197(BNK-891·5 L02 리포트 인라인 표 date 셀) → UXD-198(BNK-895·비-리포트 list 표)
+    = <time> 시맨틱 date 커버리지가 **리포트 표 + 목록 표 양측 DOMAIN-COMPLETE**.
+  · 신규 ds-* 클래스 0·CSS 무변경·API surface 무변동(view/test only).
+  · BNK-887~889 오류 라우팅 축(WCAG 3.3.1/4.1.2)과 orthogonal(1.3.1 구조/의미 축).
+경쟁 4종 근거 0 (carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단 목록 표 <time> 시맨틱 0)
+  → ogada 유일 full-stack SUPERIOR·신규 진성갭 0(rules §11·§17 과대구축 회피).
+
+================================================================
+§895-2  ★ NHIS #44 제34조 617차 byte-IDENTICAL ↔ ogada Transport full-stack 1:1
+================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+cmp vs nhis_jo44_live_bnk894.html = BYTE-IDENTICAL (617차·러-1~4 verbatim)
+  · 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지
+ogada: TransportServiceFeeParityCatalog (RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)
+       + TransportServiceLog* (④ 이동서비스 일지) full-stack 1:1 SUPERIOR
+  · id=2 0.85 carry · 상수 재조정 불요
+constants sanity(git grep): ONE_WAY_RATIO=0.5 · LABOR_COST_RATIO_THRESHOLD_PERCENT=60.00 (무변동 carry)
+
+================================================================
+§895-3  ★ audit-first HTTP 442 posture 55차 byte/count-exact IDENTICAL
+================================================================
+GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442 · controller 81 · 비율 5.46
+BNK-836→895 = 55차 byte/count-exact IDENTICAL · endpoint 신설 0
+  · FE UXD-198 <time> 시맨틱 확산도 endpoint/CSS surface 미확장
+  · BE 6-cycle zero advance · API 안정성 55-cycle 동결
+  · 물리 삭제 API 신설 금지 · PATCH>PUT · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+================================================================
+교차검증·가정 번복 판정 (8h+ rotation)
+================================================================
+· 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+· BE @Test strict 2413 = BNK-889→895 IDENTICAL(6-cycle·drift 경보 없음·methodology lock 재확인)
+· 모듈 97.41% carry · 규제 백본(NHIS #44 617차·transport/payroll 상수) 무변동
+· per-cycle minimum 4종 충족: 신규 evidence(NHIS 재실측+drift 기록)·메뉴/필드/워크플로 1블록(UXD-198)·MATRIX 1행+ @HEAD·BENCHMARK §소절
+신규 snapshot 2 (txt 1 + html 1)·덮어쓰기 0

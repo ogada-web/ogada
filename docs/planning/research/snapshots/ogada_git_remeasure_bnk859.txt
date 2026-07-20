@@ -1,0 +1,70 @@
+BNK-859 ogada git remeasure (2026-07-18T06:34:00Z)
+rotation: 교차검증·갭 우선순위 8h+
+
+## src/backend
+HEAD: b3e7cce5ce27499bc01f8a0e457b564ea20d0087
+subject: fix(v3/SEC-D34): unify empty/missing excel import copy across import services
+ahead_of_test: 752 vs 598d108
+WT: CLEAN
+
+diff (b3e7cce vs 2c102e5):
+ .../java/com/ogada/backend/billing/domain/NhisImportService.java    | 5 +++--
+ src/main/java/com/ogada/backend/visits/domain/VisitService.java     | 5 +++--
+ .../com/ogada/backend/billing/domain/NhisImportServiceTest.java     | 2 +-
+ src/test/java/com/ogada/backend/visits/domain/VisitServiceTest.java | 6 +++---
+ 4 files changed, 10 insertions(+), 8 deletions(-)
+
+## BE inventory (@b3e7cce)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (20차 byte-exact IDENTICAL BNK-836→859, endpoint 신설 0, message-unification only)
+- @RestController (loose incl. Advice): 81
+- @RestController (strict): 80
+- @Test raw: 2366
+- @Test strict (excl. Property/Configuration/Listeners/Instance/MethodOrder/Factory/Template): 2366
+- Test.java files: 296
+- Tests.java files: 1
+- BE Test files total: 297 (BNK-858 CARRY)
+- Flyway: V1–V196 (신규 0)
+- BE @Test IDENTICAL(BNK-858 2366 carry) — b3e7cce는 기존 @Test 2건의 assertion message만 unify(신규 @Test 0)
+
+## src/frontend
+HEAD: 3e89ab71394e2bf49079d473b5992b12c15bf5ad
+subject: test(v1.2.1/v3/SEC-D34): fix pilotPageFlows US-L01 bank deposit import OOXML fixture (QA-B609)
+ahead_of_test: 6 vs b23711f
+WT: CLEAN
+
+diff (3e89ab7 vs 51a3db4):
+ src/pages/pilotPageFlows.test.jsx | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+## FE inventory (@3e89ab7)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (BNK-858 CARRY)
+- Page.jsx (prod, excl .test.jsx): 106 (BNK-858 CARRY)
+- FE test files: 541 (226 .test.js + 315 .test.jsx·pilotPageFlows in-place fixture update·신규 0)
+
+## merge gate
+FE 6 + BE 752 = 758 (BE-heavy)
+FE tester FF pending vs origin/test=b23711f (6-ahead)
+BE ahead 752 vs origin/test=598d108
+
+## BNK-858 → BNK-859 delta
+- BE +1 commit (b3e7cce) — SEC-D34 계보 축 「m」 추가:
+  · 「엑셀 import empty/missing copy 5-service unify」
+  · VisitService/NhisImportService: 「업로드할 엑셀 파일이 필요합니다.」(outlier)
+    → 「업로드할 엑셀 파일이 없습니다.」(house-style)
+  · MISSING_EXCEL_MESSAGE 상수로 통합
+  · 5 import surface(Visit/Nhis/StaffNhisCaregiver/BankDeposit/SEC-D25 storage) UX 일관
+- FE +1 commit (3e89ab7) — pilotPageFlows.test.jsx US-L01 bank deposit OOXML fixture align
+  · `new File(["data"], "bank.xlsx")` → OOXML PK\x03\x04 header 추가
+  · BNK-856 `@1f9d49c` FE pre-upload magic-byte validator와 fixture lockstep
+  · validateBankDepositExcelImportFile pre-upload reject → preview POST 미호출 회귀 해결
+  · 「가정」 없음 · fixture-only · 신규 test 파일 0
+- HTTP 442 20차 byte-exact IDENTICAL (BNK-836→859·17 sibling cycles + endpoint 신설 0)
+- 모듈 97.41% CARRY
+- SEC-D34 계보 축 12(a~l) → 13(m) 확장 · UX consistency dominant

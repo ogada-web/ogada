@@ -1,0 +1,148 @@
+BNK-900 cross_gap_priority — 8h+ 교차검증·갭 우선순위
+=====================================================
+rotation: 교차검증·갭 우선순위 8h+
+timestamp: 2026-07-19T13:07:00Z
+predecessor: BNK-899 (교차검증·갭 우선순위 8h+ · 2026-07-19T12:58:00Z)
+owner: BNK  audience: PLN
+
+§900-0 · Baseline (git 실측 @HEAD)
+---------------------------------
+- backend  develop = 6d3c766
+    · BNK-890→900 = 11-cycle 동일 HEAD · zero advance · WT CLEAN
+    · ahead 774 vs origin/test=598d108
+    · last commit: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+- frontend develop = e8ff8dc
+    · BNK-898→900 = 2-cycle 동일 HEAD · zero advance · WT CLEAN
+    · ahead 35 vs origin/test=b23711f (tester FF 대기)
+    · last commit: fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)
+
+- Route 133 (`<Route\b` App.jsx 132 + `<Routes>` 1)
+- Page  107 (non-test `pages/*.jsx` · `*Page.jsx` subset 106)
+- FE test 543 (228 .test.js + 315 .test.jsx)
+- BE Test 298 (297 Test.java + 1 Tests.java)
+- BE @Test strict 2413 (`^\s*@Test\b` · BNK-889→900 = 12-cycle IDENTICAL)
+- @RestController 81 (loose)
+- HTTP 442 = GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10
+    · BNK-836→900 = 60차 byte/count-exact IDENTICAL (마일스톤)
+    · controller 81 · 비율 5.46
+- Flyway V1–V196 (신규 0)
+- `<time dateTime>` non-test jsx occurrences 123 (85 files · BNK-898/899 IDENTICAL)
+- merge gate 809 (FE 35 + BE 774 · BE-heavy · auto-merge FF 대기)
+- 모듈 97.41% (28.25/29 · 진성갭 0)
+
+
+§900-1 · ★★★ 8h+ 교차검증 — UXD-197~199 TRIPLE-DOMAIN 잔여 「전수 스캔」 확정 (rules §14)
+------------------------------------------------------------------------------------------
+목적: BNK-899 「잔여 1건(TransportMonthlyReportsPage occurredOn 미래핑)」 주장을 107 non-test
+      pages 전체 자동 스캔으로 재검증 — 잔여가 정말 1개 파일 1개 셀뿐인지 확정.
+
+방법 (git 실측 명령):
+  · `<time dateTime` 미포함 non-test page 중, `<td>{...(occurredOn|recordDate|scheduledDate|
+    createdDate|registeredOn|dischargedOn|admittedOn|paidOn|issuedOn)...}` 실 date 렌더 파일 나열
+  · 전 107 page loop 스캔
+
+결과 실측 (전수):
+  · 유일 hit = TransportMonthlyReportsPage.jsx (1 td-date render)
+  · 그 외 106 page = 0 hit (date-suffix 헤더 「일수」류는 전량 count numeric false positive)
+
+TransportMonthlyReportsPage.jsx 정밀 라인 실측:
+  · L186  <th scope="col">발생일</th>            (2-8 월간 변동현황 표)
+  · L192  <tr key={`${row.clientId}-${row.variationType}-${row.occurredOn}`}>
+  · L197  <td>{row.occurredOn || "—"}</td>       ← 실 date(YYYY-MM-DD) `<time dateTime>` 미래핑 (잔여 1건 재확인)
+  · L256  <th scope="col">확정 배차일</th>        (2-8 입소자·일정·서비스 현황 표)
+  · L266  <td>{row.confirmedRunDays}</td>         ← count numeric (라벨 semi-mismatch·「확정 배차 일수」가 정확)
+  · grep `<time` 매칭 = 0 (파일 전체 `<time dateTime>` 부재 재확인)
+
+판정:
+  ★ BNK-899 「잔여 1건」 = **전수 스캔으로 정확히 확정** — 107 page 중 유일하게 미래핑 td-date 를
+    렌더하는 파일은 TransportMonthlyReportsPage.jsx 하나뿐 (occurredOn 1 셀).
+    → UXD-197~199 TRIPLE-DOMAIN 커버리지 narrative 유효(rules §14 재검증 PASS).
+  ★ 신규 진성갭 승격 0 — magnitude of scope 극소(1 file/1 cell)·rules §11·§17 과대구축 회피.
+  ★ P4「가정」 candidate 2종 재확인 (BNK-899 등록·번복 없음):
+    - G-TRANSPORT-MONTHLY-VARIATION-TIME (P4「가정」) — occurredOn 셀 `<time dateTime>` 미래핑
+      · UXD-197~199 계보 next-hop(transport 도메인 잔여 1건·FE view/test only)
+      · 경쟁 4종 목록 표 `<time>` 근거 0 → ogada 여전히 SUPERIOR · 승격 0
+    - G-TRANSPORT-CONFIRMED-RUN-LABEL (P4「가정」·UX only) — 「확정 배차일」 헤더 vs confirmedRunDays count
+      · planner UXD 재라벨 판단 대상 · 기능 무영향 · 승격 0
+  ★ 경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단) 청구/목록/리포트 표
+    `<time>` 시맨틱 date 근거 0 → ogada 유일 full-stack SUPERIOR.
+
+
+§900-2 · ★ 이지케어 홈페이지 substantive DRIFT (customer testimonial rotation only)
+-----------------------------------------------------------------------------------
+- [ezCare home](https://ezcare.easyms.co.kr/)
+    HTTP 200 · SIZE 69,535B · md5 `521f036718f79a3edd12598b4be97cd7`
+    직전 BNK-893 = 69,238B · `17cf0e5b` → +297B · md5 DRIFT
+- DRIFT 축 분해 = 고객 후기(도입 기관) 명단 rotation ONLY:
+    · 신규 등장: 경기 CHA차실버케어 · 경기 효원실버케어센터 · 경북 자연재가복지센터 ·
+      인천 예원노인복지센터 · 서울 중앙재가복지센터 · 충남 부여사랑재가복지센터 ·
+      대구 삼일***/섬김재가복지센터 · 부산 인창*** 등
+    · BNK-893 명단(부산 다정재가복지센터·서울 늘푸***·인천 보경***·울산 행복한노인복지센터 등)에서 교체
+- 실서비스/가격 축 무변화 verbatim IDENTICAL:
+    · 「5,003건」 (도입 실적 수) IDENTICAL
+    · 「1644-0340」 고객센터 전화 IDENTICAL
+    · 가격/무료체험 카피 축 무변화
+  판정: **마케팅 UX refresh(후기 rotation) only** · 실서비스/기능/가격 축 무변화 ·
+        신규 진성갭 0 · 경쟁 판정 무영향 (BNK-893 pattern carry).
+
+
+§900-3 · 규제 백본 재실측
+-------------------------
+- [NHIS #44 제34조](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+    HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+    cmp vs `nhis_jo44_live_bnk899.html` = BYTE-IDENTICAL
+    **622차 byte-IDENTICAL** (BNK-899 621차 → +1)
+    verbatim: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지
+    ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+
+       `TransportServiceLog*`(④ 이동서비스 일지) full-stack 1:1 SUPERIOR · 상수 재조정 불요
+- carefor func.php
+    LIVE HTTP **000** timeout 20s (**121-cycle+** carry · 미확인 유지)
+    disk canonical `carefor_func.php` `6226e6eb92fdd25ed3e50842a5e8a00b` / 98,328B LOCK
+- silverangel/law 재측정 skip (BNK-899 byte-IDENTICAL/strip diff 0-line carry·canonical URL 고정)
+
+
+§900-4 · audit-first HTTP 442 posture — 60차 byte/count-exact IDENTICAL (마일스톤)
+---------------------------------------------------------------------------------
+- GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442 · controller 81 · 비율 5.46
+- BNK-836→900 = 60차 byte/count-exact IDENTICAL · endpoint 신설 0
+- BE 11-cycle zero advance / FE 2-cycle zero advance (BNK-898 → 900)
+- API 안정성 60-cycle 동결 (마일스톤)
+- 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 · DELETE 2.3% 최소 (soft-delete/감사 보관 · PIPA §21 정합)
+
+
+§900-5 · 교차검증 · 갭 우선순위 재정렬 판정
+-----------------------------------------
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→900 IDENTICAL (12-cycle · drift 경보 없음)
+- P3/P4「가정」 candidate 총 13종 전부 carry · 승격 0
+    (BNK-881 3 + BNK-882 5 + BNK-890 1 + BNK-892 1 + BNK-897 2 + BNK-899 2)
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+
+§900-6 · planner 액션 아이템
+---------------------------
+1. **UXD-197~199 TRIPLE-DOMAIN 잔여 전수 스캔 확정** — 107 page 중 미래핑 td-date 는
+   TransportMonthlyReportsPage occurredOn 1 셀뿐(전수 확정)·narrative 유효(rules §14 PASS)·
+   REQUIREMENTS §접근성 「청구/목록/리포트/월간변동 표 날짜 셀 `<time dateTime>` machine-readable」 카피 권고
+2. **G-TRANSPORT-MONTHLY-VARIATION-TIME** P4「가정」 carry(승격 0) — occurredOn 미래핑·FE view/test only
+3. **G-TRANSPORT-CONFIRMED-RUN-LABEL** P4「가정」 carry(승격 0·UX 라벨 signal only)
+4. **이지케어 홈 DRIFT = 후기 rotation only** — 실서비스/가격 축 무변화(5,003건·1644-0340 IDENTICAL)·경쟁 판정 무영향
+5. **NHIS #44 622차 byte-IDENTICAL** → 규제 상수 재조정 불요
+6. **audit-first 442 posture 60-cycle 동결(마일스톤)** — BE 11-cycle/FE 2-cycle zero advance·물리 삭제 API 신설 금지·PATCH>PUT
+7. **tester FF merge gate 809 carry** — FE 35 + BE 774 · BE-heavy · auto-merge FF 대기
+8. **P3/P4「가정」 candidate 총 13종** 전부 carry(승격 0)
+9. **모듈 97.41% CARRY** → ROADMAP·PLAN_NOTES 현행 유지
+
+
+snapshots (신규 · per-cycle minimum 4종 충족)
+--------------------------------------------
+- 신규 evidence URL 1건+ : 이지케어 홈 DRIFT(후기 rotation·+297B·md5 521f0367) 재실측 + 변동 기록 ✅
+                           + NHIS #44 622차 byte-IDENTICAL 재실측 ✅
+- 경쟁사/ogada 메뉴/필드/워크플로 상세 1블록 : §900-1 107-page 전수 스캔 + TransportMonthlyReportsPage 라인 실측 ✅
+- COMPETITOR_MATRIX 1행+ ogada `@HEAD` 갱신 : BNK-900 블록 추가 ✅
+- BENCHMARK_REPORT §신규 소절 : §900-0..§900-6 추가 ✅
+
+산출 파일:
+- `cross_gap_priority_bnk900.txt`  (본 파일 · 주력)
+- `nhis_jo44_live_bnk900.html`     (7,572B · md5 c886ff1f · 622차 byte-IDENTICAL)
+- `ezcare_home_live_bnk900.html`   (69,535B · md5 521f0367 · 후기 rotation DRIFT)

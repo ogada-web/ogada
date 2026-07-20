@@ -1,0 +1,74 @@
+BNK-869 ogada git remeasure (2026-07-18T13:52:00Z)
+rotation: ogada git 실측 6-8h
+
+## src/backend
+HEAD: ae1c6a16146a55268f8e14c3a6abd6dd19f3f63e
+subject: fix(v2/QA-B95): decode bare-hex blocker entities fail-closed
+ahead_of_test: 760 vs 598d108
+WT: CLEAN
+
+diff (5df9999 vs ae1c6a1):
+ .../java/com/ogada/backend/.../system/LiveE2eOperationReadinessSupport.java     | 25 +++++++----
+ .../.../system/LiveE2eOperationReadinessSupportTest.java                        | 52 ++++++++++++++++++++++
+ 2 files changed, 68 insertions(+), 9 deletions(-)
+
+## BE inventory (@ae1c6a1)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (byte/count-exact IDENTICAL BNK-836→869·endpoint 신설 0·QA-B95 decode + test-only)
+- @RestController (loose incl. Advice): 81
+- @Test raw/strict (git grep `^\s*@Test\b`): 2379 (BNK-867 2378 → +1·LiveE2eOperationReadinessSupportTest QA-B95 bare-hex decode 회귀)
+- Test.java files: 296
+- Flyway: V1–V196 (신규 0·latest V196__client_linkage_records_integrity_g_linkage.sql)
+
+## src/frontend
+HEAD: 8766331a1d351dc6ce71aed22672d5784efc6f2d
+subject: fix(v1.2.1/transport): reject out-of-range departure-round input (id=2 form polish)
+ahead_of_test: 15 vs b23711f
+WT: CLEAN
+
+diff (af1d4f6 vs 8766331 · 2 commits):
+ d6f3889 fix(v1.2.1/transport): reject exponent/hex departure-round input (id=2 form polish)
+ 8766331 fix(v1.2.1/transport): reject out-of-range departure-round input (id=2 form polish)
+ src/config/transport.js      | 29 +++++++++++++++++++++++++++--
+ src/config/transport.test.js | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 62 insertions(+), 2 deletions(-)
+
+## FE inventory (@8766331)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (BNK-868 CARRY)
+- Page.jsx (prod, excl .test.jsx): 107 (BNK-868 CARRY)
+- FE test files: 541 (226 .test.js + 315 .test.jsx·config/transport.test.js in-place +35·신규 0)
+
+## merge gate
+FE 15 + BE 760 = 775 (BE-heavy)
+FE ahead 15 vs origin/test=b23711f (tester FF 대기)
+BE ahead 760 vs origin/test=598d108
+
+## 규제 백본 재실측 (NHIS #44)
+NHIS #44 canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f · 594차 byte-IDENTICAL(BNK-868 593차 → +1)
+verbatim grep(러-[0-9]|편도|이동서비스비|이동서비스): 17-hit
+→ Transport 상수(RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요 (id=2 0.85 carry)
+
+## BNK-868 → BNK-869 delta
+- BE +1 commit (ae1c6a1) — QA-B95 계보:
+  · fix(v2/QA-B95): decode bare-hex blocker entities fail-closed
+  · LiveE2eOperationReadinessSupport 라이브 E2E 준비 blocker 엔티티 중
+    bare-hex(&#x…; 형식 미종결/변형) 디코드 실패 시 fail-closed(no-info-leak·rules §3)
+  · +1 @Test(회귀 lock)·behavior-neutral 아님(디코드 경로 보강)·HTTP endpoint 신설 0
+- FE +2 commit (d6f3889 → 8766331) — id=2 배차 form polish 7·8차 축:
+  · d6f3889 reject exponent/hex departure-round input (1e3·0x10 등 JS Number() 허용 표기 차단)
+  · 8766331 reject out-of-range departure-round input (허용 범위 밖 회차 차단)
+  · config/transport.js `parseDepartureRoundInput` shared helper(BNK-867 추출) 강화
+  · config/transport.test.js +35 계약 lock·신규 test 파일 0
+  · id=2 form-polish 축: BNK-862/863 회차 검증·864 정차상한·866 stale-state·867 helper 추출
+    ·868 blocked focus·869 exponent/hex + out-of-range reject
+- HTTP 442 byte/count-exact IDENTICAL (BNK-836→869·endpoint 신설 0)
+- 모듈 97.41% CARRY (28.25/29·id=2/8/10=0.85·12=0.7·진성갭 0)
+- NHIS #44 594차 zero drift·Transport 상수 재조정 불요
+- 신규 진성갭 P0 승격 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0

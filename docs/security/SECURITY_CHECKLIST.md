@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-18T02:21:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-19T17:30:00+09:00 -->
 # 보안 체크리스트 (security/SECURITY_CHECKLIST.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **용도**: develop 구현·test 이관·프로덕션 배포 전 게이트  
 > **연계**: `SECURITY_AUDIT.md`, `THREAT_MODEL.md`, `QA_FEEDBACK.md` `[SEC]` 항목
 
-> **2026-07-18 31차 재점검**: develop backend **`a742788`**(+735 vs origin/test `598d108`·**WT CLEAN**) · frontend **`592a483`**(+0 vs origin/test **`592a483`**·**★ FULLY SYNCED**·**WT CLEAN**·SEC-D35 Fixed). origin/test P0 포함(SEC-D14). **★ v3 program schedule photo**(RBAC+tenant·5MB·MIME allowlist·UUID key · SEC-D25 표면 +1) · **★ SEC-D43 path allowlist deepen**(`/carefor_login`+query/fragment 거부) · J03 Kakao template-catalog · QA-B95 decode 지속 · **31차 신규 BLOCK Open 0** · SEC-D4·D41·D42·D25·D33·D34·D40·D44~D46·D26 carry. npm audit prod **0건**·dev **1 HIGH form-data**.
+> **2026-07-19 33차 재점검**: develop backend **`6d3c766`**(+774 vs origin/test `598d108`·local test **`6d3c766`**·**WT CLEAN**) · frontend **`6a9e85e`**(+37 vs origin/test **`b23711f`**·**WT CLEAN**·SEC-D35 Fixed 유지). origin/test P0 포함(SEC-D14). **SEC-D34 excel amount 정규화**(신규 `ExcelAmountNormalizer` DRY 추출·통화/fullwidth/no-break·ideographic space→ASCII·row-level graceful-degrade·NumberFormatException→null 구조 fail-closed 불변·인젝션/ReDoS 표면 無·회귀 없음) · **FE a11y `<time dateTime>` 래핑**(UXD-196~201·reversed date-range 폼검증·신규 fetch/XSS/storage 도입 0) · **SEC-D26 Fixed 유지**(npm audit prod·dev **모두 0건**) · **33차 신규 BLOCK Open 0** · SEC-D4·A06-1·D41·D42·D25·D33·D40·D44~D46 carry. npm audit prod **0건**·dev **0건**.
 
 ---
 
@@ -96,10 +96,10 @@
 | C-1 | SQL — JPA/JdbcClient 파라미터 바인딩만 | BLOCK | ☑ |
 | C-2 | Raw SQL 문자열 concat 금지 (코드 리뷰) | BLOCK | ☑ |
 | C-3 | React `dangerouslySetInnerHTML` 금지 | High | ☑ |
-| C-4 | 파일 업로드 — 크기·MIME·**magic-byte** 검증 | High | ☐ (사진·**프로그램 일정 사진(v3)**·NHIS·은행입금 xlsx·급여계약서·등급이력·직원 HR·보수교육·**요양보호사 NHIS** — SEC-D25/D34: 크기 ☑·Content-Type ◑(요양보호사 import 미검증·SEC-D34·program photo는 jpeg/png/webp allowlist+`;param` strip)·magic-byte ☐·저장 키 UUID 서버 생성) |
+| C-4 | 파일 업로드 — 크기·MIME·**magic-byte** 검증 | High | ◑ **magic-byte 대폭 착지** — 사진(Client·Program v3)·급여계약서·등급이력·직원 HR·보수교육 = magic-byte ☑(SEC-D25) · **NHIS·은행입금·요양보호사·NHIS방문·RFID xlsx import = OOXML/OLE magic + 8-축 fail-closed ☑(SEC-D34 full-stack 완성·32차)** · 크기 ☑ · Content-Type `;param` strip ☑ · 저장 키 UUID 서버 생성 ☑ · **잔여 ☐**: image decode·AV 스캔·zip-bomb·poi-ooxml 5.3.0(SEC-D4) |
 | C-5 | xlsx 파싱 — 확장자+Content-Type+POI 5.4.0+ | High | ☐ (NHIS·은행입금·RFID(G21)·**요양보호사(신규)** 4표면, SEC-D4·D34 — 요양보호사 import는 `WorkbookFactory` 자동판별만·확장자 체크 부재) |
 | C-6 | API DTO `@Valid`·Bean Validation | Medium | ☑ (auth·주요 API) |
-| C-7 | CSV/Excel export 수식(formula) 인젝션 방어(`=`/`+`/`-`/`@` prefix sanitize) | Low | ☐ SEC-D33 — 명세 export·NTS 의료비공제 export `csvEscape`가 quote만·prefix 미중화(CWE-1236) |
+| C-7 | CSV/Excel export 수식(formula) 인젝션 방어(`=`/`+`/`-`/`@` prefix sanitize) | Low | ☑ SEC-D33 — `CsvFormulaEscaper`(`common.csv`) · 명세·NTS 의료비공제·직원현황(8-12) CSV 공통 neutralize(CWE-1236) |
 
 ---
 
@@ -128,7 +128,7 @@
 | E-3 | CI OWASP dependency-check (CVSS≥7 fail) | High | ☐ |
 | E-4 | CI `npm audit` (prod dep, moderate 이상 알림) | Medium | ☑ develop prod 0건(SEC-008) |
 | E-5 | Dependabot/Renovate 활성화 | Medium | ☐ |
-| E-6 | frontend dev `form-data` HIGH 해소 | Medium(dev) | ☐ develop (form-data CRLF GHSA-hmw2-7cc7-3qxx — npm audit dev **1 HIGH**, SEC-D26) |
+| E-6 | frontend dev `form-data` HIGH 해소 | Medium(dev) | ☑ **Fixed** — `637bad8` form-data **4.0.6**(GHSA-hmw2-7cc7-3qxx) · npm audit dev 포함 **0건**(32차 실측·SEC-D26 Fixed) |
 
 ---
 
@@ -161,15 +161,15 @@
 
 | # | 항목 | BLOCK 조건 |
 |---|------|------------|
-| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`598d108`/`e76e631` (SEC-D14 Fixed) · develop **668 BE + 0 FE ahead**(**★ FE FULLY SYNCED**·BE push pending·SEC-D18 비대칭 극단) |
+| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`598d108`/`b23711f` (SEC-D14 Fixed) · develop **774 BE + 37 FE ahead**(local test==develop `6d3c766`·origin push 대기·SEC-D18/QA-B116) |
 | H-1 | 위 **BLOCK** 항목 0건 (develop baseline) | **충족** — develop ☑ · `origin/test` P0 ☑ |
 | H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — SEC-D17·D19·D23·D24·**D35** Fixed · SEC-D43 **Mitigated(path 강화)** · SEC-D22·D25(표면+program photo)·D26·D28·D32·D33·D34·D36·D37·D4·A06-1·D29·**D41·D42·D44·D45·D46** audit Open/Monitor(**BLOCK 아님**) |
 | H-3 | TSR 크로스테넌트·권한 거부 테스트 통과 | 필수 · `RoleBasedControllerAccessTest`(account-request·G-STAFF-NHIS·G-7-1 export·**G-SMS staff-access-key**)·live-e2e pilot E2E 회귀 |
 | H-4 | `.env`·키 파일 Git 미포함 | ◑ — **SEC-D22**: WT `.gitignore` `*.env` 무시 ☑ · parent repo HEAD 커밋 선행 권고 |
 | H-5 | 파일럿 센터 개인정보 처리방침·동의 UI | PLN 확인 |
 | H-6 | J01 `SecurityConfig` 코드 리뷰 | ☑ develop lineage (SEC-D8 Fixed) · 필터 순서(SEC-D24 Fixed) |
-| H-7 | workspace baseline = git 실측 HEAD | ☑ `e4123c3`/`ed48077` (30차 실측·BE **CLEAN** · FE **DIRTY 6M**) |
-| H-8 | develop→test merge·origin push | ◑ — BE **CLEAN** · FE **DIRTY 6M** · **origin/test**: BE **705** unpushed · FE **1** pending(SEC-D18 비대칭) |
+| H-7 | workspace baseline = git 실측 HEAD | ☑ `6d3c766`/`6a9e85e` (33차 실측·양 스트림 **CLEAN**·origin/develop SYNCED) |
+| H-8 | develop→test merge·origin push | ◑ — 양 스트림 **CLEAN** · BE **local test==develop `6d3c766`**(SEC-D34 FF-merged·TSR1884) · **origin/test**: BE **774** unpushed(QA-B116) · FE **37** pending(SEC-D18 비대칭) |
 | H-9 | live-e2e bootstrap credential fail-fast | ☑ SEC-D29 — blank credential fail-fast·trim 정규화(`7848b0f`)·password 필드 0 · 24차 HealthControllerTest G21 seed detail lock으로 readiness 회귀 가드 추가 |
 | H-10 | 외부 SMS/Alimtalk dispatchReady fail-closed(credential 부재) | ☑ 24차 — `NotificationChannelReadinessService` 채널-credential 게이트(`fed6f1f`)·`isLiveConfigured` 마커 거부(stub/placeholder/change-me)·SEC-D15 deepen |
 | H-11 | staff manual SMS quiet-hours guard(KST 22:00~08:00) | ☑ 24차 — `NotificationService.dispatchManualStaffSms`가 `NotificationQuietHoursPolicy.isActiveNow` 시 `BusinessRuleException` 즉시 거부(v2/J03 lineage 정합) |
@@ -192,4 +192,4 @@
 
 ---
 
-*마지막 점검: 2026-07-18 (31차) | develop HEAD `a742788`/`592a483`(양 스트림 **CLEAN** · SEC-D35 Fixed) · **v3 program photo Pass**(SEC-D25 +1) · **SEC-D43 path allowlist 강화** · FE origin/test **FULLY SYNCED** · SEC-D44/D45/D46 Open(Monitor) · SEC-D4/D41/D42/D33/D34/D40/D26 carry · origin BE **735**/FE **0** unpushed(SEC-D18)*
+*마지막 점검: 2026-07-19 (33차) | develop HEAD `6d3c766`/`6a9e85e`(양 스트림 **CLEAN** · SEC-D35 Fixed) · **SEC-D34 excel amount 정규화 Pass**(row-level graceful-degrade·구조 fail-closed 불변·회귀無) · **FE a11y `<time>` 래핑 Pass**(신규 fetch/XSS 0) · local test==develop `6d3c766`(SEC-D34 FF-merged) · SEC-D26 Fixed(prod·dev 0건) · SEC-D4/A06-1/D41/D42/D25/D33/D40/D44~D46 carry · origin BE **774**/FE **37** unpushed(SEC-D18/QA-B116)*

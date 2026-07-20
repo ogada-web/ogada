@@ -1,0 +1,80 @@
+BNK-875 엔젤·롱텀·규제 역공학 4-6h 교차검증 (2026-07-18T18:15:00Z)
+=====================================================================
+
+## 0. ogada git baseline (git 실측)
+- BE develop @ad2c0b1 (BNK-874 @6329323 → +1 commit)
+    `fix(v3/SEC-D34): normalize currency-suffixed NHIS import amount/days instead of dropping to null`
+    = 통화 접미사(예: "1,200원")가 붙은 NHIS import 금액/일수 셀을 null 로 버리지 않고 정규화 파싱.
+      BNK-873(oversized visit minutes→time-diff fallback)·BNK-874(out-of-range RFID tag time→null)
+      계열의 SEC-D34 「graceful-degrade / normalize」 축 확장 — 단일 malformed 필드가 전체 import 를
+      죽이지 않도록 파서 robustness 강화. +1 @Test·HTTP 442 무변(controller 확장 0).
+    WT CLEAN · ahead 765 vs origin/test=598d108
+- FE develop @9b0481d (BNK-874 @9f12482 → +1 commit)
+    `fix(v1.2.1/transport): clear stale generate banners on service-fee reload (id=2 form polish)`
+    = G16 이동서비스비 service-fee 패널 재조회(reload) 시 이전 generate 배너(성공/오류)를 정리해
+      잔여 상태 노출 방지. id=2 배차 form polish 계열.
+    WT CLEAN · ahead 20 (rev-list --left-right 0/20) vs origin/test=b23711f · tester FF 대기
+
+## git 실측 KPI (@ad2c0b1 / @9b0481d)
+| KPI                | 값                                   | BNK-874 대비          |
+|--------------------|--------------------------------------|-----------------------|
+| FE Route           | 133 (<Route\b 132 + <Routes> 1)      | IDENTICAL             |
+| FE Page.jsx (prod) | 106                                  | IDENTICAL             |
+| FE test files      | 541 (226 .test.js + 315 .test.jsx)   | IDENTICAL             |
+| BE @Test (strict)  | 2390                                 | +1 (currency normalize)|
+| BE Test.java       | 296 (+1 Tests.java = 297)            | IDENTICAL             |
+| BE @RestController | 81 (loose)                           | IDENTICAL             |
+| BE HTTP mapping    | 442 (GET231/POST144/PATCH44/PUT13/DELETE10) | byte/count-exact IDENTICAL 35차 (BNK-836→875·endpoint 신설 0) |
+| Flyway             | V1–V196 (196 files·신규 0)           | IDENTICAL             |
+| 모듈 커버 KPI      | 97.41% (28.25/29·진성갭 0)           | IDENTICAL             |
+| merge gate         | 785 (FE 20 + BE 765·BE-heavy)        | +2 (BE+1/FE+1)        |
+
+## 1. NHIS #44 제34조 (주·야간보호 이동서비스비) — 598차 byte-IDENTICAL
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba (BNK-873 597차 → +1·zero drift)
+verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·이동서비스 일지(1)·수급자가 부담(1)
+↔ ogada @ad2c0b1: TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)
+   + TransportServiceLog*(④ 이동서비스 일지 = 전자 일지 + 감사 이력) full-stack 1:1 SUPERIOR.
+   Transport 상수 재조정 불요 · id=2 0.85 carry.
+
+## 2. longterm 502/610 — FULL 3연속 (var s16 오실레이션 최종 결착 유지)
+502 URL: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+    HTTP 200 · 89,171B · md5 a71379de460cc451e9a30f73aa437eec (BNK-873 full → IDENTICAL)
+610 URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+    HTTP 200 · 88,408B · md5 6b10f426123b1f827c46ebf420a87772 (BNK-873 full → IDENTICAL)
+= BNK-872 full flip → BNK-873 full → BNK-875 full = FULL 3연속. ±9B lean↔full 오실레이션의
+  근본 원인 = 단일 미초기화 JS 변수 선언 `var s16;`(BNK-872 확정) 재확인. 규제/수가/본문 콘텐츠
+  변동 0 · 문서 위생 signal only · BNK-858 종료가정 최종 결착 유지 · 재측정 불요.
+
+## 3. law 2025-247 (보건복지부 고시) — Time-strip a913639a IDENTICAL (9-cycle carry)
+URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,450B · raw md5 00114a8ca7aa04a180a646063c0329bc (Time= 캐시버스터로 raw DRIFT)
+Time-strip(sed 's/Time=[0-9]+//g') md5 = a913639a52293e3571cfe7e3ca35097
+  vs BNK-872 Time-strip a913639a → diff 0 lines = semantic IDENTICAL.
+canonical URL ?admRulSeq=2100000271110 고정 사용 확정 · BNK-826 URL alias 폐기 유지.
+
+## 4. silverangel 3-URL — byte-IDENTICAL (이동서비스/배차 0-hit 재확인)
+system_feature: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+    HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da (BNK-872 → IDENTICAL)
+    grep -oF: 이동서비스(0)·배차(0)·GPS(0)·RFID(0)·차량(0) = 엔젤 시스템 자체 배차/이동서비스 모듈
+      부재 재확인 → ogada Transport(id=2 full-stack·러-1~4·RFID·NHIS #44 상수) 고유 축 SUPERIOR.
+essentialWork: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+    HTTP 200 · 131,664B · md5 c79c1be37f947aab04ab7ba35cc7814d (BNK-872 → IDENTICAL)
+    「이동서비스일지-이동서비스수칙 예시 문서」 축만(실 시스템 0-hit) ↔ ogada §34조 ④
+      TransportServiceLog* 전자 일지+감사 이력 full-stack SUPERIOR.
+home: https://www.silverangel.kr/
+    HTTP 200 · 101,220B · md5 6638283511f0e1e9e36d2c89324e4d67 (BNK-872 → IDENTICAL)
+    보호자용 앱(굽은나무) 브랜드 carry.
+
+## 5. 가정 번복 재점검 (rules §14)
+- BNK-858 longterm 오실레이션 종료가정: full 3연속 + var s16 근본 원인 재확인 → 최종 결착 유지.
+- BNK-826 law URL alias 폐기: Time-strip a913639a 9-cycle carry → 유지.
+- BNK-865 P4「가정」 이동서비스수칙 template(엔젤 essentialWork 예시 문서 축): 「미확인」 유지.
+- 신규 가정 번복 0 · 미확인 승격 0 · P0~P3 결정 번복 0 · KPI promote 0.
+
+## 6. planner 반영 포인트
+- NHIS #44 §34조 598차 ↔ ogada Transport full-stack 1:1 = 규제-fit SUPERIOR carry(상수 재조정 불요).
+- 엔젤은 배차/이동서비스 자체 시스템 0-hit·효성CMS 외부 벤더 종속 = ogada 자체 Transport+CMS SUPERSET.
+- longterm 오실레이션 = 문서 위생 signal only(var s16)·향후 재측정 불요 → 규제 백본 canonical 고정.
+- 신규 진성갭 0 · closed band 재오픈 0 · 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+- tester FF merge gate 785(BE 765 + FE 20·BE-heavy) — FE id=2/G16 form·panel 축적분 test 이관 흡수 권고.

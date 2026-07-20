@@ -1,0 +1,61 @@
+BNK-898 — ogada git 실측 remeasure (ogada git 실측 6-8h 사이클)
+조사일: 2026-07-19T12:18:00Z
+
+=== submodule HEAD ===
+BE develop = 6d3c766  (ahead 774 vs origin/test=598d108 · WT CLEAN)
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+  BNK-890→898 = 9-cycle 동일 HEAD·zero advance
+FE develop = e8ff8dc  (ahead 35 vs origin/test=b23711f · WT CLEAN · tester FF 대기)
+  last: fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)
+  BNK-897 @c3f0e05 → +1 commit (UXD-199)
+
+=== FE KPI (git grep) ===
+Route            133  (App.jsx <Route\b 132 + <Routes> 1)
+Page             107  (non-test pages/*.jsx · *Page.jsx suffix subset 106)
+FE test files    543  (228 .test.js + 315 .test.jsx)
+<time dateTime>  non-test jsx 109(c3f0e05) → 123(e8ff8dc) = +14  (85 files·UXD-199)
+  raw dateTime= (incl test) 120 → 130 (+10)
+
+=== BE KPI (git grep) ===
+Test.java        297  (+1 Tests.java = 298)
+@Test strict     2413 (^\s*@Test\b · raw 2414 = strict 2413 + @TestPropertySource 1 · @ParameterizedTest 3 별도 · BNK-889→898 10-cycle IDENTICAL)
+@RestController  81 (loose)
+HTTP mapping     442  GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10
+  = audit-first 58차 byte/count-exact IDENTICAL (BNK-836→898 · endpoint 신설 0)
+Flyway           V1–V196 (신규 0)
+
+=== derived ===
+merge gate       809  (FE 35 + BE 774 · BE-heavy · auto-merge FF 대기)
+모듈 커버 KPI    97.41% (28.25/29 · 진성갭 0 · carry)
+
+=== 이번 사이클 focus 실측 (UXD-199 <time dateTime> 청구/컴플라이언스/알림 표 확산) ===
+FE @e8ff8dc diff c3f0e05..e8ff8dc = 17 files +116/-14 (신규 파일 0)
+non-test 소스 10:
+  ui/BillingLedgerTable.jsx            (청구 원장 표 날짜 열)
+  visits/VisitRfidDiffComparePanel.jsx (RFID 비교 패널 날짜 열)
+  pages/CarePlanNotificationPage.jsx   (급여제공계획 알림)
+  pages/FunctionalRecoveryPage.jsx     (기능회복훈련)
+  pages/GuardianDetailPage.jsx         (보호자 상세)
+  pages/HealthDetailPage.jsx           (건강 상세)
+  pages/NeedsAssessmentStatusPage.jsx  (욕구사정 현황)
+  pages/OverduePage.jsx                (연체/미납)
+  pages/PeriodicRiskAssessmentStatusPage.jsx (정기 위험도평가 현황)
+  pages/ProvisionResultEvaluationPage.jsx    (급여제공결과평가)
+test 7: 위 소스 중 7개 대응 in-place +assertion
+→ UXD-197(리포트 인라인 표) → UXD-198(비-리포트 list 표) → UXD-199(청구/컴플라이언스/알림 표)
+  = <time dateTime> machine-readable date 시맨틱 커버리지 TRIPLE-DOMAIN (WCAG 1.3.1)
+  경쟁 4종(carefor 시설 셸·ezcare 데모·angel LCMS·longterm 공단) 청구/목록 표 <time> 시맨틱 근거 0 → ogada 유일 full-stack SUPERIOR
+
+=== 규제 백본 재실측 ===
+NHIS #44 제34조: HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  = 620차 byte-IDENTICAL (cmp vs nhis_jo44_live_bnk897.html · BNK-897 619차 → +1 · 러-1~4 verbatim)
+  ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+TransportServiceLog* full-stack 1:1 SUPERIOR·상수 재조정 불요
+carefor func.php LIVE: HTTP 000 timeout (119-cycle+ carry · 「미확인」 · disk canonical 6226e6eb/98,328B LOCK)
+
+constants sanity: ONE_WAY_RATIO = new BigDecimal("0.5") (무변동 carry)
+
+=== 판정 ===
+신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+BE @Test strict 2413 = BNK-889→898 IDENTICAL (10-cycle) · P3/P4「가정」 candidate 11종 전부 carry
+모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+per-cycle minimum 4종 충족(신규 evidence = UXD-199 git 실측 delta + NHIS #44 재실측 + COMPETITOR_MATRIX @HEAD 행 갱신 + BENCHMARK_REPORT §898 신규 절)

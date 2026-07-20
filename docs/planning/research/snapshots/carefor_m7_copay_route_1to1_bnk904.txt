@@ -1,0 +1,213 @@
+[BNK-904 · 2026-07-19T15:53:00Z · rotation=케어포 역공학 0-2h]
+
+목표: 케어포 func.php 주야간보호급여 M7 본인부담금관리 7-x lifecycle(11-leaf) → ogada @HEAD 1:1 route/endpoint crosswalk 재검증.
+
+======================================================================
+0. 실측 근거 (disk canonical + git 실측)
+======================================================================
+
+- carefor func.php LIVE
+  URL: https://www.carefor.co.kr/daycare/func.php
+  HTTP: 000 (25s timeout · 124-cycle+ carry「미확인」)
+
+- carefor func.php disk canonical
+  path: docs/planning/research/snapshots/carefor_func.php
+  md5:  6226e6eb92fdd25ed3e50842a5e8a00b
+  size: 98,328B
+  LOCK: `carefor_func.php` (재확인·재추출 O)
+
+- ogada BE develop = 6d3c766 (BNK-889→904 15-cycle zero advance · ahead 774 · @Test strict 2413)
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+
+- ogada FE develop = 6a9e85e (BNK-903 c2fb261 → +1 UXD-201 · ahead 37 · tester FF 대기)
+  last: fix(a11y/billing): wrap billing/fee/backup/guardian date cells in <time dateTime> (UXD-201)
+
+
+======================================================================
+1. 케어포 M7 본인부담금관리 정본 (disk canonical L710-L723)
+======================================================================
+
+    <div class="c1">pc - 7.본인부담금관리</div>
+    <div class="c2">
+      7-1.본인부담금 청구관리
+      7-2.본인부담금 입금관리
+      7-2-1.의료비공제(연말정산)
+      7-3.본인부담금 미납관리
+      7-4.본인부담금 자동이체 (CMS)
+      7-5.본인부담금 간편결제
+      7-6.본인부담금 청구대장 리포트
+      7-7.본인부담금 입금대장 리포트
+      7-8.본인부담금 수납대장 리포트
+      7-9.본인부담금 수납,환불내역
+      7-10.본인부담금 간편계산기
+    </div>
+
+leaf 총 11 (7-x + 7-2-1)
+
+======================================================================
+2. 7-x lifecycle → ogada @HEAD full-stack crosswalk
+======================================================================
+
+7-1.본인부담금 청구관리
+  BE: BillingController POST /api/v1/billing/claims/generate · GET /claims · GET /claims/{claimId}
+      · PATCH /claims/{claimId}/status
+      · GET /claims/generation-guard (prior-month unpaid guard, US-M03, 케어포 7-1/7-2)
+      · GET /claims/monthly-cap-guard
+  FE: /billing (BillingPage) · /billing/claims/:claimId (BillingDetailPage)
+  판정: ✅ PARITY
+  SUPERIOR: prior-month unpaid guard(GET /claims/generation-guard, 케어포 7-1/7-2 lineage 명시)
+
+7-2.본인부담금 입금관리
+  BE: BillingController POST /api/v1/billing/claims/{claimId}/payments
+  FE: /billing/payments (PaymentPage)
+  판정: ✅ PARITY
+
+7-2-1.의료비공제(연말정산)  [케어포 서브-리프]
+  BE: BillingController
+      · GET /api/v1/billing/reports/medical-deduction (G26, L07_M09)
+      · GET /api/v1/billing/reports/medical-deduction/export (CSV NTS batch upload)
+      · ClientController GET /clients/{clientId}/annual-copay-summary (개인 요약, 케어포 7-2-1)
+  FE: src/api/medicalExpenseDeduction.js
+      · src/components/ui/MedicalExpenseDeductionPanel.jsx
+      · src/pages/BillingStatisticsReportPage.jsx (G26 통계 리포트)
+  도메인 인텔리전스: CMS·간편결제는 연말정산 의료비공제 집계에서 제외 (케어포 7-2-1 ↔ 7-4/7-5 leaf 분리, BNK-77 lineage 명시)
+  판정: ✅ PARITY
+  SUPERIOR: NTS batch upload CSV export + CMS/간편결제 자동 exclusion
+
+7-3.본인부담금 미납관리
+  BE: BillingController
+      · GET /api/v1/billing/overdue
+      · GET /overdue/claims/{claimId}/management-records
+      · POST /overdue/claims/{claimId}/management-records
+      · GET /overdue/claims/{claimId}/adjustments
+      · POST /overdue/claims/{claimId}/adjustments
+      · OverdueManagementService.recordAutomaticSmsRemindersForClaim (자동 SMS 리마인더)
+  FE: /billing/overdue (OverduePage)
+  판정: ✅ PARITY
+  SUPERIOR: 관리기록(management-records) + 조정(adjustments) + 자동 SMS 리마인더 (BillingController L320)
+
+7-4.본인부담금 자동이체 (CMS)
+  BE: CmsController @RequestMapping("/api/v1/billing/cms")
+      · POST /enrollments · GET /enrollments · DELETE /enrollments/{enrollmentId}
+      · GET /payment-method-catalog
+      · POST /claims/{claimId}/debit
+      · POST/GET /claims/{claimId}/virtual-account
+      · POST/GET /claims/{claimId}/multi-account-settlement
+  FE: /billing/cms
+  판정: ✅ PARITY
+  SUPERIOR: multi-account settlement + virtual-account 프리페이드 조합
+
+7-5.본인부담금 간편결제
+  BE: EasyPayController @RequestMapping("/api/v1/billing/easy-pay")
+      · POST /claims/{claimId}/payment
+      · GET /claims/{claimId}/payment
+      · GET /provider-catalog
+  FE: /billing/easy-pay (EasyPayPage)
+  판정: ✅ PARITY
+
+7-6.본인부담금 청구대장 리포트
+  BE: BillingController GET /api/v1/billing/reports (charges)
+      · GET /reports/copay-monthly-statistics
+  FE: /billing/reports/charges (BillingReportPage variant="charges")
+  판정: ✅ PARITY
+
+7-7.본인부담금 입금대장 리포트
+  BE: BillingController GET /api/v1/billing/reports (deposits)
+  FE: /billing/reports/deposits (BillingReportPage variant="deposits")
+  판정: ✅ PARITY
+
+7-8.본인부담금 수납대장 리포트
+  BE: BillingController GET /api/v1/billing/reports (receipts)
+      · GET /cash-receipt-issuances · GET /cash-receipt-issuances/pending
+      · POST /cash-receipt-issuances
+      · GET /clients/{clientId}/cash-receipt-profile
+  FE: /billing/reports/receipts (BillingReportPage variant="receipts")
+      · /billing/cash-receipts (CashReceiptIssuancePage)
+  판정: ✅ PARITY
+  SUPERIOR: 현금영수증 pending 큐 + client cash-receipt profile (수급자별 발행 옵션)
+
+7-9.본인부담금 수납,환불내역
+  BE: BillingController
+      · POST /api/v1/billing/claims/{claimId}/refunds (US-M03 7-9)
+      · GET /copay/refund-fee-policy-catalog (US-M03 7-9)
+      · POST /copay/refund-fee-preview
+  FE: /billing/reports/refunds (BillingReportPage variant="refunds")
+  판정: ✅ PARITY
+  SUPERIOR: PG 환불수수료 정책 카탈로그 + 프리뷰 (KCP PG catalog 명시)
+
+7-10.본인부담금 간편계산기
+  BE: BillingController
+      · GET /api/v1/billing/copay-rates
+      · PATCH /copay-rates/{copayType}
+      · GET /fee-schedules · POST /fee-schedules · PATCH /fee-schedules/{feeScheduleId}
+      · GET /monthly-benefit-caps · GET /fee-surcharge-rates
+      · POST /fee-surcharge-preview
+  FE: /billing/calculator (CopayCalculatorPage) · /billing/copay-rates (CopayRatePage)
+      · /billing/fee-schedules (FeeSchedulePage)
+  판정: ✅ PARITY
+
+======================================================================
+3. 판정 summary
+======================================================================
+
+- 케어포 M7 7-x 11-leaf 전량 ogada full-stack 존재 = **11/11 leaf-level PARITY**
+- 이 중 SUPERIOR 6종:
+  · 7-1: prior-month unpaid guard(GET /claims/generation-guard) — 前月 미납 시 청구 차단
+  · 7-2-1: NTS batch upload CSV export + CMS/간편결제 자동 exclusion
+  · 7-3: OverdueManagementService(관리기록+조정+자동 SMS 리마인더)
+  · 7-4: multi-account settlement + virtual-account 프리페이드 조합
+  · 7-8: 현금영수증 pending 큐 + client cash-receipt profile
+  · 7-9: PG 환불수수료 정책 카탈로그(KCP) + 프리뷰
+- 신규 진성갭 승격 0 · P0~P3 결정 번복 0 · 미확인 승격 0
+- 참고: BNK-904 케어포 leaf 전수 재추출 결과 실 leaf 총 **107** (M1=11, M2=10, M3=11, M4=10, M5=13, M6=5, M7=11, M8=15, M9=6, M10=9, M11=6). 이전 세션 「109」 표기는 outdated → 「107」이 disk canonical `6226e6eb` 기준 authoritative (rules §14 lineage: 과거 Page 106→107, @Test 2414→2413, `<time dateTime>` 89 정정과 동일 계보).
+
+======================================================================
+4. carefor demo-work.carefor.co.kr 재실측
+======================================================================
+
+- demo-work.carefor.co.kr LIVE = HTTP 000 (20s timeout · func.php 와 동일 정책·「미확인」)
+- disk canonical: docs/planning/research/snapshots/carefor_demo_work.html (75,587B, 2026-06 카피 carry) · 시설 셸 = 이동서비스관리 제외 명시 (BNK-573 정본)
+- ogada M2 이동서비스관리 축(TransportController + TransportServiceFeeParityCatalog + VisitRfidDiffComparePanel) 경쟁 4종 유일 SUPERIOR carry
+
+======================================================================
+5. NHIS #44 626차 재실측 (규제 백본 lockstep)
+======================================================================
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP: 200 · SIZE: 7,572B · md5: c886ff1fd1d5ca2cb5dc76d30adde8ba
+- cmp vs nhis_jo44_live_bnk903.html = BYTE-IDENTICAL (626차, BNK-903 625차 → +1)
+- verbatim: 「‘러-1’부터 ‘러-4’까지 비용의 50%」 · 이동서비스비용 「1일 1회」 · 「편도의 이용은 100분의 50」
+- ogada TransportServiceFeeParityCatalog(RU_1..RU_4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY) 상수 재조정 불요
+- 저장: docs/planning/research/snapshots/nhis_jo44_live_bnk904.html
+
+======================================================================
+6. KPI baseline (git 실측)
+======================================================================
+
+FE (@6a9e85e):
+  - Route 133 (App.jsx `<Route\b` 132 + `<Routes>` 1)
+  - Page 106 (*Page.jsx)
+  - FE test 544 (228 .test.js + 316 .test.jsx)
+  - `<time dateTime>` non-test jsx 96 files (occurrences 162)  [BNK-903 89 files·occurrences 128 → +7 files·+34 occurrences·UXD-201]
+  - `<time >` any jsx (non-test) 98 files
+
+BE (@6d3c766):
+  - @RestController 81
+  - HTTP 442 (GET 231 · POST 144 · PATCH 44 · PUT 13 · DELETE 10) · BNK-836→904 = 64차 byte/count-exact IDENTICAL
+  - BE Test 298 (297 Test.java + 1 Tests.java)
+  - @Test strict 2413 (BNK-889 → 904 = 16-cycle IDENTICAL)
+  - Flyway V1–V196
+
+Merge gate: 811 (FE 37 + BE 774 · BE-heavy · tester FF 대기)
+
+======================================================================
+7. planner 액션 아이템 (BNK-904)
+======================================================================
+
+1. 케어포 M7 본인부담금 7-x 11-leaf → ogada 11/11 full-stack PARITY (6-SUPERIOR)
+   → REQUIREMENTS §벤치마킹 「M7 본인부담금 lifecycle 11-leaf 전량 커버 + PG 환불수수료 카탈로그·자동 SMS 리마인더·multi-account settlement·NTS CSV export SUPERIOR」 카피 유지
+2. NHIS #44 626차 byte-IDENTICAL → 규제 상수(ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요
+3. KPI 정정: 케어포 disk canonical `6226e6eb` 실 leaf 107 (「109」 outdated) · `<time dateTime>` non-test jsx 96 files(UXD-201 +7) → KPI 계수 lock
+4. BE @Test strict 2413 = BNK-889→904 16-cycle IDENTICAL · HTTP 442 64차 IDENTICAL (BE 15-cycle zero advance) → API posture 동결·물리 삭제 API 신설 금지·PATCH>PUT
+5. FE `@6a9e85e` +1 ADVANCE(UXD-201 청구/이용료/백업/보호자 date `<time dateTime>`)·ahead 37·tester FF 대기·merge gate 811
+6. 모듈 97.41% CARRY·신규 진성갭 0·가정 승격 0 → ROADMAP·PLAN_NOTES 현행 유지

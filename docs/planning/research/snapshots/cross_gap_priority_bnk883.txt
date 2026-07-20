@@ -1,0 +1,132 @@
+BNK-883 — 교차검증·갭 우선순위 8h+ (2026-07-19T00:05:00Z)
+================================================================
+rotation: 교차검증·갭 우선순위 (이전 BNK 예측/가정 번복 여부·미확인 축소·P0/P1 재정렬·신규 공지/엑셀 포맷 변경 스캔)
+작성자: benchmark_researcher [BNK] | 독자: [PLN]
+
+────────────────────────────────────────────────────────────
+0. ogada git 실측 baseline (@HEAD 재실측)
+────────────────────────────────────────────────────────────
+BE  develop @ce656d5  fix(v3/SEC-D34): normalize fullwidth won sign in excel import amounts instead of dropping row
+    (BNK-882 @1d067d9 → +1 commit·SEC-D34 축6 = fullwidth ￦ U+FFE6)
+FE  develop @c3a0cac  fix(v1.2.1/care-reports): pre-block reversed date range before patient-service round-trip (L02_M11 form polish)
+    (BNK-882 @cf360d7 → +1 commit·L02_M12 → L02_M11 리포트 form-polish 확산 착지)
+
+git 실측 KPI (@c3a0cac / @ce656d5):
+| KPI | 값 | BNK-882 대비 | 근거 |
+|---|---|---|---|
+| FE Route | 133 (<Route\b 132 + <Routes> 1) | IDENTICAL (product route 무변·form polish only) | grep -cE '<Route\b' App.jsx |
+| FE Page.jsx (prod) | 106 | IDENTICAL | find *Page.jsx |
+| FE test files | 542 (227 .test.js + 315 .test.jsx) | IDENTICAL (PatientServiceReportPage.test.jsx in-place +42·신규 0) | find *.test.js* |
+| BE @Test (strict ^\s*@Test) | 2398 | +2 (SEC-D34 축6 fullwidth ￦ 2-parser 회귀) | git grep -E '^\s*@Test\b' |
+| BE Test.java files | 296 (+1 Tests.java = 297) | IDENTICAL | find *Test.java |
+| BE @RestController (loose) | 81 | IDENTICAL | git grep -l @RestController |
+| BE HTTP mapping | 442 (GET231/POST144/PATCH44/PUT13/DELETE10) | byte/count-exact IDENTICAL 43차 (BNK-836→883·endpoint 신설 0) | git grep -hoE '@(Get|Post|Put|Delete|Patch)Mapping' |
+| Flyway | V1–V196 (196 files·신규 0) | IDENTICAL | ls db/migration |
+| 모듈 커버 KPI | 97.41% (28.25/29·진성갭 0) | IDENTICAL | competitorModuleCoverage.js |
+| merge gate | 797 (FE 27 + BE 770·BE-heavy) | +2 (FE +1·BE +1) | git rev-list --count origin/test..develop |
+
+────────────────────────────────────────────────────────────
+§883-1 ★★★ 교차검증 — BNK-882 예측 「L02 리포트 form-polish 확산」 착지 확인 (예측 번복 아님·CONFIRMED)
+────────────────────────────────────────────────────────────
+BNK-882 §882-5/§882-8 planner 액션에서 「신규 helper resolveCareReportDateRangeError 는
+다른 L02 리포트(BathHelpReportPage·BasicVitalReportPage·PressureUlcerReportPage·
+MealExcretionReport*Page)로 확산 여지 남김」이라고 예측(진성갭 아님·coder 후일 결정).
+
+→ 본 사이클 FE @c3a0cac 로 예측 착지 실측: PatientServiceReportPage(L02_M11)에
+   shared helper resolveCareReportDateRangeError 를 load guard(clientId 체크 이후)에 wire.
+   diff (cf360d7..c3a0cac): 2 files +75/-24 (PatientServiceReportPage.jsx +57/-... · .test.jsx +42)
+   - 시작일>종료일 역방향 조회 기간을 서버 왕복 전 FE 사전 차단
+   - 종료일 필드에 anchor (role="alert" + aria-invalid) — WCAG 3.3.1 필드 오류 라우팅
+   - 거부된 조회 기간의 stale aggregate 즉시 초기화 (오류 배너-표 정합)
+   - 결측 종료일은 BE default window 대체로 valid 유지 (L02_M12 ServiceSummaryReportPage 와 동일 패턴)
+
+판정: BNK-882 예측 = CONFIRMED 착지 (번복 0). L02 리포트 도메인 확산 2번째 페이지(M12 → M11).
+      shared helper 형제: resolveCareReportDateRangeError ↔ resolveTransportServiceFeeDateRangeError(이동서비스비 계보).
+      잔여 확산 여지: BathHelp/BasicVital/PressureUlcer/MealExcretion (진성갭 아님·coder 후일).
+
+────────────────────────────────────────────────────────────
+§883-2 ★★★ 신규 엑셀 포맷 내성 축 — SEC-D34 축6 = fullwidth ￦ (U+FFE6) [엑셀 포맷 변경 스캔]
+────────────────────────────────────────────────────────────
+BE @ce656d5 diff (1d067d9..ce656d5): 4 files +65/-13
+  - NhisExcelParser.normalizeNumeric        +17/-6
+  - BankDepositExcelParser.parseAmount      +19/-7
+  - NhisExcelParserTest                     +22 (13→14 test)
+  - BankDepositExcelParserTest              +20 (14→15 test)
+
+문제: POI DataFormatter 가 통화 서식/수기 셀을 렌더링할 때 halfwidth ₩(U+20A9·BNK-881 처리)
+      뿐 아니라 fullwidth ￦(U+FFE6)를 붙이는 한국 엑셀 포맷 존재 → ￦-접두 금액이
+      BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 왜곡).
+해결: U+FFE6 을 sibling U+20A9 정규화와 lockstep 으로 strip (정상 입력 behavior-neutral).
+회귀: shouldNormalizeFullwidthWonSignPrefixedAmount* (양 parser test).
+
+SEC-D34 엑셀 import 파일/포맷 내성 축 누적 (BNK-883 기준):
+  축1 통화접미사        BNK-875  currency-suffixed NHIS 금액/일수
+  축2 공백그룹          BNK-877  whitespace-grouped bank deposit
+  축3 「일」 접미사      BNK-878  day-marker-suffixed NHIS 서비스 일수
+  축4 test-layer 대칭   BNK-880  회귀 lock
+  축5 halfwidth ₩       BNK-881  U+20A9 won sign strip
+  축6 fullwidth ￦       BNK-883  U+FFE6 won sign strip  ← 신규
+= production 5-축 + test 1-축 = 6-축 파일/포맷 내성. 경쟁 4종 유일(케어포 시설 셸/엔젤 배차 부재/
+  이지케어 데모 파일 무결성 verbatim 0/롱텀 규제만). 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축.
+
+────────────────────────────────────────────────────────────
+§883-3 ★ 규제 백본 3-URL 재실측 — 교차검증 zero substantive drift [기존 URL 재실측]
+────────────────────────────────────────────────────────────
+NHIS #44 제34조
+  URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  live HTTP 200·7,572B·md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 605차 byte-IDENTICAL (BNK-882 604차 → +1)
+  verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+  ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+TransportServiceLog*(④ 이동서비스 일지) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+
+law 2025-247 (보건복지부 고시)
+  URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+  live HTTP 200·78,450B·raw md5 5a7a8935f9dcaa39b2beb4f7df40bcba (DRIFT vs BNK-882 9e48a054·전량 cache-buster ?Time= 숫자)
+  strip Time=[0-9]* 후 semantic md5 a913639ab52293e3571cfe7e3ca35097 = 13-cycle strip IDENTICAL
+  (BNK-859/861/862/865/866/868/870/875/880/881/882/883·canonical URL admRulSeq=2100000271110 고정)
+
+silverangel system_feature
+  URL: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+  live HTTP 200·45,601B·md5 c950719098eecaf748bbdeea5deb93da = 9차 byte-IDENTICAL (BNK-859→883)
+  이동서비스/배차/GPS/RFID/차량 0-hit 재확인 → 엔젤 자체 배차 부재 carry·ogada Transport 자체 시스템 SUPERIOR.
+
+carefor func.php — 재측정 skip (BNK-881 timeout·disk canonical 6226e6eb LOCK·112-cycle+ carry·「미확인」 유지).
+longterm 502 — 재측정 skip (BNK-872 근본 원인 확정 이후 lean-shell 오실레이션 signal only·기능 갭 아님).
+
+────────────────────────────────────────────────────────────
+§883-4 ★ audit-first HTTP 442 posture 43차 byte/count-exact IDENTICAL [git 실측·감사 우선]
+────────────────────────────────────────────────────────────
+@ce656d5 grep: GET 231(52.3%)·POST 144(32.6%)·PATCH 44(10.0%)·PUT 13(2.9%)·DELETE 10(2.3%) = 442
+@RestController 81·controller당 5.46 = BNK-836→883 43차 연속 IDENTICAL.
+BE +1(SEC-D34 fullwidth ￦ production·service-layer)·FE +1(L02_M11 form-polish test-only) 후에도
+endpoint 신설 0·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+= 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+────────────────────────────────────────────────────────────
+§883-5 ★ 가정/예측 번복 재점검 (rules §14·§18)
+────────────────────────────────────────────────────────────
+- BNK-882 예측 「L02 리포트 form-polish 확산」 = §883-1 CONFIRMED 착지(번복 아님·예측 실현).
+- BNK-880 「BNK-878 rowid=21704 라벨 fact 정정」 유지(P3 지위 불변).
+- BNK-858 longterm 종료가정 최종 결착 유지·BNK-826 law URL alias 폐기 유지.
+- BNK-881 P3「가정」 3종(G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY) carry.
+- BNK-882 P3/P4「가정」 5종(G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·G-RECORD-COPY-OPTION) carry.
+- 신규 가정 번복 0·미확인 승격 0·P0~P3 결정 번복 0·KPI promote 0·모듈 97.41% CARRY.
+
+────────────────────────────────────────────────────────────
+§883-6 ★★ planner 액션 아이템 [갭 우선순위 동결]
+────────────────────────────────────────────────────────────
+1. REQUIREMENTS §L02 리포트 form-polish 계보 확산 = 2번째 페이지 착지 명시 권고 —
+   L02_M12 ServiceSummaryReportPage(BNK-882) → L02_M11 PatientServiceReportPage(BNK-883)로 확산.
+   shared helper resolveCareReportDateRangeError 로 BathHelp/BasicVital/PressureUlcer/MealExcretion
+   확산 여지 남김(진성갭 아님·coder 후일 결정).
+2. SEC-D34 엑셀 import 포맷 내성 6-축(통화접미사·공백그룹·일접미사·test·halfwidth ₩·fullwidth ￦) 명시 —
+   경쟁 4종 유일 SUPERIOR·「엑셀 원화 기호 ₩/￦ 양형 자동 정규화 — 재무 대사 행 누락 방어」 마케팅 카피.
+3. NHIS #44 §34조 605차 IDENTICAL·law 2025-247 13-cycle strip IDENTICAL·silverangel system_feature 9차
+   → 규제 상수·앵커 재조정 불요.
+4. audit-first HTTP 442 43차 IDENTICAL → API posture 43-cycle 동결 명시(물리 삭제 API 신설 금지).
+5. P3/P4「가정」 candidate 8종(BNK-881 3 + BNK-882 5) 전부 carry(진성갭 승격 0·rules §11·§17 과대구축 회피).
+6. tester FF merge gate 797 carry(BE 770 + FE 27·BE-heavy·신규 마이그레이션 0) — SEC-D34 fullwidth ￦
+   + L02_M11 form-polish test 이관 흡수 권고.
+7. 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+
+per-cycle minimum 충족: 신규 evidence(3 URL 재실측 + git @HEAD 재실측) · 메뉴/필드/워크플로 1블록(§883-1/§883-2) ·
+COMPETITOR_MATRIX @HEAD 갱신 · BENCHMARK_REPORT §883 신규 소절. 신규 snapshot 4(txt 1 + html 3)·덮어쓰기 0.

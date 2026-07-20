@@ -1,0 +1,190 @@
+BNK-890 엔젤·롱텀·규제 역공학 4–6h (2026-07-19T06:40:00Z)
+rotation: 엔젤·롱텀·규제 4–6h — BNK-889(엔젤·롱텀·규제 역공학 4–6h·2026-07-19T04:19:00Z) → ~2h21분 후
+focus: silverangel/lcms 공개 기능 역공학(급여제공 lifecycle 필드 실측)·law.go.kr 이동서비스비 러-1~4 재확인(PLAN_NOTES #44)
+       + ogada BE/FE @HEAD 재실측(zero advance carry) · SEC-D34 축 스캔 · Test.java KPI 정정
+
+================================================================
+## 0. Baseline (git 실측) — BNK-889 → BE +0 / FE +0 (zero advance carry)
+================================================================
+
+### src/backend
+HEAD: 6d3c766  (BNK-889 동일 HEAD·zero advance)
+subject: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+ahead_of_test: 774 vs 598d108  (BNK-889 774·IDENTICAL)
+WT: CLEAN
+
+### BE inventory (@6d3c766)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (GET231/POST144/PATCH44/PUT13/DELETE10·byte/count-exact IDENTICAL BNK-836→890 = 50차·endpoint 신설 0)
+- @RestController (loose): 81
+- @Test strict (git grep @Test\b): 2413 (BNK-889 2413·IDENTICAL·zero advance)
+- Test.java files: 297 · Tests.java: 1 = 총 298
+  ※ KPI 정정: BNK-836~889 관례 라벨 「297(296+1)」 은 Test.java 실측 297 + Tests.java 1 = 총 298 대비
+    -1 undercount(관례 라벨이 총합을 297 로 표기). HEAD 불변(6d3c766)이므로 파일 트리 불변 →
+    소급 정정: **Test.java 297 + Tests.java 1 = 298** (Page 106→107 소급 정정·BNK-888 선례와 동일 성격).
+- Flyway: V1–V196 (신규 0)
+
+### src/frontend
+HEAD: 0ff9c7d  (BNK-889 동일 HEAD·zero advance)
+subject: Add regression for program report date error reset
+ahead_of_test: 32 vs b23711f  (BNK-889 32·IDENTICAL·tester FF 대기·rev-list 0/32)
+WT: CLEAN
+
+### FE inventory (@0ff9c7d)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (IDENTICAL)
+- Page.jsx (prod, excl .test.jsx): 106 (IDENTICAL)
+- FE test files: 543 (228 .test.js + 315 .test.jsx·IDENTICAL·신규 0)
+- 모듈 커버 KPI: 97.41% (28.25/29·진성갭 0·carry)
+
+### merge gate
+FE 32 + BE 774 = 806 (BE-heavy·신규 마이그레이션 0·IDENTICAL vs BNK-889)
+※ PLN 235차 결정으로 `## v3` / `## v1.2.1` merge_status: ready 설정됨
+  → 다음 build 시 auto-merge FF 발화 대기(BNK-890 baseline 여전히 tester FF 대기).
+
+================================================================
+## 1. ★★★ 엔젤 silverangel LCMS 급여제공 lifecycle 역공학 [메뉴/필드/워크플로 1블록·신규 상세]
+================================================================
+출처: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+      snapshots/silverangel_system_feature_live_bnk890.html (45,601B·md5 c9507190·16차 byte-IDENTICAL)
+방법: 정적 HTML 파싱 — <h*/strong/dt/th> heading grep + <li> feature item grep + 「급여」 context grep
+
+### 1-A. 페이지 구조 heading (실측 verbatim)
+  · LCMS(Longterm Care Management System) 유형
+  · 개발 배경 및 목적 / 시스템 특징 / 시스템 분류 / 화면구성
+  · 시스템 특장점 01./02./03.
+  · 고객 욕구에 유연한 서비스제공 / 최상의 장기요양 서비스 관리 구현 / 도입 후 기대효과
+  · 타 시스템 (A Type, B Type) 비교표 (구분/기능/내용/비고 컬럼)
+  · 대메뉴 / 좌측 모바일 대메뉴 (모바일 화면구성)
+
+### 1-B. 급여제공(care-provision) lifecycle 메뉴/필드 (실측 <li> verbatim)
+  급여제공계획  →  급여제공(실시·기록)  →  급여제공변경  →  급여제공평가  →  급여제공지침교육
+  세부 필드/워크플로:
+  · 급여제공계획: "서비스항목별 또는 입소자별 월별 제공계획"(월별제공계획)·
+    "평가결과에 따라 구체적으로 급여계획을 세우고, 수급자(보호자)의 동의를 받"
+  · 급여제공(실시): "급여제공계획에 의한 서비스 제공 및 기록"·
+    "월1회 급여제공기록지 법정서식 보호자에게 메일로 발송"
+  · 급여제공변경: "급여제공 변경기록, 변경사항 기록지와 연계"·
+    "투약내역, 입원/외래/응급/급여제공계획변경의 내용을 자동 통합"
+  · 급여제공평가: "급여제공계획 대비 급여제공실시 분석"·
+    "급여제공계획의 평가(계획대비 실적 비율분석)"
+  · 급여제공지침교육: "연1회 급여제공지침교육 실시, 교육자료 및 사진등록, 참(석)"
+  · 사례관리: "월1회 사례관리회의 실시, 급여제공에 반영사항 기록"(사례관리회의)
+  · 상담: "보호자 또는 입소자와의 상담내용 및 이력관리"(상담일지)
+  · 투약: "입소자별 투약이력관리, 일별 투약여부 분석"(투약일지)
+  · 평가도구: 수급자평가도구·건강수준평가·종합평가·계획대비실적
+  · 프로그램: "연간 또는 월간 프로그램 계획 관리"(프로그램계획)
+  · 청구/재무: "급여비용명세서 법정서식으로 제공, 보호자에게 이메일"·
+    법정서식(급여제공기록지·급여비용명세서·가정통신문·노인학대예방 및 대응)
+
+### 1-C. positive-hit term 빈도 (grep -o | wc -l)
+  급여 18 · 보호자 13 · 평가 8 · SMS 6 · 일정 6 · 통계 5 · 상담 4 · 문자 3 ·
+  회계 1 · 인사 1 · 모바일 2 · 본인부담 2 · 전자결재 2
+  → 엔젤 LCMS = 급여제공계획→실시→평가 lifecycle + 상담/투약/사례관리/평가도구 + 법정서식 보호자 메일 중심.
+
+### 1-D. ★ transport 6-term 0-hit 재확인 (엔젤 배차 부재)
+  이동서비스 0 · 배차 0 · GPS 0 · RFID 0 · 차량 0 · 송영 0 = ALL 0-hit
+  → 엔젤 LCMS 는 care-plan/nursing-record/billing-statement 도메인은 풍부하나
+    **자체 이동서비스/배차/송영 모듈 부재** (16차 byte-IDENTICAL 재확인).
+
+### 1-E. ogada 대비 판정 (parity/gap)
+  · 급여제공계획→실시→평가 lifecycle: ogada `ProgramReports`·`CareReports`·care-plan 도메인으로 흡수(PARITY)
+  · 급여비용명세서 보호자 메일 발송: ogada `/billing/*` + 보호자 포털 + 알림(알림톡/SMTP)으로 커버(PARITY·SUPERIOR — 엔젤은 이메일 단일, ogada 는 알림톡/SMS/메일 멀티채널)
+  · 사례관리회의 월1회 기록: ogada care-plan/상담 기록으로 흡수 가능(PARTIAL 「가정」 — 전용 '사례관리회의' 서식 여부는 미확인)
+  · **이동서비스/배차: 엔젤 부재 ↔ ogada Transport 자체 시스템(TransportServiceFeeParityCatalog·TransportServiceLog) SUPERIOR** — 경쟁 4종 유일
+  → 신규 진성갭 0(엔젤 LCMS 급여제공 lifecycle 은 ogada 흡수 범위·과대구축 회피 rules §11·§17).
+    P4「가정」 candidate 관찰: G-CASE-MGMT-MEETING(월1회 사례관리회의 전용 서식) — 「가정」·승격 0.
+
+================================================================
+## 2. 규제 백본 재실측 (엔젤·롱텀·규제 focus — 이번 rotation 초점)
+================================================================
+
+### NHIS #44 (이동서비스비 러-1~4·PLAN_NOTES #44) [기존 URL 재실측]
+canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+cmp vs snapshots/nhis_jo44_live_bnk889.html : BYTE-IDENTICAL
+= 612차 byte-IDENTICAL (BNK-889 611차 → +1·zero drift)
+verbatim grep 재확인:
+  · 러-1:1 · 러-4:1 · 편도:2 · 이동서비스비:9 · 1일 1회:1 · 수급자가 부담:1 · 이동서비스 일지:1
+→ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)
+  + TransportServiceLog*(④ 이동서비스 일지) full-stack 1:1 SUPERIOR · 상수 재조정 불요 · id=2 0.85 carry
+snapshot: docs/planning/research/snapshots/nhis_jo44_live_bnk890.html
+
+### silverangel system_feature (엔젤시스템 공개 기능) [기존 URL 재실측·§1 주력]
+http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+cmp vs snapshots/silverangel_system_feature_live_bnk889.html : BYTE-IDENTICAL
+= 16차 byte-IDENTICAL (BNK-859→890 · BNK-889 15차 → +1)
+transport 6-term grep: 이동서비스(0)·배차(0)·GPS(0)·RFID(0)·차량(0)·송영(0) = ALL 0-hit
+→ §1 급여제공 lifecycle 역공학 주력 (엔젤 배차 부재 재확인·ogada Transport SUPERIOR)
+snapshot: docs/planning/research/snapshots/silverangel_system_feature_live_bnk890.html
+
+### law 2025-247 (장기요양급여 제공기준·고시) [기존 URL 재실측]
+canonical https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,450B · raw md5 081bd3211ce12fcc9c680c52a469051c
+  (DRIFT vs BNK-889 raw 1d796f10·cache-buster ?Time= 숫자 변화)
+strip Time=[0-9]* 후 semantic md5: a913639ab52293e3571cfe7e3ca35097
+  ※ 관찰: 저장된 bnk889 snapshot 을 동일 sed 로 재strip 시에도 a913639a → **890↔889 strip diff = 0 line**.
+    (BNK-886~889 report 가 표기한 ad1db6e0 는 당시 raw capture 의 추가 휘발 토큰 차이 추정;
+     불변 사실 = **재strip 결과 890=889 IDENTICAL·diff 0-line**. BNK-885 lineage a913639a 와 일치.)
+= 규제 앵커 재조정 불요 (canonical URL admRulSeq=2100000271110 고정·diff 0-line)
+snapshot: docs/planning/research/snapshots/law_mohw_2025_247_admRulInfoP_live_bnk890.html
+
+### longterm 502 (단기보호 수가)
+재측정 skip (BNK-872 근본 원인 확정 이후 lean-shell 오실레이션 signal only 정책 유지)
+
+### carefor func.php [기존 URL·disk canonical]
+LIVE 재측정 skip (115-cycle+ timeout carry「미확인」)·disk canonical 6226e6eb/98,328B LOCK
+
+================================================================
+## 3. audit-first HTTP 442 posture 50차 byte/count-exact IDENTICAL
+================================================================
+@6d3c766 grep(--include='*.java' @{Get,Post,Patch,Put,Delete}Mapping):
+  GET 231(52.3%)·POST 144(32.6%)·PATCH 44(10.0%)·PUT 13(2.9%)·DELETE 10(2.3%) = 442
+@RestController 81 · controller당 5.46 = BNK-836→890 = **50차 연속 byte/count-exact IDENTICAL**.
+BE +0 / FE +0 (zero advance) 이후에도 endpoint 신설 0 · CSS 신설 0.
+→ **API 안정성 50-cycle 동결(마일스톤)** · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 우선 ·
+   DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합).
+
+================================================================
+## 4. 갭 우선순위 재점검 (엔젤·롱텀·규제 rotation)
+================================================================
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- 모듈 커버 97.41% CARRY(진성갭 0)
+- P3/P4「가정」 candidate 8종 전부 carry (진성갭 승격 0·rules §11·§17·「미확인」 유지):
+  · BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+  · BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+  · BNK-890 관찰 신규 P4「가정」: G-CASE-MGMT-MEETING(엔젤 월1회 사례관리회의 전용 서식) — 「가정」·승격 0
+- BNK-884 M7 crosswalk 11/11 PARITY 유지·본인부담 진성갭 0 재확인
+- silverangel LCMS 급여제공 lifecycle(§1) → ogada care-plan/report 도메인 흡수·엔젤 배차 부재 → ogada Transport SUPERIOR
+
+================================================================
+## 5. 가정/예측 번복 재점검 (rules §14·§18)
+================================================================
+- BNK-889 「리셋 동시성」 lock 유지 · BNK-888 §119 dual-field a11y routing 9-page rollout 유지
+- BNK-884 M7 본인부담 11/11 PARITY 유지 · BNK-880 rowid=21704 라벨 fact 정정 유지
+- BNK-858 longterm 종료가정 결착 유지 · BNK-826 law URL alias 폐기 유지
+- Test.java KPI 정정(297+1=298·관례 297 → -1 undercount 소급 정정)은 fact 정정(가정 번복 아님)
+- 신규 가정 번복 0 · P0~P3 결정 번복 0 · KPI promote 0 · 모듈 97.41% CARRY
+
+================================================================
+## 6. BNK-889 → BNK-890 delta 요약
+================================================================
+- BE +0 / FE +0 (zero advance carry·6d3c766 / 0ff9c7d)
+- ★★★ 엔젤 silverangel LCMS 급여제공 lifecycle 역공학 신규 블록(§1) — 급여제공계획→실시→변경→평가→지침교육 + 사례관리/상담/투약/평가도구·법정서식 보호자 메일·배차 6-term 0-hit → ogada 흡수·Transport SUPERIOR
+- NHIS #44 612차 byte-IDENTICAL(러-1~4 verbatim) · silverangel 16차 · law strip 890↔889 diff 0-line
+- audit-first HTTP 442 50차 byte/count-exact IDENTICAL(마일스톤·endpoint 신설 0·CSS 신설 0)
+- Test.java KPI 정정: 297 Test.java + 1 Tests.java = 298(관례 297 → -1 undercount 소급 정정)
+- 모듈 97.41% CARRY · merge gate 806(FE 32 + BE 774·BE-heavy·PLN 235차 ready·auto-merge FF 대기)
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- per-cycle minimum 4종 충족:
+  · 기존 URL 재실측 3건 (NHIS #44 612차 · silverangel 16차 · law strip diff 0-line)
+  · 경쟁사 메뉴/필드/워크플로 1블록 상세 (§1 엔젤 LCMS 급여제공 lifecycle 실측)
+  · COMPETITOR_MATRIX 1행 이상 ogada `@0ff9c7d`/`@6d3c766` 로 갱신
+  · BENCHMARK_REPORT §890 신규 소절 1건
+- 신규 snapshot 4 (txt 1 + html 3) · 덮어쓰기 0

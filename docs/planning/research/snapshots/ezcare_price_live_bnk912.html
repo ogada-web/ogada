@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=1200, initial-scale=0.3">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="Title" content="">
+    <meta name="Subject" content="">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="방문일정관리, 수급자관리, 요양보호사급여관리, 재가센터 업무서식제공, 가산수가계산, 재가기관 업무관리프로그램">
+    <meta name="reply-to" content="">
+    <meta name="Robots" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="이지케어">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="https://ezcare.easyms.co.kr/">
+    <meta name="twitter:card" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:domain" content="">
+    <meta name="google-site-verification" content="">
+    <meta name="naver-site-verification" content="">
+    <title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+    <link rel="icon" href="/homepage2/assets/images/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/homepage2/assets/images/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/homepage2/assets/images/favicon/apple-touch-icon.png">
+    <!-- jquery -->
+    <script src="/homepage/js/vendor/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.number.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.cookie.js"></script>
+    <!-- 이지케어 유입분석 -->
+    <script src="/assets/accessClick.log.js?20230308" type="text/javascript"></script>
+    <!-- assets -->
+    <link rel="stylesheet" href="/homepage2/assets/css/reset.css?1784496431" />
+    <link rel="stylesheet" href="/homepage2/assets/css/base.css?1784496431" />
+    <link rel="stylesheet" href="/homepage2/assets/css/layout.css?1784496431" />
+    <link rel="stylesheet" href="/homepage2/assets/css/ez_alert.css?1784496431" />
+    <!-- <link rel="stylesheet" href="/homepage2/assets/css/responsive.css" /> -->
+    <script src="/homepage2/assets/js/common.js?1784496431"></script>
+    <script src="/homepage2/assets/js/ez_alert.js?1784496431"></script>
+    <script src="/homepage2/assets/js/home.js?1784496431"></script>
+    <link rel="stylesheet" href="/homepage2/assets/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/homepage2/assets/vendor/aos/aos.css">
+</head>
+<script>
+var PGID = 'price'; // 2022.08.26 주팀장추가  accessClick
+var loginCheck = 0;
+var chk = 0;
+
+$(function() {
+    dep1 = 0,
+        dep2 = 0;
+});
+
+var _NGUL = "wcs.naver.net/wcslog.js";
+if (location.protocol == "https:") { var nUrl = "https://" + _NGUL; } else { var nUrl = "http://" + _NGUL; }
+document.write("<scr" + "ipt type='text/javascript' src='" + nUrl + "'></scr" + "ipt>");
+</script>
+
+<body>
+    <style>
+</style>
+
+<header class="header" id="header">
+	<div class="inner">
+		<div class="logo">
+			<a href="/index.html">
+				<img src="/homepage2/assets/images/logo_easycare_60h.svg" alt="재가장기요약기관 업무통합 ERP 이지케어" style="height:55px">	
+			</a>
+		</div>
+
+		<button type="button" class="menu-toggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+	  </button>
+
+		<nav class="nav">
+			<ul class="gnb">
+				<li><a class="" href="/index.html?PG=about">이지케어 소개</a></li>
+				<li><a class="" href="/index.html?PG=visit">방문요양 </a></li>
+				<li><a class="" href="/index.html?PG=daycare">주야간보호 </a></li>
+				<li><a class="" href="/index.html?PG=w4c">재무회계 대행</a></li>
+				<li><a class="" href="/index.html?PG=addition">부가서비스</a></li>
+				<li><a class="active" href="/index.html?PG=price">요금안내</a></li>
+				<li><a class="" href="/index.html?PG=signup_select">이용신청</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>						<link rel="stylesheet" href="/homepage2/assets/css/sub.css" />
+<link rel="stylesheet" href="/homepage2/assets/css/price.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
+<section class="price-main">
+    <div class="inner">
+        <div class="price-main-text">
+            <p class="price-main-title">
+                기관에 맞는 서비스와 월 이용요금을 한눈에 확인하세요.
+            </p>
+            <p class="price-main-desc">
+                ERP 기본 이용부터 재무회계, 수납관리, 인지활동, 구인구직까지<br>
+                이용 서비스와 수급자 수에 따라 예상 요금을 확인할 수 있습니다.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- 요금 안내 시작 -->
+<section class="price-service">
+    <div class="inner">
+        <!-- 방문요양 시작-->
+        <div class="visit-section">
+            <div class="price-service-head erp-kind">
+                <div class="price-service-title erp-kind-name on">초기 셋팅비</div>
+                <p class="price-service-desc">최초 가입 시 1회 별도 발생하며, 표시된 월 이용요금에는 포함되지 않습니다.</p>
+            </div>
+            <article class="price-card setting">
+                <div class="price-setting-body">
+                    <ul class="price-list">
+                        <li class="price-item">
+                            <span class="price-label">현재 프로모션 적용가</span>
+                            <span class="price-amount">33,000원</span>
+                        </li>
+                        <li class="price-item">
+                            <span class="price-desc">
+                                기준가 55,000원에서 <strong>40% 할인</strong> 적용
+                            </span>
+                        </li>
+                        <li class="price-item">
+                            <span class="price-desc">
+                                ~7월 31일까지 신청 시
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+        <div class="visit-section">
+            <div class="price-service-head erp-kind">
+                <div class="price-service-title erp-kind-name on">방문요양 프로그램(ERP)</div>
+                <p class="price-service-desc">
+                    수급자 수와 선택 서비스에 따라 월 이용요금이 달라질 수 있습니다.
+                    <span>(VAT 별도)</span>
+                </p>
+            </div>
+            <div class="price-service-list">
+                <!-- Core 시작 -->
+                <article class="price-card">
+                    <div class="price-card-body">
+                        <div class="price-summary">
+                            <span class="price-label">Core</span>
+                            <h3>기본</h3>
+                            <p>
+                                방문요양 ERP만 이용하려는 기관
+                            </p>
+                            <div class="price-value">
+                                <span>월</span>
+                                <strong>10,000</strong>
+                                <span>원 부터</span>
+                            </div>
+                        </div>
+                        <div class="ver-line"></div>
+                        <div class="price-detail">
+                            <div class="price-section included">
+                                <p class="price-section-title">포함 서비스</p>
+                                <ul class="price-plus-list">
+                                    <li>급여·일정관리 등 ERP 기본 기능</li>
+                                    <!-- <li>통장거래내역 조회 </li> -->
+                                    <li>현금영수증 발급</li>
+                                    <li>모바일 업무 앱</li>
+                                    <li>평가지원 도구 및 서식</li>
+                                    <li>기관 운영 매뉴얼</li>
+                                </ul>
+                            </div>
+                            <!-- <div class="price-section charge">
+                  <p class="price-section-title">사용량 과금</p>
+                  <ul class="price-charge-list">
+                    <li>문자 발송 건당 20~50원</li>
+                    <li>수급자 10명 초과 시, 추가 1인당 500원</li>
+                  </ul>
+                </div> 사용량과금 삭제-->
+                        </div>
+                    </div>
+                    <div class="price-card-footer">
+                        <button class="btn price-table btn-secondary" onclick="openPriceModal('V1')" hit-id="54510">요금표 보기</button>
+                        <button class="btn btn-primary" onclick="location.href = '/index.html?PG=signup_select&target=V1'" hit-id="54520">이용신청</button>
+                    </div>
+                </article>
+                <!-- Core 끝 -->
+                <!-- Total 시작 -->
+                <article class="price-card">
+                    <div class="price-card-body">
+                        <div class="price-summary">
+                            <span class="price-label">Total</span>
+                            <h3>회계 업무대행</h3>
+                            <p>
+                                ERP와 함께 회계·세무·노무 업무를 맡기려는 기관
+                            </p>
+                            <div class="price-value">
+                                <span>월</span>
+                                <strong>60,000</strong>
+                                <span>원 부터</span>
+                            </div>
+							<div class="price-noti">
+								<span>ERP 이용요금(1만원) 포함</span>
+							</div>
+                        </div>
+                        <div class="ver-line"></div>
+                        <div class="price-detail">
+                            <div class="price-section included">
+                                <p class="price-section-title">포함 서비스</p>
+                                <ul class="price-plus-list">
+                                    <li class="text-emphasis">방문요양 ERP 기본 기능</li>
+                                    <li>재무회계 업무대행</li>
+                                    <li>세무신고 대행</li>
+                                    <li>노무신고 대행</li>
+                                </ul>
+                            </div>
+                            <!--<div class="price-section charge">
+                  <p class="price-section-title">사용량 과금</p>
+                  <ul class="price-charge-list">
+                    <li>문자 발송 건당 20~50원</li>
+                    <li>수급자 10명 초과 시, 추가 1인당 500원</li>
+                    <li class="text-muted">* 단, 수급자 10인까지 1인당 500원 할인</li>
+                  </ul>
+                </div> 사용량과금 삭제-->
+                        </div>
+                    </div>
+                    <div class="price-card-footer">
+                        <button class="btn price-table btn-secondary" onclick="openPriceModal('V2')"  hit-id="54510">요금표 보기</button>
+                        <button class="btn btn-primary" onclick="location.href = '/index.html?PG=signup_select&target=V2'" hit-id="54520">이용신청</button>
+                    </div>
+                </article>
+                <!-- Total 끝 -->
+            </div>
+        </div>
+        <!-- 방문요양 끝 -->
+        <!-- 주야간 시작 -->
+        <div class="daycare-section" id="daycare-section">
+            <div class="price-service-head erp-kind">
+                <div class="price-service-title erp-kind-name on">주야간보호 프로그램(ERP)</div>
+                <p class="price-service-desc">
+                    수급자 수와 선택 서비스에 따라 월 이용요금이 달라질 수 있습니다.
+                    <span>(VAT 별도)</span>
+                </p>
+            </div>
+            <div class="price-service-list day-care">
+                <!-- basic 시작 -->
+                <article class="price-card">
+                    <div class="price-card-body">
+                        <div class="price-summary">
+                            <span class="price-label">
+                                Basic
+                            </span>
+                            <h3>베이직</h3>
+                            <p>
+                                주야간보호 ERP 기본 기능만 이용하려는 기관
+                            </p>
+                            <div class="price-value">
+                                <span>월</span>
+                                <strong>30,000</strong>
+                                <span>원 부터</span>
+                            </div>
+                        </div>
+                        <div class="hor-line"></div>
+                        <div class="price-detail">
+                            <div class="price-section included">
+                                <p class="price-section-title">포함 서비스</p>
+                                <ul class="price-plus-list">
+                                    <li>급여·일정관리 등 ERP 기본 기능</li>
+                                    <li>AI 기반 수급자 서류 관리</li>
+                                    <li>일정·송영 관리</li>
+                                    <li>청구·수납</li>
+                                    <li>유선 상담 및 원격지원</li>
+                                </ul>
+                            </div>
+                            <!-- <div class="price-section charge">
+                                <p class="price-section-title">사용량 과금</p>
+                                <ul class="price-charge-list">
+                                    <li>문자 발송 건당 20~50원</li>
+                                    <li>수급자 10명 초과 시, 추가 1인당 500원</li>
+                                </ul>
+                            </div> 사용량과금 삭제-->
+                        </div>
+                    </div>
+                    <div class="price-card-footer">
+                        <button class="btn price-table btn-secondary" onclick="openPriceModal('D1')" hit-id="54530">
+                            요금표 보기
+                        </button>
+                        <button class="btn btn-primary" onclick="location.href = '/index.html?PG=signup_select&target=D1'" hit-id="54540">
+                            이용신청
+                        </button>
+                    </div>
+                </article>
+                <!-- basic 끝 -->
+                <!-- standard 시작 -->
+                <article class="price-card">
+                    <div class="price-card-body">
+                        <div class="price-summary">
+                            <span class="price-label">
+                                Standard
+                            </span>
+                            <h3>스탠다드</h3>
+                            <p>
+                                세무·노무 신고는 대행받고, 회계는 ERP에서<br />직접 관리하려는 기관
+                            </p>
+                            <div class="price-value">
+                                <span>월</span>
+                                <strong>100,000</strong>
+                                <span>원 부터</span>
+                            </div>
+							<div class="price-noti">
+								<span>ERP 이용요금(3만원) 포함</span>
+							</div>
+                        </div>
+                        <div class="hor-line"></div>
+                        <div class="price-detail">
+                            <div class="price-section included">
+                                <p class="price-section-title">포함 서비스</p>
+                                <ul class="price-plus-list">
+                                    <li class="text-emphasis">주야간보호 ERP 베이직 기능</li>
+                                    <li>통장 내역 자동 수집·정리</li>
+                                    <li>AI 결의서 초안 자동 생성</li>
+                                    <li>희망이음 자동 전송</li>
+                                    <li>세무신고 대행</li>
+                                    <li>사회보험 신고 대행</li>
+                                    <li>노무 자문 지원</li>
+                                </ul>
+                            </div>
+                            <!-- <div class="price-section charge">
+                                <p class="price-section-title">사용량 과금</p>
+                                <ul class="price-charge-list">
+                                    <li>문자 발송 건당 20~50원</li>
+                                    <li>수급자 10명 초과 시, 추가 1인당 500원</li>
+                                </ul>
+                            </div> 사용량과금 삭제-->
+                        </div>
+                    </div>
+                    <div class="price-card-footer">
+                        <button class="btn price-table btn-secondary" onclick="openPriceModal('D2')" hit-id="54530">
+                            요금표 보기
+                        </button>
+                        <button class="btn btn-primary" onclick="location.href = '/index.html?PG=signup_select&target=D2'" hit-id="54540">
+                            이용신청
+                        </button>
+                    </div>
+                </article>
+                <!-- standard 끝 -->
+                <!-- Full Care 시작 -->
+                <article class="price-card">
+                    <div class="price-card-body">
+                        <div class="price-summary">
+                            <span class="price-label">
+                                Full Care
+                            </span>
+                            <h3>풀케어</h3>
+                            <p>
+                                ERP 이용부터 회계·세무·노무 업무까지<br /> 함께 맡기려는 기관
+                            </p>
+                            <div class="price-value">
+                                <span>월</span>
+                                <strong>100,000</strong>
+                                <span>원 부터</span>
+                            </div>
+							<div class="price-noti">
+								<span>ERP 이용요금(3만원) 포함</span>
+							</div>
+                        </div>
+                        <div class="hor-line"></div>
+                        <div class="price-detail">
+                            <div class="price-section included">
+                                <p class="price-section-title">포함 서비스</p>
+                                <ul class="price-plus-list">
+                                    <li class="text-emphasis">주야간보호 ERP 스탠다드 기능</li>
+                                    <li>재무회계 업무대행</li>
+                                    <li>세무신고 대행</li>
+                                    <li>사회보험 신고 대행</li>
+                                    <li>노무 자문 지원</li>
+                                </ul>
+                            </div>
+                            <!-- <div class="price-section charge">
+                                <p class="price-section-title">사용량 과금</p>
+                                <ul class="price-charge-list">
+                                    <li>문자 발송 건당 20~50원</li>
+                                    <li>수급자 10명 초과 시, 추가 1인당 500원</li>
+                                    <li class="text-muted">* 단, 수급자 10인까지 1인당 500원 할인</li>
+                                </ul>
+                            </div> 사용량과금 삭제-->
+                        </div>
+                    </div>
+                    <div class="price-card-footer">
+                        <button class="btn price-table btn-secondary price-table" onclick="openPriceModal('D3')" hit-id="54530">
+                            요금표 보기
+                        </button>
+                        <button class="btn btn-primary" onclick="location.href = '/index.html?PG=signup_select&target=D3'" hit-id="54540">
+                            이용신청
+                        </button>
+                    </div>
+                </article>
+                <!-- Full Care 끝 -->
+            </div>
+        </div>
+        <!-- 주야간 끝 -->
+    </div>
+</section>
+<!-- 요금 안내 끝 -->
+<!-- 요금 테이블 시작 -->
+<section class="price-guide">
+    <div class="inner">
+        <h3 style="font-size: 28px; text-align: center; font-weight: 700;">
+            서비스 개별 이용요금을 확인하세요.
+        </h3>
+        <div class="text-center">
+            포함 상품이 아닌 개별 서비스의 기준 요금입니다.<br/>
+            기본, 대행, 베이직, 스탠다드, 풀케어 상품에 포함된 서비스는 별도 비용 없이 서비스를 함께 이용할 수 있습니다.
+        </div>
+        <div class="price-table-wrap">
+            <!-- 업무관리 ERP & 재무회계 대행 -->
+            <div class="price-table basic-table">
+                <div class="price-table-head">
+                    기본 서비스 개별 요금
+                </div>
+                <div class="price-table-body">
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            방문요양<br/>프로그램(ERP)
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 10,000원</strong>
+                            <span>수급자 10명 초과 시,<br /> 추가 1명당 500원</span>
+                        </div>
+                    </div>
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            주야간보호<br/>프로그램(ERP)
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 30,000원</strong>
+                            <span>수급자 10명 초과 시,<br /> 추가 1명당 1,000원</span>
+                        </div>
+                    </div>
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            방문요양 재무회계 업무대행
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 50,000원</strong>
+                            <span>수급자 1명당 2,000원</span>
+                        </div>
+                    </div>
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            주야간보호 재무회계 업무대행
+                        </div>
+                        <div class="price-table-price">
+                            <strong class="tooltip">
+                                월 70,000원
+                                <span class="tooltip-wrap">
+                                    <img src="/homepage2/assets/images/alert-circle-icon.svg" alt="">
+                                    <span class="tooltip-box">
+                                        주야간보호 ERP를 이용하지 않는 경우,
+                                        대행 서비스 기본요금은 <strong>월 9만원</strong>으로 조정됩니다.
+                                    </span>
+                                </span>
+                            </strong>
+                            <span>수급자 1명당 2,000원</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 부가(추가) 서비스 -->
+            <div class="price-table extra-table additional">
+                <div class="price-table-head">
+                    부가 서비스 개별 요금
+                </div>
+                <div class="price-table-body">
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            본인부담금 자동이체 (효성)
+                        </div>
+                        <div class="price-table-price">
+                            <strong>별도 신청<br />/ 이용료 별도</strong>
+                        </div>
+                    </div>
+                    <!-- <div class="price-table-row">
+                        <div class="price-table-name">
+                            본인부담금 자동이체 (나이스)
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 15,000원</strong>
+                        </div>
+                    </div> -->
+                    <!-- <div class="price-table-row">
+                        <div class="price-table-name">
+                            현금영수증 발급
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 2,000원</strong>
+                        </div>
+                    </div>
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            통장거래내역 조회
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 5,000원</strong>
+                        </div>
+                    </div> -->
+                    <div class="price-table-row">
+                        <div class="price-table-name">
+                            문자발송
+                        </div>
+                        <div class="price-table-price">
+                            <strong>문자발송 건당 20~50원</strong>
+                        </div>
+                    </div>
+                    <!-- <div class="price-table-row">
+                        <div class="price-table-name">
+                            인지활동 북
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 10,000원</strong>
+                        </div>
+                    </div> -->
+                    <!-- <div class="price-table-row">
+                        <div class="price-table-name">
+                            구인구직요양보호사 매칭
+                        </div>
+                        <div class="price-table-price">
+                            <strong>월 5,000원</strong>
+                            <span> + 매칭 조회 건당 100~500원</span>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <p class="message-box">
+            <img src="/homepage2/assets/images/alert-circle-icon.svg" />
+            표시된 금액은 월 이용요금 기준입니다. 초기 셋팅비는 최초 1회 발생하며, 상품에 포함된 서비스는 추가 비용 없이 이용할 수 있습니다.<br />문자발송 등 사용량 기반 서비스는 이용량에 따라 별도 요금이 발생할 수 있습니다.
+        </p>
+    </div>
+</section>
+<!-- 요금 테이블 끝 -->
+<!-- 자주 묻는 질문 시작 -->
+<section class="qa">
+    <div class="inner">
+        <div class="accodion-wrap">
+            <h2 class="accodion-head">
+                자주 묻는 질문
+            </h2>
+            <div class="accodion-item" hit-id="54550">
+                <div class="item-title">
+                    <span>방문요양 프로그램만 사용 가능한가요?</span>
+                    <span class="off">
+                        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 9L9 1L1 9" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                </div>
+                <div class="item-body">
+                    네, 가능합니다.<br />
+                    방문요양 ERP만 먼저 이용하신 후 기관 운영 상황에 따라 주야간보호 ERP, 재무회계 대행, 부가서비스(인지활동북, 본인부담금 CMS) 등 <br />
+                    필요한 서비스를 언제든지 추가 신청하여 이용하실 수 있습니다.<br />
+                </div>
+            </div>
+            <div class="accodion-item" hit-id="54550">
+                <div class="item-title">
+                    <span>요금은 어떻게 구성되나요?</span>
+                    <span class="off">
+                        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 9L9 1L1 9" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                </div>
+                <div class="item-body">
+                    이지케어 이용료는 방문요양 ERP, 주야간보호 ERP, 재무회계 대행, 부가서비스(인지활동북, 문자이용료)로 구성되어 있습니다.<br />
+                    신청한 서비스와 기관 규모에 따라 적용 요금이 달라질 수 있므며 자세한 요금은 각 서비스별 이용 요금표를 참고해 주세요.<br />
+                    (*본인부담금 CMS는 효성CMS로 별도 납부)
+                </div>
+            </div>
+            <div class="accodion-item" hit-id="54550">
+                <div class="item-title">
+                    <span>요금 산정 시 수급자 수는 어떻게 계산되나요?</span>
+                    <span class="off">
+                        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 9L9 1L1 9" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                </div>
+                <div class="item-body">
+                    이용료는 등록된 전체 수급자 수가 아닌, 해당 월에 방문일정이 등록된 수급자 수를 기준으로 산정됩니다.
+                </div>
+            </div>
+            <div class="accodion-item" hit-id="54550">
+                <div class="item-title">
+                    <span>가입전 무료 체험이나 도입 상담이 가능한가요?</span>
+                    <span class="off">
+                        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 9L9 1L1 9" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                </div>
+                <div class="item-body">
+                    서비스 도입 전 기능과 화면을 확인하실 수 있도록 체험판(DEMO)을 무료로 제공하고 있으며, (가입전 상담을 통해 기관 환경에 맞는 서비스 구성도 함께 안내해 드립니다.)
+                </div>
+            </div>
+            <div class="accodion-item" hit-id="54550">
+                <div class="item-title">
+                    <span>요금은 어떻게 납부하나요?</span>
+                    <span class="off">
+                        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 9L9 1L1 9" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                </div>
+                <div class="item-body">
+                    이용료는 매월 사용분에 대해 후불제로 청구되며, 익월 10일까지 납부해 주시면 됩니다.<br />
+                    프로그램 내에서 상세 이용 내역을 청구서로 확인할 수 있으며, 무통장입금, 신용카드, 실시간 계좌이체, 자동이체(CMS) 등 원하는 결제 수단을 통해 납부하시면 됩니다.
+                </div>
+            </div>
+            <div class="accodion-item" hit-id="54550">
+                <div class="item-title">
+                    <span>해지 시 별도 위약금이 있나요?</span>
+                    <span class="off">
+                        <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 9L9 1L1 9" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                </div>
+                <div class="item-body">
+                    아니요. 해지에 따른 별도 위약금은 없습니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 자주 묻는 질문 끝 -->
+<!-- CTA 영역 시작 -->
+<section class="sub-cta">
+    <div class="inner" data-aos="fade-up" data-aos-delay="100">
+        <div class="cta-title-wrap section-head">
+            <p class="cta-title section-title">
+                효율적인 업무관리,<br />이지케어와 함께 시작해보세요
+            </p>
+        </div>
+        <div class="cta-btn-wrap">
+            <a href="?PG=signup_select" class="cta-btn active" hit-id="54560">
+                이용 신청하러 가기 →
+            </a>
+        </div>
+    </div>
+</section>
+<link rel="stylesheet" href="/homepage2/assets/css/popup/modal.css" />
+<link rel="stylesheet" href="/homepage2/assets/css/price.css" />
+<style>
+</style>
+<section class="layer-section" id="price-table-modal">
+	<div class="modal modal-lg">
+		<div class="modal-header">
+			<h2 class="modal-title" id="price-modal-title">이지케어 서비스 이용요금</h2>
+			<button type="button" class="modal-close" onclick="closePriceModal()">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기">
+			</button>
+		</div>
+		<div class="modal-body" id="price-modal-body">
+			<div class="modal-content">
+				<div id="price-modal-notice"></div>
+				<div id="price-modal-content"></div>
+				<div class="modal-info-text">
+					<span>※ VAT 별도 / 단위 : 명, 원</span>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closePriceModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+
+function closePriceModal() {
+  document.body.style.overflow = 'initial';
+  document.body.style.paddingRight = 'initial';
+  var modal = document.getElementById('price-table-modal');
+  if (!modal) return null;
+  modal.style.display = 'none';
+}
+
+
+async function openPriceModal(priceType) {
+  const modal = document.getElementById('price-table-modal');
+  const contentBody = document.getElementById('price-modal-body');
+  const modalContent = document.getElementById('price-modal-content');
+
+  if (!modal || !modalContent) return null;
+
+  const priceMap = {
+    V1: {
+      title: '<b>방문요양 ERP 기본</b>&nbsp;&nbsp;&nbsp;수급자 수에 따른 월 이용요금표',
+      priceBasic: 10000,
+      priceAdd: 500, 
+	  notice:'기본요금 10,000원 · 10명 초과 시, 초과 1명당 500원 '
+    },
+    V2: {
+      title: '<b>방문요양 ERP 회계 업무대행</b>&nbsp;&nbsp;&nbsp;수급자 수에 따른 월 이용요금표',
+      priceBasic: 62000,
+      priceUnder: 2000,
+      priceAdd: 2500,
+	  notice:'기본요금 60,000원(회계대행 + ERP) · 1~10명 1명당 2,000원, 11명부터 1명당 2,500원'
+    },
+    D1: {
+      title: '<b>주야간보호 ERP 베이직</b>&nbsp;&nbsp;&nbsp;수급자 수에 따른 월 이용요금표',
+      priceBasic: 30000,
+      priceAdd: 1000,
+	  notice:'기본요금 30,000원 ·  10명 초과 시, 초과 1명당 1,000원'
+    },
+    D2: {
+      title: '<b>주야간보호 ERP 스탠다드</b>&nbsp;&nbsp;&nbsp;수급자 수에 따른 월 이용요금표',
+      priceBasic: 100000,
+      priceAdd: 1000,
+	  notice:'기본요금 100,000원(직접 회계 보조툴 + ERP) · 11명부터 1명당 1,000원'
+    },
+    D3: {
+      title: '<b>주야간보호 ERP 풀케어</b>&nbsp;&nbsp;&nbsp;수급자 수에 따른 월 이용요금표',
+      priceBasic: 100000,
+      priceUnder: 2000,
+      priceAdd: 3000,
+	  notice:'기본요금 100,000원(직접 회계 보조툴 + ERP) · 1~10명 1명당 2,000원, 11명부터 1명당 3,000원'
+    },
+  };
+
+  const priceInfo = priceMap[priceType];
+  const modalTitle = document.getElementById('price-modal-title');
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+  modal.style.display = 'flex';
+  if (contentBody) contentBody.scrollTop = 0;
+  if (modalTitle) modalTitle.innerHTML = priceInfo.title;
+  if (document.getElementById('price-modal-notice')) document.getElementById('price-modal-notice').innerHTML = '<span>' + priceInfo.notice + '</span>';
+  
+  const priceData = [];
+  for (let i = 1;i <= 80;i++) {
+  	if (i <= 10) {
+  		if (priceInfo.priceUnder) {
+  			priceData.push(priceInfo.priceBasic + ((i - 1) * priceInfo.priceUnder));
+  		} else {
+  			priceData.push(priceInfo.priceBasic);
+  		}
+  	} else {
+  		let tmpPrice = priceInfo.priceBasic + ((i - 10) * priceInfo.priceAdd);
+  		if (priceInfo.priceUnder) {
+  			tmpPrice += (9 * priceInfo.priceUnder);
+  		}
+  		priceData.push(tmpPrice);
+  	}
+  }
+
+  let tableHtml = '<div class="price-table-display">';
+
+  tableHtml += '<div><table>';
+  tableHtml += '<tr><th>수급자수</th><th>월 이용요금</th></tr>';
+  for (let i = 0;i < 20;i++) {
+  	tableHtml += `<tr><th>${(i + 1)}</th><td>${numberFormat(priceData[i])}</td></tr>`;
+  }
+  tableHtml += '</table></div>';
+
+  tableHtml += '<div><table>';
+  tableHtml += '<tr><th>수급자수</th><th>월 이용요금</th></tr>';
+  for (let i = 20;i < 40;i++) {
+  	tableHtml += `<tr><th>${(i + 1)}</th><td>${numberFormat(priceData[i])}</td></tr>`;
+  }
+  tableHtml += '</table></div>';
+
+  tableHtml += '<div><table>';
+  tableHtml += '<tr><th>수급자수</th><th>월 이용요금</th></tr>';
+  for (let i = 40;i < 60;i++) {
+  	tableHtml += `<tr><th>${(i + 1)}</th><td>${numberFormat(priceData[i])}</td></tr>`;
+  }
+  tableHtml += '</table></div>';
+
+  tableHtml += '<div><table>';
+  tableHtml += '<tr><th>수급자수</th><th>월 이용요금</th></tr>';
+  for (let i = 60;i < 80;i++) {
+  	tableHtml += `<tr><th>${(i + 1)}</th><td>${numberFormat(priceData[i])}</td></tr>`;
+  }
+  tableHtml += '</table></div>';
+
+  tableHtml += '</div>';
+  modalContent.innerHTML = tableHtml;
+}
+
+</script><!-- CTA 영역 끝 -->
+<script>
+$(".erp-kind-name").click(function() {
+    $(".erp-kind-name").removeClass("on");
+    $(this).addClass("on");
+});
+</script>
+<!-- 이용요금표 끝 -->
+<script src="/homepage2/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/homepage2/assets/vendor/aos/aos.js"></script>
+<script src="/homepage2/assets/js/main.js"></script>
+<script src="/homepage2/assets/js/price.js"></script>
+<script>
+// setItemPrice(document.getElementById('item-initial'));
+</script>
+<script>
+window.addEventListener("load", function() {
+    if (location.hash === "#daycare-section") {
+        const target = document.getElementById("daycare-section");
+
+        if (target) {
+            window.scrollTo(0, target.offsetTop - 140);
+        }
+    }
+});
+</script>
+<div class="float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <a onclick="demoAction();">방문요양 ERP 체험</a>
+        <a onclick="demoDaycare();">주야간보호 ERP 체험</a>
+        <a onclick="demoW4c();">재무회계 체험</a>
+    </div>
+    <div class="horiz-line"></div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review">이용기관 사용기</a>
+        <a onclick="openEzMain('/login.html');" class="float-run-btn">
+            이지케어<br>
+            실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    <!-- <div class="d-flex">
+        <a href="?PG=joo-price">Link 1</a>
+        <a href="?PG=joo-signup-agree">Link 2</a>
+    </div> 주상무님 요금안내&이용신청-->
+    <button type="button" class="">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>
+<!--button type="button" class="float-top-btn">
+    <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+</button> 우하단 버튼이었음 -->
+<!-- 260706 플로팅 메뉴 수정
+<div class="new-float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <ul>
+            <li hit-id="54340"><a onclick="demoAction();">방문요양 ERP<br>체험</a></li>
+            <li hit-id="54410"><a onclick="demoDaycare();">주야간보호 ERP<br>체험</a></li>
+            <li hit-id="54420"><a onclick="demoW4c();">재무회계<br>체험</a></li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이용기관<br>사용기</a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입문의</a>
+		
+        <a onclick="openEzMain('/login.html');" class="float-run-btn" hit-id="54360">
+            이지케어 실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>-->
+<!-- 260709 플로팅 메뉴 수정-->
+<div class="float-menu-ver2">
+    <div class="float-top">
+        <ul class="float-exp-list">
+            <li hit-id="54340">
+                <a onclick="demoAction();">방문요양 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54410">
+                <a onclick="demoDaycare();">주야간보호 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54420">
+                <a onclick="demoW4c();">재무회계<span class="exp-badge">체험</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이지케어 <strong>이용후기</strong></a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입상담</a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div> 
+<script>
+document.querySelector('.float-top-btn').addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+</script><!-- if ($PG !== 'main') -->
+<footer id="footer" class="footer">
+	<div class="inner">
+		<div class="footer-top">
+			<ul>
+				<li class="accent">
+					<a onclick="openFooterModal('T1');">개인정보처리방침</a>
+				</li>
+				<li>
+					<a onclick="openFooterModal('T2');">이용약관</a>
+				</li>
+				<li>
+					<a href="/index.html?PG=contact">제휴문의</a>
+				</li>
+			</ul>
+		</div>
+		<div class="footer-bottom">
+			<div class="footer-bottom-wrap">
+				<div class="footer-company">
+					<p>
+						<span>법인명</span>
+						<strong>주식회사 이지엠소프트</strong>
+						<span>대표자명</span>
+						<strong>최병인</strong>
+					</p>
+					<p>
+						<span>주소</span>
+						<strong>대구광역시 수성구 알파시티2로 18, 4층(시지동 583-2, 에이스빌딩)</strong>
+					</p>
+					<p>
+						<span>사업자등록번호</span>
+						<strong>502-86-19289</strong>
+						<span>통신판매업 신고번호</span>
+						<strong>2012-대구수성구-0396</strong>
+					</p>
+					<p>
+						<span>개인정보관리책임자</span>
+						<strong>최병인</strong>
+					</p>
+				</div>
+				<div class="footer-cs">
+					<p class="footer-cs-title">고객센터</p>
+					<a href="tel:16440340" class="footer-cs-tel">
+						1644-0340
+					</a>
+					<p class="footer-cs-time">
+						09:30~17:30 (평일) 주말·공휴일 휴무
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<link rel="stylesheet" href="/homepage2/assets/css/popup/modal.css" />
+
+<section class="layer-section" id="footer-modal" onclick="closeFooterModalOnDim(event)">
+	<div class="modal modal-lg">
+		<div class="modal-header">
+			<h2 class="modal-title" id="footer-modal-title">안내</h2>
+			<button type="button" class="modal-close" onclick="closeFooterModal()">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기">
+			</button>
+		</div>
+		<div class="modal-body" id="footer-modal-body">
+			<div class="modal-content" id="footer-modal-content">content html</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closeFooterModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+
+function closeFooterModal() {
+  document.body.style.overflow = 'initial';
+  document.body.style.paddingRight = 'initial';
+  var modal = document.getElementById('footer-modal');
+  if (!modal) return null;
+  modal.style.display = 'none';
+}
+
+function closeFooterModalOnDim(event) {
+  if (event.target === event.currentTarget) {
+    closeFooterModal();
+  }
+}
+
+async function openFooterModal(termType) {
+  const modal = document.getElementById('footer-modal');
+  const contentBody = document.getElementById('footer-modal-body');
+  const modalContent = document.getElementById('footer-modal-content');
+
+  if (!modal || !modalContent) return null;
+
+  const termMap = {
+    T1: {
+      title: '이지엠소프트(이지케어) <b>개인정보 처리방침</b>',
+      url: '/homepage2/assets/html/term_visit_privacy.html',
+    },
+    T2: {
+      title: '이지케어 서비스 <b>이용약관</b>',
+      url: '/homepage2/assets/html/term_visit_service.html',
+    },
+  };
+
+  const footer = termMap[termType];
+  const modalTitle = document.getElementById('footer-modal-title');
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+  modal.style.display = 'flex';
+  if (contentBody) contentBody.scrollTop = 0;
+
+  if (!footer) {
+    if (modalTitle) modalTitle.innerHTML = '약관';
+    modalContent.innerHTML = '<p>약관 정보를 찾을 수 없습니다.</p>';
+    return null;
+  }
+
+  if (modalTitle) modalTitle.innerHTML = footer.title;
+  modalContent.innerHTML = '<p>약관을 불러오는 중입니다.</p>';
+
+  try {
+    const response = await fetch(footer.url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      cache: 'no-cache',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to load footer html.');
+    }
+
+    modalContent.innerHTML = await response.text();
+    if (contentBody) contentBody.scrollTop = 0;
+  } catch (error) {
+    console.error(error);
+    modalContent.innerHTML = '<p>약관을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>';
+  }
+}
+</script>
+    <script>
+    function pop_calc() {
+        var cw = screen.availWidth;
+        var ch = screen.availHeight;
+        sw = 800;
+        sh = 760;
+        mw = (cw - sw) / 2;
+        mh = (ch - sh) / 2;
+        window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=' + sw + ', height=' + sh + ',left=' + mw + ',top=' + mh + ',toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no');
+    }
+
+    function popup_daycare_intro() {
+        var url = "/landing.ez?type=daycare.t1.202404&route=47540";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    function popup_event() {
+        var url = "/landing.ez?type=event.202307&route=2954";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    setInterval(function() {
+        // console.log('login check interval (homepage2)', loginCheck, $.cookie('login_uid'));
+        if (!loginCheck && $.cookie("login_uid")) {
+            console.log('login 안 되어있음');
+            ezAjax({
+                type: "POST",
+                async: false,
+                url: "/?mode=login_check",
+                dataType: "json",
+                success: function(data) {
+                    loginCheck = 1;
+                    $("#oInfo-name").text(data.organ);
+                    $("#login_User_Name").text(data.User_Name);
+                    $(".login.on").show();
+                    $(".login.off").hide();
+                }
+            });
+        } else if (loginCheck && !$.cookie("login_uid")) {
+            loginCheck = 0;
+            $(".login.on").hide();
+            $(".login.off").show();
+        }
+    }, 1000);
+
+    if (loginCheck) {
+        $('.login.on').show();
+        $('.login.off').hide();
+    } else {
+        $('.login.on').hide();
+        $('.login.off').show();
+    }
+    </script>
+
+
+
+<!-- 이지케어 분석 , 리뉴얼 홈페이지 2026.07.06 추가 -->
+<script type="text/javascript">
+var _route = "";
+if(_route && _route!="2100") accessClick.hit(_route, "_route");
+accessClick.hit(1100);
+</script>
+
+<script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+<script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "11a756aafdf88e0";
+    if(window.wcs) {
+      wcs_do();
+    }
+</script>
+
+</body>
+
+</html>

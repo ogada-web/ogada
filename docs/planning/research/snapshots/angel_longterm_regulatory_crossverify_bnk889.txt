@@ -1,0 +1,236 @@
+BNK-889 엔젤·롱텀·규제 역공학 4–6h (2026-07-19T04:19:00Z)
+rotation: 엔젤·롱텀·규제 4–6h — BNK-888(교차검증·갭 우선순위 8h+·2026-07-19T03:36:42Z) → ~43분 후
+focus: silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 재확인(PLAN_NOTES #44)
+       + ogada BE/FE @HEAD 재실측 · SEC-D34 신규 축 스캔 · a11y dual-field routing 리셋 회귀 확인
+
+================================================================
+## 0. Baseline (git 실측) — BNK-888 → BE +1 / FE +1
+================================================================
+
+### src/backend
+HEAD: 6d3c766  (BNK-888 @e60e288 → +1 commit·SEC-D34 축9/축10 신규)
+subject: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+author : jwj3400 <rlwlsdnr@naver.com>  2026-07-19T03:38:03Z
+ahead_of_test: 774 vs 598d108  (BNK-888 773 → +1)
+WT: CLEAN
+
+diff (e60e288..6d3c766): 3 files +53/-5
+  billing/domain/ExcelAmountNormalizer.java          | 27 ++++++++++++++++++----
+  billing/domain/BankDepositExcelParserTest.java     | 20 ++++++++++++++++
+  billing/domain/ExcelAmountNormalizerTest.java      | 11 +++++++++
+
+commit body (verbatim 핵심):
+ "Java's \s regex class does not match the no-break space (U+00A0, from
+  CMS/web copy-paste) or the ideographic space (U+3000, from a fullwidth
+  IME alongside the fullwidth digits/comma already handled), so a deposit
+  or NHIS amount grouped with either space survived normalization, failed
+  numeric parsing, and was silently dropped to null — skewing financial
+  reconciliation. Strip both explicitly in the shared ExcelAmountNormalizer
+  (single source of truth for NHIS and bank deposit parsers) and lock the
+  behavior with unit and end-to-end parser regression tests. Behavior-
+  neutral for ASCII numeric input."
+ 신규 상수: NO_BREAK_SPACE="\u00A0", IDEOGRAPHIC_SPACE="\u3000"
+ helper 위치: `.replace(NO_BREAK_SPACE,"")` + `.replace(IDEOGRAPHIC_SPACE,"")` 를
+              `.replaceAll("\\s+","")` **바로 앞** 에 삽입(Java `\s` 미포함 유니코드 공백 명시 strip)
+ Javadoc 확장 verbatim: "including the no-break (U+00A0) and ideographic (U+3000)
+                        spaces that Java's {@code \s} class does not match"
+ 신규 정규화 예시(verbatim): "７６５　０００" (fullwidth digits + ideographic space)
+
+### BE inventory (@6d3c766)
+- @GetMapping: 231
+- @PostMapping: 144
+- @PatchMapping: 44
+- @PutMapping: 13
+- @DeleteMapping: 10
+- HTTP total: 442 (GET231/POST144/PATCH44/PUT13/DELETE10·byte/count-exact IDENTICAL BNK-836→889 = 49차·endpoint 신설 0)
+- @RestController (loose): 81
+- @Test strict (git grep @Test\b): 2413 (BNK-888 2411 → +2 SEC-D34 축9/축10 no-break/ideographic space 회귀)
+- Test.java files: 297 (296+1 Tests.java)
+- Flyway: V1–V196 (신규 0)
+
+### src/frontend
+HEAD: 0ff9c7d  (BNK-888 @5789173 → +1 commit·회귀 test-only)
+subject: Add regression for program report date error reset
+author : jwj3400 <rlwlsdnr@naver.com>  2026-07-19T04:08:04Z
+ahead_of_test: 32 vs b23711f  (BNK-888 31 → +1·tester FF 대기·rev-list 0/32)
+WT: CLEAN
+
+diff (5789173..0ff9c7d): 1 file +36/-0
+  pages/ProgramReportsPage.test.jsx  | 36 ++++++++++++++++++++++++++++++++++++
+
+commit body: "Add regression for program report date error reset"
+회귀 시나리오(verbatim 핵심 4-check):
+ 1. reversed 기간 입력 → role="alert" 배너에 PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE 노출 (BNK-887 pre-block)
+ 2. valid 기간으로 정정 → 「조회」 클릭 → fetch 재발화 (mock.calls >= 2)
+ 3. queryByRole("alert") === null  (배너 리셋)
+ 4. `program-report-from-date` aria-invalid !== "true" AND aria-describedby 에 "program-report-to-date-error" 미포함 (BNK-888 §119 dual-field routing 리셋)
+
+→ 판정: 이 회귀는 BNK-887 domain-config helper (`resolveProgramReportDateRangeError`) +
+       BNK-888 §119 dual-field a11y routing (`aria-invalid` + `aria-describedby` cross-ref) **두 orthogonal 패턴**의
+       **정정 후 리셋 lockstep** 을 처음으로 명시적으로 lock — 두 패턴이 orthogonal 이지만
+       리셋 방향에서는 반드시 동시에 정리돼야 「fixed」 상태가 UI 로 신뢰됨을 보증.
+       BNK-888 orthogonal 판정(§888-1) 이 **리셋 동시성**으로 강화 (번복 아님·rules §14).
+
+### FE inventory (@0ff9c7d)
+- <Route\b (prod App.jsx): 132
+- <Routes>: 1
+- Route total (BNK convention): 133 (IDENTICAL·no route change·test-only)
+- Page.jsx (prod, excl .test.jsx): 106 (IDENTICAL)
+- FE test files: 543 (228 .test.js + 315 .test.jsx·in-place +36·신규 0)
+- 모듈 커버 KPI: 97.41% (28.25/29·진성갭 0·carry)
+
+### merge gate
+FE 32 + BE 774 = 806 (BE-heavy·신규 마이그레이션 0)
+※ PLN 235차 결정으로 `## v3` / `## v1.2.1` merge_status: ready 설정됨
+  → 다음 build 시 `maybe_merge_version_to_test` auto-merge FF 발화 대기(BNK-889 baseline 여전히 tester FF 대기).
+
+================================================================
+## 1. ★★★ SEC-D34 축9/축10 = no-break (U+00A0) + ideographic (U+3000) space [엑셀 포맷 내성 스캔]
+================================================================
+- 문제: `java.util.regex.Pattern` 의 `\s` character class 는 유니코드 공백 전체를 포함하지 않는다.
+  no-break space(U+00A0)·ideographic space(U+3000) 은 `\s` 매치 대상 밖 → 기존
+  `.replaceAll("\\s+","")` chain 통과 후에도 잔존 → BigDecimal/Integer parse 실패 → null →
+  유효 청구/입금 행 조용히 누락 → 재무 대사 왜곡.
+- 발생 시나리오(commit body verbatim):
+  · U+00A0 : "CMS/web copy-paste" (은행 웹포털·CMS 편집기·Word 편집 copy&paste)
+  · U+3000 : "fullwidth IME alongside the fullwidth digits/comma already handled"
+             (한국 IME 전각 모드에서 콤마·숫자와 동일 시점 발생)
+- 해결: shared helper `ExcelAmountNormalizer.normalizeNumeric` 에
+  `.replace(NO_BREAK_SPACE,"")` + `.replace(IDEOGRAPHIC_SPACE,"")` 을
+  기존 `.replaceAll("\\s+","")` **바로 앞** 에 명시 삽입(order-preserving·ASCII behavior-neutral).
+  단일 source of truth (BNK-886 refactor) 이므로 NhisExcelParser·BankDepositExcelParser
+  두 importer 자동 lockstep(rules §13 코드 재사용 posture 재확인).
+- SEC-D34 파일/포맷 내성 축 누적 (BNK-889·개정):
+  · production 9-축: (1) 통화접미사「원」(BNK-875)·(2) ASCII 공백그룹(BNK-877)·
+    (5) halfwidth ₩ U+20A9(BNK-881)·(6) fullwidth ￦ U+FFE6(BNK-883)·
+    (7) fullwidth comma ， U+FF0C(BNK-884)·(8) fullwidth digit ０-９ U+FF10-U+FF19(BNK-885)·
+    **(9) no-break space U+00A0(BNK-889·신규)**·**(10) ideographic space U+3000(BNK-889·신규)**·
+    NHIS-specific: (3)「일」 접미사(BNK-878)
+  · test 1-축: (4) test-layer harness lock(BNK-880)
+  · 합계: production 9-축 + test 1-축 = **10-축**(BNK-888 8-축 → +2)
+  · 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축
+  · 경쟁 4종(케어포·이지케어·엔젤·롱텀) 유일 full-stack SUPERIOR
+- 회귀 lock: `ExcelAmountNormalizerTest` +1 @Test (no-break/ideographic 통합) +
+             `BankDepositExcelParserTest` +1 @Test (end-to-end parser 통합)
+             = @Test strict 2411 → 2413 (+2)
+
+================================================================
+## 2. ★★★ FE 회귀 회귀(regression-of-regression) = orthogonal 패턴 「리셋 동시성」 lock (BNK-887 + BNK-888)
+================================================================
+- BNK-887(2026-07-19T02:58Z): domain-config `resolveProgramReportDateRangeError` shared helper
+  → M5 program-report 페이지 load guard 에 배선(pre-block 로직·round-trip 방지).
+- BNK-888(2026-07-19T03:36Z): §119 dual-field a11y routing
+  → 9개 form-polished 리포트 시작일 `DateInput` 에 `aria-invalid`+`aria-describedby`
+    cross-ref (스크린리더 노출).
+- BNK-889(FE @0ff9c7d): 두 패턴이 orthogonal(rules §14 준수)이지만
+  **정정 후 리셋 방향에서는 반드시 동시에 정리**돼야 함을 명시적으로 lock.
+- 회귀 test 4-check:
+  1) reversed → role="alert" + PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE
+     (BNK-887 pre-block 로직 발화)
+  2) 정정 후 「조회」 → fetch 재발화(mock.calls.length >= 2)
+     (BNK-887 pre-block 로직 해제·round-trip 허용)
+  3) queryByRole("alert") === null
+     (BNK-887 배너 리셋)
+  4) `program-report-from-date` aria-invalid !== "true" AND
+     aria-describedby !~ "program-report-to-date-error"
+     (BNK-888 §119 dual-field a11y routing 리셋)
+- 판정: BNK-888 orthogonal 판정(§888-1) 이 **리셋 동시성 lock** 으로 강화(rules §14 번복 아님).
+  두 패턴 모두 커밋 후에도 「fixed」 상태가 UI 로 신뢰됨을 보증하는 첫 명시 회귀.
+  경쟁 4종 대비: 케어포 시설 셸 리포트 a11y 리셋 근거 0·이지케어 데모 리포트 필드 검증 리셋 verbatim 0·
+              엔젤 리포트 활용법 라벨만·롱텀 규제만 = 리포트 폼 리셋 동시성 lock 유일 full-stack SUPERIOR.
+
+================================================================
+## 3. 규제 백본 재실측 (엔젤·롱텀·규제 focus — 이번 rotation 초점)
+================================================================
+
+### NHIS #44 (이동서비스비 러-1~4·PLAN_NOTES #44) [기존 URL 재실측]
+canonical https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+cmp vs snapshots/nhis_jo44_live_bnk888.html : BYTE-IDENTICAL
+= 611차 byte-IDENTICAL (BNK-888 610차 → +1·zero drift)
+verbatim grep 재확인:
+  · 러-1:1 · 러-4:1 · 편도:2 · 이동서비스비:9 · 1일 1회:1 · 수급자가 부담:1 · 이동서비스 일지:1
+→ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)
+  + TransportServiceLog*(④ 이동서비스 일지) full-stack 1:1 SUPERIOR
+  · 상수 재조정 불요 · id=2 0.85 carry
+snapshot: docs/planning/research/snapshots/nhis_jo44_live_bnk889.html
+
+### silverangel system_feature (엔젤시스템 공개 기능) [기존 URL 재실측]
+http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+cmp vs snapshots/silverangel_system_feature_live_bnk888.html : BYTE-IDENTICAL
+= 15차 byte-IDENTICAL (BNK-859→889 · BNK-888 14차 → +1)
+transport 6-term grep: 이동서비스(0)·배차(0)·GPS(0)·RFID(0)·차량(0)·송영(0) = ALL 0-hit
+→ 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인
+  · ogada Transport 자체 시스템 SUPERIOR (경쟁 4종 유일)
+snapshot: docs/planning/research/snapshots/silverangel_system_feature_live_bnk889.html
+
+### law 2025-247 (장기요양급여 제공기준·고시) [기존 URL 재실측]
+canonical https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,450B · raw md5 1d796f10af8a2fd65f58847821c1c5c0
+  (DRIFT vs BNK-888 raw c9976731·전량 cache-buster ?Time= 숫자 변화)
+strip Time=[0-9]* 후 semantic md5: ad1db6e06903bc34e70e139a19d854cd
+= BNK-886↔887↔888↔889 4-cycle strip IDENTICAL (canonical URL admRulSeq=2100000271110 고정)
+snapshot: docs/planning/research/snapshots/law_mohw_2025_247_admRulInfoP_live_bnk889.html
+→ 규제 앵커 재조정 불요
+
+### longterm 502 (단기보호 수가)
+재측정 skip (BNK-872 근본 원인 확정 이후 lean-shell 오실레이션 signal only 정책 유지)
+
+### carefor func.php [기존 URL·disk canonical]
+LIVE 재측정 skip (115-cycle+ timeout carry「미확인」)·disk canonical 6226e6eb/98,328B LOCK
+
+================================================================
+## 4. audit-first HTTP 442 posture 49차 byte/count-exact IDENTICAL
+================================================================
+@6d3c766 grep(--include='*.java' @{Get,Post,Patch,Put,Delete}Mapping):
+  GET 231(52.3%)·POST 144(32.6%)·PATCH 44(10.0%)·PUT 13(2.9%)·DELETE 10(2.3%) = 442
+@RestController 81 · controller당 5.46 = BNK-836→889 = **49차 연속 byte/count-exact IDENTICAL**.
+BE +1(SEC-D34 축9/축10 shared helper 추가·service-layer only) +
+FE +1(test-only 리셋 회귀) 후에도 endpoint 신설 0 · CSS 신설 0.
+→ **API 안정성 49-cycle 동결** · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 우선 ·
+   DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합).
+→ SEC-D34 신규 축조차 shared helper (BNK-886 refactor 이후) 안에서만 확장되므로
+   API 표면 미영향 · 리팩터 posture(rules §13 코드 재사용) 재확인.
+
+================================================================
+## 5. 갭 우선순위 재점검 (엔젤·롱텀·규제 rotation)
+================================================================
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- 모듈 커버 97.41% CARRY(진성갭 0)
+- P3/P4「가정」 candidate 8종 전부 carry (진성갭 승격 0·rules §11·§17·「미확인」 유지):
+  · BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+  · BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+- BNK-884 M7 crosswalk 11/11 PARITY 유지·본인부담 진성갭 0 재확인
+- BNK-888 §119 dual-field a11y routing 9-page rollout 유지·BNK-889 「리셋 동시성」 lock 으로 강화
+- silverangel system_feature 15차 byte-IDENTICAL(transport 6-term 0-hit) → 엔젤 배차 부재 유지
+  → ogada Transport 자체 시스템 SUPERIOR (rules §11 과대구축 회피)
+
+================================================================
+## 6. 가정/예측 번복 재점검 (rules §14·§18)
+================================================================
+- BNK-882/883/885/886/887 「L02·L03·M5 리포트 form-polish 확산」 = BNK-889 「리셋 동시성」 lock 으로 강화(번복 아님)
+- BNK-888 「§119 dual-field a11y routing 9-page rollout·orthogonal 패턴」 = BNK-889 리셋 동시성 lock 재확인(번복 아님)
+- BNK-884 M7 본인부담 11/11 PARITY 유지 · BNK-880 rowid=21704 라벨 fact 정정 유지
+- BNK-858 longterm 종료가정 결착 유지 · BNK-826 law URL alias 폐기 유지
+- 신규 가정 번복 0 · P0~P3 결정 번복 0 · KPI promote 0 · 모듈 97.41% CARRY
+
+================================================================
+## 7. BNK-888 → BNK-889 delta 요약
+================================================================
+- BE +1 (6d3c766·SEC-D34 축9/축10 no-break U+00A0 + ideographic U+3000 space normalize·
+        shared helper `ExcelAmountNormalizer` 단일 source of truth 확장·ahead 774·@Test 2413)
+- FE +1 (0ff9c7d·ProgramReportsPage.test.jsx 리셋 회귀 test-only·+36L·ahead 32)
+- 회귀 회귀 lock: BNK-887 pre-block 로직 + BNK-888 §119 dual-field a11y routing 리셋 동시성 명시
+- NHIS #44 611차 · law strip 4-cycle IDENTICAL · silverangel system_feature 15차(transport 0-hit)
+- audit-first HTTP 442 49차 byte/count-exact IDENTICAL(endpoint 신설 0·CSS 신설 0)
+- SEC-D34 파일/포맷 내성 축: production 8 → 10(no-break·ideographic space 신규)·test 1 = 10-축
+- 모듈 97.41% CARRY · merge gate 806(FE 32 + BE 774·BE-heavy)
+  ※ PLN 235차 merge_status: ready 설정 완료 → 다음 build auto-merge FF 발화 대기
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- per-cycle minimum 4종 충족:
+  · 기존 URL 재실측 3건 (NHIS #44 611차 · silverangel system_feature 15차 · law 2025-247 4-cycle strip)
+  · SEC-D34 축9/축10 신규 상세(메뉴/필드/워크플로 = 파서 파이프라인 확장 1블록) + FE 리셋 회귀 test 상세 1블록
+  · COMPETITOR_MATRIX 1행 이상 ogada `@0ff9c7d`/`@6d3c766` 로 갱신
+  · BENCHMARK_REPORT §889 신규 소절 1건
+- 신규 snapshot 4 (txt 1 + html 3) · 덮어쓰기 0

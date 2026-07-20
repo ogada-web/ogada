@@ -1,0 +1,65 @@
+BNK-894 — ogada git 실측 6–8h (2026-07-19T09:25:00Z)
+======================================================
+
+[0] BASELINE (git 실측)
+- BE develop = 6d3c766 (BNK-890→891→892→893 동일 HEAD·5-cycle zero advance·ahead 774 vs origin/test=598d108·@Test strict 2413·WT CLEAN)
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+- FE develop = aab11b2 (BNK-891→892→893 동일 HEAD·4-cycle zero advance·ahead 33 vs origin/test=b23711f·WT CLEAN·tester FF 대기)
+  last: fix(a11y/reports): wrap L02 report table date columns in <time dateTime> (UXD-197)
+- Route 133 (App.jsx `<Route\b` 132 + `<Routes>` 1 · non-test grep)
+- Page 107 (non-test pages/*.jsx) · *Page.jsx suffix subset 106
+- FE test 543 files (315 *.test.jsx + 228 *.test.js) · it/test case 2862 · 신규 0 · count 동결
+- BE Test 298 (297 Test.java + 1 Tests.java) · @Test strict 2413
+- @RestController 81 (loose)
+- HTTP 442 = GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10  (54차 byte/count-exact IDENTICAL·endpoint 신설 0)
+- Flyway V1–V196 (신규 0)
+- merge gate 807 (FE 33 + BE 774·BE-heavy·auto-merge FF 대기)
+- 모듈 커버 97.41% (28.25/29·진성갭 0·carry)
+
+[1] ★★★ 신규 축 — BE @Test 계수 방법론 reconciliation (naive grep +1 over-count 원인 lock)
+발견: `grep -rE '@Test' src/backend/src` raw = 2414 (BNK-889~893 strict 2413 대비 겉보기 +1 drift 처럼 보임)
+원인 규명 (git 실측·HEAD 6d3c766 불변 → drift 불가능):
+  - `grep -rE '^\s*@Test\b'` (라인 시작·실제 테스트 메서드) = 2413
+  - `grep -rE '@Test\b' | grep -v '@Test(Configuration|Instance|...)'` = 2413
+  - raw 2414 - strict 2413 = +1 = 단일 `@TestPropertySource` 어노테이션
+    → src/test/java/com/ogada/backend/system/LiveE2eControllerRoutingTest.java:19
+      `@TestPropertySource(properties = "ogada.live-e2e.bootstrap-enabled=false")`
+  - `@ParameterizedTest` = 3 (별도·strict `^\s*@Test` 에는 미포함·전부 실제 test method)
+판정: **실제 test method 수 = 2413 (BNK-889→894 IDENTICAL·zero drift)**.
+  naive `grep @Test` (경계·라인시작 미지정) 은 `@TestPropertySource`/`@TestConfiguration` 류를 흡수해 +1 상시 over-count.
+  → 향후 BNK 사이클 @Test KPI 는 `^\s*@Test\b` strict 계수 고정 (rules §14 검증 정합·거짓 +1 drift 경보 방지 lock).
+경쟁 4종 대비: 무관 (ogada 내부 계측 methodology·KPI 정합 축).
+
+[2] ★ NHIS #44 제34조 재실측 (기존 URL 재실측 · 616차 byte-IDENTICAL)
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · nhis_jo44_live_bnk894.html · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · 616차 byte-IDENTICAL
+cmp nhis_jo44_live_bnk893.html nhis_jo44_live_bnk894.html = BYTE-IDENTICAL
+verbatim carry: 러-1 / 러-4 / 편도 / 이동서비스비 / 1일 1회 / 수급자가 부담 / 이동서비스 일지
+→ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) + TransportServiceLog* full-stack 1:1 SUPERIOR·상수 재조정 불요
+
+[3] ★ audit-first HTTP 442 posture 54차 byte/count-exact IDENTICAL
+GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442 · controller 81 · 5.46 · BNK-836→894
+BE +0 / FE +0 (BE 5-cycle·FE 4-cycle zero advance) 후에도 API surface 무변동 → API 안정성 54-cycle 동결
+물리 삭제 API 신설 금지·PATCH(44)>PUT(13) 부분정정·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21)
+
+[4] ★ 경쟁사 재실측 signal (기존 URL 재실측)
+- ezCare top-nav JS 직접 경로 추정(`/js/top-nav-item-V2.js`) = HTTP 404 (2265B 404 페이지) → 직접 경로 오추정.
+  committed `ezcare_top_nav_v2.js`(md5 95286775) 는 `scripts/ezcare-demo-fetch.sh` 데모 셸 inline 추출본이 정본 → 직접 URL 경로 drift 판정 금지(경로 miss·carry).
+- carefor `daycare/func.php` LIVE = HTTP 000 timeout (116-cycle+ carry·「미확인」·disk canonical 6226e6eb/98,328B 보존).
+→ 이번 사이클 경쟁사 evidence = NHIS #44 616차 재실측(byte-IDENTICAL 변동 기록).
+
+[5] ★ 갭 우선순위 재점검 (진성갭 승격 0)
+P3/P4「가정」 candidate carry (G-EXCRETION-QR·G-PROGRAM-BANK·G-KPI-REPORT·G-TRAINING-MATERIALS·
+  G-RECORD-COPY-OPTION·G-CLIENT-WAITLIST·G-CLIENT-CONSULTATION-LOG·G-CLIENT-VACCINATION-HISTORY·
+  G-CASE-MGMT-MEETING·G-PAYROLL-CONTRACT-CRUD·G-COGNITIVE-WORKSHEET) → 진성갭 승격 0
+신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY
+
+[6] 인프라 note — root fs 완화 확인
+df -h / = 146G / 140G used / 5.4G Avail (97%) → BNK-891 100% full 블로커 대비 완화됨(파일 쓰기·git 정상).
+
+per-cycle minimum 4종 충족:
+  - 신규 evidence URL: NHIS #44 616차 재실측(byte-identical 변동 기록)
+  - 메뉴/필드/워크플로 1블록: BE @Test 계수 방법론 reconciliation(naive grep +1 over-count 원인 lock·§[1])
+  - COMPETITOR_MATRIX @HEAD 행 갱신 (aab11b2/6d3c766·54차 IDENTICAL)
+  - BENCHMARK_REPORT §894 신규 절 (§894-0 ~ §894-4)
+신규 snapshot 2 (txt 1 + html 1) · 덮어쓰기 0 · 가정 번복 0

@@ -1,0 +1,69 @@
+# ogada git 실측 baseline · BNK-918 (2026-07-20T01:20:00Z)
+# rotation: 교차검증·갭 우선순위 8h+
+# 이전 BNK: 917 (2026-07-20T00:47:00Z) → ~33분 후 로테이션
+
+## FE (src/frontend)
+head       = 6f1e620d6e4dd02c7a7a24992a6c26dea30c16ce
+head_short = 6f1e620
+head_msg   = fix(v1.2.1/nursing): clear stale pressure-ulcer date error after correction
+prev_bnk917_head = 03c0a2ff8526ef58f46fd34cb0780e8c10db718e (03c0a2f)
+delta_since_bnk917 = +1 commit (in-place PressureUlcerPage.jsx +10, PressureUlcerPage.test.jsx +29 = 2 files, +39 insertions)
+ahead_vs_origin_test = 45 (origin/test = b23711f)  # tester FF 대기
+wt_status  = CLEAN
+
+Route (App.jsx) = 133  (<Route\b 132 + <Routes> 1)
+Page (src/pages/*Page.jsx non-test) = 106  (git ls-files + find 이중 실측)
+FE test file total = 546  (230 .test.js + 316 .test.jsx)
+   BNK-917 header 「550(234+316)」 → **소급 정정 -4(가정 번복 1)**
+   (BNK-917 baseline @03c0a2f 실측도 230+316=546 · 「550」은 header 오식)
+
+## BE (src/backend)
+head       = b863930cb3673918ba22e742f8d97aef720d107c
+head_short = b863930
+head_msg   = fix(v3/SEC-D37): redact nested notification secrets at rest
+prev_bnk917_head = db1ff724ef1e30cdeecd0ad3e910acd1d1d22f54 (db1ff72)
+delta_since_bnk917 = +1 commit (NotificationPayloadRedactor.java +42/-7, NotificationPayloadRedactorTest.java +18 = 2 files, +53 insertions -7 deletions)
+ahead_vs_origin_test = 779 (origin/test = 598d108)
+wt_status  = CLEAN
+
+@RestController = 81   (grep -rl @RestController · line-anchored ^@ 는 80 · 1 파일은 @Component 아래)
+@Entity         = 92
+HTTP endpoint total = 442
+  GET    231  (52.3%)
+  POST   144  (32.6%)
+  PATCH   44  (10.0%)
+  PUT     13  ( 2.9%)
+  DELETE  10  ( 2.3%)
+  = BNK-836→918 **78차** byte/count-exact IDENTICAL · endpoint 신설 0
+Test file       = 300  (299 *Test.java + 1 *Tests.java)
+@Test strict    = 2434  (^\s*@Test\b · BNK-917 2433 → +1 · b863930 redactor recursive test 추가)
+Flyway migration = V1–V196 (신규 0)
+
+## Merge gate
+merge_gate = 824  (FE 45 + BE 779 · BE-heavy 94.5%)
+FE tester FF 대기 · BE-heavy 이관 대기
+
+## Transport constants (재조정 불요)
+ONE_WAY_RATIO = 0.5
+RU_1..RU_4    = present  (git grep -c 'RU_[1-4]' 재확증)
+
+## Closed band 6-path (App.jsx @6f1e620 grep) · 재오픈 0
+/clients/:clientId/care-plan-form          (G14)
+/dashboard, /dashboard/hq                   (대시보드)
+/transport/service-fees                     (v1.3-C)
+/billing/cms                                (v2 CMS)
+/clients/linkage-records                    (G-LINKAGE)
+/clients/home-newsletter                    (G2)
+
+## 모듈 커버 (competitorModuleCoverage.js @6f1e620)
+비-1.0 4 entry: id=2/8/10=0.85 · id=12=0.7 · sum=28.25/29 = **97.41%** CARRY
+
+## 이번 사이클 승격/번복
+- **KPI 소급 정정 1**: FE test 550(234+316) → **546(230+316)** — BNK-917 header 오식(BNK-917 baseline @03c0a2f 실측 이미 230+316)
+- **NHIS #44 639차** byte-IDENTICAL(c886ff1f · 7,572B · 러-1(1)/러-4(1)/편도(2)/1일 1회(1)/수급자가 부담(1)/이동서비스(13))
+- **silverangel c9507190** 45,601B byte-IDENTICAL(bnk909→916→918 다중 사이클 연속 zero drift)
+- **ezcare Home 5137529b** 69,730B · 53.2/9298/4675/2353/1820 ZERO DRIFT
+- **ezcare FAQ c09d2fca** 80,057B DRIFT hit-only(rowid 233·max 21781 IDENTICAL·엑셀 hit 2·엑셀 포맷 변경 signal 0)
+- **HTTP 442 78차** byte-exact IDENTICAL (audit-first posture 78-cycle 동결)
+- **BE @Test +1 SEC-D37 nested redact recursive lock**
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 번복 0 · 미확인 승격 0

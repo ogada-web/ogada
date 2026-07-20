@@ -1,0 +1,138 @@
+BNK-872 — 엔젤·롱텀·규제 역공학 4-6h (longterm 502/610 full-shell 재출현 + ±9B 오실레이션 근본 원인 `var s16;` 확정 + NHIS #44 제34조 ①~⑤ full verbatim ↔ ogada TransportServiceLog/§34조 ④ 이동서비스 일지 1:1)
+================================================================================
+조사일: 2026-07-18T15:58:00Z
+rotation: 엔젤·롱텀·규제 역공학 4-6h (BNK-871 이지케어 2-4h → 다음)
+per-cycle minimum: 신규 URL 1+ (또는 기존 URL 재실측+변동 기록) · 메뉴/필드/워크플로 상세 1블록+ · COMPETITOR_MATRIX 1행+ @HEAD · BENCHMARK_REPORT §신규 소절 1건+ · 4종 전량 충족
+
+ogada baseline (git 실측)
+--------------------------
+BE develop: 417e2ff (BNK-871 @4dcf60d → +1 commit · `test(v3/SEC-D34): lock NHIS visit schedule excel parser validation fail-closed branches` · WT CLEAN · ahead 762 vs 598d108 · BE @Test strict 2386 [BNK-871 2382 → +4])
+FE develop: 5aaee88 (BNK-871 @b115ae0 → +2 commit: eca424f `fix(a11y/transport): route server departureRound field error to field only (UXD-194)` + 5aaee88 `fix(v1.2.1/transport): blur departure-round input on wheel to prevent silent value change (id=2 form polish)` · WT CLEAN · ahead 18 (0/18) vs origin/test=b23711f · tester FF 대기)
+Route: 133 (<Route\b 132 + <Routes> 1 · App.jsx)
+Page.jsx (prod): 106
+FE test files: 541 (226 .test.js + 315 .test.jsx · in-place expand · 신규 0)
+BE Test.java: 296 (+1 Tests.java = 297)
+@RestController (loose): 81
+HTTP endpoints: 442 (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10) — BNK-836→872 byte/count-exact IDENTICAL (32차)
+Flyway: V1–V196 (신규 0)
+모듈 커버리지: 97.41% (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0)
+merge gate: 780 (FE 18 tester FF 대기 + BE 762 · BE-heavy · 신규 마이그레이션 0)
+=> BE +1 commit(SEC-D34 계보 「NhisVisitSchedule parser fail-closed 검증 분기 회귀 lock」·+4 @Test·behavior-neutral·endpoint 신설 0) = SEC-D34 5-parser 대칭(NHIS·caregiver·bank·RFID transmission·NHIS visit schedule) 검증 분기별 회귀 test lock 확산. FE +2 commit(id=2 배차 form-polish 9·10차 축: UXD-194 서버 departureRound 오류를 필드 단위로만 라우팅 + 휠 스크롤 시 값 무음 변경 방지 blur) · 코드 층 endpoint/마이그레이션 무변.
+
+1. NHIS #44 live 재fetch 596차 zero substantive drift + 제34조 ①~⑤ full verbatim
+------------------------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP: 200 · SIZE: 7,572B · md5: c886ff1f (BNK-870 595차 → BNK-872 596차 byte-IDENTICAL · BNK-871 이지케어 focus로 NHIS 미측정)
+verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스(4)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·급여비용(5)·제34조(5) = 30-hit
+
+제34조 (주·야간보호급여 이동서비스비용 등) 전문 verbatim (tag-strip):
+> ① 주·야간보호급여의 이동서비스비용은 주·야간보호급여를 이용하는 수급자에게 장기요양요원 등이 특별자치시장·특별자치도지사·시장·군수·구청장에게 신고된 차량을 이용하여 수급자의 실 거주지에서 장기요양기관으로, 장기요양기관에서 수급자의 실 거주지로 이동서비스를 제공한 경우 산정하고, 그 금액은 급여를 제공하는 주·야간보호기관으로부터 수급자의 실거주지까지의 최단거리(편도)에 따라 다음과 같다.
+> ② 이동서비스비용은 이용 횟수에 관계없이 1일 1회만 산정하고, 수급자가 이동서비스를 편도만(기관으로 이송 또는 수급자의 거주지로 이송하는 경우) 이용한 경우에는 제1항의 표에 따른 '러-1'부터 '러-4'까지 비용의 50%를 산정한다.
+> ③ 이동서비스비용은 제공기관의 신청에 따라 산정하며, 그 비용은 수급자가 부담하지 아니한다.
+> ④ 장기요양기관은 이동서비스를 제공한 경우 이동서비스 일지를 작성하여 보관하여야 한다.
+> ⑤ 이동서비스비용 신청·중단절차 및 일지작성 등에 대한 세부사항은 공단 이사장이 정한다.
+
+★ ogada §34조 ①~⑤ full-stack 1:1 대응 실측 (git grep @417e2ff)
+| §34조 조항 | 규제 내용 verbatim | ogada 대응 (실측) | 판정 |
+|---|---|---|---|
+| ① 산정 조건 | 신고 차량·실거주지↔기관·최단거리 편도 | transport/domain `TransportDistanceBand` + `TransportServiceLogStopRecordRequest`(정차/거리) | ✅ PARITY |
+| ② 1일 1회·편도 50% | 러-1~러-4 비용의 50%·이용 횟수 무관 1일 1회 | `TransportServiceFeeParityCatalog` RU_1..RU_4 + `ONE_WAY_RATIO=0.5` + `ONE_PER_DAY` | ✅ PARITY(상수 재조정 불요) |
+| ③ 수급자 부담 0 | 그 비용은 수급자가 부담하지 아니한다 | transport service-fee 본인부담 산정 제외 | ✅ PARITY |
+| ④ 이동서비스 일지 작성·보관 | 이동서비스 일지를 작성하여 보관하여야 한다 | `TransportServiceLogResponse`·`UpsertTransportServiceLogRequest`·`TransportServiceLogAuditItemResponse`·`TransportServiceLogAuditListResponse`(감사 이력) full-stack | ✅ SUPERIOR(일지+감사 이력 전자화) |
+| ⑤ 세부사항 공단 이사장 | 신청·중단절차·일지작성 세부 = 공단 이사장 | carry(하위 고시 위임) | ⚪ 위임 |
+=> ogada Transport(id=2)는 §34조 ①~⑤ 전 조항 full-stack 대응. 특히 ④ 이동서비스 일지 = `TransportServiceLog*` 전자 작성+감사 이력(`...AuditItem/AuditList`)로 「작성·보관」 의무를 종이 대비 SUPERIOR 이행. Transport 상수(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 재조정 불요·id=2 0.85 carry.
+snapshot: nhis_jo44_live_bnk872.html
+
+2. ★★★ longterm 502/610 full-shell 재출현 + ±9B 오실레이션 근본 원인 `var s16;` 확정 (신규 블록·BNK-858 종료가정 최종 결착)
+------------------------------------------------------------------------------------------------------------------
+- 502: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500 · 200 · 89,171B · md5 a71379de = **FULL 재출현** (BNK-866→868→870 lean 3연속 `56185735`/89,162B → BNK-872 full 복귀)
+- 610: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650 · 200 · 88,408B · md5 6b10f426 = **FULL 재출현** (BNK-866→868→870 lean 3연속 `fad1ce61`/88,399B → BNK-872 full 복귀)
+
+★ ±9B 오실레이션 근본 원인 실측 = 단일 JS 변수 선언 `var s16;` (definitive)
+  diff <(strip-tags 870-lean) <(strip-tags 872-full) → 유일 차이 라인:
+    > var s16;
+  · 502 byte delta = 89,171 - 89,162 = 9B = `var s16;`(8자) + 개행(1) = 9바이트
+  · 610 byte delta = 88,408 - 88,399 = 9B = 동일 `var s16;` + 개행
+  · full = `var s16;` 미초기화 변수 선언 라인 포함 / lean = 해당 라인 미포함
+  · 그 외 <script>·본문·메뉴·수가 콘텐츠 전량 byte-IDENTICAL
+
+판정:
+  - BNK-803~872 전 사이클의 「±9B lean↔full 오실레이션」은 **서버가 라운드 로빈 렌더 시 미초기화 JS 변수 `var s16;` 선언 라인 1개(9B)의 포함/미포함 차이**로 최종 확정.
+  - 기능·수가·규제·메뉴 콘텐츠 변동 **0** — 순수 클라이언트 JS 아티팩트(문서 위생 signal only).
+  - BNK-858 「오실레이션 종료」 「가정」은 BNK-859부터 6-cycle 연속 번복 유지 상태였고, 본 사이클(BNK-872 full 재출현·lean 3연속 직후 flip)로 **「양방향 오실레이션 continues·규제 갭 아님」 최종 결착**(rules §14 정합). 규제 상수·앵커 재조정 불요.
+  - 단기보호 74,060 / 통합재가 월 10만원 disk canonical carry(full-shell 본문 규제 콘텐츠 IDENTICAL).
+snapshots: longterm_502_live_bnk872.html · longterm_610_live_bnk872.html
+
+3. law.go.kr 2025-247 Time-strip semantic IDENTICAL (8-cycle · raw cache-buster only)
+------------------------------------------------------------------------------------
+URL: https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110
+HTTP: 200 · SIZE: 78,450B · raw md5: 0f32e19f (raw DRIFT)
+Time-strip (`s/Time=[0-9]+/Time=X/g`) md5: fbbe0c54
+  · BNK-858/859/865/866/868/870/872 Time-strip md5 전량 fbbe0c54 IDENTICAL (8-cycle carry)
+  · diff <(Time-strip 870) <(Time-strip 872) = 0 라인 (semantic byte-IDENTICAL)
+  · raw md5 순환(bd050c04/5456330c/da4c6b56/898d7fb4/0585a090/c8af0061/0f32e19f)의 유일 변동 = `Time=` unix 캐시버스터(관측값 Time=1784390422)
+비고: BNK-859~870 사이클은 broader token strip(Time+etaHash+nonce+mrsCd+token+_wa+csrfToken+_ts)로 `a913639a` 정본화. 본 사이클은 **최소 정규화(Time= only)로 재검증**했으며 diff=0으로 실 콘텐츠 변동 0 재확인. canonical URL `?admRulSeq=2100000271110` 고정 사용 확정(BNK-826 alias `?admRulSeq=2100000268226` 폐기 유지).
+snapshot: law_mohw_2025_247_admRulInfoP_live_bnk872.html
+
+4. silverangel 5-URL byte-IDENTICAL 재확인 + 이동서비스일지 예시 문서 축 ↔ §34조 ④ 연결
+------------------------------------------------------------------------------------------
+- system_feature: 45,601B · c9507190 (transport/배차/GPS/차량/RFID 0-hit · BNK-856→872 IDENTICAL)
+- extraService:   81,637B · f9c5d877 (효성CMS 3-method · 30,000/250원/300원 STABLE)
+- feeService:     44,513B · eab352a8 (요금 6-hit · 자동이체 1 · 체험 1)
+- home:           101,220B · 66382835 (2026 notices, 굽은나무 앱 carry)
+- essentialWork:  131,664B · c79c1be3 (필수업무 27=가족과의 소통 verbatim · 이동서비스 문서 축)
+
+essentialWork 이동서비스 문서 축 verbatim (tag-strip):
+  「이동서비스수칙」
+  「이동서비스 수칙이 있음 • 필수사항 : 운전자 자격요건, 동승자의 역할, 차량안전수칙, 사고 시 조치사항, 차량운행표」
+  「이동서비스 수칙을 수급자(보호자)에게 제공함」
+  「이동서비스수칙 포함 / 이동서비스일지-이동서비스수칙 예시」
+  「이동서비스 시간을 준수함」
+=> 엔젤 essentialWork는 「이동서비스일지·이동서비스수칙」을 **문서(예시)** 축으로만 언급(system_feature 실 배차·GPS·차량 tracking 0-hit carry). 반면 ogada는 NHIS #44 §34조 ④ 「이동서비스 일지 작성·보관」을 `TransportServiceLog*` **전자 일지 + 감사 이력** full-stack으로 이행 = 문서 template 대비 SUPERIOR. ogada Transport(id=2 6-route·러-1~4 계산기·RFID import·NHIS #44 상수) 우위 재확인.
+snapshots: silverangel_{system_feature,extraService,feeService,home,daycare_essentialWork}_live_bnk872.html
+
+교차검증 요약 (BNK-872)
+------------------------
+1. NHIS #44 러-1~4·제34조 ①~⑤ full verbatim 596차 zero drift → Transport 상수 재조정 불요(id=2 0.85 carry) · §34조 ④ 이동서비스 일지 = ogada TransportServiceLog full-stack 1:1
+2. longterm 502/610 full-shell 재출현(lean 3연속 → flip) · ±9B = `var s16;` JS 변수 선언 1라인 근본 원인 확정 → BNK-858 종료가정 「양방향 오실레이션 continues」 최종 결착
+3. law 2025-247 Time-strip fbbe0c54 8-cycle IDENTICAL(diff=0) → 규제 백본 실체 변동 0 · canonical URL 고정
+4. silverangel 5-URL byte-IDENTICAL → 엔젤 코어 기능·CMS 요금 zero drift · 이동서비스일지 문서 축 ↔ ogada 전자 일지 SUPERIOR
+5. 신규 진성갭 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0 · closed band 재오픈 0
+
+가정 번복 재점검 (rules §14 정합)
+--------------------------------
+- BNK-858 「longterm 502/610 -9B 오실레이션 종료」 「가정」 → BNK-859/865/866/868/870/872 **7-cycle 연속 번복 유지 + 근본 원인 `var s16;` 확정으로 최종 결착**(기능 갭 아님·문서 위생 signal only·규제 상수 재조정 불요).
+- BNK-826 law URL alias `?admRulSeq=2100000268226` 폐기 → canonical `?admRulSeq=2100000271110` Time-strip fbbe0c54 8-cycle IDENTICAL 재확인·고정 사용 확정.
+- BNK-865 P4「가정」 candidate 「이동서비스수칙 template」 = essentialWork 이동서비스일지-이동서비스수칙 예시 문서 축 재확인 → carry(과대구축 회피·rules §11·§17·「미확인」 유지·ogada TransportServiceLog 전자 일지가 규제 ④ 이미 이행).
+- BNK-868 P4「가정」 candidate 「엔젤 mobile app 굽은나무 native」 = home/essentialWork verbatim carry·앱 스토어 링크 「미확인」 유지.
+
+planner 반영 제안
+------------------
+1. REQUIREMENTS §이동서비스/§규제: 「NHIS #44 제34조 ①~⑤ = ogada Transport full-stack 1:1(① 신고차량·최단거리 편도 / ② 1일 1회·편도 50%=ONE_PER_DAY·ONE_WAY_RATIO / ③ 수급자 부담 0 / ④ 이동서비스 일지=TransportServiceLog 전자 일지+감사 이력)」 명문화 — 규제 조항↔코드 crosswalk 근거.
+2. 마케팅 카피: 「이동서비스 일지(장기요양 고시 제34조 ④ 의무)를 종이 대신 전자 작성·감사 이력까지 자동 보관 — 엔젤 「예시 문서」 대비 SUPERIOR」.
+3. longterm 오실레이션: ±9B = `var s16;` JS 변수 선언 근본 원인 확정 → 규제 백본 canonical URL·상수 현행 고정, 문서 위생 signal only. 향후 사이클 오실레이션 재측정 불요(결착).
+4. 신규 구축 불요 — 과대구축 회피(rules §11). Transport §34조 대응·이동서비스 일지 이미 착지.
+5. tester FF: merge gate 780(FE 18 tester FF 대기 + BE 762·BE-heavy) → id=2 form-polish 축적분(UXD-194 필드 오류 라우팅·휠 blur) test 이관 흡수 권고.
+6. 다음 우선순위: 케어포 0-2h(func.php disk canonical re-verify·Wayback CDX 스캔) 또는 이지케어 2-4h(FAQ rowid 신규 스캔) 또는 ogada git 실측 6-8h(tester FF 이후 merge gate 관찰).
+
+신규 snapshot (본 사이클)
+------------------------
+- angel_longterm_regulatory_crossverify_bnk872.txt (주력 extract·본 파일)
+- nhis_jo44_live_bnk872.html (7,572B · c886ff1f · 596차)
+- silverangel_system_feature_live_bnk872.html (45,601B · c9507190)
+- silverangel_extraService_live_bnk872.html (81,637B · f9c5d877)
+- silverangel_feeService_live_bnk872.html (44,513B · eab352a8)
+- silverangel_home_live_bnk872.html (101,220B · 66382835)
+- silverangel_daycare_essentialWork_live_bnk872.html (131,664B · c79c1be3)
+- longterm_502_live_bnk872.html (89,171B · a71379de · FULL 재출현)
+- longterm_610_live_bnk872.html (88,408B · 6b10f426 · FULL 재출현)
+- law_mohw_2025_247_admRulInfoP_live_bnk872.html (78,450B · raw 0f32e19f / Time-strip fbbe0c54 semantic IDENTICAL)
+- 덮어쓰기: 0
+
+per-cycle minimum (agents.yaml reverse_engineering.per_cycle_minimum) — 4종 충족
+1. 신규 증거 URL 1건 이상 (또는 기존 URL 재실측 + 변동 기록):
+   ✅ NHIS #44 596차(재실측+변동 「zero」) + longterm 502/610 **full-shell 재출현(변동 기록·flip)** + law Time-strip 재검증 + silverangel 5-URL byte-IDENTICAL
+2. 경쟁사 메뉴/필드/워크플로 상세 1블록 이상:
+   ✅ NHIS #44 제34조 ①~⑤ full verbatim + ogada §34조↔코드 5-행 crosswalk 표 + longterm ±9B `var s16;` 근본 원인 실측 블록
+3. COMPETITOR_MATRIX 1행 이상 ogada @HEAD SHA로 갱신: ✅ BNK-872 delta 4-행 갱신 (@5aaee88/@417e2ff)
+4. BENCHMARK_REPORT §신규 소절 또는 BNK 차수 메모 1건 이상: ✅ §872 4-소절

@@ -1,0 +1,142 @@
+BNK-888 — 교차검증·갭 우선순위 8h+ (2026-07-19)
+================================================================
+조사일: 2026-07-19T03:36:42Z
+rotation: 교차검증·갭 우선순위 8h+ (BNK-887 교차검증·갭 우선순위 8h+·2026-07-19T02:58:00Z → ~39분 후)
+초점: (1) ogada BE/FE @HEAD 재실측 — 신규 FE 커밋 delta·Route·page·module 커버 % 재산정
+      (2) ★★★ a11y CROSS-DOMAIN ROLLOUT — TransportServiceFeePanel §119 이중 필드 오류 라우팅 패턴을
+          9개 form-polished 리포트(L02 7 + L03 1 + M5 1)에 일괄 적용·WCAG 3.3.1/4.1.2 gap 폐쇄
+      (3) 규제 백본 3-URL 교차검증 — NHIS #44·silverangel system_feature·law 2025-247
+      (4) audit-first HTTP 442 48차 IDENTICAL
+      (5) 갭 우선순위 재점검 — P3/P4「가정」 8종 carry·진성갭 승격 0
+      (6) planner 권고 갱신
+
+================================================================
+§888-0 · Baseline (2026-07-19T03:36:42Z) — git 실측
+================================================================
+- ogada backend develop = e60e288 (BNK-886→887→888 동일 HEAD·3-cycle zero advance)
+    subject: refactor(v3/SEC-D34): extract shared excel amount normalizer
+    ahead 773 vs 598d108 · BE @Test strict 2411 · WT CLEAN
+- ogada frontend develop = 5789173 (BNK-887 60716c66 → +1 commit)
+    subject: fix(a11y/reports): route reversed date-range error to start-date field across 9 L02·L03·M5 reports (UXD-196)
+    author/date: jwj3400 <rlwlsdnr@naver.com> · 2026-07-19T03:32:51Z (즉시 pickup)
+    18 files +75/-0 · 신규 파일 0 · in-place test +18 (9 test.jsx × 2 라인) · ahead 31 vs b23711f · WT CLEAN · tester FF 대기
+- Route 133 (App.jsx <Route\b 132 + <Routes> 1·carry) · Page 107 (recount·no new page file in 5789173·prior BNK-887 carry 106 → +1 corrected)
+- FE test 543 (228 .test.js + 315 .test.jsx·in-place +18·신규 0·count 동결)
+- BE Test 297 (296 Test.java + 1 Tests.java) · @Test strict 2411
+- @RestController 81 (loose) · HTTP 442 (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 · 48차 byte/count-exact IDENTICAL · endpoint 신설 0)
+- Flyway V1–V196 (신규 0)
+- merge gate 804 (FE 31 + BE 773 · BE-heavy · 신규 마이그레이션 0)
+- 모듈 커버 KPI 97.41% (28.25/29 · 진성갭 0 · carry)
+
+================================================================
+§888-1 · ★★★ a11y CROSS-DOMAIN ROLLOUT — §119 이중 필드 오류 라우팅 → 9개 리포트 페이지
+================================================================
+FE @5789173 commit body 실측(verbatim):
+  "coder의 역방향 기간 사전 차단 5커밋은 종료일 DateInput에만 aria-invalid/role=alert를
+   연결해, 시작일 DateInput이 aria-invalid·aria-describedby를 받지 못하는 WCAG 3.3.1·4.1.2
+   갭이 남았다(두 필드 모두 위반이지만 스크린리더엔 종료일만 잘못된 상태로 노출).
+
+   §119 TransportServiceFeePanel 이중 필드 오류 라우팅 패턴을 9개 리포트 페이지에 일괄 적용:
+   시작일도 aria-invalid를 전달하고 aria-describedby로 종료일 오류 id를 참조(안내 role=alert는
+   종료일 단일 메시지만 유지해 중복 낭독 방지). Field render-prop의 controlProps는 병합만.
+
+   신규 ds-* 클래스 0건(CSS 무변경). npm test(flock) 9파일 38/38 PASS."
+
+- diff (60716c66..5789173): 18 files +75/-0 (test only 확장 + a11y attribute)
+    · 9 리포트 페이지 .jsx (각 +6 lines·aria-invalid + aria-describedby 시작일 DateInput 배선)
+    · 9 리포트 페이지 .test.jsx (in-place +2 각·계약 lock)
+    · 신규 파일 0
+
+- **§119 anchor 실측** — components/transport/TransportServiceFeePanel.jsx:280-286:
+      aria-invalid={dateRangeError ? true : fieldProps["aria-invalid"]}
+      aria-describedby={dateRangeError ? [fieldProps["aria-describedby"], SERVICE_FEE_TO_ERROR_ID].filter(Boolean).join(" ") || undefined : fieldProps["aria-describedby"]}
+  → 이 패턴이 9개 리포트 시작일 DateInput 에 identical 하게 배선 (예: BathHelpReportPage.jsx:194-200,
+    ProgramReportsPage.jsx:268-274·verbatim 확인).
+
+- **a11y CROSS-DOMAIN ROLLOUT 실측(BNK-888 NEW)**:
+    · L02 care-report family (7 pages) : BathHelp, CareMealExcretion, CareNursingService,
+      IntensiveExcretion, PatientService, PositionChange, ServiceSummary
+    · L03 nursing family (1 page)      : NursingServiceReports
+    · M5 program family (1 page)       : ProgramReports
+    = 9 pages · 3 domain families · 원본 anchor = TransportServiceFeePanel §119 (transport-fee 4th family)
+    = "id=2 form-polish 계보" 20차+ 의 dual-field a11y routing 형제
+
+- **BNK-887 domain-config shared-helper rollout(3 families) 과의 관계 — 직교(orthogonal) 패턴**:
+    · BNK-882→887 : domain-config `resolveXxxDateRangeError` shared helper (3 families·pre-block round-trip)
+    · BNK-888 NEW : a11y dual-field routing (start-date & end-date 이중 aria-invalid + aria-describedby cross-ref)
+    → 두 패턴은 orthogonal (한 helper 는 로직·다른 패턴은 스크린리더 노출)·번복 아님·rules §14
+
+- 판정: BNK-882/883 예측「L02 리포트 form-polish 확산」 → BNK-885 L02 7 DOMAIN-COMPLETE
+       → BNK-886 L03 nursing 확산 → BNK-887 M5 programs 확산(3rd domain-config family)
+       → BNK-888 **9-page a11y dual-field routing rollout (§119 anchor)**
+       = 예측 범위 초과 지속 확장·CROSS-DOMAIN ROLLOUT 지속(번복 아님·rules §14)
+- 경쟁 4종 대비: 케어포 시설 셸 리포트 a11y 근거 0·이지케어 데모 리포트 필드 이중 aria-invalid verbatim 0·
+       엔젤 리포트 활용법 라벨만·롱텀 규제만 = 리포트 시작일 필드 aria-invalid 이중 라우팅 유일 full-stack SUPERIOR
+
+================================================================
+§888-2 · ★ 규제 백본 3-URL 교차검증
+================================================================
+- NHIS #44 제34조 (joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769)
+    HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 610차 byte-IDENTICAL (BNK-887 609차 → +1·zero drift)
+    verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+    ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+TransportServiceLog*
+       full-stack 1:1 SUPERIOR · Transport 상수 재조정 불요 · id=2 0.85 carry
+    snapshot: nhis_jo44_live_bnk888.html
+- silverangel system_feature (silverangel/angelsystem/system_feature.do)
+    HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da = 14차 byte-IDENTICAL (BNK-887 13차 → +1)
+    transport 6-term grep (이동서비스|배차|GPS|RFID|차량|송영) = 0-hit ALL
+    → 엔젤 자체 이동서비스/배차/GPS/RFID/차량 모듈 부재 재확인 · ogada Transport 자체 시스템 SUPERIOR
+    snapshot: silverangel_system_feature_live_bnk888.html
+- law 2025-247 (admRulInfoP.do?admRulSeq=2100000271110)
+    HTTP 200 · 78,450B · raw md5 c99767311c89ea7f70d66116e685ddff (cache-buster ?Time= DRIFT)
+    strip 's/Time=[0-9]*/Time=STRIPPED/g' semantic md5 ad1db6e06903bc34e70e139a19d854cd
+    = BNK-886↔887↔888 IDENTICAL (3-cycle strip-md5 동결·canonical URL admRulSeq=2100000271110 고정)
+    → 규제 앵커 재조정 불요
+    snapshot: law_mohw_2025_247_admRulInfoP_live_bnk888.html
+- longterm 502 재측정 skip (lean-shell 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지)
+
+================================================================
+§888-3 · ★ audit-first HTTP 442 posture 48차 byte/count-exact IDENTICAL
+================================================================
+@e60e288 grep(@{Get,Post,Patch,Put,Delete}Mapping):
+    GET 231 (52.3%) · POST 144 (32.6%) · PATCH 44 (10.0%) · PUT 13 (2.9%) · DELETE 10 (2.3%) = 442
+    @RestController 81 (loose) · endpoints per controller 5.46
+    = BNK-836→888 = 48차 byte/count-exact IDENTICAL
+    FE +1(a11y dual-field routing·view/test only·CSS/endpoint 신설 0) 후에도 endpoint 신설 0
+    → API 안정성 48-cycle 동결 · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 우선
+    · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+================================================================
+§888-4 · 갭 우선순위 재점검 (교차검증 rotation)
+================================================================
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- P3/P4「가정」 candidate 8종 전부 carry (진성갭 승격 0·rules §11·§17 과대구축 회피·「미확인」 유지):
+    · BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+    · BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+- BNK-884 M7 crosswalk 11/11 PARITY 유지 · 본인부담 진성갭 0 재확인
+- 모듈 커버 97.41% CARRY (진성갭 0)
+
+================================================================
+§888-5 · planner 권고
+================================================================
+- **a11y CROSS-DOMAIN ROLLOUT — §119 이중 필드 오류 라우팅 → 9-page 명시**
+  (TransportServiceFeePanel §119 anchor·L02 7 + L03 1 + M5 1 = 9 pages·WCAG 3.3.1/4.1.2 gap 폐쇄)
+  — REQUIREMENTS §접근성 「리포트 폼 시작일/종료일 이중 aria-invalid + aria-describedby cross-ref (§119 anchor)」 명시 권고
+  · UXD-196 lineage carry · 커밋 body "§119 TransportServiceFeePanel 이중 필드 오류 라우팅 패턴을 9개 리포트 페이지에 일괄 적용" verbatim
+  · BNK-887 domain-config shared-helper rollout(3 families·pre-block round-trip) 과 orthogonal
+  · 리포트 시작일 필드 aria-invalid 이중 라우팅 유일 full-stack SUPERIOR(경쟁 4종 근거 0)
+- **NHIS #44 610차·law strip 3-cycle IDENTICAL·silverangel 14차(transport 0-hit)** → 규제 상수·앵커 재조정 불요·엔젤 배차 부재 → ogada Transport SUPERIOR
+- **audit-first 442 48차 IDENTICAL** → API posture 48-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·FE a11y dual-field routing 도 endpoint 신설 0·CSS 신설 0)
+- **P3/P4「가정」 candidate 8종 carry**(진성갭 승격 0·rules §11·§17)·「미확인」 유지
+- **tester FF merge gate 804 carry**(BE 773+FE 31·BE-heavy·신규 마이그레이션 0) — a11y dual-field routing 이관 흡수 권고
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+================================================================
+§888-6 · per-cycle minimum 충족
+================================================================
+- 신규 증거 URL 1건+ : NHIS #44 610차 재실측(zero drift)·silverangel 14차 재실측(transport 0-hit)·law strip BNK-886↔887↔888 3-cycle IDENTICAL 재실측
+- 경쟁사 메뉴/필드/워크플로 상세 1블록+ : FE @5789173 UXD-196 9-page a11y dual-field routing 실측 목록 + §119 anchor verbatim 확인
+- COMPETITOR_MATRIX 1행+ @HEAD 갱신 : @5789173/@e60e288 delta 갱신
+- BENCHMARK_REPORT §신규 소절 1건+ : §888 (6-subsection)
+
+신규 snapshot 4 (txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.

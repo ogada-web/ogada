@@ -1,4 +1,8 @@
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T01:26:06Z -->
+<!-- planner-sync: PLN 236차 2026-07-20T01:26:06Z — BNK-915~918·TSR 1982~1986 · ★★★ US-O03/US-O04 L03_M15 form-polish 한 쌍(pre-block `@03c0a2f`+stale-clear `@6f1e620`) · ★★★ SEC-D37 nested redact SUPERIOR(US 보안 축)·M2 10/10 PARITY·Transport SUPERIOR · QA-B635 Absorbed·Open 0·Planned QA-B116+QA-B95 · baseline FE/BE SYNCED @6f1e620/@b863930 · NHIS #44 639차·HTTP 442 78차·FE test 546. -->
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-18T00:15:00Z -->
+<!-- planner-sync: PLN 233차 2026-07-18T15:23 UTC — BNK-865~871·TSR 1843~1856 · ★★★ US-SEC-D34 「4-parser 대칭 fail-closed 회귀 lock COMPLETE」 BE `@4dcf60d` RfidTransmissionExcelParser fail-closed 회귀(BNK-871·+3 @Test) → NHIS·caregiver·bank deposit·RFID transmission 4-parser 대칭 완성·경쟁 4종 유일 SUPERIOR · ★★★ 이지케어 RFID점검 4.1 「RFID태그내역↔공단계획 비교=평가문항 29번(월 1회 RFID)」 FAQ 21589 verbatim ↔ ogada VisitRfidDiffComparePanel 이중엑셀+매직바이트 SUPERIOR(US-J03 carry) · ★★ carefor M8+M11 20-leaf PARITY 17(85%)+SUPERSET 2+△ 2+GAP 1(8-8 자원봉사자 활동일지 P4「가정」·과대구축 회피·BNK-867) · ★★ 효성CMS 결제 4-step ↔ ogada CmsPaymentMethodCatalog SUPERSET·벤더 lock-in 0(BNK-868) · ★★ id=2 배차 form polish 8-cycle(BE @Min(1) lockstep·KPI promote 0) · ★★ NHIS #44 595차 · ★ QA-B610~B613 Fixed & Verified+MERGED · baseline BE develop/test SYNCED@4dcf60d(2402/2402 PASS)/FE develop/test SYNCED@b115ae0(2760/2760 PASS) · cross-stream SYNCED local(both Open 0) · QA Open 0 · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 232차 2026-07-18T10:23 UTC — BNK-858~864·TSR 1830~1842 · ★★★ US-SEC-D34 축 「o」 FE↔BE 2-layer UNREADABLE/MISSING 상수화 DRY 완결(BE UNREADABLE_EXCEL_MESSAGE·5-parser+4-service·@2ad9b05·behavior-neutral·문구 단일지점) · ★★★ 이지케어 FAQ 엑셀 rowid 7종 verbatim = 브라우저/워크플로만·파일 무결성 verbatim 0 3-cycle·SEC-D34 15-축 경쟁 4종 유일 SUPERIOR(BNK-864) · ★★ id=2 회차/정차 상한 FE 검증+상수화(§3-13-8-1·BE lockstep·KPI promote 0) · ★★ NHIS #44 590차 · ★ QA-B609~B611 Fixed+MERGED · ★ QA-B612 Open→Planned(BE develop→test pending 1·HIGH/BLOCK) · baseline BE develop@2ad9b05/test@913b9d2(pending 1)/FE develop@0d37788/test@f72af3f(pending 1) · cross-stream BLOCK · Planned QA-B612+QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 231차 2026-07-18T05:12 UTC — BNK-850~857·TSR 1816~1829 · ★★★ US-SEC-D34 fail-closed 8-축 COMPLETE(매직 4-경로+null-safe+truncated+.xls OLE+empty-file+0-byte+empty-header+corrupt OOXML body·parser surface 5종·경쟁 4종 유일 SUPERIOR) · ★★★ FE RFID compare 이중엑셀 pre-upload SUPERIOR(BNK-857·이지케어 FAQ 21589 verbatim) · ★★ npm audit high 0(form-data 4.0.6) · ★★ NHIS #44 581차 · ★ QA-B604~B607 Fixed+MERGED · ★ QA-B608 Open→Planned(FE develop→test pending 2) · baseline BE@7fa8335(ahead 750)/FE develop@6f8e349·test@2789553 · cross-stream BLOCK · Planned QA-B608+QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 230차 2026-07-18T00:15 UTC — BNK-848~849·TSR 1810~1815 · ★★★ US-SEC-D34 4-path excel magic COMPLETE(QA-B598~B603·FE+BE lockstep·경쟁 4종 유일 SUPERIOR) · ★★ audit-first HTTP 442 IDENTICAL · ★★ NHIS #44 579차 · ★ QA-B602 Fixed+MERGED · ★ QA-B604/B605 Planned · baseline BE@f6e4d88/FE@7ac3c84 · cross-stream BLOCK · residual 744 BE · Planned QA-B604+QA-B605+QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 229차 2026-07-17T19:42 UTC — BNK-835~841·TSR 1793~1801 · ★★★ US-P03 SEC-D25 6-cycle COMPLETE(QA-B576~B586·FE+BE magic defense-in-depth·케어포 plupload↔SUPERIOR) · ★★★ Page 106 정본(BNK-835) · ★★★ demo-work≠func.php M2 범위 분리(BNK-841)·M7 billing PARITY · ★★ audit-first HTTP 442 6차 · ★★ NHIS #44 573차 · 신규 스토리 0(US-P03 deepen) · SYNCED(BE@c19bfa6·FE@dc81f6e) · residual 738 BE · Planned QA-B116+QA-B95 -->
@@ -2168,22 +2172,23 @@
 - [ ] `/reports/care-daily`·`/reports/bathing`·`/reports/care-provision`·`/reports/care-summary`
 - [ ] 인쇄·기간 필터 · E2E 1건 이상
 
-### US-O03 — 욕창 케어 lifecycle (G-NURSING-PRESSURE-ULCER) ← **갱신 (2026-06-14, 136차 · BNK-204~206 · ✅ full @ `e214da1`/`edda491`)**
+### US-O03 — 욕창 케어 lifecycle (G-NURSING-PRESSURE-ULCER) ← **갱신 (2026-07-20, 236차 · BNK-917/918 · L03_M15 form-polish 한 쌍 ✅ · 원본 136차 full @ `e214da1`/`edda491`)**
 
 | 항목 | 내용 |
 |------|------|
 | 역할 | `branch_admin`, `social_worker`, `caregiver`, `nurse`, `hq_admin` |
-| 스토리 | 간호(조무)사로서, **수급자별 욕창위험도를 평가**하고 예방계획을 수립하며 일별 욕창간호 기록과 분기 코호트 리포트를 관리하고 싶다. |
+| 스토리 | 간호(조무)사로서, **수급자별 욕창위험도를 평가**하고 예방계획을 수립하며 일별 욕창간호 기록과 분기 코호트·**제공 리포트**를 관리하고 싶다. |
 | 우선순위 | **v3.1 Must (P1) ✅ full** |
-| 근거 | silverangel 평가지표 + 케어포 demo L03 4 leaf **dual-source** · BE V114 @ `edda491` + FE @ `e214da1` + pilot/live E2E @ `024e720`/`24a1c5c` |
+| 근거 | silverangel 평가지표 + 케어포 demo L03 4 leaf **dual-source** · BE V114 @ `edda491` + FE @ `e214da1` + pilot/live E2E @ `024e720`/`24a1c5c` · **L03_M15 form-polish** pre-block `@03c0a2f` + stale-clear `@6f1e620`(BNK-917/918) |
 
 **인수 조건**
 - [x] `/nursing/pressure-ulcer/assessment` — 위험평가 @ `e214da1`
 - [x] `/nursing/pressure-ulcer/plan` — **예방계획** @ `e214da1`
 - [x] `/nursing/pressure-ulcer/records` — **일별 욕창간호 기록** @ `e214da1`
 - [x] `/nursing/pressure-ulcer/reports` — **분기 코호트 리포트** @ `3ec39f6`/`edda491`
+- [x] `/nursing/pressure-ulcer/reports/provision` — **L03_M15 제공 리포트** · 역방향 기간 FE pre-block(`@03c0a2f`·QA-B633) + 정정 시 stale date-error clear(`@6f1e620`·QA-B635 Absorbed) · BE `PressureUlcerService.resolveDateWindow` verbatim lockstep · Field aria cross-ref (BNK-917/918 · 경쟁 4종 a11y SUPERIOR)
 - [x] DB `pressure_ulcer_*` V114 · API 9 endpoints · pilot 4-step E2E @ `24a1c5c` · live E2E harness @ `024e720`
-- [ ] G-NURSING live E2E harness **실행 검증** 1회 (post-merge 권장)
+- [ ] G-NURSING live E2E harness **실행 검증** 1회 (post-merge 권장 · QA-B95)
 
 ### US-O04 — 간호급여 기록 (G-NURSING L03 13/14 ✅ effective 100%, P1 live E2E run) ← **갱신 (2026-06-15, 140차 · BNK-219~223 · live E2E harness deepen · M01~M07/M09~M11/M13~M15 ✅ full · M08 N/A)**
 
@@ -2204,7 +2209,7 @@
 - [x] **L03_M07** 통합 간호 rpt — BE+FE @ `2a05271`/`c23b1a3` · `/nursing/service/reports/total` (BNK-218)
 - [x] **L03_M09** 병의원 rpt — BE+FE @ `2a05271`/`c23b1a3` · `/nursing/service/reports/hospital-visits` (BNK-218)
 - [x] **L03_M10** 투약 rpt — BE+FE @ `2a05271`/`c23b1a3` · `/nursing/service/reports/medication-delivery` (BNK-218)
-- [x] **L03_M15** 욕창 제공 rpt — BE @ `75bddee` · FE wire @ `efa4472` (BNK-218)
+- [x] **L03_M15** 욕창 제공 rpt — BE @ `75bddee` · FE wire @ `efa4472` (BNK-218) · **form-polish 한 쌍** pre-block `@03c0a2f` + stale-clear `@6f1e620`(BNK-917/918 · QA-B633 Fixed · QA-B635 Absorbed)
 - [x] **L03_M08** — **N/A**(carefor demo noready2 자체 disabled · BNK-218 폐기 확정)
 - [x] **L03 live E2E harness deepen** — M06/M14 @ `75c6c76` · M07/M09/M10 @ `b698871` · M01/grade+nursing @ `2ccc88e` (BNK-219~223)
 - [ ] **G-NURSING live E2E harness 실행 검증** 1회 — L03 13/14 leaf mvn/npm 1회 (post-merge 권장 · **P1**)
@@ -2313,13 +2318,13 @@
 - [ ] **(P3「가정」)** 사진 보존/파기 주기·최대 용량·EXIF strip·저장 암호화 정책 명문화 (PLAN_NOTES §추가 질문 228-2/229-2)
 - [ ] **(P3「가정」)** ClientPhoto 등 타 첨부 축에 defense-in-depth pattern 재사용 여부 (BNK-840 · 과대구축 금지)
 
-### US-SEC-D34 — 엑셀 import 바이너리 서명 검증 (v3 SEC-D34) ← **갱신 (231차 — BNK-850~857 · ✅ fail-closed 8-축 COMPLETE)**
+### US-SEC-D34 — 엑셀 import 바이너리 서명 검증 (v3 SEC-D34) ← **갱신 (233차 — BNK-865~871 · ✅ fail-closed 8-축 + 축 「o」 상수화 + 4-parser 대칭 회귀 lock COMPLETE)**
 
 | 항목 | 내용 |
 |------|------|
 | 역할 | `branch_admin`, `hq_admin`, `social_worker` |
-| 스토리 | 센터장으로서, **위조·MIME 스푸핑·손상된 엑셀 파일 업로드를 즉시 거부**해 공단·은행·RFID import 데이터 무결성을 보장하고 싶다. |
-| 우선순위 | **v3 ✅ SEC-D34 fail-closed 8-축 COMPLETE** (BNK-850~857 · QA-B598~B607 · parser surface 5종 · 경쟁 4종 유일 SUPERIOR · KPI promote 0) |
+| 스토리 | 센터장으로서, **위조·MIME 스푸핑·손상된 엑셀 파일 업로드를 즉시 거부**하고, **오류 메시지가 브라우저·서버 어디서나 동일**하도록 해 공단·은행·RFID import 데이터 무결성을 보장하고 싶다. |
+| 우선순위 | **v3 ✅ SEC-D34 fail-closed 8-축 + 축 「o」 상수화 + 4-parser 대칭 회귀 lock COMPLETE** (BNK-865~871 · QA-B598~B613 · parser surface 5종·검증 분기별 회귀 4-parser 대칭 · FE↔BE 2-layer UNREADABLE/MISSING 상수화 DRY · 경쟁 4종 유일 SUPERIOR · KPI promote 0) |
 
 **인수 조건 (fail-closed 8-축 · FE pre-upload + BE service/parser 2-layer defense-in-depth)**
 - [x] FE `excelImportFiles.js` — OOXML/OLE magic + Content-Type normalize + 4-step validate·4-validator (`@3042a53`·QA-B601)
@@ -2332,7 +2337,13 @@
 - [x] **(★★★ BNK-857)** FE `VisitRfidDiffComparePanel` 이중엑셀(공단계획+RFID) pre-upload 매직바이트 — MIME 위조 시 `EXCEL_IMPORT_UNSUPPORTED_SIGNATURE_MESSAGE`·`compareVisitsRfidApi` 미호출 · 이지케어 FAQ 21589 RFID workflow verbatim 대응 · 경쟁 4종 유일 파일 무결성 SUPERIOR (`6f8e349`·QA-B608)
 - [x] audit-first HTTP **442 IDENTICAL** — SEC-D34 8-축 후 endpoint 신설 0 · service/parser layer only
 - [x] npm audit high **0** — form-data 4.0.5→4.0.6(dev-only jsdom·`@637bad8`·QA-B606)
-- [ ] **(Planned · QA-B608 MEDIUM/BLOCK)** FE develop→test FF 이관(`1f9d49c`+`6f8e349`·pending 2·test-only) → pending 0 + post-merge full suite 재실측
+- [x] **(QA-B608)** FE develop→test FF 이관(`1f9d49c`+`6f8e349`·test-only) → pending 0 (TSR1831 Fixed & Verified)
+- [x] **(축 「o」 ★★★ BNK-861/864)** 엑셀 오류 copy FE↔BE 2-layer 상수화 — FE `EXCEL_IMPORT_UNREADABLE_MESSAGE` ↔ BE `UNREADABLE_EXCEL_MESSAGE`(parser 5종 + service 4종·`@2ad9b05`) · 「엑셀 파일을 읽을 수 없습니다.」 리터럴 매직스트링 **0**(rules §2) · MISSING/UNREADABLE 이원 house-style·문구 변경 단일 지점·behavior-neutral·회귀 test lock
+- [x] QA-B609~B611 Fixed+MERGED — SEC-D34 FE/BE empty·missing excel copy lockstep(`@495040f`/`@73a3a63`/`@913b9d2`·TSR1834/1835/1837/1839)
+- [x] **(QA-B612)** BE develop→test FF 이관(`2ad9b05`·refactor 상수화·제품 무변경) → pending 0 · post-merge `mvn -o test` **2394/2394 PASS**(TSR1843 Fixed & Verified `@b8facfc`)
+- [x] **(축 「4-parser 대칭」 ★★★ BNK-866/867/871)** 엑셀 parser 검증 분기별 fail-closed 회귀 test lock — `NhisExcelParser`(BNK-866·3-branch·`@b8facfc`)·`StaffNhisCaregiverExcelParser`(BNK-867·3-branch·`@5df9999`)·`BankDepositExcelParser`·`RfidTransmissionExcelParser`(BNK-871·`@4dcf60d`·+3 @Test) = 헤더 없음/필수 컬럼 없음/유효 데이터행 0 `BusinessRuleException` fail-closed **4-parser 대칭 완성**·behavior-neutral·경쟁 4종 공개 근거 0 ↔ ogada 유일 SUPERIOR
+- [x] **(QA-B613)** unreadable NHIS import payload fail-closed test lock(`NhisImportServiceTest`·`getBytes()` IOException fail-closed·`@5df9999`·TSR1847 Fixed & Verified)
+- [x] baseline BE develop/test **SYNCED `@4dcf60d`**(2402/2402 PASS·TSR1855)·FE develop/test **SYNCED `@b115ae0`**(2760/2760 PASS·TSR1856)·both Open 0·pending 0 · residual **operation gate** = origin/test push 761 BE + 16 FE(QA-B116) → QA-B95
 
 ---
 

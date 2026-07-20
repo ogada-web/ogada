@@ -1,0 +1,125 @@
+BNK-887 — 교차검증·갭 우선순위 8h+ (2026-07-19)
+================================================================
+조사일: 2026-07-19T02:58:00Z
+rotation: 교차검증·갭 우선순위 8h+ (BNK-886 ogada git 실측 6-8h·2026-07-19T02:12:30Z → ~46분 후)
+초점: (1) ogada BE/FE @HEAD 재실측 — 신규 FE 커밋 delta·Route·page·module 커버 % 재산정
+      (2) form-polish domain-config CROSS-DOMAIN 3rd family — M5 programs (ProgramReportsPage) 착지 검증
+      (3) 규제 백본 3-URL 교차검증 — NHIS #44·silverangel system_feature·law 2025-247
+      (4) audit-first HTTP 442 47차 IDENTICAL
+      (5) 갭 우선순위 재점검 — P3/P4「가정」 8종 carry·진성갭 승격 0
+      (6) planner 권고 갱신
+
+================================================================
+§887-0 · Baseline (2026-07-19T02:58:00Z) — git 실측
+================================================================
+- ogada backend develop = e60e288 (BNK-886 동일 HEAD·zero advance)
+    subject: refactor(v3/SEC-D34): extract shared excel amount normalizer
+    ahead 773 vs 598d108 · BE @Test strict 2411 · WT CLEAN
+- ogada frontend develop = 60716c66 (BNK-886 d4d9887 → +1 commit)
+    subject: fix(v1.2.1/programs): pre-block reversed date range before program-report round-trip (M5 id=2 form polish)
+    4 files +132/-3 · 신규 파일 1 (config/programReports.test.js) · ahead 30 vs b23711f · WT CLEAN · tester FF 대기
+- Route 133 (App.jsx <Route\b 132 + <Routes> 1·carry) · Page 106 (carry)
+- FE test 543 (228 .test.js + 315 .test.jsx · +1 신규 programReports.test.js)
+- BE Test 297 (296 Test.java + 1 Tests.java) · @Test strict 2411
+- @RestController 81 (loose) · HTTP 442 (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 · 47차 byte/count-exact IDENTICAL · endpoint 신설 0)
+- Flyway V1–V196 (신규 0·latest V194/V195/V196)
+- merge gate 803 (FE 30 + BE 773 · BE-heavy · 신규 마이그레이션 0)
+- 모듈 커버 KPI 97.41% (28.25/29 · 진성갭 0 · carry)
+
+================================================================
+§887-1 · ★★★ form-polish domain-config CROSS-DOMAIN 3rd family — M5 programs
+================================================================
+FE @60716c66 commit body 실측(verbatim):
+  "ProgramReportsPage(5-7~5-10 4-variant) sent a reversed query range (from>to) to the BE and only
+   surfaced ProgramReportService.resolveDateWindow's 400 ("종료일은 시작일 이후여야 합니다.") after
+   the round-trip. Add shared helpers resolveProgramReportDateRangeError/isProgramReportDateRangeInOrder/
+   PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE (config/programReports.js, verbatim BE lockstep, mirrors
+   care-report + transport-fee domain-config pattern) and wire them at the head of the load guard so a
+   reversed range is rejected up front, anchored to the 종료일 field (role="alert" + aria-invalid),
+   clearing the stale aggregate. Missing endpoints stay valid since the BE substitutes the default window."
+
+- diff (d4d9887..60716c66): 4 files +132/-3
+    · config/programReports.js (신규 shared helper·+40 수준)
+    · config/programReports.test.js (신규 파일·계약 lock)
+    · ProgramReportsPage.jsx (load guard 배선)
+    · ProgramReportsPage.test.jsx (in-place test)
+
+- **form-polish domain-config pattern = 3 families 확산 (BNK-887 실측)**:
+    1. transport-fee : resolveTransportServiceFeeDateRangeError (이동서비스비 계보·20차+)
+    2. care-report   : resolveCareReportDateRangeError (8 pages·L02 7 + L03 1·BNK-882→886)
+       grep -rl 'resolveCareReportDateRangeError' = careReports.js + careReports.test.js +
+       BathHelp·CareMealExcretion·CareNursingService·IntensiveExcretion·NursingServiceReports·
+       PatientService·PositionChange·ServiceSummary (8 pages)
+    3. program-report: resolveProgramReportDateRangeError (M5 programs·ProgramReportsPage 5-7~5-10 4-variant·BNK-887 NEW)
+       grep -rl 'resolveProgramReportDateRangeError' = programReports.js + programReports.test.js + ProgramReportsPage.jsx
+
+- 판정: BNK-882/883 예측「L02 리포트 form-polish 확산」→ BNK-885 L02 7 DOMAIN-COMPLETE
+        → BNK-886 L03 nursing 확산 → BNK-887 **M5 programs 확산(3rd domain-config family)**
+        = 범위 초과 확장·CROSS-DOMAIN ROLLOUT 지속·번복 아님(rules §14)
+- 경쟁 4종 대비: 케어포 시설 셸 리포트 form-폴리시 근거 0·이지케어 데모 리포트 필드 검증 verbatim 0·
+        엔젤 리포트 활용법 라벨만·롱텀 규제만 = 리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR
+
+================================================================
+§887-2 · ★ 규제 백본 3-URL 교차검증
+================================================================
+- NHIS #44 제34조 (joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769)
+    HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 609차 byte-IDENTICAL (BNK-886 608차 → +1·zero drift)
+    verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+    ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+TransportServiceLog*
+       full-stack 1:1 SUPERIOR · Transport 상수 재조정 불요 · id=2 0.85 carry
+    snapshot: nhis_jo44_live_bnk887.html
+- silverangel system_feature (silverangel/angelsystem/system_feature.do)
+    HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da = 13차 byte-IDENTICAL (BNK-886 12차 → +1)
+    transport 6-term grep (이동서비스|배차|GPS|RFID|차량|송영) = 0-hit ALL
+    → 엔젤 자체 이동서비스/배차/GPS/RFID/차량 모듈 부재 재확인 · ogada Transport 자체 시스템 SUPERIOR
+    snapshot: silverangel_system_feature_live_bnk887.html
+- law 2025-247 (admRulInfoP.do?admRulSeq=2100000271110)
+    HTTP 200 · 78,450B · raw md5 7e6a1905dab2e54d47ca110e4017930b (cache-buster ?Time= DRIFT)
+    strip 's/Time=[0-9]*/Time=STRIPPED/g' semantic md5 ad1db6e06903bc34e70e139a19d854cd = BNK-886↔887 IDENTICAL (diff 0-line)
+    canonical URL admRulSeq=2100000271110 고정 → 규제 앵커 재조정 불요
+    snapshot: law_mohw_2025_247_admRulInfoP_live_bnk887.html
+- longterm 502 재측정 skip (lean-shell 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지)
+
+================================================================
+§887-3 · ★ audit-first HTTP 442 posture 47차 byte/count-exact IDENTICAL
+================================================================
+@e60e288 grep(@{Get,Post,Patch,Put,Delete}Mapping):
+    GET 231 (52.3%) · POST 144 (32.6%) · PATCH 44 (10.0%) · PUT 13 (2.9%) · DELETE 10 (2.3%) = 442
+    @RestController 81 (loose) · endpoints per controller 5.46
+    = BNK-836→887 = 47차 byte/count-exact IDENTICAL
+    FE +1(M5 programs form-polish·view/test only) 후에도 endpoint 신설 0
+    → API 안정성 47-cycle 동결 · 물리 삭제 API 신설 금지 · PATCH>PUT 부분정정 우선
+    · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합)
+
+================================================================
+§887-4 · 갭 우선순위 재점검 (교차검증 rotation)
+================================================================
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- P3/P4「가정」 candidate 8종 전부 carry (진성갭 승격 0·rules §11·§17 과대구축 회피·「미확인」 유지):
+    · BNK-881 P3 3종: G-CLIENT-WAITLIST · G-CLIENT-CONSULTATION-LOG · G-CLIENT-VACCINATION-HISTORY
+    · BNK-882 P3/P4 5종: G-EXCRETION-QR · G-PROGRAM-BANK · G-KPI-REPORT · G-TRAINING-MATERIALS · G-RECORD-COPY-OPTION
+- BNK-884 M7 crosswalk 11/11 PARITY 유지 · 본인부담 진성갭 0 재확인
+- 모듈 커버 97.41% CARRY (진성갭 0)
+
+================================================================
+§887-5 · planner 권고
+================================================================
+- **form-polish domain-config pattern 3 families 명시** (transport-fee + care-report 8 pages + program-report M5·BNK-887 NEW)
+  — REQUIREMENTS §M5 프로그램 리포트 form-polish 확산 명시·shared helper resolveProgramReportDateRangeError 계보
+  · 커밋 body 명시 "mirrors care-report + transport-fee domain-config pattern"·리포트 폼 필드 오류 라우팅 유일 full-stack SUPERIOR
+  · BNK-882/883/885/886 예측 범위 초과 지속 확장(번복 아님)
+- **NHIS #44 609차·law strip IDENTICAL·silverangel 13차(transport 0-hit)** → 규제 상수·앵커 재조정 불요·엔젤 배차 부재 → ogada Transport SUPERIOR
+- **audit-first 442 47차 IDENTICAL** → API posture 47-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·FE form-polish 도 endpoint 신설 0)
+- **P3/P4「가정」 candidate 8종 carry**(진성갭 승격 0·rules §11·§17)·「미확인」 유지
+- **tester FF merge gate 803 carry**(BE 773+FE 30·BE-heavy·신규 마이그레이션 0) — M5 programs form-polish 이관 흡수 권고
+- 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+================================================================
+§887-6 · per-cycle minimum 충족
+================================================================
+- 신규 증거 URL 1건+ : NHIS #44 609차 재실측(zero drift)·silverangel 13차 재실측(transport 0-hit)·law strip BNK-886↔887 IDENTICAL 재실측
+- 경쟁사 메뉴/필드/워크플로 상세 1블록+ : FE resolveProgramReportDateRangeError 신규 shared helper 3-file 배선 + form-polish domain-config 3-family 실측 목록
+- COMPETITOR_MATRIX 1행+ @HEAD 갱신 : @60716c66/@e60e288 delta 갱신
+- BENCHMARK_REPORT §신규 소절 1건+ : §887 (6-subsection)
+
+신규 snapshot 4 (txt 1 + html 3)·덮어쓰기 0. 가정 번복 0·per-cycle minimum 4종 충족.

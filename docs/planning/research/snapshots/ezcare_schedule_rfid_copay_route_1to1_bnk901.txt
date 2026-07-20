@@ -1,0 +1,54 @@
+# BNK-901 이지케어 역공학 2-4h — /new.ez ERP 데모 셸 3-모듈(방문일정·RFID점검·본인부담) → ogada 1:1 route crosswalk
+# 조사일: 2026-07-19T13:47Z | 근거: scripts/ezcare-demo-fetch.sh (demo login code=0000) + ezcare_menu_catalog.json + /help/faq.ez
+# ogada baseline: BE @6d3c766 / FE @e8ff8dc (BNK-900 대비 zero advance)
+
+## 0. ezCare /new.ez 데모 셸 재실측 (demo login 흐름)
+- title: "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+- demo login: POST /page/login.php oCode=DEMO → code=0000 (성공)
+- top-nav 10-모듈: 1직원 · 2수급자 · 3방문일정 · 4RFID점검 · 5본인부담 · 6직원급여 · 7재무회계 · 8세무·사회보험 · 9기관관리 · 10기관평가
+- menu catalog: module_count=10 · leaf_item_count=148 · unique_pgid_count=59 (BNK 이전 사이클 구조 IDENTICAL)
+- top-nav JS: /assets/top-nav-item-V2.js?20260428 · 25,470B · md5 95286775000f06c8ad13688fcb0d6dbb (byte-IDENTICAL)
+- demo 셸: 138,097B · md5 43457c905ebbb7a55f3b7e20fd10d19a (직전 138,452B)
+  - DRIFT 축 = NON-SUBSTANTIVE only: (1) 세션 랜덤 widget id(EC000010-63502037→28273329 등) (2) 오늘 날짜 [07월18일]→[07월19일] (3) 음력/간지 dateInfo (4) tmp= 캐시버스터(1784343465→1784468809) (5) p_schedule 데모 데이터
+  - 실서비스/메뉴/필드/워크플로 축 IDENTICAL → 마케팅/세션 rotation only (BNK-900 홈 후기 rotation·FAQ hit rotation과 동일 패턴)
+
+## 1. [3] 방문일정 (13-leaf) — 「이중 일정」 워크플로 (수급자 기준 ↔ 요양보호사 기준)
+  - 수급자-일정관리                     /schedule_plan/
+  - 관리자-일정관리                     /social_worker/schedule.html
+  - 일정표 출력 및 문자발송             PGID=schedule-p100
+  -   ├ 수급자 일정표(제공기록지)       schedule-p100#tab0   ← 수급자 축
+  -   └ 요양보호사 일정표(근무현황표)   schedule-p100#tab1   ← 요양보호사 축  ★이중 일정
+  - 연간 서비스제공 명단                PGID=schedule-p300
+  -   ├ 수급자                          schedule-p300#tab0
+  -   └ 요양보호사                      schedule-p300#tab1
+  - 방문현황(일일,주간,월간)            PGID=schedule-p500
+  - 중증수당 일정 집계                  /PU.ez?PGID=schedule-s100 (요양보호사 기준/수급자 기준 tab)
+  - 방문현황(일일,주간,월간)            /schedule_print/statusTable.html
+  → ogada crosswalk: 수급자 제공기록지 → CareServiceWeeklyRecordPage/VisitsPage · 요양보호사 근무현황 → LeadCaregiverWorkLog + Transport roster(TransportShuttleSheetPage) · 방문현황 일/주/월 → Visits + TransportMonthlyReportsPage
+  → 판정: 「수급자 기준 / 요양보호사 기준」 이중 축은 ogada 에 분산 존재(제공기록지+근무일지) — 단일 화면 tab 토글 형태는 부재(P-carry, UX signal only·승격 0)
+
+## 2. [4] RFID점검 (3-leaf) — 「RFID태그 내역 ↔ 공단계획 비교」
+  - RFID태그 내역 ↔ 공단계획 비교       PGID=schedule-rfid
+  - RFID태그 내역 ↔ 공단계획 비교       /schedule_plan/rfid_compare.html
+  - 일정확정                            PGID=schedule-fix
+  → ogada crosswalk: ✅ FULL-STACK PARITY — FE src/components/visits/VisitRfidDiffComparePanel.jsx(+test) · VisitsPage.jsx · BE visits/api/VisitController.java(RFID)
+  → 판정: ezcare 핵심 「RFID 태그 실적 ↔ NHIS 공단 방문계획 diff 비교」 = ogada VisitRfidDiffComparePanel 로 1:1 흡수 (경쟁 유일 full-stack 우위 carry)
+
+## 3. [5] 본인부담 (13-leaf) — 청구/명세 → 납부 → 미납 lifecycle
+  - 청구내역 및 명세서                  PGID=pAmt-a100  (전체합산/방문요양/방문목욕/방문간호 tab)
+  - 납부내역                            PGID=pAmt-a200  (월간 수납/연간 수납/장기요양급여비 납부확인서 tab)
+  - 미납내역                            PGID=pAmt-a400  (청구월별 미납금/수급자별 누적 미납금 tab)
+  - 청구내역 및 명세서(w4c)             pAmt-a100.w4c
+  → ogada crosswalk: 청구/명세 → BillingDetailPage/BillingReportPage + BillingController · 납부/현금영수증 → CashReceiptIssuancePage + EasyPayPage/EasyPayController · 미납 → Overdue(BillingController) · 본인부담률 → CopayCalculatorPage/CopayRatePage
+  → 판정: 본인부담 청구→납부→미납 lifecycle 3-단계 ogada full-stack 존재 (7-x copay lifecycle carry)
+
+## 4. FAQ 인벤토리 재실측 (/help/faq.ez)
+- HTTP 200 · 80,057B · md5 e18a941ed424db9ce7cf4e8f534b9f38 (직전 BNK-878 1ae41393)
+- rowid 총 233건 (BNK-878 233건과 IDENTICAL·신규 0·삭제 0)
+- md5 DRIFT 원인 = faq-hit 조회수 카운터 단조 증가 120-line only (예: 26206→26209·37267→37273) — 신규 FAQ/제목/날짜 변동 0
+- 판정: FAQ 축 stable — hit-counter rotation only (실 콘텐츠 무변화)
+
+## 결론
+- 이지케어 ERP 셸(10-모듈/148-leaf/59-PGID)·nav JS·FAQ 인벤토리(233) 전부 구조 IDENTICAL — DRIFT 는 세션토큰/날짜/조회수 rotation only
+- 방문일정 이중 축·RFID 공단 비교·본인부담 lifecycle 3-모듈 → ogada full-stack 존재(RFID 는 유일 SUPERIOR·copay lifecycle carry)
+- 신규 진성갭 0 · P-carry: G-EZCARE-SCHEDULE-DUAL-VIEW P4「가정」(수급자/요양보호사 단일 tab 토글 UX·승격 0)

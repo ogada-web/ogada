@@ -1,0 +1,168 @@
+BNK-884 — 케어포 역공학 0–2h 주력 extract
+rotation: 케어포 func.php M7(본인부담금) 7-x 번호식 흐름 → ogada Route 1:1 leaf-level 전수 crosswalk
+조사일: 2026-07-19T00:55:00Z
+근거 disk canonical: docs/planning/research/snapshots/carefor_func.php  md5 6226e6eb92fdd25ed3e50842a5e8a00b / 98,328B
+  (carefor func.php LIVE = HTTP 000 20s timeout·113-cycle+ carry·「미확인」 유지·disk canonical LOCK)
+
+=====================================================================
+1. 케어포 func.php M7 「본인부담금」 11-leaf 전수 (grep -oE "7-[0-9]+")
+=====================================================================
+7-1.   본인부담금 청구관리
+7-2.   본인부담금 입금관리
+7-2-1. 의료비공제(연말정산)          [sub-leaf]
+7-3.   본인부담금 미납관리
+7-4.   본인부담금 자동이체 (CMS)
+7-5.   본인부담금 간편결제
+7-6.   본인부담금 청구대장 리포트
+7-7.   본인부담금 입금대장 리포트
+7-8.   본인부담금 수납대장 리포트
+7-9.   본인부담금 수납,환불내역
+7-10.  본인부담금 간편계산기
+= top-level 10-leaf + sub-leaf 1(7-2-1) = 11 leaf 정본. 케어포 M7 = flat 2-depth(7-2-1만 sub-leaf).
+
+=====================================================================
+2. ogada 본인부담(billing) Route/서비스 실측 (@c88687a BE / @c3a0cac FE)
+=====================================================================
+FE App.jsx billing route (grep):
+  /billing                       BillingClaimsPage(청구관리)
+  /billing/claims/:claimId       BillingClaimDetail(청구 상세·NHIS 비교)
+  /billing/payments              PaymentPage(입금관리·은행 입금 대사)
+  /billing/overdue               OverduePage(미납관리)
+  /billing/cms                   CmsPage(자동이체 CMS·다계좌·가상계좌)
+  /billing/easy-pay              EasyPayPage(간편결제)
+  /billing/cash-receipts         CashReceiptIssuancePage(현금영수증·수납/환불)
+  /billing/calculator            CopayCalculatorPage(본인부담 간편계산기)
+  /billing/reports/charges       BillingReportPage variant=charges(청구대장)
+  /billing/reports/deposits      BillingReportPage variant=deposits(입금대장)
+  /billing/reports/receipts      BillingReportPage variant=receipts(수납대장)
+  /billing/reports/refunds       BillingReportPage variant=refunds(환불내역)
+  /billing/reports/statistics    BillingStatisticsReportPage(본인부담 통계·G26)
+  /billing/copay-rates           CopayRatesPage(본인부담률 관리)
+  /billing/fee-schedules         FeeSchedulesPage(수가/급여 스케줄)
+  /billing/imports/nhis          NhisImportPage(공단 엑셀 import·SEC-D34)
+  /billing/imports/nhis/:batchId NhisImportBatchDetail
+  /accounting                    AccountingPage(수지파인 BPO SSO OTP)
+
+BE 실측 클래스(grep -rli):
+  BillingController / BillingService / BillingClaimEntity / BillingClaimItemEntity / BillingClaimNhisComparisonItemResponse
+  BankDepositImportService / BankDepositImportPreviewResponse / BankDepositExcelParser
+  CmsController / CmsService / CmsEnrollmentEntity / CmsDebitRequestEntity / CmsCollectionRequestEntity
+    / CmsMultiAccountSettlementResponse / CmsVirtualAccountResponse / CmsPaymentMethodCatalog
+  EasyPayController / EasyPayService
+  CashReceiptIssuanceService / CashReceiptIssuanceEntity / ClientCashReceiptProfileResponse / CashReceiptSchemaReadinessProbe
+  CopayRateEntity / CopayRateRepository / CopayRefundFeePolicyCatalog / CopayRefundFeePreviewRequest/Response
+  CopayMonthlyStatisticsItemResponse/ListResponse/SummaryResponse
+  MedicalExpenseDeductionResponse / MedicalExpenseDeductionYearBasis
+    / MedicalExpenseDeductionReportItemResponse/ListResponse/SummaryResponse
+  BillingReportFilterService / BillingReportItemResponse / BillingReportSummaryResponse
+  BillingStatementDispatchService / BillingStatementExportService / BillingStatementPdfGenerator
+  AccountingBpoSupport
+
+FE services.js 의료비공제 엔드포인트(grep):
+  GET /api/v1/billing/reports/medical-deduction              (G26 ① 지점별 의료비공제 통계)
+  GET /api/v1/billing/reports/medical-deduction/export       (국세청 의료비공제 배치 CSV export)
+  GET /api/v1/clients/{id}/medical-expense-deduction         (연말정산 의료비공제·수급자 스코프)
+  GET /api/v1/guardian/clients/{id}/medical-expense-deduction (보호자 포털 의료비공제)
+FE 화면: MedicalExpenseDeductionPanel.jsx (+ .test.jsx) · config/medicalExpenseDeduction.js (+ .test.js)
+
+=====================================================================
+3. M7 본인부담 7-x → ogada Route 1:1 crosswalk 판정 (11/11 PARITY, GAP 0, phantom 0)
+=====================================================================
+| carefor M7 leaf                | ogada Route/서비스                                   | 판정 |
+|--------------------------------|------------------------------------------------------|------|
+| 7-1 본인부담금 청구관리        | /billing + /billing/claims/:claimId · BillingClaim*  | ✅ PARITY |
+| 7-2 본인부담금 입금관리        | /billing/payments · BankDepositImportService(은행 입금 엑셀 대사) | ✅ PARITY(+SUPERIOR: 은행 입금 엑셀 자동 대사·SEC-D34 매직/포맷 내성) |
+| 7-2-1 의료비공제(연말정산)     | MedicalExpenseDeduction* · /billing/reports/medical-deduction(+국세청 CSV export) · /clients/{id}/medical-expense-deduction · /guardian/.../medical-expense-deduction | ✅ SUPERIOR(보호자 포털 자가조회 + 국세청 배치 CSV export·연도 basis) |
+| 7-3 본인부담금 미납관리        | /billing/overdue · OverduePage                       | ✅ PARITY |
+| 7-4 본인부담금 자동이체 (CMS)  | /billing/cms · CmsService(Enrollment·DebitRequest·CollectionRequest) | ✅ PARITY(+SUPERIOR: 다계좌 정산 CmsMultiAccountSettlement·가상계좌 CmsVirtualAccount) |
+| 7-5 본인부담금 간편결제        | /billing/easy-pay · EasyPayService                   | ✅ PARITY |
+| 7-6 본인부담금 청구대장 리포트 | /billing/reports/charges · BillingReportPage(charges)| ✅ PARITY |
+| 7-7 본인부담금 입금대장 리포트 | /billing/reports/deposits · BillingReportPage(deposits) | ✅ PARITY |
+| 7-8 본인부담금 수납대장 리포트 | /billing/reports/receipts · BillingReportPage(receipts) | ✅ PARITY |
+| 7-9 본인부담금 수납,환불내역   | /billing/cash-receipts(현금영수증 발급) + /billing/reports/refunds · CopayRefundFeePolicyCatalog(환불 수수료 정책) | ✅ PARITY(+SUPERIOR: 현금영수증 발급 lifecycle + 환불 수수료 정책 카탈로그) |
+| 7-10 본인부담금 간편계산기     | /billing/calculator · CopayCalculatorPage · CopayRefundFeePreview | ✅ PARITY |
+
+집계: ✅ 11/11 PARITY (그 중 SUPERIOR 축 4종: 7-2 은행대사·7-2-1 보호자포털+국세청·7-4 다계좌/가상계좌·7-9 현금영수증+환불정책) · ❌ GAP 0 · △ PARTIAL 0 · phantom 0.
+
+=====================================================================
+4. ogada M7 도메인 SUPERSET (케어포 flat M7 미노출) 5종
+=====================================================================
+  S1  /billing/reports/statistics  본인부담 월별 통계 리포트(G26·CopayMonthlyStatistics*) — 케어포 M7 리포트 3-축(청구/입금/수납대장)은 대장형만·통계 집계 화면 별도 부재
+  S2  /billing/copay-rates         본인부담률 관리(CopayRate*) — 케어포는 등급/수가 연동 계산만
+  S3  /billing/fee-schedules       수가/급여 스케줄 관리(FeeSchedule)
+  S4  /billing/imports/nhis(+:batchId)  공단 엑셀 import 2-track batch(SEC-D34 매직바이트 5-parser + 포맷 내성 7-축·NhisExcelParser)
+  S5  /accounting                  수지파인 외부 BPO SSO OTP handoff(AccountingBpoSupport)
+
+=====================================================================
+5. 메뉴 depth·IA 비교
+=====================================================================
+- carefor M7 = flat 2-depth(7-1..7-10 top + 7-2-1 sub) 좌측 트리 정적 메뉴.
+- ogada M7 = React Router nested /billing/* 18-route(청구/입금/미납/CMS/간편결제/현금영수증/계산기 + 리포트 5-variant + 공단 import 2 + copay-rates + fee-schedules + accounting) → 도메인 organizational depth SUPERIOR.
+- 케어포 7-x 번호식 flat 흐름은 ogada 에서 /billing SideNav + BillingReportPage variant 스위치로 흡수 = 라벨-우선 IA(수납/입금/청구 대장은 단일 컴포넌트 variant 재사용 = 중복 축소).
+
+=====================================================================
+6. SEC-D34 엑셀 import 포맷 내성 축 (BE @c88687a·이번 사이클 +1 = 축7)
+=====================================================================
+diff ce656d5..c88687a: 4 files +67/-15
+  NhisExcelParser.java +21/-8 · BankDepositExcelParser.java +19/-7
+  NhisExcelParserTest.java +22 · BankDepositExcelParserTest.java +20
+신규 상수 FULLWIDTH_COMMA = "\uFF0C"(전각 쉼표 ， 천단위 구분자) → normalizeNumeric/parseAmount 에서 ASCII "," 와 lockstep strip.
+문제: 일부 한국 엑셀이 전각 서식 셀에 fullwidth ￦(U+FFE6) + fullwidth comma(U+FF0C)("￦765，000")를 함께 렌더 → BigDecimal/Integer 파싱 실패 → null → 유효 청구/입금 행 조용히 누락(대사 왜곡). 해결: 전각 쉼표까지 strip(정상 입력 behavior-neutral).
+SEC-D34 파일/포맷 내성 축 누적(BNK-884):
+  축1 통화접미사(BNK-875) · 축2 공백그룹(BNK-877) · 축3 「일」 접미사(BNK-878) · 축4 test-layer(BNK-880)
+  · 축5 halfwidth ₩ U+20A9(BNK-881) · 축6 fullwidth ￦ U+FFE6(BNK-883) · 축7 fullwidth comma ， U+FF0C(BNK-884·신규)
+  = production 6-축 + test 1-축 = 7-축. 매직바이트(SEC-D34 5-parser·BNK-849~856)와 별개 축.
+경쟁 4종 유일 SUPERIOR(케어포 시설 셸/엔젤 배차 부재/이지케어 데모 파일 무결성 verbatim 0/롱텀 규제만).
+
+=====================================================================
+7. ogada baseline git 실측 (@c88687a BE / @c3a0cac FE)
+=====================================================================
+BE @c88687a (BNK-883 @ce656d5 → +1 commit·fix(v3/SEC-D34): normalize fullwidth comma grouped excel import amounts instead of dropping row·WT CLEAN·ahead 771 vs 598d108·BE @Test strict 2400)
+FE @c3a0cac (BNK-883 동일 HEAD·zero advance·WT CLEAN·ahead 27 vs origin/test=b23711f·tester FF 대기)
+| KPI | 값 | BNK-883 대비 |
+|---|---|---|
+| FE Route | 133 (<Route 132 + <Routes> 1) | IDENTICAL |
+| FE Page.jsx | 106 | IDENTICAL |
+| FE test files | 542 (227 .test.js + 315 .test.jsx) | IDENTICAL(FE zero advance) |
+| BE @Test strict | 2400 | +2 (SEC-D34 축7 fullwidth comma 2-parser) |
+| BE Test.java | 296 (+1 Tests.java = 297) | IDENTICAL |
+| BE @RestController | 81 (loose) | IDENTICAL |
+| BE HTTP mapping | 442 (GET231/POST144/PATCH44/PUT13/DELETE10) | byte/count-exact IDENTICAL 44차 (BNK-836→884·endpoint 신설 0) |
+| Flyway | V1–V196 | IDENTICAL |
+| 모듈 커버 KPI | 97.41% (28.25/29·진성갭 0) | IDENTICAL |
+| merge gate | 798 (FE 27 + BE 771·BE-heavy) | +1 (BE +1) |
+
+=====================================================================
+8. 규제 백본 3-URL 재실측 (기존 URL 재실측)
+=====================================================================
+- NHIS #44 제34조: HTTP 200·7,572B·md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 606차 byte-IDENTICAL(BNK-883 605차 → +1)
+    verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1)
+    ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+TransportServiceLog* full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- law 2025-247: HTTP 200·78,450B·raw md5 11a5c2ba9e0d614a1d77a3876d839693(DRIFT vs BNK-883·전량 cache-buster ?Time= 숫자)
+    strip Time=[0-9]* 후 semantic md5 a913639ab52293e3571cfe7e3ca35097 = 14-cycle strip IDENTICAL(canonical URL admRulSeq=2100000271110 고정).
+- silverangel system_feature: HTTP 200·45,601B·md5 c950719098eecaf748bbdeea5deb93da = 10차 byte-IDENTICAL(이동서비스/배차/GPS/RFID/차량 0-hit 재확인·엔젤 자체 배차 부재 carry).
+
+=====================================================================
+9. audit-first HTTP 442 posture 44차 byte/count-exact IDENTICAL (git 실측·감사 우선)
+=====================================================================
+@c88687a grep: GET 231(52.3%)·POST 144(32.6%)·PATCH 44(10.0%)·PUT 13(2.9%)·DELETE 10(2.3%) = 442·@RestController 81·controller당 5.46
+= BNK-836→884 44차 연속 IDENTICAL. BE +1(SEC-D34 fullwidth comma production·service-layer) 후에도 endpoint 신설 0·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+=====================================================================
+10. 가정/예측 번복 재점검 (rules §14·§18)
+=====================================================================
+- 신규 진성갭 0 · closed band 재오픈 0 · 미확인 승격 0 · P0~P3 결정 번복 0 · KPI promote 0 · 모듈 97.41% CARRY.
+- M7 본인부담 crosswalk = 11/11 PARITY(GAP 0) → M7 도메인은 진성갭 없음 재확인(신규 P3「가정」 candidate 0·carefor M7 flat 흐름 전량 ogada 흡수).
+- P3/P4「가정」 candidate 8종(BNK-881 3 + BNK-882 5) 전부 carry(진성갭 승격 0·「미확인」 유지).
+- carefor func.php LIVE 000 113-cycle+ carry·「미확인」 유지 · longterm 502 재측정 skip(lean-shell 오실레이션 signal only).
+
+=====================================================================
+11. planner 액션 아이템 [갭 우선순위 동결]
+=====================================================================
+1. REQUIREMENTS §본인부담 lifecycle — 케어포 M7 7-x 11-leaf → ogada /billing/* 11/11 PARITY(GAP 0·SUPERIOR 4·SUPERSET 5) 명시 권고. 본인부담 도메인 진성갭 0 재확인.
+2. SEC-D34 엑셀 import 포맷 내성 7-축(통화접미사·공백그룹·일접미사·test·halfwidth ₩·fullwidth ￦·fullwidth comma ，) 명시. 마케팅 카피 「엑셀 원화 기호 ₩/￦ + 반각/전각 쉼표 자동 정규화 — 재무 대사 행 누락 방어」.
+3. SUPERIOR 마케팅 카피 후보: 「의료비공제(연말정산)를 보호자가 포털에서 직접 조회 + 국세청 배치 CSV 자동 export — 케어포 대비 셀프서비스 우위」·「본인부담 CMS 다계좌 정산·가상계좌 지원」.
+4. NHIS #44 606차 IDENTICAL · law 2025-247 14-cycle strip IDENTICAL · silverangel system_feature 10차 → 규제 상수·앵커 재조정 불요.
+5. audit-first HTTP 442 44차 IDENTICAL → API posture 44-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT).
+6. tester FF merge gate 798 carry(BE 771 + FE 27·BE-heavy·신규 마이그레이션 0) — SEC-D34 fullwidth comma 축7 test 이관 흡수 권고.
+7. 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.

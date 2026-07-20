@@ -1,0 +1,79 @@
+BNK-863 — 교차검증·갭 우선순위 8h+ (2026-07-18T09:23:00Z)
+================================================================
+
+rotation: 교차검증·갭 우선순위 8h+ (BNK-862 ogada git 실측 6–8h → ~40분 후)
+초점: (1) BNK-862 이후 coder develop delta 재실측 → COMPETITOR_MATRIX @HEAD 갱신
+     (2) id=2 이동서비스 회차(departureRound) FE 클라이언트 검증 착지 ↔ BE @Min(1) lockstep 교차검증
+     (3) 규제/경쟁 백본 대표 URL live 재fetch(NHIS #44·silverangel system_feature) zero-drift
+     (4) closed band 재오픈·P0/P1·이전 가정 번복 여부 점검
+
+────────────────────────────────────────────────────────────────
+1. ogada git baseline @HEAD 재실측 (git 실측 · @HEAD)
+────────────────────────────────────────────────────────────────
+근거: git -C src/backend rev-parse develop = 913b9d2c… · git -C src/frontend rev-parse develop = f72af3f8…
+
+| 지표 | BNK-862 | BNK-863 실측 | 판정 |
+|---|---|---|---|
+| BE develop HEAD | 49349e4 | 913b9d2 | +1 commit |
+| FE develop HEAD | 5e816e6 | f72af3f | +1 commit |
+| BE ahead vs 598d108 | 754 | 755 | +1 |
+| FE ahead vs b23711f | 8 (0/8) | 9 (0/9) | +1·tester FF 대기 |
+| @RestController (loose) | 81 | 81 | IDENTICAL |
+| BE @Test strict | 2369 | 2371 | +2 (SEC-D34 missing-excel entrypoint copy lock) |
+| HTTP (G/P/PA/PU/D) | 442(231/144/44/13/10) | 442(231/144/44/13/10) | 24차 byte-exact IDENTICAL |
+| BE Test files | 297(296+1) | 297(296+1) | IDENTICAL |
+| Flyway | V1–V196 | V1–V196 | IDENTICAL |
+| Route(App.jsx) | 133(132+1) | 133(132+1) | IDENTICAL |
+| Page | 106 | 106 | IDENTICAL |
+| FE test files | 541(226+315) | 541(226+315) | IDENTICAL (TransportRunNewPage.test.jsx in-place +76·신규 0) |
+| 모듈 커버리지 | 97.41%(28.25/29) | 97.41%(28.25/29) | carry (grep 30-hit 중 1 JSDoc 배제) |
+
+merge gate 764 (FE 9 tester FF 대기 + BE 755 · BE-heavy · 신규 마이그레이션 0)
+
+BE +1 commit: `test(v3/SEC-D34): lock missing-excel copy on import entrypoints`
+  - SEC-D34 계보: import entrypoint 층 missing-excel 카피 회귀 lock (+2 @Test)·audit-first posture 무변·endpoint 신설 0.
+FE +1 commit: `fix(v1.2.1/transport): validate departure round before dispatch draft save (id=2 form polish)`
+  - src/pages/TransportRunNewPage.jsx +26/-2 · TransportRunNewPage.test.jsx +76 (2 files +100/-2·회귀 test 2건 6/6 PASS)
+
+────────────────────────────────────────────────────────────────
+2. ★★★ id=2 이동서비스 회차(departureRound) FE 클라이언트 검증 착지 ↔ BE @Min(1) lockstep 「확인」
+────────────────────────────────────────────────────────────────
+FE `@f72af3f` TransportRunNewPage 회차 입력:
+  - (기존) 클라이언트 검증·필드 단위 오류 표시 없음 → 0·음수·소수 값이 서버 왕복 후 일반 알림으로만 노출.
+  - (신규) 저장 전 1 이상의 정수만 허용 사전 차단 + 서버 반환 departureRound 필드 오류를 회차 Field 에 매핑·aria-invalid 표시(rules §7 접근성).
+BE lockstep 「확인」: src/main/java/com/ogada/backend/transport/api/CreateTransportRunRequest.java:20
+  `@Min(1) Integer departureRound,` — FE 사전 차단 규칙과 BE 서버측 제약 정확히 일치(defense-in-depth).
+판정: id=2(이동서비스·coverage 0.85) form-polish·a11y 개선 = 착지. KPI promote 0(회차 검증은 form UX 강화·0.85 잔여 갭은 규제/거리기반 산정 축).
+
+경쟁 crosswalk (transport-axis · 기존 URL live 재실측):
+  - silverangel system_feature live HTTP 200·45,601B·md5 c9507190 = BNK-859 byte-IDENTICAL.
+    grep -oF: 이동서비스(0)·배차(0)·GPS(0)·차량(0)·RFID(0)·회차(0)·연계(9·내부 연계기록)·기능회복(1).
+    → 엔젤은 배차/주행/회차 tracking 모듈 자체 부재 = ogada id=2 full-stack(대시보드·계획·주행·수불·회차 검증·러-1~4) SUPERIOR 재확인.
+  - 케어포: demo-work 「이동서비스 제외」 명시 carry. 이지케어: RFID 이중엑셀 워크플로 문서화하나 회차 클라이언트 검증/aria-invalid 공개 근거 0 「미확인」.
+
+────────────────────────────────────────────────────────────────
+3. ★★★ 규제 백본 대표 URL live 589차 zero substantive drift
+────────────────────────────────────────────────────────────────
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent (live 재fetch) | 200 | 7,572 | c886ff1f | byte-IDENTICAL = 589차 |
+| silverangel system_feature (live 재fetch) | 200 | 45,601 | c9507190 | byte-IDENTICAL |
+
+- NHIS #44 제34조 이동서비스비: ①편도 러-1~4 ②1일 1회·편도 50% ③수급자 무부담 ④일지 보관 verbatim 재확인.
+- ogada `TransportServiceFeeParityCatalog` `RU_1..RU_4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` 상수 IDENTICAL → 재조정 불요·id=2 0.85 carry·기획 트리거 0.
+- 신규 스냅샷: nhis_jo44_live_bnk863.html·silverangel_system_feature_live_bnk863.html (carry chain 유지).
+
+────────────────────────────────────────────────────────────────
+4. audit-first HTTP 442 24차 byte-exact IDENTICAL · closed band 재오픈 0
+────────────────────────────────────────────────────────────────
+- HTTP 442(GET231/POST144/PATCH44/PUT13/DELETE10) = BNK-836→863 24차 byte-exact IDENTICAL.
+  BE +1 commit(SEC-D34 entrypoint copy lock·test-only) 후에도 controller endpoint 신설 0·service/test-layer dominant.
+- closed band 6 App.jsx `@f72af3f` grep LIVE: 대시보드 L164/L173·G2 home-newsletter L209·G-LINKAGE linkage-records L236·G14 care-plan-form L245·v2 CMS L389·v1.3-C service-fees L628 = IDENTICAL·재오픈 0·P0 신규 0.
+
+────────────────────────────────────────────────────────────────
+per-cycle minimum 충족:
+  - 신규 증거 URL: NHIS #44 589차 + silverangel system_feature 재실측(zero drift) ✅
+  - 메뉴/필드/워크플로 1블록: id=2 회차 FE 검증 ↔ BE @Min(1) lockstep crosswalk + transport-axis 0-hit ✅
+  - COMPETITOR_MATRIX @HEAD 갱신: FE @f72af3f / BE @913b9d2 ✅
+  - BENCHMARK_REPORT §863 신규 소절 ✅
+신규 snapshot 3(txt 1 + html 2·live 재fetch)·덮어쓰기 0. 가정 번복 0·KPI promote 0.

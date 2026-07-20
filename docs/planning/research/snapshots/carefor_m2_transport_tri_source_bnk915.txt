@@ -1,0 +1,135 @@
+BNK-915 — 케어포 역공학 0-2h · tri-source 재실측
+        · M2 이동서비스 10-leaf → ogada Transport/Attendance 1:1
+        · 시설 셸(demo-work) ≠ 주야간 정본(func.php) 모듈 번호 교차검증
+조사일: 2026-07-19T23:35:00Z
+작성자: BNK · rotation: 케어포 역공학 0–2h (BNK-914 교차검증 8h+ → 로테이션 복귀)
+============================================================================
+
+[0] ogada baseline git 실측 (@HEAD)
+- FE develop = cd0595dd1ef9b81956d32cc2f042c9fbbb7bffa8
+  · `fix(v1.2.1/QA-B627): dedupe needs-assessment satisfaction React key`
+  · BNK-914 `@25a0259` → **+1 ADVANCE** · 3 files +34/−2 · ahead **42** vs origin/test=`b23711f` · WT CLEAN
+- BE develop = 1ae9c501a2c9327039e3fe4879cd96a77e23291e
+  · `fix(v3/SEC-D33): share CsvFormulaEscaper and harden staff status CSV`
+  · BNK-914 `@57523b5` → **+1 ADVANCE** · CsvFormulaEscaper → `common/csv` 공유 · StaffStatusReport CSV harden
+  · ahead **776** vs origin/test=`598d108` · @Test strict **2423**(BNK-914 2422 → +1) · WT CLEAN
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106**(find+git ls-files) · FE test **548**(232+316)
+- `@RestController` **81** · `@Entity` **92** · HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10)
+  · **75차** byte/count-exact IDENTICAL(BNK-836→915·endpoint 신설 0)
+- Flyway V1–V196 · 모듈 **97.41%** CARRY · merge gate **818**(FE 42 + BE 776)
+
+[1] LIVE 재실측 (carefor DOWN carry) + NEW/재실측 evidence URL
+- https://www.carefor.co.kr/daycare/func.php          HTTP **000** (8s timeout · **127-cycle+** carry「미확인」)
+- https://demo-work.carefor.co.kr/                     HTTP **000** (8s timeout · carry「미확인」)
+- ★ 재실측 evidence URL (확인):
+  https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php
+  HTTP 200 · SIZE 98,328B · md5 `6226e6eb92fdd25ed3e50842a5e8a00b`
+  · cmp vs snapshots/carefor_func.php = **BYTE-IDENTICAL** → disk LOCK 재확증(BNK-911→915)
+  · snapshot: carefor_func_wayback_bnk915.php
+- ★ NEW evidence URL (demo-work Wayback 재실측 · 확인):
+  https://web.archive.org/web/20250712053151id_/https://demo-work.carefor.co.kr/
+  HTTP 200 · SIZE 71,742B · md5 `ebee4d4724cd5e633696268067a4d85f`
+  · cmp vs carefor_demo_work_wayback_remeasure_bnk845.html = **BYTE-IDENTICAL**
+  · snapshot: carefor_demo_work_wayback_remeasure_bnk915.html
+- ★ PDF Wayback redirect 갱신 (확인):
+  요청 `20260528120000id_` → redirect `20260609231718id_`
+  https://web.archive.org/web/20260609231718id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+  HEAD HTTP 200 · content-length **9,992,772** · disk md5 `96f7d45e` LOCK carry
+  · snapshot: carefor_manual_pdf_meta_bnk915.txt
+- CDX func.php from=20260101 limit=8: 최신 capture 여전히 `20260519072235`
+  digest `3SOHBMXNDFBP4EOJM6M2SK3YEHR2EWR5` · 신규 capture **0**
+  · snapshot: carefor_func_cdx_bnk915.json
+
+[2] Source A — func.php 주야간 정본 (107-leaf authoritative · 「109」금지)
+- path: carefor_func.php (= wayback_bnk915 BYTE-IDENTICAL)
+- comment-leaf 전수: **107** · modules 1..11 = 11+10+11+10+13+5+11+15+6+9+6
+- segments: depth-2(N-M) **88** · depth-3(N-M-K) **19** · depth-4 **0** → 최대 depth **3**
+- 명시 '리포트' leaf **21**/107 = **19.6%**
+- ★ M2 이동서비스관리 10-leaf 정본(주야간 ONLY):
+  2-1   일정관리(공단연동)
+  2-1-1 외출 관리
+  2-2   탑승관리(차량 이용)
+  2-3   출석관리(차량 미이용)
+  2-4   차량관리
+  2-5   청구내역상세(공단연동)
+  2-6   공단 급여비용 청구 자료(공단연동)
+  2-7   월간 서비스 변동현황
+  2-8   월간 입소자 현황
+  2-9   수급자 외출 리포트
+
+[3] Source B — demo-work 시설 셸 loadPage/view (이동서비스 없음 명시)
+- Wayback `ebee4d47`/71,742B · disk enriched `b2e8e5c8`/75,587B
+  (둘 다 loadPage **114** · 이동서비스/배차/송영/RFID/GPS/수송/탑승 **0-hit ALL**)
+- 시설 셸 L-module 번호 ≠ func.php 주야간 번호:
+  · demo L02 = **요양급여/목욕/배설**(care) — title「2-1.요양급여 제공기록」등
+  · func.php M2 = **이동서비스** — demo에 대응 L-module **부재**
+- 차량(차량) 문자열 4건 = UI chrome/설정 잔여 · 이동서비스 워크플로 아님
+- 외출 6건 = 시설 외출 기록 축(care/outing) · 배차/송영 아님
+- L07 본인부담: loadPage/view 10-nav(+rpt) · 7-10 간편계산기 = **func-only**(demo 0) carry(BNK-911)
+
+[4] Source C — 매뉴얼 PDF TOC
+- SIZE 9,992,772 · md5 `96f7d45e` · 132p · BYTE-IDENTICAL lineage(BNK-825→915)
+- p2 12분할(1~11 + 12.수입지출관리 = M12 BPO · func.php PC 셸 미포함 · NOT-GAP)
+- M2 이동서비스 장 = 주야간 매뉴얼 정본 · 시설 셸 데모와 분리(「확인」)
+
+[5] 메뉴 depth · 리포트 밀도 → ogada @cd0595d (BNK-911 carry @HEAD)
+- carefor 최대 depth **3** flat · ogada path depth d1=20/d2=72/d3=33/d4=6 → 최대 **4** = **SUPERIOR**
+- carefor 리포트 21/107=19.6% · ogada report-ish Route **31**/132≈**23.5%** = **SUPERIOR**
+
+[6] ★★★ M2 이동서비스 10-leaf → ogada Transport/Attendance 1:1 (@cd0595d/@1ae9c50)
+------------------------------------------------------------------------------
+2-x leaf                         | carefor 출처                         | ogada Route / BE                              | 판정
+------------------------------------------------------------------------------
+2-1 일정관리(공단연동)           | func.php M2(주야간) · demo L02≠이동 | `/transport` + roster/runs
+                                 |                                      | + `/transport/auto-dispatch`                  | ✅ PARITY★
+2-1-1 외출 관리                  | func 2-1-1                            | `/transport/outings`
+                                 |                                      | + `/reports/client-outings`                   | ✅ PARITY
+2-2 탑승관리(차량 이용)          | func 2-2 · demo「탑승」0-hit          | `/attendance/boarding`                        | ✅ PARITY★
+2-3 출석관리(차량 미이용)        | func 2-3                              | `/attendance/checkin` + `/attendance/on-site`
+                                 |                                      | + QR checkin                                  | ✅ PARITY★
+2-4 차량관리                     | func 2-4 · demo「차량」4(chrome only) | `/transport/vehicles`                         | ✅ PARITY
+2-5 청구내역상세(공단연동)       | func 2-5                              | `/transport/service-fees`
+                                 |                                      | TransportServiceFeeService(ONE_WAY_RATIO=0.5)
+                                 |                                      | + TransportDistanceBand(RU_1..RU_4)           | ✅ PARITY★
+2-6 공단 급여비용 청구 자료      | func 2-6                              | `/billing/imports/nhis`(+/:batchId)           | ✅ PARITY
+2-7 월간 서비스 변동현황         | func 2-7                              | TransportController
+                                 |                                      | `/reports/monthly-service-variation`
+                                 |                                      | + `/reports/transport-monthly`                | ✅ PARITY
+2-8 월간 입소자 현황             | func 2-8                              | `/reports/monthly-resident-status`            | ✅ PARITY
+2-9 수급자 외출 리포트           | func 2-9                              | `/reports/client-outings`                     | ✅ PARITY
+------------------------------------------------------------------------------
+★ SUPERIOR / EXTRA (carefor M2·시설 셸 미보유 또는 약함):
+  · `/transport/service-fees` ↔ NHIS #44 러-1~4 + 편도 50% + 1일 1회 상수 full-stack
+  · `/transport/auto-dispatch` · `/transport/compliance` · `/transport/shuttle-sheet`
+  · VisitRfid* 공단 RFID 전송 비교(엔젤·케어포 시설 셸 0-hit)
+=> **10/10 leaf-level PARITY** · 신규 진성갭 **0**
+=> 시설 셸 demo-work 이동서비스 **0-hit** → ogada Transport = **경쟁 유일 full-stack SUPERIOR**(엔젤 6-term 0-hit carry)
+
+[7] M7 7-x @HEAD 재확인 (BNK-911/904 carry)
+- func 11-leaf · demo L07 10-nav(7-10 func-only) · ogada `/billing/*` 17 route
+- **11/11 PARITY(6-SUPERIOR)** CARRY · 신규 진성갭 0
+
+[8] NHIS #44 제34조 636차 재실측
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+- cmp vs nhis_jo44_live_bnk914.html = **BYTE-IDENTICAL**(**636차** · BNK-914 635차 → +1)
+- snapshot: nhis_jo44_live_bnk915.html
+- 러-1~4 · 편도 50% · 1일 1회 verbatim → 상수 재조정 불요
+
+[9] 판정 요약 · planner 액션
+- LIVE carefor/demo-work HTTP 000 지속(127-cycle+) → Wayback HTTP 200 으로 LOCK **재확증**
+- ★ 신규 인사이트: **시설 셸 L02 ≠ 주야간 M2** (번호 충돌·기능 축 분리) —
+  벤치마크 시 demo-work만 보면 이동서비스 부재를 「케어포 전체 부재」로 오판 가능 →
+  **func.php 주야간 정본을 이동서비스 정본으로 고정**(「확인」)
+- M2 10/10 PARITY + Transport SUPERIOR · depth/report SUPERIOR · M7 11/11 CARRY
+- 「109」금지 · **107** authoritative 재확인
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 번복 0 · 미확인 승격 0
+- KPI promote: FE `@cd0595d` · BE `@1ae9c50` · FE test 548 · @Test 2423 · ahead 42/776 · merge gate 818
+- planner 권고:
+  (1) REQUIREMENTS §벤치마킹 「케어포 M2 이동서비스는 주야간 func.php 정본·시설 셸(demo-work) 제외 —
+      ogada Transport 10/10 PARITY + 수가/배차/RFID SUPERIOR」 카피 추가/유지
+  (2) 「109」금지·107 lock · 시설 셸≠주야간 번호 충돌 주석 유지
+  (3) NHIS #44 636차 → 규제 상수 재조정 불요
+  (4) HTTP 442 75차 IDENTICAL → API posture 동결·물리 삭제 API 신설 금지·PATCH>PUT
+  (5) FE QA-B627 + BE SEC-D33 share ADVANCE · merge gate 818 · tester FF 대기
+  (6) SEC-D33 범위 확장(staff status CSV) → SECURITY_AUDIT 「청구+직원현황 CSV CWE-1236」 카피

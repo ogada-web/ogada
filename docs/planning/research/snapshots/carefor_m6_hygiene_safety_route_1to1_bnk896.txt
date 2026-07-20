@@ -1,0 +1,132 @@
+BNK-896 — 케어포 역공학 0–2h 주력 extract
+rotation: 케어포 func.php M6「위생·안전 점검관리」5-leaf → ogada /safety·/meals Route 1:1 full-stack crosswalk (메뉴 depth·리포트 밀도·감사 posture)
+조사일: 2026-07-19T10:53:00Z
+근거 disk canonical: docs/planning/research/snapshots/carefor_func.php  md5 6226e6eb92fdd25ed3e50842a5e8a00b / 98,328B
+  (carefor func.php LIVE = HTTP 000 20s timeout·117-cycle+ carry·「미확인」 유지·disk canonical LOCK)
+ogada baseline: BE @6d3c766 / FE @c3f0e05 (둘 다 zero advance carry vs BNK-895)
+
+=====================================================================
+1. 케어포 func.php M6 「위생.안전 점검관리」 5-leaf 전수 (grep -oE "6-[0-9]+" carefor_func.php)
+=====================================================================
+6-1.   주간식단표
+6-2.   일일점검
+6-3.   정기점검
+6-3-1. 감염병 관리                 [sub-leaf]
+6-4.   시설운영일지
+= top-level 4-leaf + sub-leaf 1(6-3-1) = 5 leaf 정본. 케어포 M6 = flat 2-depth(6-3-1만 sub-leaf).
+  (주의: func.php 내 "6-1~6-3" 문자열은 M4 물리(작업)치료 리포트 leaf 와 번호 재사용 → 모듈 컨텍스트로 분리·M6 = 위생/안전 정본 5-leaf)
+
+=====================================================================
+2. ogada 위생·안전(/safety) + 식단(/meals) Route/서비스 실측 (@c3f0e05 FE / @6d3c766 BE)
+=====================================================================
+FE App.jsx route (grep path="/safety|/meals):
+  /meals                     MealsPage(식사 관리·일일 식사·식단 등록)
+  /safety                    SafetyPage(위생·안전 허브·SafetyContextNav)
+  /safety/daily-checks       SafetyDailyChecksPage   // 주석 "US-Q01 — M6 6-2 일일점검"
+  /safety/periodic-checks    SafetyPeriodicChecksPage // 주석 "M6 6-3 정기점검"
+  /safety/infection-control  SafetyInfectionControlPage // 주석 "M6 6-3-1 감염병 관리"
+  /safety/operation-log      SafetyOperationLogPage  // 주석 "M6 6-4 시설운영일지"
+
+BE 실측 클래스(find src/main -iname '*Safety*|*Infection*|*OperationLog*'):
+  SafetyCheckController / SafetyCheckRecordService / SafetyCheckRecordEntity / SafetyCheckRecordRepository
+  SafetyCheckRecordListResponse / SafetyDailyCheckResponse / SafetyOperationLogResponse
+  SafetyInfectionControlLogResponse / SafetyCheckResultCode
+  SafetyCheckTemplateCatalog / SafetyCheckTemplateCatalogResponse
+  SafetyChecklistItemRequest/Response / SafetyChecklistTemplateItemResponse
+  CreateDailySafetyCheckRequest / CreatePeriodicSafetyCheckRequest
+  CreateInfectionControlLogRequest / CreateOperationLogRequest
+  InfectionSymptomCode(enum) / InfectionActionCode(enum)
+
+SafetyCheckController 매핑(grep @*Mapping) = 9 endpoint:
+  GET  /api/v1/safety/check-template-catalog   (점검 템플릿 카탈로그·local/server fallback)
+  GET  /api/v1/safety/daily-checks     · POST /api/v1/safety/daily-checks
+  GET  /api/v1/safety/periodic-checks  · POST /api/v1/safety/periodic-checks
+  GET  /api/v1/safety/infection-control· POST /api/v1/safety/infection-control
+  GET  /api/v1/safety/operation-logs   · POST /api/v1/safety/operation-logs
+  = 물리 삭제/PUT 0 (audit-first posture 정합·감사 보관형)
+
+FE 지원 컴포넌트/훅:
+  components/safety/SafetyPilotNotice · SafetyRecentDraftsPanel · components/ui SafetyChecklistForm/SafetyContextNav
+  hooks/useSafetyServerRecords · useSafetyCheckTemplateCatalog
+  config/safetyChecks(SAFETY_CHECK_RESULT) · config/safetyCheckApi(buildDailySafetyCheckRequest)
+
+=====================================================================
+3. M6 위생·안전 6-x → ogada Route 1:1 crosswalk 판정 (5/5 PARITY, GAP 0, phantom 0)
+=====================================================================
+| carefor M6 leaf        | ogada Route / 서비스                                          | 판정 |
+|------------------------|----------------------------------------------------------------|------|
+| 6-1 주간식단표         | /meals · MealsPage(식사 관리·식단 등록)                        | ✅ PARITY |
+| 6-2 일일점검           | /safety/daily-checks · SafetyCheckController GET/POST daily-checks · SafetyCheckTemplateCatalog | ✅ PARITY (+SUPERIOR: 점검 템플릿 카탈로그 local/server fallback) |
+| 6-3 정기점검           | /safety/periodic-checks · GET/POST periodic-checks             | ✅ PARITY |
+| 6-3-1 감염병 관리      | /safety/infection-control · GET/POST infection-control · InfectionSymptomCode/InfectionActionCode enum | ✅ PARITY (+SUPERIOR: 증상/조치 코드 enum 구조화) |
+| 6-4 시설운영일지       | /safety/operation-log · GET/POST operation-logs               | ✅ PARITY |
+
+집계: ✅ 5/5 PARITY (그 중 SUPERIOR 축 2종: 6-2 점검 템플릿 카탈로그·6-3-1 감염병 증상/조치 코드 enum) · ❌ GAP 0 · △ PARTIAL 0 · phantom 0.
+
+=====================================================================
+4. ogada M6 도메인 SUPERSET (케어포 flat M6 미노출)
+=====================================================================
+  S1  GET /safety/check-template-catalog  점검 템플릿 카탈로그(SafetyCheckTemplateCatalog·local/server fallback) — 케어포 M6 정적 점검 항목 대비 템플릿 동기화 축
+  S2  SafetyRecentDraftsPanel             최근 초안 재개(draft resume) — 케어포 flat 흐름 미노출
+  S3  InfectionSymptomCode/InfectionActionCode enum  감염병 증상/조치 코드 표준화 — 케어포 자유 텍스트형 대비 구조화 SUPERIOR
+
+=====================================================================
+5. 메뉴 depth·리포트 밀도 비교
+=====================================================================
+- carefor M6 = flat 2-depth(6-1..6-4 top + 6-3-1 sub) 좌측 트리 정적 메뉴·리포트 leaf 0(M6는 점검/기록 입력형·별도 리포트 leaf 없음 → M3/M4/M5 리포트 밀도와 대비되는 저-리포트 모듈).
+- ogada M6 = /safety 허브 + 4 nested route(daily/periodic/infection/operation) + /meals = 5-surface·BE 9-endpoint(4 domain × GET/POST + 1 catalog GET).
+- 리포트 밀도: 케어포 M6 자체 리포트 0 vs ogada 도 M6 전용 리포트 화면 0 = 리포트 밀도 축 IDENTICAL(점검/일지 입력형 모듈 특성). 리포트는 M3/M4/M5(요양/간호/프로그램)에 집중 → 모듈 성격 정합.
+- IA: 케어포 6-x 번호식 flat 흐름 → ogada /safety SideNav 4-route + /meals 별도 = 라벨-우선 IA·감사 보관형(물리 삭제/PUT 0).
+
+=====================================================================
+6. NHIS #44 제34조 618차 byte-IDENTICAL (기존 URL 재실측)
+=====================================================================
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+- cmp vs nhis_jo44_live_bnk895.html = BYTE-IDENTICAL (618차·BNK-895 617차 → +1)
+- 러-1~4 verbatim(러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지) ↔ ogada TransportServiceFeeParityCatalog(ONE_WAY_RATIO = new BigDecimal("0.5")·ONE_PER_DAY) + TransportServiceLog* full-stack 1:1 SUPERIOR · id=2 0.85 carry · 상수 재조정 불요.
+- constants sanity: ONE_WAY_RATIO=0.5 · LABOR_COST_RATIO_THRESHOLD_PERCENT (무변동 carry)
+
+=====================================================================
+7. audit-first HTTP 442 posture 56차 byte/count-exact IDENTICAL (git 실측)
+=====================================================================
+@6d3c766 grep: GET 231 · POST 144 · PATCH 44 · PUT 13 · DELETE 10 = 442 · @RestController 81 · controller당 5.46
+= BNK-836→896 56차 연속 IDENTICAL · endpoint 신설 0 · M6 SafetyCheckController(4 GET + 4 POST + 1 catalog GET·물리 삭제/PUT 0)이 감사 우선 posture 정합.
+
+=====================================================================
+8. ogada baseline git 실측 (@6d3c766 BE / @c3f0e05 FE)
+=====================================================================
+BE @6d3c766 (BNK-890→896 7-cycle 동일 HEAD·zero advance·ahead 774 vs origin/test=598d108·BE @Test strict 2413·WT CLEAN)
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+FE @c3f0e05 (BNK-895 동일 HEAD·zero advance·ahead 34 vs origin/test=b23711f·WT CLEAN·tester FF 대기)
+  last: fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)
+| KPI | 값 | BNK-895 대비 |
+|---|---|---|
+| FE Route | 133 (App.jsx <Route\b 132 + <Routes> 1) | IDENTICAL |
+| FE Page | 107 (non-test pages/*.jsx·*Page.jsx suffix subset 106) | IDENTICAL |
+| FE test files | 543 (228 .test.js + 315 .test.jsx) | IDENTICAL(FE zero advance) |
+| BE @Test strict | 2413 (^\s*@Test\b·raw 2414 = strict 2413 + @TestPropertySource 1) | IDENTICAL(BNK-889→896 8-cycle) |
+| BE Test.java | 297 (+1 Tests.java = 298) | IDENTICAL |
+| BE @RestController | 81 (loose) | IDENTICAL |
+| BE HTTP mapping | 442 (GET231/POST144/PATCH44/PUT13/DELETE10) | byte/count-exact IDENTICAL 56차 (BNK-836→896·endpoint 신설 0) |
+| Flyway | V1–V196 | IDENTICAL |
+| 모듈 커버 KPI | 97.41% (28.25/29·진성갭 0) | IDENTICAL |
+| merge gate | 808 (FE 34 + BE 774·BE-heavy) | IDENTICAL |
+
+=====================================================================
+9. 가정/예측 번복 재점검 (rules §14·§18)
+=====================================================================
+- 신규 진성갭 0 · closed band 재오픈 0 · 미확인 승격 0 · P0~P3 결정 번복 0 · KPI promote 0 · 모듈 97.41% CARRY.
+- M6 위생·안전 crosswalk = 5/5 PARITY(GAP 0) → M6 도메인 진성갭 없음 확정(신규 P3「가정」 candidate 0·carefor M6 flat 흐름 전량 ogada full-stack 흡수).
+- P3/P4「가정」 candidate 11종(BNK-894 목록) 전부 carry(진성갭 승격 0·「미확인」 유지).
+- carefor func.php LIVE 000 117-cycle+ carry·「미확인」 유지.
+
+=====================================================================
+10. planner 액션 아이템 [갭 우선순위 동결]
+=====================================================================
+1. REQUIREMENTS §위생·안전 점검 — 케어포 M6 6-x 5-leaf → ogada /safety(daily/periodic/infection/operation) + /meals 5/5 PARITY(GAP 0·SUPERIOR 2·SUPERSET 3) 명시 권고. M6 도메인 진성갭 0 확인.
+2. SUPERIOR 마케팅 카피 후보: 「감염병 증상·조치 코드 표준화(enum) — 케어포 자유텍스트 대비 통계/집계 우위」·「점검 템플릿 카탈로그 동기화 + 최근 초안 재개」.
+3. NHIS #44 618차 IDENTICAL → 규제 상수(ONE_WAY_RATIO=0.5) 재조정 불요.
+4. audit-first HTTP 442 56차 IDENTICAL → API posture 56-cycle 동결(물리 삭제 API 신설 금지·PATCH>PUT·M6 GET/POST-only 정합).
+5. tester FF merge gate 808 carry(FE 34 + BE 774·BE-heavy·auto-merge FF 대기).
+6. 신규 진성갭 0·closed band 재오픈 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.

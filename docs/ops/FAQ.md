@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T01:10:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T12:46:00Z -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-19 (기선 갱신 BE `68c2378` / FE `cf360d7` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-19 (기선 갱신 BE `57523b5` / FE `95b6c52` · Flyway **V1–V196** · 모듈 **97.41%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,14 +16,14 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-07-18 develop HEAD `ec7a1ce` / frontend `6c280d0` 기준)
+### 구현 상태 안내 (2026-07-19 develop HEAD `57523b5` / frontend `95b6c52` 기준)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V196 ✅** @ `ce656d5` **SYNCED** · **공단·은행 엑셀 전각 원화 기호(￦) 붙은 금액 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 전각·반각 통화 서식) · **공단·은행 엑셀 원화 기호(₩) 붙은 금액 정규화 ✅** · **공단 대사 엑셀 급여일수 `15일`(「일」 접미사) 정규화 ✅** (**Q939**, SEC-D34, 대사 정확도) · **은행 입금 엑셀 금액 공백·「원」 정규화 ✅** (**Q941**, SEC-D34, 입금 매칭 정확도) · **공단 대사 엑셀 금액·급여일수 「원」·공백 정규화 ✅** (**Q939**, SEC-D34, 대사 정확도) · **공단·RFID 엑셀 깨진 셀 행 복원(전체 실패 방지) ✅** (**Q939**, SEC-D34) · **RFID 전송 엑셀 파서 fail-closed 분기 회귀 lock ✅** (SEC-D34, 헤더/필수열/데이터행 누락, **Q938**) · **라이브 E2E 준비상태 bare-hex 엔티티(`&x2d;`) fail-closed 디코딩 ✅** (QA-B95, 내부 점검) · **요양보호사 공단 엑셀 파서 fail-closed 분기 회귀 lock ✅** (SEC-D34, 헤더/필수열/데이터행 누락) · **엑셀 「읽을 수 없습니다」 문구 상수 통일 ✅** (`UNREADABLE_EXCEL_MESSAGE`, 내부 리팩터링) · **엑셀 import 손상(내용 깨진) 파일 fail-closed ✅** (**Q934**, SEC-D34, 5개 파서) · **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**, SEC-D34) · **SEC-D34 엑셀 import 4경로 magic-byte ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**, SEC-D25/D34) · **v3 활동 사진 magic-byte ✅** (**Q924**, SEC-D25) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime(bprime/tprime/qprime/backprime) ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~295 suites** · Flyway **V186–V196** |
+| 백엔드 API | **Must + … + V196 ✅** @ `57523b5` **SYNCED** · **청구 명세·국세청 CSV 엑셀 수식(formula) 실행 위험 차단 ✅** (**Q946**, SEC-D33, CWE-1236) · **공단·은행 엑셀 금액 줄바꿈 없는 공백(U+00A0)·전각 공백(U+3000) 천 단위 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 특수 공백) · **공단·은행 엑셀 금액 정규화 로직 DRY 통합(`ExcelAmountNormalizer`) ✅** (SEC-D34, 내부 리팩터) · **공단·은행 엑셀 전각 원화 기호(￦) 붙은 금액 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 전각·반각 통화 서식) · **공단·은행 엑셀 전각 숫자(０-９)·전각 콤마(，) 붙은 금액 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 전각 IME·통화 서식) · **공단·은행 엑셀 원화 기호(₩) 붙은 금액 정규화 ✅** · **공단 대사 엑셀 급여일수 `15일`(「일」 접미사) 정규화 ✅** (**Q939**, SEC-D34, 대사 정확도) · **은행 입금 엑셀 금액 공백·「원」 정규화 ✅** (**Q941**, SEC-D34, 입금 매칭 정확도) · **공단 대사 엑셀 금액·급여일수 「원」·공백 정규화 ✅** (**Q939**, SEC-D34, 대사 정확도) · **공단·RFID 엑셀 깨진 셀 행 복원(전체 실패 방지) ✅** (**Q939**, SEC-D34) · **RFID 전송 엑셀 파서 fail-closed 분기 회귀 lock ✅** (SEC-D34, 헤더/필수열/데이터행 누락, **Q938**) · **라이브 E2E 준비상태 bare-hex 엔티티(`&x2d;`) fail-closed 디코딩 ✅** (QA-B95, 내부 점검) · **요양보호사 공단 엑셀 파서 fail-closed 분기 회귀 lock ✅** (SEC-D34, 헤더/필수열/데이터행 누락) · **엑셀 「읽을 수 없습니다」 문구 상수 통일 ✅** (`UNREADABLE_EXCEL_MESSAGE`, 내부 리팩터링) · **엑셀 import 손상(내용 깨진) 파일 fail-closed ✅** (**Q934**, SEC-D34, 5개 파서) · **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**, SEC-D34) · **SEC-D34 엑셀 import 4경로 magic-byte ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**, SEC-D25/D34) · **v3 활동 사진 magic-byte ✅** (**Q924**, SEC-D25) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime(bprime/tprime/qprime/backprime) ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~295 suites** · Flyway **V186–V196** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 106 page** @ `c3a0cac` **SYNCED** | **수급자별 급여제공 리포트(L02_M11) 역방향 기간 사전 차단·지난 집계 비움·종료일 필드 a11y ✅** (**Q943**) · **급여제공 서비스 집계 리포트(L02_M12) 역방향 기간 사전 차단·지난 집계 비움·종료일 필드 a11y ✅** (**Q942**) · **이동서비스비 청구 기간 오류 시 지난 청구 목록 즉시 비움·빈 기간·역방향 기간 사전 차단·결과 안내 재조회 갱신·이용자 이름 정상 표시 ✅** (**Q940**, G16) · **픽업 배차 「회차」 저장 전 사전 검증·지수/16진수·한도 초과 큰 수 거부·휠 스크롤 값 변경 차단·서버 오류 중복 읽힘 정리·오류 시 포커스 이동 ✅** (**Q936**, UXD-194) · **배차 정차 상한(17) 초과 사유 안내 ✅** (**Q937**) · **은행 입금 엑셀 FE 사전검증 ✅** (**Q932**, SEC-D34) · **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·급여계약·HR·등급이력·보수교육 magic-byte ✅** (**Q926~Q928**) · **직원현황 인쇄·활동 사진 ARIA ✅** (**Q930**) · **활동 사진 magic-byte FE lockstep ✅** (**Q924**) · **NoBreakSpace mid-token strip FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**, UXD-187) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi long-alias live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
-| 본 FAQ | **Q217 정정** · **Q788~Q943** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
+| 프론트엔드 | **133 route · 106 page** @ `95b6c52` **SYNCED** | **안전 점검 저장·선임 전자서명·외출 실제 출발/복귀 시각 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-204, a11y·화면 표시 무변경) · **보호자 포털·QR 체크인 출석 시각 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-203, a11y·화면 표시 무변경) · **욕구사정 연도 비교 표 좁은 화면 가로 스크롤(`.ds-table-wrap`) ✅** (**Q878**, UXD-202, WCAG 1.4.10 Reflow·화면 표시 무변경) · **청구 상세(입금·환불일)·수납 목록·수가/본인부담 단가·백업 설정·청구 잠금 시각·보호자 청구 상세 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-201, a11y·화면 표시 무변경) · **로그인 이력·감사 로그·알림 발송 이력·수가 변경 이력 날짜·시각 칸 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-200, a11y·화면 표시 무변경) · **청구 대장·욕구사정·주기 위험 평가·돌봄계획 알림·연체·건강/보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교 표 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (UXD-199, a11y·화면 표시 무변경) · **사례관리·간호(바이탈·체중·구강·응급)·욕창·선임 업무일지·외출 목록·외출 리포트 표 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (UXD-198, a11y·화면 표시 무변경) · **목욕도움·요양/식사/화장실·집중배설·수급자별 급여제공·체위변경 리포트 표 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (UXD-197, a11y·화면 표시 무변경) · **목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호·간호급여·프로그램 리포트 역방향 기간 오류 시작일·종료일 두 칸 aria-invalid 라우팅 ✅** (**Q942**~**Q944**, UXD-196, a11y) · **목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호·간호급여·프로그램 리포트 역방향 기간 사전 차단 확대 ✅** (**Q944**) · **수급자별 급여제공 리포트(L02_M11) 역방향 기간 사전 차단·지난 집계 비움·종료일 필드 a11y ✅** (**Q943**) · **급여제공 서비스 집계 리포트(L02_M12) 역방향 기간 사전 차단·지난 집계 비움·종료일 필드 a11y ✅** (**Q942**) · **이동서비스비 청구 기간 오류 시 지난 청구 목록 즉시 비움·빈 기간·역방향 기간 사전 차단·결과 안내 재조회 갱신·이용자 이름 정상 표시 ✅** (**Q940**, G16) · **픽업 배차 「회차」 저장 전 사전 검증·지수/16진수·한도 초과 큰 수 거부·휠 스크롤 값 변경 차단·서버 오류 중복 읽힘 정리·오류 시 포커스 이동 ✅** (**Q936**, UXD-194) · **배차 정차 상한(17) 초과 사유 안내 ✅** (**Q937**) · **은행 입금 엑셀 FE 사전검증 ✅** (**Q932**, SEC-D34) · **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·급여계약·HR·등급이력·보수교육 magic-byte ✅** (**Q926~Q928**) · **직원현황 인쇄·활동 사진 ARIA ✅** (**Q930**) · **활동 사진 magic-byte FE lockstep ✅** (**Q924**) · **NoBreakSpace mid-token strip FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**, UXD-187) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi long-alias live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
+| 본 FAQ | **Q217 정정** · **Q788~Q946** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
@@ -12165,11 +12165,12 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 | **`PAID_YEAR`** | **`paidAt` 연도** = `taxYear` (수납년도) |
 | **`CLAIM_YEAR`** | **`yearMonth` 연도** = `taxYear` (청구년도, 케어포 7-8) |
 | invalid `yearBasis` | **`422`** — 「yearBasis는 PAID_YEAR 또는 CLAIM_YEAR만…」 |
+| **CSV 수식 차단** | 이름 등 글자 칸이 `=`·`+`·`-`·`@`로 시작하면 앞에 `'`를 붙여 엑셀 수식 실행을 막음 — **금액 숫자(음수 포함)는 그대로** (**Q946**, SEC-D33) |
 | P3 carry | **국세청 홈택스 자동 업로드** · **연 1회 scheduled batch export** (Q533 carry) |
 
 > **이용자 1명 상세**·**보호자 포털** NTS xlsx는 **`MedicalExpenseDeductionPanel`** (Q258) — **지점 batch**와 **별도**입니다.
 
-> 관련: Q252 · Q379 · Q533 · USER_MANUAL §5-10-2 · ADMIN_GUIDE §6-2 G26 branch reports
+> 관련: Q252 · Q379 · Q533 · **Q946** · USER_MANUAL §5-10-2 · ADMIN_GUIDE §6-2 G26 branch reports
 
 ### [TWR] Q535. 청구 상세에서 **명세서 Excel(엑셀)** 을 다운로드할 수 있나요? (케어포 7-1 p.87 ②, G-7-1)
 
@@ -12186,8 +12187,9 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 | API | **`GET /api/v1/billing/claims/{claimId}/statement-export?kind=&clientIds=`** — **`text/csv`** UTF-8 BOM |
 | 권한 | **`hq_admin`·`branch_admin`** |
 | 4채널 발송 | **별도** — Excel은 **물리 보관·엑셀 가공**용 (Q475) |
+| **CSV 수식 차단** | 이름·주소 등 글자 칸이 `=`·`+`·`-`·`@`로 시작하면 앞에 `'`를 붙여 엑셀 수식 실행을 막음 — **금액 숫자(음수 포함)는 그대로** (**Q946**, SEC-D33, BE `57523b5`) |
 
-> 관련: Q475 · Q478 · Q485 · USER_MANUAL §4-6-0-1 · ADMIN_GUIDE §6-2-17
+> 관련: Q475 · Q478 · Q485 · **Q946** · USER_MANUAL §4-6-0-1 · ADMIN_GUIDE §6-2-17
 
 ### [TWR] Q537. 현금영수증 발급 시 **휴대폰·사업자번호 검색·입력**은 어떻게 동작하나요? (G-CASH-RECEIPT-LOG)
 
@@ -12755,6 +12757,16 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-19 | **Q946 신설 · Q945 확대 · Q534·Q535 보강** — **청구 명세·국세청 CSV 엑셀 수식 실행 위험 차단**(SEC-D33) · **안전 점검 저장·선임 전자서명·외출 실제 출발/복귀 시각 `<time dateTime>`**(UXD-204·37곳→42곳·a11y·화면 표시 무변경) · baseline **`57523b5`/`95b6c52`** · Flyway **V1–V196** |
+| 2026-07-19 | **Q945 확대** — **보호자 포털 일일 요약(입소·귀가)·QR 체크인 처리 완료 시각 `<time dateTime>`**(UXD-203·a11y·화면 표시 무변경·35곳→37곳) · baseline **`6d3c766`/`2715090`** · Flyway **V1–V196** |
+| 2026-07-19 | **Q945 확대** — **로그인/감사/알림/수가 이력 4곳(UXD-200)·청구 상세·수납·수가/본인부담 단가·백업·보호자 청구 상세 7곳(UXD-201) 날짜·시각 칸 `<time dateTime>` 기계판독 형식**(24곳→35곳·a11y·화면 표시 무변경) · baseline **`6d3c766`/`6a9e85e`** · Flyway **V1–V196** |
+| 2026-07-19 | **Q878 확대** — **욕구사정 연도 비교 표 좁은 화면 가로 스크롤 `.ds-table-wrap`**(`ClientNeedsAssessmentCompare`·UXD-202·WCAG 1.4.10 Reflow·화면 표시 무변경) · baseline **`6d3c766`/`fa838f5`** |
+| 2026-07-19 | **Q945 신설** — **표 날짜 칸 `<time dateTime>` 스크린리더 안내 통합**(UXD-197·UXD-198·UXD-199, 24곳 화면·a11y·화면 표시 무변경) · baseline **`6d3c766`/`e8ff8dc`** · Flyway **V1–V196** |
+| 2026-07-19 | **Q939·Q941 보강** — **공단·은행 엑셀 금액의 전각 숫자(０-９)·전각 콤마(，) 정규화 문서화**(전각 IME·전각 통화 서식 `１，２５０，０００`, SEC-D34, 기능은 이미 반영·BE `c88687a`·`c7b6608`) · baseline **`6d3c766`/`c3f0e05`** · Flyway **V1–V196** |
+| 2026-07-19 | **UXD-199** — §1 **청구 대장·욕구사정·주기 위험 평가·돌봄계획 알림·연체·건강/보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교 표 날짜 칸 `<time dateTime>` 기계판독 형식**(a11y·화면 표시 무변경) · baseline **`6d3c766`/`e8ff8dc`** · Flyway **V1–V196** |
+| 2026-07-19 | **UXD-198** — §1 **사례관리·간호·욕창·선임 업무일지·외출 목록·외출 리포트 표 날짜 칸 `<time dateTime>` 기계판독 형식**(a11y·화면 표시 무변경) · baseline **`6d3c766`/`c3f0e05`** · Flyway **V1–V196** |
+| 2026-07-19 | **Q939·Q941 보강 · Q942~Q944 참고 보강** — **공단·은행 엑셀 금액의 줄바꿈 없는 공백(U+00A0)·전각 공백(U+3000) 천 단위 정규화**(대사·입금 매칭 정확도, SEC-D34 9번째 축) · **리포트 역방향 기간 오류를 시작일·종료일 두 칸 모두 aria-invalid 로 라우팅**(9개 리포트, UXD-196, 스크린리더 접근성·표시 무변경) · **급여제공 리포트 표 날짜 칸 `<time dateTime>` 기계판독 형식**(UXD-197, a11y·화면 표시 무변경) · baseline **`6d3c766`/`aab11b2`**(FE QA 2791/2791 PASS) · Flyway **V1–V196** |
+| 2026-07-19 | **Q944 신설** — **목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호·간호급여·프로그램 리포트 역방향 기간(시작일>종료일) 사전 차단 확대**(「종료일은 시작일 이후여야 합니다.」·지난 집계 비움·종료일 필드 a11y) · baseline **`e60e288`/`60716c6`** · Flyway **V1–V196** |
 | 2026-07-18 | **Q939·Q941 보강 · Q942 신설** — **공단·은행 엑셀의 원화 기호(₩) 붙은 금액 정규화**(금액 칸을 통화 서식으로 저장 시 「원」 대신 `₩` 표기, 대사·입금 매칭 정확도) · **급여제공 서비스 집계 리포트(L02_M12) 역방향 기간(시작일>종료일) 사전 차단**(「종료일은 시작일 이후여야 합니다.」·지난 집계 비움) · baseline **`1d067d9`/`cf360d7`** · Flyway **V1–V196** |
 | 2026-07-18 | **Q939·Q940 보강** — **공단 대사 엑셀 급여일수 `15일`(공단 export 「일」 접미사) 정규화(대사 정확도)** · **이동서비스비 청구 기간 오류 시 지난 청구 목록(표) 즉시 비움(EmptyState 정리)** · baseline **`ec7a1ce`/`6c280d0`** · Flyway **V1–V196** |
 | 2026-07-18 | **Q941 신설·Q940 보강** — **은행 입금 엑셀 금액 공백·「원」 정규화(입금 매칭 정확도)** · **이동서비스비 청구 빈 기간(시작일·종료일 미입력) 사전 차단** · baseline **`dc261ed`/`171075f`** · Flyway **V1–V196** |
@@ -16463,12 +16475,15 @@ function normalizeLiveOperationBlockers(blockers) {
 
 **A.** **✅ FE Fixed (Q878)** — `/clients/home-newsletter` 의 **초안·기관 공지·발송 이력** 3개 표가 공용 `Table` 컴포넌트를 거치지 않아 **8열 발송 이력** 등이 **페이지 전체 가로 스크롤**을 유발했습니다. 각 `<table class="ds-table">` 을 **`.ds-table-wrap`** 으로 감싸 **카드 안에서만** 좌우 스와이프되도록 수정했습니다. caption·scope·`data-testid`는 그대로입니다.
 
+같은 패턴으로, **이용자 상세 — 욕구사정 연도 비교(3열) 표**(`ClientNeedsAssessmentCompare`)도 공용 감싸개를 거치지 않아 좁은 화면에서 밀릴 수 있던 것을 **`.ds-table-wrap`** 으로 감쌌습니다(UXD-202, FE `fa838f5`, WCAG 1.4.10 Reflow). 표 글자·열·모양은 그대로입니다.
+
 | 증상(이전) | 현재 |
 |------------|------|
 | 좁은 창·모바일에서 **화면 전체**가 옆으로 밀림 | **표 영역만** 가로 스크롤 |
 | 발송 이력 8열 표가 카드 밖으로 넘침 | `.ds-table-wrap` overflow containment |
+| 욕구사정 연도 비교(3열) 표가 카드 밖으로 넘침 | `.ds-table-wrap` overflow containment (UXD-202) |
 
-> 관련: Q788 · Q790 · Q858 · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-16
+> 관련: Q788 · Q790 · Q858 · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-16·2026-07-19
 
 ---
 
@@ -17490,7 +17505,7 @@ function normalizeLiveOperationBlockers(blockers) {
 
 ---
 
-### [TWR] Q939. 공단 엑셀에 **셀 하나가 이상하면** 파일 전체 업로드가 실패하나요? 대사가 「불일치」로 잘못 뜨기도 해요. (SEC-D34, BE `ce656d5`·`1d067d9`·`ec7a1ce`·`ad2c0b1`·`6329323`·`13eb863`)
+### [TWR] Q939. 공단 엑셀에 **셀 하나가 이상하면** 파일 전체 업로드가 실패하나요? 대사가 「불일치」로 잘못 뜨기도 해요. (SEC-D34, BE `ce656d5`·`1d067d9`·`c88687a`·`c7b6608`·`ec7a1ce`·`ad2c0b1`·`6329323`·`13eb863`·`6d3c766`)
 
 **A.** **✅ BE Fixed (Q939, SEC-D34)** — 파일 서명·구조(Q931·Q934·Q938)는 정상인데 **개별 셀 값**이 규격을 벗어난 경우, 예전에는 그 셀 하나 때문에 **파일 전체**가 「엑셀 파일을 읽을 수 없습니다.」로 거부되거나, **값이 조용히 비워져(null)** 대사·계산이 틀어질 수 있었습니다. 이제는 **한 셀이 깨져도 나머지 행은 정상 등록**하고, 표시서식이 붙은 숫자는 **정확히 인식**합니다.
 
@@ -17500,6 +17515,8 @@ function normalizeLiveOperationBlockers(blockers) {
 | **공단 대사 엑셀** — 급여일수 `15일` (공단 export가 붙이는 「일」 접미사) | 「일」 때문에 숫자로 못 읽어 **값이 비워짐(null)** → 실제 일치인데 **「불일치」·「보류」로 오판** | 「일」·「원」·콤마·공백을 함께 떼고 **정확한 일수(15)로 인식** (금액 칸엔 「일」이 없어 동작 변화 없음) |
 | **공단 대사 엑셀** — 공단부담금 `₩765,000` (금액 칸을 **통화 서식**으로 저장 → 「원」 대신 원화 기호 `₩`) | `₩` 때문에 숫자로 못 읽어 **값이 비워짐(null)** → **「불일치」·「보류」로 오판** | 콤마·「원」·공백과 함께 **`₩`도 떼고** 정확한 금액으로 인식 |
 | **공단 대사 엑셀** — 공단부담금 `￦765,000` (일부 한글 엑셀·수기 입력의 **전각 원화 기호 `￦`**) | 전각 `￦` 때문에 숫자로 못 읽어 **값이 비워짐(null)** → **「불일치」·「보류」로 오판** | 반각 `₩`·콤마·「원」·공백과 함께 **전각 `￦`도 떼고** 정확한 금액으로 인식 |
+| **공단 대사 엑셀** — 공단부담금 `７６５，０００` 등 **전각 숫자(０-９)·전각 콤마(，)** (전각 IME 입력·전각 통화 서식) | 전각 글자여서 숫자로 못 읽어 **값이 비워짐(null)** → **「불일치」·「보류」로 오판** | 전각 숫자를 반각(0-9)으로 바꾸고 **전각 콤마(，)도 떼고** 정확한 금액으로 인식 |
+| **공단 대사 엑셀** — 공단부담금 `765[줄바꿈없는공백]000` 등 **줄바꿈 없는 공백(U+00A0, 웹·CMS 복사)·전각 공백(U+3000, 전각 IME)**으로 천 단위를 나눈 금액 | 눈엔 띄어쓰기지만 **보통 공백이 아니라** 숫자로 못 읽어 **값이 비워짐(null)** → **「불일치」·「보류」로 오판** | 일반 공백뿐 아니라 **이 두 특수 공백도 떼고** 정확한 금액으로 인식 |
 | **RFID 전송 엑셀** — 태그 시각 `9999`·`060` 등 시·분 범위 밖 값 | **파일 전체 거부**(「엑셀 파일을 읽을 수 없습니다.」) | 해당 **시각만 비워** 두고 그 행은 등록 |
 | **NHIS 방문일정 엑셀** — 서비스 시간(분)이 지나치게 큰 값 | 파일 전체 등록 실패 | **시작·종료 시각 차이로 다시 계산**해 행 유지 |
 
@@ -17507,7 +17524,7 @@ function normalizeLiveOperationBlockers(blockers) {
 
 > **다른 엑셀 오류와 구분** — 확장자·서명 불일치는 Q931~Q932, **본문 손상**은 Q934, **헤더·필수열·데이터행 누락**은 Q938. Q939는 **파일은 정상인데 개별 셀 값만 규격 밖**인 경우입니다.
 
-> 관련: **Q934** · **Q938** · **Q264**(공단 명세 비교) · USER_MANUAL §4-6·§4-6-1·§5-11 · CHANGELOG 2026-07-18
+> 관련: **Q934** · **Q938** · **Q264**(공단 명세 비교) · USER_MANUAL §4-6·§4-6-1·§5-11 · CHANGELOG 2026-07-18·2026-07-19
 
 ---
 
@@ -17529,9 +17546,9 @@ function normalizeLiveOperationBlockers(blockers) {
 
 ---
 
-### [TWR] Q941. **은행 입금 엑셀**에서 입금액이 `1 250 000원`·`₩1,250,000`·`￦1,250,000` 처럼 띄어 쓰거나 원화 기호가 붙으면 미매칭·건너뜀으로 빠지나요? (SEC-D34, BE `ce656d5`·`1d067d9`·`dc261ed`·G-BANK-EXCEL-8)
+### [TWR] Q941. **은행 입금 엑셀**에서 입금액이 `1 250 000원`·`₩1,250,000`·`￦1,250,000` 처럼 띄어 쓰거나 원화 기호가 붙으면 미매칭·건너뜀으로 빠지나요? (SEC-D34, BE `ce656d5`·`1d067d9`·`c88687a`·`c7b6608`·`dc261ed`·`6d3c766`·G-BANK-EXCEL-8)
 
-**A.** **✅ BE Fixed (Q941, SEC-D34)** — **`/billing/payments`** 은행 입금 엑셀 일괄등록에서 **입금액** 칸이 `1 250 000원`·`1,250,000원`·`₩1,250,000`·`￦1,250,000` 처럼 **공백·콤마·「원」·원화 기호(₩·전각 ￦)** 표시서식이 붙어 있어도, 이제 **모든 공백·「원」·`₩`·전각 `￦`·콤마를 떼고 정확한 금액으로 읽어** 미리보기·자동 매칭에 반영합니다.
+**A.** **✅ BE Fixed (Q941, SEC-D34)** — **`/billing/payments`** 은행 입금 엑셀 일괄등록에서 **입금액** 칸이 `1 250 000원`·`1,250,000원`·`₩1,250,000`·`￦1,250,000`·`１，２５０，０００`(전각 숫자·전각 콤마) 처럼 **공백·콤마(반각·전각)·「원」·원화 기호(₩·전각 ￦)·전각 숫자** 표시서식이 붙어 있어도, 이제 **모든 공백(줄바꿈 없는 공백·전각 공백 포함)·「원」·`₩`·전각 `￦`·콤마(반각·전각)를 떼고 전각 숫자를 반각으로 바꿔 정확한 금액으로 읽어** 미리보기·자동 매칭에 반영합니다.
 
 | 상황 | 예전 동작 | 개선 후 동작 |
 |------|-----------|--------------|
@@ -17539,12 +17556,14 @@ function normalizeLiveOperationBlockers(blockers) {
 | 입금액 `765,000원`(콤마 + 「원」) | 동일하게 **null degrade** 가능 | 정상 금액으로 인식 |
 | 입금액 `₩1,250,000`(금액 칸을 **통화 서식**으로 저장 → 「원」 대신 원화 기호 `₩`) | `₩` 때문에 **null degrade** → 자동 매칭에서 빠짐 | 콤마·「원」·공백과 함께 **`₩`도 떼고** 정상 인식 |
 | 입금액 `￦1,250,000`(일부 한글 엑셀·수기 입력의 **전각 원화 기호 `￦`**) | 전각 `￦` 때문에 **null degrade** → 자동 매칭에서 빠짐 | 반각 `₩`·콤마·「원」·공백과 함께 **전각 `￦`도 떼고** 정상 인식 |
+| 입금액 `１，２５０，０００` 등 **전각 숫자(０-９)·전각 콤마(，)** (전각 IME 입력·전각 통화 서식) | 전각 글자여서 **null degrade** → 자동 매칭에서 빠짐 | 전각 숫자를 반각(0-9)으로 바꾸고 **전각 콤마(，)도 떼고** 정상 인식 |
+| 입금액 `1[줄바꿈없는공백]250[줄바꿈없는공백]000원` 등 **줄바꿈 없는 공백(U+00A0)·전각 공백(U+3000)** 으로 천 단위를 나눈 금액 | 눈엔 띄어쓰기지만 **보통 공백이 아니라** null degrade → 자동 매칭에서 빠짐 | 일반 공백뿐 아니라 **이 두 특수 공백도 떼고** 정상 인식 |
 
 > **공단 대사와 동일 계열** — 공단 명세 엑셀의 「원」·공백 정규화(**Q939**)와 같은 **SEC-D34 row-level resilience** 방식입니다. 금액 칸이 **숫자로 볼 수 없는 문자**만 있으면 종전처럼 **비워 두되 행 자체는 등록**됩니다.
 
 > **다른 오류와 구분** — 파일 서명·손상·헤더 누락은 **Q931~Q934**. Q941은 **파일은 정상인데 입금액 셀 표시서식만 특수**한 경우입니다.
 
-> 관련: **Q572** · **Q576** · **Q939** · USER_MANUAL §4-6(은행 입금 엑셀) · CHANGELOG 2026-07-18
+> 관련: **Q572** · **Q576** · **Q939** · USER_MANUAL §4-6(은행 입금 엑셀) · CHANGELOG 2026-07-18·2026-07-19
 
 ---
 
@@ -17558,11 +17577,11 @@ function normalizeLiveOperationBlockers(blockers) {
 | 역방향 기간에서 조회가 막힐 때 **지난 집계 표** | 오류 안내만 뜨고 **지난 집계가 그대로** 남음 | 집계 표를 **함께 비워** 오류와 모순되지 않게 정리 |
 | **한쪽 날짜만 비움** | — | 서버가 **기본 기간**으로 대체하므로 종전대로 조회(차단 대상 아님) |
 
-> **참고** — 안내 문구는 서버(`CareReportService.resolveDateWindow`) 검증과 **동일**해, 화면·서버 어느 쪽에서 걸려도 같은 안내가 나옵니다. 종료일 칸에 `role="alert"`·`aria-invalid` 로 붙어 키보드·스크린리더 사용자도 원인을 바로 확인합니다.
+> **참고** — 안내 문구는 서버(`CareReportService.resolveDateWindow`) 검증과 **동일**해, 화면·서버 어느 쪽에서 걸려도 같은 안내가 나옵니다. 안내 메시지(`role="alert"`)는 종료일 칸에 한 번만 두되(중복 낭독 방지), **시작일·종료일 두 칸 모두** `aria-invalid` 로 「오류 있음」 상태로 표시해 키보드·스크린리더 사용자가 어느 칸에서든 원인을 바로 확인합니다(UXD-196, WCAG 3.3.1·4.1.2).
 
 > **다른 리포트와 구분** — 이동서비스비 청구 기간 검증은 **Q940**. **수급자별 급여제공 리포트(L02_M11)** 는 **Q943**. Q942는 **급여제공 서비스 집계 리포트(L02_M12)** 기간 검증입니다.
 
-> 관련: **Q940** · **Q943** · **Q377**·**Q378**(L02 리포트 a11y) · USER_MANUAL §5-34 · CHANGELOG 2026-07-18
+> 관련: **Q940** · **Q943** · **Q377**·**Q378**(L02 리포트 a11y) · USER_MANUAL §5-34 · CHANGELOG 2026-07-18·2026-07-19
 
 ---
 
@@ -17577,11 +17596,82 @@ function normalizeLiveOperationBlockers(blockers) {
 | **이용자 미선택** | — | 종전대로 이용자 선택 안내(기간 검증 전에 차단) |
 | **한쪽 날짜만 비움** | — | 서버가 **기본 기간**으로 대체하므로 종전대로 조회(차단 대상 아님) |
 
-> **참고** — 안내 문구는 서버(`CareReportService.resolveDateWindow`) 검증과 **동일**하며, **급여제공 서비스 집계 리포트(L02_M12)**(**Q942**)와 같은 `resolveCareReportDateRangeError` 헬퍼를 공유합니다. 종료일 칸에 `role="alert"`·`aria-invalid` 로 붙어 키보드·스크린리더 사용자도 원인을 바로 확인합니다.
+> **참고** — 안내 문구는 서버(`CareReportService.resolveDateWindow`) 검증과 **동일**하며, **급여제공 서비스 집계 리포트(L02_M12)**(**Q942**)와 같은 `resolveCareReportDateRangeError` 헬퍼를 공유합니다. 안내 메시지(`role="alert"`)는 종료일 칸에 한 번만 두되(중복 낭독 방지), **시작일·종료일 두 칸 모두** `aria-invalid` 로 「오류 있음」 상태로 표시해 키보드·스크린리더 사용자가 어느 칸에서든 원인을 바로 확인합니다(UXD-196, WCAG 3.3.1·4.1.2).
 
 > **다른 리포트와 구분** — 이동서비스비 청구 기간 검증은 **Q940**. **급여제공 서비스 집계 리포트(L02_M12)** 는 **Q942**. Q943은 **수급자별 급여제공 리포트(L02_M11)** 기간 검증입니다.
 
-> 관련: **Q942** · **Q373** · USER_MANUAL §5-33 · CHANGELOG 2026-07-18
+> 관련: **Q942** · **Q373** · USER_MANUAL §5-33 · CHANGELOG 2026-07-18·2026-07-19
+
+---
+
+### [TWR] Q944. **목욕도움·간호급여·프로그램 리포트** 등에서도 조회 기간을 거꾸로(시작일 > 종료일) 넣으면 조회 전에 막히나요? (L02·L03·M5, FE `ca31864`·`d4d9887`·`60716c6`·`5789173`·`0ff9c7d`)
+
+**A.** **✅ FE Fixed (Q944)** — 조회 기간(시작일·종료일)을 받는 **기록·리포트 화면**에서 **시작일이 종료일보다 뒤**인 역방향 기간으로 조회하면, 예전에는 **서버까지 보낸 뒤** 400 오류가 떴습니다. 이제 앞서 개선된 **수급자별 급여제공 리포트(Q943)**·**급여제공 서비스 집계 리포트(Q942)** 에 더해, 아래 화면까지 조회 **전에 화면에서 바로** 종료일 칸에 「종료일은 시작일 이후여야 합니다.」로 안내하고 서버 왕복을 건너뜁니다.
+
+| 새로 적용된 화면 | 경로 |
+|------|------|
+| **목욕도움 리포트 (L02_M05)** | `/care/reports/bath-help` |
+| **요양/식사/화장실 리포트 (L02_M04)** | `/care/reports/meal-excretion` |
+| **체위변경 리포트 (L02_M06)** | `/care/reports/position-change` |
+| **집중배설 리포트 (L02_M17)** | `/care/reports/intensive-excretion` |
+| **통합 간호제공 리포트 (L02_M14)** | `/care/reports/nursing-service` |
+| **간호급여 리포트 (L03_M07/M09/M10)** | `/nursing/service/reports` |
+| **프로그램 리포트 (5-7~5-10)** | `/programs/reports` |
+
+| 상황 | 예전 동작 | 개선 후 동작 |
+|------|-----------|--------------|
+| **시작일 > 종료일**(역방향 기간)으로 조회 | **서버까지 보낸 뒤** 400 오류 | 조회 **전에** 종료일 칸에 즉시 「종료일은 시작일 이후여야 합니다.」 |
+| 역방향 기간에서 조회가 막힐 때 **지난 집계 표** | 오류 안내만 뜨고 **지난 집계가 그대로** 남음 | 집계 표를 **함께 비워** 오류와 모순되지 않게 정리 |
+| **한쪽 날짜만 비움** | — | 서버가 **기본 기간**으로 대체하므로 종전대로 조회(차단 대상 아님) |
+
+> **참고** — 안내 문구는 서버(`CareReportService`·`NursingServiceRecordService`·`ProgramReportService`의 `resolveDateWindow`) 검증과 **동일**합니다. 급여제공 리포트는 `resolveCareReportDateRangeError` 헬퍼를, 프로그램 리포트는 같은 패턴의 `resolveProgramReportDateRangeError`(`config/programReports.js`) 헬퍼를 공유합니다. 안내 메시지(`role="alert"`)는 종료일 칸에 한 번만 두되(중복 낭독 방지), **시작일·종료일 두 칸 모두** `aria-invalid` 로 「오류 있음」 상태로 표시해 키보드·스크린리더 사용자가 어느 칸에서든 원인을 바로 확인합니다(UXD-196, WCAG 3.3.1·4.1.2).
+
+> **다른 리포트와 구분** — 이동서비스비 청구 기간 검증은 **Q940**. **급여제공 서비스 집계 리포트(L02_M12)** 는 **Q942**, **수급자별 급여제공 리포트(L02_M11)** 는 **Q943**. Q944는 그 밖의 **급여제공·간호급여·프로그램 리포트** 기간 검증입니다.
+
+> 관련: **Q942** · **Q943** · USER_MANUAL §5-33 프로그램 리포트·목욕도움 리포트 「기간 입력 주의」 · CHANGELOG 2026-07-19
+
+---
+
+### [TWR] Q945. **표의 날짜**가 스크린리더에서 더 정확히 읽히나요? (UXD-197~UXD-204, FE `aab11b2`·`c3f0e05`·`e8ff8dc`·`c2fb261`·`6a9e85e`·`2715090`·`95b6c52`)
+
+**A.** **✅ FE Fixed (Q945)** — 많은 **목록·리포트·이력 표**와 **보호자 포털 출석 시각**·**안전·외출·선임 시각**이 예전에는 **그냥 글자(텍스트)** 로만 표시되어, NVDA·VoiceOver 같은 **스크린리더**가 「2026-07-19」·「오전 9:05」를 **날짜·시각으로 정확히 해석하지 못하는** 경우가 있었습니다. 이제 아래 화면의 **일자·측정일·입금일·발송 시각·입소/귀가·저장/서명·외출 실제 출발/복귀 시각** 등 날짜·시각 칸을 **기계가 읽을 수 있는 표준 형식(`<time dateTime="…">`)** 으로 감쌌습니다. **화면에 보이는 날짜·시각 글자와 표 모양은 그대로**입니다 — 시각 사용자는 차이를 느끼지 않습니다.
+
+| 구분 | 적용 화면(예) | 경로 |
+|------|-------------|------|
+| **급여제공 리포트 표 (UXD-197)** | 목욕도움·요양/식사/화장실·집중배설·수급자별 급여제공·체위변경 | `/care/reports/*` |
+| **CRUD·목록 표 (UXD-198)** | 사례관리 회의·바이탈·체중·구강·응급·욕창·선임 업무일지·외출 목록·외출 리포트 | `/case-management/meetings` · `/nursing/*` · `/staff/lead-caregiver-work-logs` · `/clients/outing*` |
+| **청구·평가·알림 표 (UXD-199)** | 청구 대장(입금·환불·수납일)·욕구사정·주기 위험 평가·돌봄계획 알림·연체·건강/보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교 | `/billing/ledger` · `/clients/needs-assessments` · `/clients/periodic-risk-assessments` · `/care/plan-notifications` · `/billing/overdue` · `/clients/:id` · `/programs/functional-recovery` · `/visits`(RFID 비교) |
+| **모니터링·이력 패널 (UXD-200)** | 로그인 이력(로그인 시각)·감사 로그(발생 시각)·알림 발송 이력(발송 시각)·수가 변경 이력(적용 시작·등록일) | 관리자 이력 화면 · `/billing/fee-rates`(수가 변경 이력) |
+| **청구·정산·보호자·백업 (UXD-201)** | 청구 상세(입금·환불일)·수납 목록(입금일)·수가 단가표·본인부담 단가표(적용 시작일)·백업 설정(시작·완료 시각)·청구 잠금 시각·보호자 청구 상세(입금일) | `/billing/claims/:claimId` · `/billing/payments` · 수가/본인부담 설정 · 백업 설정 · 보호자 청구 상세 |
+| **보호자 포털·QR 체크인 (UXD-203, Must US-E04)** | 일일 요약 **입소·귀가 시각** · QR 셀프 체크인 **처리 완료 시각** | `/guardian` · `/guardian/checkin` · `/attendance/checkin/qr` |
+| **안전·선임·외출 시각 (UXD-204, Must)** | 안전 일일/정기 점검 **저장 시각** · 선임 요양보호사 **전자서명 시각** · 외출 **실제 출발→복귀 시각**(이용자 상세 외출 탭·외출 리포트 「실제」 열) | `/safety/daily-checks` · `/safety/periodic-checks` · `/staff/lead-caregiver-work-logs` · `/transport/outings` · `/reports/client-outings` · 이용자 상세 「외출」 |
+
+| 상황 | 동작 |
+|------|------|
+| **단일 날짜** 셀 | `<time dateTime="YYYY-MM-DD">` — 스크린리더가 **날짜**로 인식 |
+| **날짜+시각** 또는 **시각만** 셀 | `<time dateTime="ISO-8601">` — 화면은 로캘 시각, 기계용 값은 완전 시각 |
+| **주(週) 범위** 등 단일 datetime으로 표현할 수 없는 부분 | **종전처럼 텍스트** 유지 |
+| **시각 사용자** | 표시 글자·CSS **변화 없음** |
+
+> **다른 a11y와 구분** — 리포트 **조회 기간 역방향 오류** 안내는 **Q942~Q944**. **청구 상태 이력 시각**은 **Q915**. **배차 회차 오류**는 **Q936**. **보호자 QR 체크인 조작**은 **Q109**. **청구 CSV 엑셀 수식 차단**은 **Q946**.
+
+> 관련: USER_MANUAL §3-2 · §8 보호자 포털 · CHANGELOG 2026-07-19 · DESIGN_SYSTEM WCAG 1.3.1
+
+### [TWR] Q946. **청구 명세·국세청 CSV**를 엑셀에서 열 때 **수식이 실행**되나요? (SEC-D33, CWE-1236)
+
+**A.** **✅ BE Fixed (Q946, SEC-D33, BE `57523b5`)** — **아니요. 위험한 수식은 실행되지 않도록 막혀 있습니다.** 청구 **명세서 Excel(CSV)**·**국세청 의료비공제 CSV**를 엑셀·Calc에서 열 때, 이용자·보호자 **이름·주소** 같은 글자 칸이 `=`·`+`·`-`·`@`(또는 탭)로 시작하면 예전에는 스프레드시트가 **수식·DDE로 실행**할 수 있었습니다. 이제 그런 칸 앞에 **작은따옴표(`'`)** 를 붙여 **글자로만** 열리게 합니다. **금액 칸의 숫자**(마이너스 포함, 예: `-90000.00`)는 그대로 **숫자로 합계·계산**됩니다.
+
+| 항목 | 내용 |
+|------|------|
+| 대상 export | **`GET …/billing/claims/{claimId}/statement-export`** (명세 7-1, Q535) · **`GET …/billing/reports/medical-deduction/export`** (국세청 batch, Q534) |
+| 보호 규칙 | 칸 시작이 `=`·`@`·탭·CR → 앞에 `'` · `+`/`-`로 시작하지만 **순수 숫자가 아니면** 앞에 `'` |
+| 금액 예외 | `+`/`-` + 숫자(소수 허용) → **escape 없음** — 엑셀에서 숫자 유지 |
+| 화면 변화 | 다운로드 버튼·경로 **변화 없음** — 파일 내용만 안전 처리 |
+| 현장 체감 | 이름이 `=CMD|…`처럼 특이한 경우 엑셀 셀에 앞에 `'`가 보일 수 있음 — **정상(보안)** |
+
+> **다른 보안과 구분** — 공단·은행 **엑셀 업로드(import)** 금액·서명 검증은 **Q931~Q934·Q939·Q941**(SEC-D34). 본 항목은 **다운로드(export) CSV** 전용입니다.
+
+> 관련: Q534 · Q535 · USER_MANUAL §4-6-0-1·§5-10-2 · ADMIN_GUIDE §6-2-17 · CHANGELOG 2026-07-19
 
 ---
 

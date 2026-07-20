@@ -1,0 +1,79 @@
+BNK-871 이지케어 역공학 2-4h — 주력 extract (crosswalk 근거)
+조사일: 2026-07-18T15:12Z
+================================================================
+
+[0] ogada git baseline (git 실측)
+- BE develop @4dcf60d (BNK-870 @ae1c6a1 → +1 commit
+  `test(v3/SEC-D34): lock RFID transmission excel parser validation fail-closed branches`)
+  · WT CLEAN · ahead 761 vs 598d108 · BE @Test strict 2382 (BNK-870 2379 → +3)
+- FE develop @b115ae0 (BNK-870 @8766331 → +1 commit
+  `fix(v1.2.1/transport): bound departure-round input to BE Integer max (id=2 form polish)`)
+  · WT CLEAN · ahead 16 (0/16) vs origin/test=b23711f · tester FF 대기
+- Route 133 · Page 106 · FE test 541 · BE Test 297(296+1) · @RestController 81(loose)
+- HTTP 442 (GET231/POST144/PATCH44/PUT13/DELETE10) · 31차 byte-exact IDENTICAL (BNK-836→871·endpoint 신설 0)
+- Flyway V1–V196 · 모듈 97.41% · merge gate 777 (FE 16 + BE 761·BE-heavy)
+
+[1] 이지케어 데모 셸 재실측 (./scripts/ezcare-demo-fetch.sh --menu-catalog)
+- login code=0000 (oCode=DEMO) · title "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+- 비로그인 /new.ez redirect stub: 70B `e1d52bd5` (역공학 금지 stub·carry)
+- demo shell: 138,099B md5 `4463b693` (committed `edc61d5d` → md5 DRIFT·동적 날짜/세션 콘텐츠 오실레이션·기능 구조 무변)
+- top-nav-item-V2.js: 25,470B md5 `95286775` ?20260428 = BYTE-IDENTICAL (BNK-864→871 carry)
+- menu catalog: module 10 · leaf 148 · unique PGID 59 = 콘텐츠 IDENTICAL (fetched_at timestamp만 변경)
+
+[2] 이지케어 ERP 10-모듈 nav (top-nav-item-V2.js 파싱 · byte-IDENTICAL carry)
+  1 직원        (worker-*)   : 검색/관리/등록·연간관리현황(연차/건강검진/직무교육/보수교육/교육이수)·서류작성현황·요보사상담일지·출퇴근부/근무일지·배상책임보험·코로나접종·앱초대/공지(→요보사)
+  2 수급자      (patient-*)  : 검색/관리/등록·정기욕구평가현황·서류작성현황(상태변화기록지/상담일지)·집계및현황·일일방문일정·본인부담금현금영수증(발행내역/정보관리)·변경사유조회
+  3 방문일정    (schedule-*) : 수급자-일정관리·관리자-일정관리·일정표출력&문자발송·★수급자일정표(제공기록지)+요양보호사일정표(근무현황표)=이중일정·연간서비스제공명단·방문현황(일일/주간/월간)·중증수당일정집계
+  4 RFID점검    (schedule-rfid/schedule-fix) : ★RFID태그내역 ↔ 공단계획 비교(rfid_compare.html)·일정확정(schedule-fix)
+  5 본인부담    (pAmt-*)     : 청구내역/명세서(전체합산/방문요양/방문목욕/방문간호)·납부내역(월간/연간/납부확인서)·미납내역(청구월별/수급자별누적)
+  6 직원급여    (wAllowance-*) : 급여명세서작성·연간급여&사회보험누계·퇴직금적립·인건비지급비율참고자료·급여기초자료설정(수당산정/사회보험/월급제수당)·목욕/간호건별수당
+  7 재무회계    (w4c-*)      : 통장내역조회/입력·검토요청답변·결의서·회계장부출력·추경/예산/결산보고·인증서재등록
+  8 세무/사회보험            : 원천세신고·퇴직소득세·근로소득원천징수부·취득상실현황/신고·연말정산
+  9 기관관리    (setting-/user-/mobile-) : 스케쥴·서식자료실·정보관리설정·이지케어이용료(customer-ezc_bill_list)·사용자관리/로그인기록·문자발신번호·자동이체신청서
+ 10 기관평가    (guide-*)    : 기관평가(평가서류작성/의무교육수료/평가매뉴얼자가진단)·운영매뉴얼(업무운영가이드/모니터링/지정갱신제/주요법령고시/노무자문)
+
+[3] ★★★ RFID점검 4.1 워크플로 verbatim (신규 증거 URL · FAQ rowid=21589)
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web (HTTP 200 · 15,971B · md5 `a5e2e48c`)
+verbatim:
+  "Q. 급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요."
+  "요양보호사가 RFID로 전송한 급여제공내역을 수급자에게 문자로 발송할 수 있습니다.(방문요양만 가능)"
+  "4. RFID점검 > 4.1 RFID태그내역 ↔ 공단계획 비교 > 급여제공내역(요양)전송"
+  "평가문항 29번: 급여제공기록지 RFID 전송분은 수급자에게 월 1회이상 제공하셔야 합니다."
+  "4. RFID점검 > 4.1 RFID태그내역 ↔ 공단계획 비교 > 공단계획 ↔ 태그비교 결과 에..."
+grep: RFID 8 · 공단계획 3 · 태그내역 2 · 비교 3 · 업로드 1 (일정확정 0 · 엑셀 0)
+
+→ 규제 드라이버: 평가문항 29번(급여제공기록지 RFID 전송분 월 1회 이상 수급자 제공) = 공단 기관평가 지표.
+→ 이지케어 = RFID태그내역(요보사 전송) ↔ 공단계획(계획일정) 2-file 대사 후 급여제공내역 문자발송.
+
+[4] ★★★ ogada 1:1 대응 실측 (RFID 태그내역 ↔ 공단계획 비교 = SUPERIOR)
+- FE: src/frontend/src/components/visits/VisitRfidDiffComparePanel.jsx
+      (planFile=공단계획 + rfidFile=RFID태그내역 이중엑셀 업로드 → compareVisitsRfidApi)
+      + services.js compareVisitsRfidApi + faq21824Lifecycle.js
+- BE: visits/domain/VisitService.java · VisitRfidDiffMatcher.java · RfidTransmissionExcelParser.java
+      · VisitRfidDiffCodes.java · api/VisitController.java · VisitRfidDiffCompareResponse.java · VisitRfidDiffRowResponse.java
+- ★ BNK-871 BE 착지축: @4dcf60d `RfidTransmissionExcelParser` 검증 분기 fail-closed 회귀 lock
+      (헤더 없음/필수 컬럼 없음/데이터행 0 = 3-branch·+3 @Test) = SEC-D34 계보 「4-parser 대칭」
+      (NHIS·caregiver·bank·RFID transmission) 완성 = 이지케어 RFID 4.1 워크플로 대응 parser 하드닝.
+- ★ SUPERIOR: ogada는 이중엑셀 업로드 전 매직바이트 검증(SEC-D34 FE 5-validator + BE 5-parser corrupt/empty/missing fail-closed)
+      → 이지케어 [FAQ] 파일 무결성(매직바이트/시그니처/위조/corrupt-body/0바이트) verbatim = 0 (5-cycle carry) → 경쟁 4종 유일 파일 무결성 SUPERIOR.
+
+[5] 이지케어 FAQ·home live 재실측
+- FAQ: https://ezcare.easyms.co.kr/help/faq.ez · 200 · 80,057B · md5 `fb294212`
+       (BNK-870 `be18ae70`/80,057B → size IDENTICAL·md5 오실레이션·rowid 233 앵커 STABLE)
+       파일 무결성 verbatim: 매직 0·시그니처 0·위조 0·corrupt 0·매직바이트 0·0바이트 0·PK 0 = **5-cycle carry**(BNK-857/859/864/870/871)
+- home: https://ezcare.easyms.co.kr/ · 200 · 69,122B · md5 `060a77df` (BNK-870 `9cd4ff0c`/69,213B → -91B·md5 drift)
+       data-count 5-지표 verbatim(전량 IDENTICAL):
+         53.2% 방문요양 ERP 시장점유율
+         9,298개 이지케어 이용기관
+         4,675개 재무회계 대행 이용기관   ← STABLE 4-cycle(BNK-778→854→870→871)
+         2,353억 원 월 공단 청구 처리
+         1,820억 원 종사자 급여 처리
+
+[6] planner 액션 아이템
+(1) REQUIREMENTS §이동서비스/§RFID: 「RFID태그내역 ↔ 공단계획 이중엑셀 비교 = 평가문항 29번(월 1회 RFID 전송분 제공) 규제 대응」 명문화 — 이지케어 4.1 워크플로 verbatim 대칭 근거 확보.
+(2) REQUIREMENTS §보안/§PIPA: SEC-D34 「4-parser 대칭 fail-closed(NHIS·caregiver·bank·RFID transmission) 완성」 + 「이중엑셀 pre-upload 매직바이트 검증」 = 경쟁 4종 유일 파일 무결성 SUPERIOR 명시.
+(3) 마케팅 카피: 「RFID 태그내역과 공단계획을 올리기 전에 파일 위·변조까지 검사 — 이지케어 대비 유일 파일 무결성 방어」 · 「평가문항 29번 RFID 월 1회 제공 자동 대사」.
+(4) tester FF merge gate 777 carry (BE 761 + FE 16·BE-heavy) → id=2 form-polish 축적 test 이관 흡수.
+(5) 신규 진성갭 0 · closed band 재오픈 0 · KPI promote 0 · 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+
+다음 조사 우선순위: 4-6h 엔젤·롱텀·law.go.kr 규제 백본 8-URL 재실측 + longterm 오실레이션 추적.

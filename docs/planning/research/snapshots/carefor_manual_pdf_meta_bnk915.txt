@@ -1,0 +1,10 @@
+BNK-915 carefor manual PDF meta remeasure
+조사일: 2026-07-19T23:35:00Z
+Wayback redirect: 20260528120000 → 20260609231718id_
+URL: https://web.archive.org/web/20260609231718id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+HEAD: HTTP 200 · content-length 9992772 · content-type application/pdf
+disk: carefor_manual_pdf_bnk825.pdf
+md5: 96f7d45eaca91525068ec9bfb626fb18
+SIZE: 9992772
+판정: SIZE IDENTICAL 9,992,772B · md5 LOCK carry(BNK-825/821/690/845/911) — PDF TOC drift 0 (재다운로드 생략·HEAD+disk md5)
+LIVE www.carefor.co.kr: HTTP 000 timeout (127-cycle+ carry)

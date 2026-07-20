@@ -1,0 +1,192 @@
+# BNK-882 · 엔젤·롱텀·규제 4-6h 교차검증 (2026-07-18T23:15:00Z)
+
+## 0. 이전 사이클 대비
+- BNK-881(케어포 역공학 0-2h · 2026-07-18T22:35Z) → ~40분 후.
+- **rotation**: 엔젤·롱텀·규제 4-6h — silverangel LCMS 서비스 페이지 재실측 + 규제 백본 4-URL 재실측 + ogada BE/FE develop HEAD 재실측.
+- **초점**: (1) silverangel LCMS `businessSupportService.do` 페이지의 **35-item 도입 후 관리 checklist + 32-item 업무지원 교육 curriculum** leaf-level 첫 크로스워크 (이전 사이클은 5-tab 라벨만 언급) · (2) 규제 백본 4-URL 재실측 · (3) FE `@cf360d7` (L02_M12 form polish 신규) 실측 · (4) SEC-D34/form-polish 계보 확산 확인.
+
+## 1. ogada baseline (git 실측 · BNK-881 → BE zero advance / FE +1 commit)
+- BE `@1d067d9` (BNK-881 **동일 HEAD·zero advance**·coder develop 신규 커밋 0·WT CLEAN·ahead **769** vs `598d108`·BE @Test strict **2396** IDENTICAL·subject `fix(v3/SEC-D34): strip won sign from excel import amount cells instead of dropping row`).
+- FE `@cf360d7` (BNK-881 `@ab9ef17` → **+1 commit**·`fix(v1.2.1/care-reports): pre-block reversed date range before service-summary round-trip (L02_M12 form polish)`·`ServiceSummaryReportPage` 시작일>종료일 역방향 조회 기간을 서버 왕복 전 FE `resolveCareReportDateRangeError` (`config/careReports.js` +40) 신규 helper 로 사전 차단 → 종료일 필드 `error` 로 귀속·직전 유효 기간 rows 초기화(오류 배너-표 정합)·BE `CareReportService.resolveDateWindow` 문구 verbatim lockstep(「종료일은 시작일 이후여야 합니다.」)·useEffect load 시 focus hijack 없음·`isCareReportDateRangeInOrder` unit test +14·`ServiceSummaryReportPage.test.jsx` in-place +42·4 files +137/-3·신규 파일 0·ahead **26**(0/26) vs origin/test=`b23711f`·tester FF 대기).
+
+## 2. git 실측 KPI (@1d067d9 / @cf360d7)
+| KPI | 값 | BNK-881 대비 | 근거 |
+|---|---|---|---|
+| FE Route | **133** (`<Route\b` 132 + `<Routes>` 1) | IDENTICAL (product route 무변·form polish only) | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| FE Page.jsx (prod) | **106** | IDENTICAL | `git ls-tree develop '*Page.jsx'` |
+| FE test files | **542** (227 .test.js + 315 .test.jsx) | +1 (신규 `careReports.test.js`·in-place +42) | `git ls-tree develop '*.test.js*'` |
+| BE @Test (strict) | **2396** | IDENTICAL (BE zero advance) | `git grep -E '^\s*@Test\b'` |
+| BE Test.java files | **296** (+1 Tests.java = 297) | IDENTICAL | `git ls-tree develop '*Test.java'` |
+| BE @RestController (loose) | **81** | IDENTICAL | `git grep -l '@RestController'` |
+| BE HTTP mapping | **442** (GET231/POST144/PATCH44/PUT13/DELETE10) | **byte/count-exact IDENTICAL 42차** (BNK-836→882·endpoint 신설 0) | `git grep -hoE '@(Get\|Post\|Put\|Delete\|Patch)Mapping'` |
+| Flyway | **V1–V196** (196 files·신규 0) | IDENTICAL | `git ls-tree db/migration` |
+| 모듈 커버 KPI | **97.41%** (28.25/29·진성갭 0) | IDENTICAL | `competitorModuleCoverage.js` |
+| merge gate | **795** (FE 26 + BE 769·BE-heavy) | +1 (FE +1) | `git rev-list --count origin/test..develop` |
+
+## 3. FE +1 commit — L02_M12 리포트 form-polish 신규 계보 (기존 이동서비스비 축의 리포트 도메인 확장)
+
+**diff (`ab9ef17..cf360d7`)**: 4 files +137/-3 (`config/careReports.js` +40 + `config/careReports.test.js` +34 + `pages/ServiceSummaryReportPage.jsx` +24/-3 + `pages/ServiceSummaryReportPage.test.jsx` +42).
+
+**문제**: `ServiceSummaryReportPage.load` 는 시작일>종료일 역방향 조회 기간을 서버 왕복(400) 후 상단 Alert 로만 노출 → 결과 표는 직전 유효 기간의 stale rows 그대로 → 오류 배너와 모순되던 정합성 결함(BNK-879 TransportServiceFeePanel 계보와 동일 패턴).
+
+**조치**:
+- 신규 helper `config/careReports.js` — `CARE_REPORT_DATE_RANGE_INVALID_MESSAGE` verbatim("종료일은 시작일 이후여야 합니다.") · `isCareReportDateRangeInOrder` · `resolveCareReportDateRangeError` (BE `CareReportService.resolveDateWindow` lockstep, ISO `YYYY-MM-DD` 사전식 문자열 비교, 결측은 서버가 기본 기간으로 대체하므로 검증 대상 아님).
+- `ServiceSummaryReportPage.load` — pre-block 분기에서 `setDateRangeError` + `setError("")` + `setReport({ rows: [] })` → 결과 표 EmptyState fallback·상단 API Alert 는 별도 유지·load 성공 시 clear.
+- Field render-prop 으로 `dateRangeError` 를 종료일 필드에 귀속(WCAG 3.3.1·필드 오류 라우팅 패턴 §117/§118 재사용).
+
+**id=2 이동서비스비 form-polish → L02_M12 리포트 form-polish 축 확산**:
+- 이동서비스비 축 계보(862/863/864/866/867/868/869/871/875/876/877/879/880/881) 에서 확립된 「FE 사전 검증 + BE 최종 검증 defense-in-depth + 거부된 조회 기간의 stale 데이터 즉시 초기화 + 필드 오류 라우팅」 패턴이 **L02_M12 리포트 도메인 첫 확산 착지**.
+- 신규 shared helper `resolveCareReportDateRangeError` = TransportServiceFee 계열 `resolveTransportServiceFeeDateRangeError` 형제 helper·`ServiceSummaryReportPage` 착지 후 다른 L02 리포트(`MealExcretionReport*Page`·`BathHelpReportPage`·`BasicVitalReportPage`·`PressureUlcerReportPage` 등) 로 확산 여지 남김.
+
+**경쟁 4종 대비 SUPERIOR**: 케어포 시설 셸 리포트 form-폴리시 근거 0·엔젤 리포트 화면 (본 사이클 businessSupport `보고서(관찰일지, 배변배뇨 달력, 목욕) 활용방법 지도` 라벨만·필드 검증 근거 0)·이지케어 데모 서비스 리포트 필드 검증 verbatim 0·롱텀 규제 문서만 = 리포트 폼 필드 오류 라우팅 유일 full-stack.
+
+## 4. ★★★ 신규 앵글 — silverangel `businessSupportService.do` LCMS 「도입 후 관리 · 업무지원 교육」 leaf-level 크로스워크 (첫 실측)
+
+**disk canonical**: `snapshots/silverangel_businessSupport_live_bnk882.html` md5 `a13cb5ac3c265d692ddfaadb9051f3d6`·75,878B → BNK-641/775/846/882 **4차 byte-IDENTICAL** carry. live [`https://www.silverangel.kr/newSilverangel/service/businessSupportService.do`](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do) HTTP 200·75,878B·재fetch (2026-07-18T23:16Z).
+
+**페이지 5-섹션 구조 (`<h2 class="sec_tit">업무지원서비스</h2>` 이하)**:
+1. 실시간 업무지도 — 묻고답하기 전담부서·카톡 1:1 상담·오픈톡 (본 페이지 verbatim 축은 이전 BNK-641/775 에서 라벨 캡처됨)
+2. **도입 후 관리** — 신규 leaf 35개 (오늘 첫 실측)
+3. **업무지원 교육** — 신규 leaf 32개 (오늘 첫 실측)
+4. 주요교육실적 — 분기 직무능력향상교육·지역 협회 교육 이력
+5. 엔젤시스템 사용후기 — 고객 testimonial
+
+### 4-1. 「도입 후 관리」 35-item checklist ↔ ogada 모듈 crosswalk (첫 실측)
+
+| # | silverangel 「도입 후 관리」 항목 verbatim | ogada 대응 (git 실측) | 판정 |
+|---|---|---|---|
+| 1 | 직원별 ID등록여부(서명 및 본인인증) | `/staff` + `StaffController` + JWT + `auth/*` | ✅ PARITY |
+| 2 | 직무별 권한관리 | RBAC 7역할 + `@PreAuthorize` + `permissions/*` | ✅ PARITY SUPERIOR |
+| 3 | 기록지 복사옵션 설정 | (건별 복사·유사데이터생성 축 부재) | △ P3「가정」 G-RECORD-COPY-OPTION |
+| 4 | 간호처치기록 작성여부 | `NursingCareRecord*` + `/care/nursing/*` | ✅ PARITY |
+| 5 | 업무별 시간설정 등록여부 | `WorkTimeConfig*` (스케줄) | △ 부분 |
+| 6 | 약 등록(투약방법, 기간 등) | `MedicationLedger*` + `/care/medication/*` | ✅ PARITY |
+| 7 | 건강관리기록부 작성여부 | `HealthRecord*` + `/care/health/*` | ✅ PARITY |
+| 8 | 프로그램 그룹 설정(그룹 설명) 및 매핑 | `ProgramGroup*` | ✅ PARITY |
+| 9 | 프로그램 계획서 등록여부(그룹별) | `ProgramSchedule*` | ✅ PARITY |
+| 10 | 프로그램일지 그룹선택여부 확인 | `programs/*` | ✅ PARITY |
+| 11 | 욕구사정 등록여부 | `ClientNeedsAssessment*` | ✅ PARITY SUPERIOR (2-축) |
+| 12 | 급여제공계획 등록(롱텀에서 다운로드 받아 업로드) | `ClientCarePlanForm*` + LTC upload | ✅ PARITY |
+| 13 | 기록지 큰화면 활용유도(소규모는 기록관리 유도) | (반응형 UI 자체는 있으나 「큰화면」 유도 온보딩 없음) | △ P4 UX 온보딩 축 |
+| 14 | **배변배뇨 QR 활용여부** | `IntensiveExcretionObservation*` (수기 CRUD) + QR literal **0-hit** | △ **P3「가정」 G-EXCRETION-QR** (수기 CRUD 는 PARITY·QR 스캔은 GAP) |
+| 15 | 관찰기록 작성여부 및 불러오기 활용 | `ObservationRecord*` | ✅ PARITY |
+| 16 | 체위변경기록여부 | `care/turning/*` | ✅ PARITY |
+| 17 | 목욕서비스제공기록 | `BathingScheduleService` + `BathHelpReportResponse` | ✅ PARITY |
+| 18 | 작성자 일괄등록기능사용여부 | (일괄 등록 helper 부재·개별 CRUD) | △ P3 벌크 편의 |
+| 19 | 기능회복훈련계획내용 점검 | `FunctionalRecoveryIndicatorCatalog` + `care/functional-recovery/*` | ✅ PARITY |
+| 20 | 물리(작업)치료 기록여부(시간 필수) | (`onboardingsupport` 카탈로그만 인지·전용 CRUD 부재) | △ P3 「가정」 G-PT-OT-LOG |
+| 21 | 1차 점검 시 지도내용 완수여부 확인 | (외부 컨설팅 축 — SaaS out-of-scope) | N/A silverangel 컨설팅 상품 |
+| 22 | 계획서 비대면 발송 후 유선상담여부 | `NotificationDispatchHistory` + `phone-consultation/*` | ✅ PARITY |
+| 23 | 집중배설관찰 등록여부 | `IntensiveExcretionObservationService` + `StoolConsistency` | ✅ PARITY |
+| 24 | 사례관리회의 등록 | `CaseManagementController` + `CaseManagementMeetingResponse` | ✅ PARITY |
+| 25 | 상담일지 내용 점검(단순공지 X) | 특이사항·모니터링·고충 3-축 (`Client Consultation Log P3 candidate` carry BNK-881) | △ P3 carry |
+| 26 | 프로그램계획 달력 활용(연필 아이콘·유사데이터생성) | `programs/*` calendar view (유사데이터생성 축 부재) | △ 부분 P4 편의 |
+| 27 | 보고서(관찰일지, 배변배뇨 달력, 목욕) 활용방법 지도 | `/care/reports/*` 4-report | ✅ PARITY |
+| 28 | 간호처치 시간기록 자동생성 활용여부 확인 | 수기 CRUD (자동 생성 축 부재) | △ P4 자동 timing |
+| 29 | 처방약 연장방법(합리적 기간·2999-12-31 X) | `MedicationLedger` (연장 helper 부재) | △ P3 편의 |
+| 30 | 욕창위험도평가 후 사후관리 확인(고위험군/위험군) | `PressureUlcerRiskAssessment*` + `care/pressure-ulcer/reports` | ✅ PARITY |
+| 31 | 작업치료일지 전체 기능 안내 | (2-way with #20 · P3 G-PT-OT-LOG) | △ carry |
+| 32 | 물리(작업)치료일지 특정일 복사기능 안내 | (2-way with #3 · #20 · 복사 편의 P3) | △ carry |
+| 33 | 기관운영 메뉴 인지여부 확인 | `/dashboard` + `/organizations/*` + `FacilityNoticeService` | ✅ PARITY |
+| 34 | 묻고 답하기 작성 건 수 확인 후 안내(작성요령 지도) | Q&A 게시판 축 부재 (Channel.io 대체 없음) | △ P3 인바운드 지원 |
+| 35 | 기록지 점검·욕구사정계획평가일정·KPI·계획평가달력 활용여부 확인 | `ProvisionResultEvaluationService` + `/dashboard`(KPI) + calendar view | ✅ PARITY |
+
+**총합 (35/35 전수)**: ✅ **19 PARITY** + △ **13 PARTIAL/편의** + N/A **1**(silverangel 컨설팅 상품) + P3 「가정」 candidate 승격: **G-EXCRETION-QR** (#14·수기 CRUD 는 PARITY·QR 스캔은 GAP·SaaS out-of-scope 승격 아님·rules §17 「과대구축 회피」).
+
+### 4-2. 「업무지원 교육」 32-item 커리큘럼 ↔ ogada 온보딩 서비스 크로스워크 (첫 실측)
+
+silverangel 은 **paid 교육 커리큘럼** (32-item · 대상 5분류·주제 15개·연계 12개) 을 별도 상품으로 제공. ogada 는 **비대면 self-serve SaaS** 로 이 축의 상당 부분을 문서·UI 로 흡수:
+
+| 축 | silverangel 교육 항목 요약 | ogada 대응 (git 실측) | 판정 |
+|---|---|---|---|
+| 대상 | 요양기관 신규 입사자·업무 처음·엔젤시스템 처음·직군별·관리자 | `/onboarding/*` + 사용자 매뉴얼 (`docs/ops/USER_MANUAL.md`) | ✅ PARITY 문서화 |
+| 주제 1 | 엔젤시스템 주요 기능·특징 | `docs/ops/USER_MANUAL.md` §개요 | ✅ PARITY |
+| 주제 2 | 신규 입소 시 엔젤시스템 기록 | `ClientBenefitContractPanel` + `ClientCarePlanForm` + FAQ21824 lifecycle | ✅ PARITY SUPERIOR |
+| 주제 3 | 욕구사정의 파트별 엔젤시스템 기록 | `ClientNeedsAssessment` (2-축 SUPERSET) | ✅ PARITY SUPERIOR |
+| 주제 4 | 엔젤시스템에서의 급여제공계획 수립 | `ClientCarePlanForm` | ✅ PARITY |
+| 주제 5 | 파트별 급여 제공과 기록 방법 | `CareProvisionRecordPanel` + 7종 SUPERSET | ✅ PARITY SUPERIOR |
+| 주제 6 | 계획대로 서비스 제공하지 못할 경우 조치 | `MonitoringItemCatalog` + Phone Consultation | ✅ PARITY |
+| 주제 7 | 급여제공평가 방법 | `ProvisionResultEvaluationService` + `ProvisionResultEvaluationPage` | ✅ PARITY |
+| 주제 8 | 프로그램의 모든 것(그룹 분류·**뱅크**·계획·일지) | 그룹·계획·일지 ✅ / **프로그램 뱅크 (템플릿 라이브러리) 0-hit** | △ **P3「가정」 G-PROGRAM-BANK** |
+| 주제 9 | 사례회의와 일지 기록 | `CaseManagementMeeting*` | ✅ PARITY |
+| 주제 10 | 비정기 업무(외출·외박·외래진료·입원·신체제재·특별 침실) | `ClientOuting*` (외출 lifecycle) + 나머지는 특이사항으로 흡수 | △ 부분 PARITY |
+| 주제 11 | 퇴소 시 엔젤시스템 기록 | Client 라이프사이클 ENDED state | ✅ PARITY |
+| 주제 12 | **요양기관 기록을 엔젤시스템이 분석하여 제공하는 핵심성과지표(KPI) 보고서 이해** | `/dashboard` (요약)·전용 「KPI 보고서」 페이지 **0-hit** | △ **P3「가정」 G-KPI-REPORT** |
+| 방식 1 | 엔젤시스템에 접속하여 화면에 직접 기록하는 방법 설명 (라이브 웨비나) | (라이브 웨비나 축 부재·docs/ 만) | △ P4 컨설팅 축 |
+| 방식 2 | 교육화면 분할하여 교육자료와 엔젤시스템 화면 동시 제공 | (분할 튜토리얼 없음) | △ P4 UX 온보딩 |
+| 방식 3 | 관련법 및 평가매뉴얼 등 객관적인 기준 숙지 여부 확인 | (평가 매뉴얼 링크만·자동 확인 축 부재) | △ P4 컴플라이언스 UX |
+| 방식 4 | 개별 기관의 자료를 기준으로 교육 | (기관별 맞춤 교육 축 부재 = 컨설팅 상품) | N/A 컨설팅 상품 |
+| **방식 5** | **교육자료 파일 제공** | (자료실/훈련자료 라이브러리 0-hit·homeNewsletter 첨부만) | △ **P4「가정」 G-TRAINING-MATERIALS** |
+
+**총합**: ✅ **11 PARITY** (일부 SUPERIOR) + △ **6 PARTIAL/편의 (P3~P4)** + N/A **2** (컨설팅 상품·기관 맞춤 교육) + 신규 P3 「가정」 candidate **2건** (G-PROGRAM-BANK, G-KPI-REPORT) + 신규 P4 「가정」 candidate **1건** (G-TRAINING-MATERIALS).
+
+### 4-3. 판정 요약 — 신규 P3/P4「가정」 candidate 3-5종 (진성갭 승격 아님·rules §11·§17)
+
+| ID | 라벨 | 근거 verbatim (silverangel) | ogada literal grep | 승격 판정 |
+|---|---|---|---|---|
+| **G-EXCRETION-QR** | 배변배뇨 QR 활용 (침상 QR 태그 스캔 → 기록 진입 폼) | 도입 후 관리 #14 「배변배뇨 QR 활용여부」 | `IntensiveExcretion*` 수기 CRUD ✅ / QR literal 0-hit BE+FE | ❌ **P3「가정」 carry** (수기 CRUD PARITY·SaaS MVP out-of-scope·rules §17) |
+| **G-PROGRAM-BANK** | 프로그램 뱅크 (템플릿 라이브러리·SHARED across 기관) | 업무지원 교육 주제 8 「프로그램의 모든 것 (그룹 분류·**뱅크**·계획·일지)」 | `programBank\|ProgramTemplate\|SharedProgram` 0-hit BE+FE | ❌ **P3「가정」 carry** (그룹·계획·일지는 PARITY·공유 템플릿 라이브러리는 별개 기능·rules §11·§17) |
+| **G-KPI-REPORT** | KPI 리포트 (엔젤시스템 데이터를 분석하여 전용 KPI 리포트 생성·소비자용) | 업무지원 교육 주제 12 「요양기관 기록을 엔젤시스템이 분석하여 제공하는 **핵심성과지표(KPI) 보고서**」 | `KpiReport\|kpi.?report\|coreKpi` 0-hit FE (dashboard 는 있음·전용 KPI 페이지 없음) | ❌ **P3「가정」 carry** (dashboard PARITY·전용 KPI 페이지는 P3·rules §11·§17) |
+| **G-TRAINING-MATERIALS** | 교육자료 파일 라이브러리 (사용자 매뉴얼·워크북 등 다운로드) | 업무지원 교육 방식 5 「교육자료 파일 제공」 | `자료실\|training.?material\|resource.?library` 0-hit(homeNewsletter 첨부만 존재) | ❌ **P4「가정」 carry** (`docs/ops/USER_MANUAL.md` PARITY·In-app 라이브러리는 P4·rules §17) |
+| **G-RECORD-COPY-OPTION** | 기록지 복사옵션 (특정일 복사·유사데이터생성) | 도입 후 관리 #3 「기록지 복사옵션 설정」 + #26 「유사데이터생성」 + #32 「특정일 복사기능」 | 개별 CRUD ✅ / 「복사」/`copy record`/유사데이터생성 helper 0-hit FE | ❌ **P3「가정」 carry** (기록 CRUD PARITY·편의 helper 는 P3·rules §17) |
+
+**진성갭 승격 판정**: **0건**. 5종 모두 「가정」 candidate carry — **ogada MVP out-of-scope**(SaaS 정합·rules §11 「요청된 작업 범위」·§17 「과대구축 회피」). silverangel 이 **paid 컨설팅 상품** 으로 이 축을 유료 제공한다는 사실 = ogada 는 self-serve SaaS 지향이므로 컨설팅 축은 P3~P4 로 carry.
+
+### 4-4. silverangel 「업무지원서비스」 = **paid consulting 상품 축** 실체 확인
+
+「업무지원서비스」 페이지는 silverangel 이 도입 기관을 대상으로 **paid consulting** 을 판매한다는 실체 확인:
+- **실시간 업무지도**: 묻고답하기 전담부서·1:1 카톡 상담·오픈톡 (`open.kakao.com/o/gsixWHJ` verbatim BNK 이전 기록) → 컨설팅형 인바운드 지원.
+- **도입 후 관리**: 35-item checklist 를 컨설턴트가 순회 점검 (1차 → 2차 → …) → **on-site 지도** 상품.
+- **업무지원 교육**: 32-item 커리큘럼을 대상별·주제별·방식별 로 진행 → **오프라인/온라인 교육** 상품.
+- **주요교육실적**: 분기 직무능력향상교육·지역 협회 교육 이력 → 실적 노출로 상품성 강화.
+
+**ogada 대비 SUPERIOR / INFERIOR 축 정리**:
+- **SUPERIOR (ogada 우위)**: SaaS 자체 서비스 완결도(감사 트리거 · JWT/RBAC · 다지점 · SEC-D34 5-축 · form-polish 20차+ 계보) · 컨설팅 없이 self-serve 로 도입 가능.
+- **INFERIOR (silverangel 우위)**: 도입 후 컨설팅 밀도 · 대면 교육 커리큘럼 · 인바운드 카톡/오픈톡 상담 SLA.
+- **차별화 제안**: ogada 는 **컨설팅 없이 self-serve 도입 가능** 을 마케팅 축으로 사용. 필요 시 「가이드 온보딩」 (docs/ops/USER_MANUAL.md 기반·`/onboarding/*` route 활용) 을 P3 optional add-on 으로 후일 검토(rules §17 과대구축 회피).
+
+## 5. 규제 백본 4-URL 재실측 zero substantive drift
+
+- **[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)** 제34조 live HTTP 200·**7,572B**·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **604차 byte-IDENTICAL**(BNK-881 603차 → +1). verbatim grep: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·수급자가 부담(1)·이동서비스 일지(1) ↔ ogada `TransportServiceFeeParityCatalog`(RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY)+`TransportServiceLog*`(전자 일지+감사 이력) full-stack 1:1 SUPERIOR·상수 재조정 불요·id=2 0.85 carry.
+- **[silverangel LCMS home](https://www.silverangel.kr/)** live HTTP 200·**101,220B**·md5 `6638283511f0e1e9e36d2c89324e4d67` = **8차 byte-IDENTICAL**(BNK-843→882). **[silverangel system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do)** live HTTP 200·**45,601B**·md5 `c950719098eecaf748bbdeea5deb93da` = **8차 byte-IDENTICAL**(BNK-859→882·이동서비스/배차/GPS/RFID/차량 0-hit 재확인·엔젤 자체 배차 부재 carry).
+- **[silverangel businessSupportService](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do)** live HTTP 200·**75,878B**·md5 `a13cb5ac3c265d692ddfaadb9051f3d6` = **4차 byte-IDENTICAL**(BNK-641/775/846/882) — 본 사이클 첫 leaf-level 크로스워크(§4-1~4-4).
+- **[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500)** live HTTP 200·**89,162B**·md5 `5618573525680a407975cbbafe93ccd1` = **lean-shell 5연속**(BNK-870→880→881→882·`var s16;` ±9B 오실레이션 signal only·BNK-872 근본 원인 확정 이후 재측정 불요 정책 유지·본문 규제 콘텐츠 IDENTICAL·기능 갭 아님).
+- **[law 2025-247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)** live HTTP 200·**78,450B**·raw md5 `9e48a0549a8b8a5047a09ea50bbdb5a1`(DRIFT vs BNK-881 `bf9f8d4c`)·strip `Time=[0-9]*` 후 semantic md5 **`a913639ab52293e3571cfe7e3ca35097`** = **12-cycle strip IDENTICAL**(BNK-859/861/862/865/866/868/870/875/880/881/882·cache-buster only·canonical URL `admRulSeq=2100000271110` 고정·verbatim `장기요양급여`(3)·`2025-247`(4) 무변).
+- **carefor func.php** — 재측정 skip(BNK-881 timeout 30s·111-cycle+ carry·disk canonical `6226e6eb` LOCK·「미확인」 유지).
+
+## 6. audit-first HTTP 442 posture 42차 byte/count-exact IDENTICAL
+
+`@1d067d9` grep: GET **231**(52.3%)·POST **144**(32.6%)·PATCH **44**(10.0%)·PUT **13**(2.9%)·DELETE **10**(2.3%) = **442**·@RestController 81·controller당 5.46 = BNK-836→882 **42차** 연속 IDENTICAL. FE +1(L02_M12 form-polish test-only) 후에도 endpoint 신설 **0**·물리 삭제 API 신설 금지·PATCH>PUT 부분정정 우선·DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21 정합) = 경쟁 4종 유일 audit-first API 설계 SUPERIOR.
+
+## 7. planner 액션 아이템 (갭 우선순위 동결)
+
+1. **REQUIREMENTS §M1·§L02 리포트 form-polish 계보 확산 명시 권고** — 이동서비스비 축 20차+ 계보 → L02_M12 리포트 도메인 첫 확산 착지(§3). `resolveCareReportDateRangeError` shared helper 로 다른 L02 리포트(BathHelp/MealExcretion/BasicVital/PressureUlcer) 확산 여지 남김 (진성갭 아님·coder 후일 결정).
+2. **silverangel「업무지원서비스」 = paid consulting 상품 축 실체 명시** — REQUIREMENTS §벤치마킹·§비즈니스모델 「silverangel 은 SaaS + paid consulting bundling 모델·ogada 는 SaaS self-serve 모델 지향(컨설팅 없이 self-serve 도입 가능 마케팅 축)」 명시 권고(§4-4).
+3. **신규 P3/P4 「가정」 candidate 5종 carry**(진성갭 승격 아님·rules §11·§17):
+   - **G-EXCRETION-QR** (도입 후 관리 #14 배변배뇨 QR 활용) — 수기 CRUD 는 PARITY·QR 스캔은 GAP·「미확인」 유지
+   - **G-PROGRAM-BANK** (업무지원 교육 주제 8 프로그램 뱅크) — 그룹/계획/일지는 PARITY·공유 템플릿 라이브러리는 별개 기능·「미확인」 유지
+   - **G-KPI-REPORT** (업무지원 교육 주제 12 KPI 보고서) — dashboard PARITY·전용 「기록 분석 KPI 리포트」 페이지는 P3·「미확인」 유지
+   - **G-TRAINING-MATERIALS** (업무지원 교육 방식 5 교육자료 파일 제공) — docs/ops/USER_MANUAL.md 는 PARITY·in-app 라이브러리는 P4·「미확인」 유지
+   - **G-RECORD-COPY-OPTION** (도입 후 관리 #3+#26+#32 기록지 복사옵션) — 기록 CRUD PARITY·편의 helper 는 P3·「미확인」 유지
+4. **NHIS #44 §34조 604차 IDENTICAL** ↔ Transport full-stack 1:1 carry(상수 재조정 불요).
+5. **law 2025-247 semantic 12-cycle strip IDENTICAL** — canonical URL 고정 유지·규제 상수·앵커 재조정 불요.
+6. **longterm 502 lean-shell 5연속** — `var s16;` 오실레이션 signal only·본문 규제 콘텐츠 IDENTICAL·규제 상수·앵커 재조정 불요.
+7. **audit-first 442 42차 IDENTICAL** — REQUIREMENTS §감사·§PIPA 「물리 삭제 API 신설 금지·PATCH partial + soft-delete 우선」 posture 42-cycle 동결 명시.
+8. **tester FF merge gate 795 carry**(BE 769+FE 26·BE-heavy·신규 마이그레이션 0) — FE L02_M12 form-polish test 이관 흡수 권고.
+9. **SUPERIOR 항목 마케팅 카피** 후보:
+   - 「컨설팅 없이 self-serve 로 도입 가능한 SaaS — 35-item 도입 후 checklist 를 UI 로 자동 안내」
+   - 「리포트 폼 오류 시 잘못된 조회 기간의 이전 결과까지 즉시 정리 — 이동서비스비→L02 리포트 계보 확산」
+   - 「엑셀 import 원화 기호 ₩ 접두 자동 정규화 — SEC-D34 5-축 파일 내성 (통화접미사·공백그룹·일접미사·test회귀·원화기호) SUPERIOR」
+10. **신규 진성갭 0**·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지.
+
+## 8. per-cycle minimum 4종 충족 (BNK-882)
+
+1. **신규 증거 URL 1+ (또는 기존 URL 재실측 + 변동 기록)**: silverangel `businessSupportService.do` (4차 byte-IDENTICAL·첫 leaf-level 크로스워크 실측·§4-1~4-4) · NHIS #44 (603→604차 재실측·byte-IDENTICAL) · silverangel LCMS home+system_feature (7→8차 byte-IDENTICAL) · longterm 502 (lean 5-cycle carry) · law 2025-247 (11→12-cycle strip IDENTICAL) — **6 URL 재실측** (신규 첫 leaf 크로스워크 1개).
+2. **메뉴/필드/워크플로 상세 1블록+**: silverangel LCMS `businessSupportService.do` 35-item 「도입 후 관리」 checklist + 32-item 「업무지원 교육」 커리큘럼 → ogada Route 1:1 크로스워크 (§4-1~4-3 · 19✅+13△+1N/A / 11✅+6△+2N/A + 신규 P3/P4「가정」 candidate 5종).
+3. **COMPETITOR_MATRIX 1행+ @HEAD**: BE `@1d067d9` (zero advance) · FE `@cf360d7` 갱신 + 신규 앵글 표 신규 추가.
+4. **BENCHMARK_REPORT §신규 소절 1건+**: §882 신규 8-절(§882-1~8).
+
+**가정 번복 0** · **결정 번복 0** · **KPI promote 0** · **미확인 승격 0** · **P0~P3 신규 승격 0** · 진성갭 0.
+
+---
+[BNK] doc:owner=BNK doc:audience=PLN updated=2026-07-18T23:15:00Z

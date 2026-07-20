@@ -1,0 +1,89 @@
+BNK-859 cross-verification × gap priority refresh (2026-07-18T06:34:00Z)
+rotation: 교차검증·갭 우선순위 8h+
+
+## 1. 규제·경쟁 백본 8-URL live 재실측 (BNK-859)
+
+| # | URL | HTTP | Size(B) | md5 | vs BNK-858 |
+|---|-----|------|---------|------|------------|
+| 1 | NHIS #44 (jo44) https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | 200 | 7,572 | c886ff1f | **586차 byte-IDENTICAL** (BNK-858 585차 → +1) |
+| 2 | silverangel system_feature https://www.silverangel.kr/silverangel/angelsystem/system_feature.do | 200 | 45,601 | c9507190 | byte-IDENTICAL |
+| 3 | silverangel extraService https://www.silverangel.kr/newSilverangel/service/extraService.do | 200 | 81,637 | f9c5d877 | byte-IDENTICAL (CMS 3-method 30,000/250/300원 LOCK) |
+| 4 | silverangel feeService https://www.silverangel.kr/newSilverangel/service/feeService.do | 200 | 44,513 | eab352a8 | byte-IDENTICAL |
+| 5 | silverangel home https://www.silverangel.kr/ | 200 | 101,220 | 66382835 | byte-IDENTICAL |
+| 6 | longterm 502 https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500 | 200 | 89,162 | 56185735 | **-9B lean-shell 재출현** (BNK-842/852 lean = BNK-859 IDENTICAL·BNK-843/851/858 full-shell 89,171B와 ±9B oscillation 「양방향」carry) |
+| 7 | longterm 610 https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650 | 200 | 88,399 | fad1ce61 | **-9B lean-shell 재출현** (BNK-842/852 lean IDENTICAL·`var s16;` 오실레이션 「양방향」carry) |
+| 8 | law 2025-247 https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110 | 200 | 78,450 | raw:5456330c / strip(Time+etaHash+nonce+token+mrsCd+_wa):**a913639a** | **semantic IDENTICAL** (raw drift = 순수 캐시버스터·BNK-835/837/851/858 strip a913639a LOCK) |
+
+**net drift**: 실체 콘텐츠 변동 0. lean-shell ±9B는 BNK-842/852 확정 「양방향」 오실레이션. law raw drift는 순수 캐시버스터. 규제 상수(단기보호 74,060·통합재가 월 10만·이동서비스 러-1~4·CMS 30,000/250/300) 재조정 불요.
+
+## 2. 이지케어 DRIFT hit-only 3건 (semantic-IDENTICAL cache-buster)
+
+| URL | Size(B) | md5(BNK-859) | vs BNK-854/857 | 관찰 |
+|-----|---------|--------------|-----------------|-------|
+| ezcare home https://ezcare.easyms.co.kr/ | 69,866 | 2008d0c6 | BNK-854 69,593B → +273B minor freshness | data-count 그대로 (이용기관 9,298·재무회계 BPO 4,675·기타 2,353/1,820 STABLE) · 통계 집계일 「as-of 2026.06.30」 carry · 신규 문구 미검출 |
+| ezcare FAQ https://ezcare.easyms.co.kr/help/faq.ez | 80,057 | 7e6758b8 | BNK-857 `9b93aab9` → 콘텐츠 오실레이션·size 불변 | rowid 233 / max 21781 IDENTICAL · 엑셀 hit 2 · RFID hit 1 · **매직/시그니처 0-hit 재확인** (BNK-857 이지케어 RFID FAQ 21589 「a5e2e48c」 byte-IDENTICAL carry) |
+| ezcare charge https://ezcare.easyms.co.kr/new/ezCare_charge.html | 22,979 | f39677db | BNK-854 `e5dc2848` → cache-buster only | 셋팅 33,000/기준가 55,000·**D-14 (2026.07.31)** promo STABLE |
+
+## 3. carefor LIVE 000 carry
+- [carefor func.php](https://www.carefor.co.kr/daycare/func.php) HTTP **000** 8s timeout (BNK-852 111-cycle+ 이후 지속·disk `6226e6eb` LOCK)
+- Wayback CDX 최신 캡처 20260519 BNK-853 chronology 5-URL IDENTICAL carry
+- M5 plupload vintage/M7 7-x 11/11 PARITY+SUPERSET/107-leaf (88+19) carry
+
+## 4. ogada baseline (BNK-859 git 실측)
+- FE `@3e89ab7` (BNK-858 `@51a3db4` → +1 commit·pilotPageFlows US-L01 OOXML fixture QA-B609) · ahead **6** vs origin/test=`b23711f` · WT CLEAN
+- BE `@b3e7cce` (BNK-858 `@2c102e5` → +1 commit·SEC-D34 empty/missing copy 5-service unify) · ahead **752** vs origin/test=`598d108` · WT CLEAN
+- Route **133** (132 <Route\b + 1 <Routes>·CARRY)·Page **106** (CARRY)
+- BE Test **297** (296 Test.java + 1 Tests.java·CARRY)
+- BE @Test raw **2366** / strict **2366** (BNK-858 2366 CARRY·message unify only·신규 @Test 0)
+- @RestController loose **81** / strict **80** (CARRY)
+- HTTP **442** GET231/POST144/PATCH44/PUT13/DELETE10 = **20차 byte-exact IDENTICAL BNK-836~859** (endpoint 신설 0·SEC-D34 message-unify only)
+- Flyway V1–V196 (CARRY·신규 0)
+- FE test **541** (226 .test.js + 315 .test.jsx·CARRY·pilotPageFlows in-place fixture align·신규 파일 0)
+- 모듈 97.41% (28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0) CARRY
+- merge gate **758** (FE 6 + BE 752·BE-heavy·FE tester FF 대기)
+
+## 5. SEC-D34 계보 축 12(a~l) → 13(m) 확장
+
+**BNK-859 신규 축 「m」 = 「엑셀 import empty/missing copy 5-service unify」**:
+- BE `@b3e7cce` `fix(v3/SEC-D34): unify empty/missing excel import copy across import services`
+- Before: VisitService/NhisImportService = 「업로드할 엑셀 파일이 필요합니다.」(outlier)
+- After: 「업로드할 엑셀 파일이 없습니다.」(house-style·MISSING_EXCEL_MESSAGE 상수)
+- Surface 5-service consistency: VisitService · NhisImportService · StaffNhisCaregiverImportService · BankDepositImportService · SEC-D25 photo storage
+- 기존 12축(a~l) parser layer + service integration + FE pre-upload + a11y print carry
+- **경쟁 4종 UX consistency 근거 0-hit**: 이지케어 FAQ 엑셀 오류 메시지 verbatim 미공개·케어포/엔젤/롱텀 0 → ogada 유일 5-service unified copy SUPERIOR
+
+**FE fixture align 축 「n」 (선택적 QA-B609)**:
+- FE `@3e89ab7` `test(v1.2.1/v3/SEC-D34): fix pilotPageFlows US-L01 bank deposit import OOXML fixture (QA-B609)`
+- BNK-856 `1f9d49c` FE pre-upload magic-byte validator 착지 이후 integration fixture 데이터가 유효 OOXML PK\x03\x04 header 미포함 → validator fail-closed → preview POST 미호출 회귀
+- 「data」 문자열 → OOXML magic 바이트 헤더로 fixture 정합
+- test-only·QA-B609 grade·기능 갭 아님
+
+## 6. 우선순위·closed band 재검토 (BNK-859)
+
+**closed band 6 재오픈 0**:
+- G14 `/clients/:clientId/care-plan-form` LIVE
+- 대시보드 `/dashboard`+`/dashboard/hq` LIVE
+- G2 `/clients/home-newsletter` LIVE
+- G-LINKAGE `/clients/linkage-records` LIVE
+- v2 CMS `/billing/cms` LIVE
+- v1.3-C `/transport/service-fees` LIVE
+(App.jsx `@3e89ab7` 무변동·재오픈 0)
+
+**P0 신규 0**·**가정 번복 0**·**KPI promote 0**
+
+**Residual lever 「가정」** (BNK-843 도출·carry·과대구축 회피):
+- P3-Lever-A: 전자결재 workflow (silverangel「임시/제출/승인」3-state) — 규제 요구 검증 후
+- P3-Lever-B: 월마감관리 (silverangel「자료 보안 월단위 마감」) — PIPA/GDPR 「고의적 부인 방지」 조건부 P2
+- P3-Lever-C: 낙상위험예측 + 욕창예방척도 스코어링 (silverangel 간호처치 2-12/13) — 임상 evidence + 규제 요구도 검증
+- P3-Lever-D: 정기 교육/회의/만족도 전용 모듈 + 전자서명 + 사진 15-leaf (silverangel 9th category) — REQUIREMENTS 재검증
+
+**P4「가정」 (BNK-853 도출·carry)**:
+- 「처음사용안내」 온보딩 pattern (carefor 신규 leaf)
+- 「Inzi」 강사매칭 SSO handoff (carefor SSO 브릿지·과대구축 회피)
+
+## 7. per-cycle minimum (BNK-859) 충족 검증
+- ✅ 신규 증거 URL: 재실측 8-URL (규제·경쟁 백본) + 3-URL (ezcare DRIFT hit-only)
+- ✅ 메뉴/필드/워크플로 상세 1블록+: SEC-D34 계보 축 12→13 확장 (m 「엑셀 import empty/missing copy 5-service unify」 + n QA-B609 fixture align)
+- ✅ COMPETITOR_MATRIX 1행+ @HEAD SHA 갱신: id=2·id=12·id=13 축(모듈 97.41% carry) + 신규 「엑셀 import copy consistency」 축 후보
+- ✅ BENCHMARK_REPORT §BNK-859 신규 소절 추가
+

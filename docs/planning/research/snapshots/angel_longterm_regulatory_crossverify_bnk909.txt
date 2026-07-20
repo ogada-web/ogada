@@ -1,0 +1,62 @@
+BNK-909 — 엔젤·롱텀·규제 역공학 4-6h 교차검증 (2026-07-19)
+================================================================
+
+조사일: 2026-07-19T19:30:00Z
+rotation: 엔젤·롱텀·규제 4-6h (BNK-908 이지케어 2-4h → 다음 사이클·~40분 후)
+초점: silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 (#44)·
+      2026 수가/평가 #27·단기보호(502)·통합재가(610) 고시 교차검증
+
+--- ogada baseline 실측 (2026-07-19T19:30:00Z) ---
+BE develop = 6d3c766 (BNK-889→909 20-cycle 동일 HEAD·zero advance·ahead 774 vs origin/test=598d108·WT CLEAN)
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+FE develop = fa838f5 (BNK-907→909 3-cycle 연속 zero advance·ahead 38 vs origin/test=b23711f·tester FF 대기·WT CLEAN)
+  last: fix(a11y/clients): wrap needs-assessment compare table in .ds-table-wrap (UXD-202)
+Route 133 (App.jsx <Route\b 132 + <Routes> 1) · Page 106 (*Page.jsx non-test)
+FE test 544 (228 .test.js + 316 .test.jsx)
+BE @Test strict 2413 (BNK-889→909 21-cycle IDENTICAL) · @RestController 81 · @Entity 92 · BE Test class 297
+HTTP 442 (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10·BNK-836→909 69차 IDENTICAL·신설 0)
+Flyway V1–V196 · merge gate 812 (FE 38 + BE 774·BE-heavy) · 모듈 97.41% CARRY
+
+--- 엔젤 silverangel system_feature 배차 축 재실측 ---
+URL: http://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+HTTP 200 · SIZE 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+cmp vs silverangel_system_feature_live_bnk905.html = BYTE-IDENTICAL (canonical carry·bnk897→902→905→909)
+grep -c '이동서비스|배차|GPS|RFID|차량|송영' = 0 (0-hit ALL)
+→ 엔젤 자체 이동서비스/배차/GPS/RFID/차량/송영 모듈 부재 재확인
+→ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5)+TransportServiceLog* = 경쟁 4종 유일 full-stack SUPERIOR carry
+
+--- 롱텀 단기보호(502)/통합재가(610) 교차검증 — 둘 다 FULL variant flip ---
+[502] https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+HTTP 200 · SIZE 89,171B · md5 a71379de460cc451e9a30f73aa437eec
+= FULL variant flip (BNK-905 LEAN 56185735/89,162B → +9B·BNK-902 FULL a71379de 로 복귀)
+raw diff vs bnk905 = 1 line (121: var s16; 선언·±9B 오실레이션) · strip diff(var s16 제거) 0-line = 본문 규제 콘텐츠 IDENTICAL
+
+[610] https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+HTTP 200 · SIZE 88,408B · md5 6b10f426123b1f827c46ebf420a87772
+= FULL variant flip (BNK-905 LEAN fad1ce61/88,399B → +9B·BNK-902 FULL 6b10f426 로 복귀)
+raw diff vs bnk905 = 1 line (121: var s16;) · strip diff 0-line · 통합재가 verbatim 본문 IDENTICAL
+→ var s16; ±9B 오실레이션(BNK-872/882 근본원인 확정)·이번 사이클 502·610 둘 다 LEAN→FULL flip(bnk905 LEAN → bnk909 FULL·bnk902 FULL 값 복귀)
+→ 문서 위생 signal only·기능 갭 아님·심층 수가 값(단기보호·통합재가 월한도)은 JS/ajax 로딩·shell 미노출 → canonical carry(「미확인」)
+
+--- 규제 백본 NHIS #44 제34조 이동서비스비 러-1~4 ---
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+cmp vs nhis_jo44_live_bnk907.html = BYTE-IDENTICAL (630차·BNK-907 629차 → +1)
+verbatim: 「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다」·「이용 횟수에 관계없이 1일 1회만 산정하고, 수급자가 이동서비스를 편도만(기관으로 이...」
+↔ ogada TransportServiceFeeService(ONE_WAY_RATIO 편도 0.5 HALF_UP)+TransportDistanceBand(RU_1 5km미만/RU_2 5~10km/RU_3 10~20km/RU_4 20km이상)+TransportServiceLog* full-stack 1:1 SUPERIOR·상수 재조정 불요
+
+--- law.go.kr 2025-247 고시 ---
+URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · SIZE 78,450B · raw md5 bd55a8401894aa9fcd0d134cb7fd3aab (cache-buster ?Time= DRIFT)
+strip Time=[0-9]* semantic md5 = a913639ab52293e3571cfe7e3ca35097 (bnk905 strip 동일)
+strip Time=[0-9]* diff vs bnk905 = 0-line → raw DRIFT = cache-buster only·규제 앵커 재조정 불요
+
+--- carefor LIVE (대조) ---
+carefor func.php / demo-work.carefor.co.kr LIVE HTTP 000 timeout (127-cycle+ carry·「미확인」)
+→ disk canonical carefor_func.php 6226e6eb/98,328B carry
+
+--- 판정 요약 ---
+신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+BE @Test strict 2413 = BNK-889→909 IDENTICAL(21-cycle) · HTTP 442 = 69차 IDENTICAL
+P3/P4「가정」 candidate 14종 전부 carry · 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+per-cycle minimum 4종 충족 (신규 증거 URL·메뉴/필드/워크플로 1블록·MATRIX 1행+@HEAD·BENCHMARK §소절)

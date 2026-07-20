@@ -1,0 +1,117 @@
+BNK-897 — 엔젤·롱텀·규제 역공학 4–6h (2026-07-19T11:37:00Z)
+=====================================================================
+rotation: 엔젤·롱텀·규제 — silverangel LCMS 교육·회의·만족도·전자서명 lifecycle
+          + NHIS #44 619차 + law 2025-247 strip diff 0-line + ogada @HEAD 재실측
+prev: BNK-896 (케어포 M6 위생·안전 crosswalk 0-2h · 2026-07-19T10:53:00Z)
+
+---------------------------------------------------------------------
+[1] ogada baseline @HEAD 재실측 (git 실측)
+---------------------------------------------------------------------
+BE develop = 6d3c766ce5d50fff7e27828605cb7b49f4521c22
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+  BNK-890→897 = 8-cycle 동일 HEAD·zero advance
+  ahead 774 vs origin/test=598d1086d98d765d6f2b53136c00c5b59ae65d95 · WT CLEAN
+FE develop = c3f0e05d723f4ec12f843cbd5c09067cbbb9aa64
+  last: fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)
+  BNK-895→897 = 동일 HEAD·zero advance
+  ahead 34 vs origin/test=b23711f28356b8d1721070f7f60e2db8c8cf68db · WT CLEAN · tester FF 대기
+
+Route 133 (App.jsx <Route\b 132 + <Routes> 1)
+Page 107 (non-test pages/*.jsx) · *Page.jsx subset 106
+FE test 543 (228 .test.js + 315 .test.jsx)
+<time dateTime> non-test jsx occurrences = 109 (BNK-895 확산 후 carry)
+BE Test 298 (297 Test.java + 1 Tests.java) · @Test strict 2413 (^\s*@Test\b · raw 2414 = strict 2413 + 1 @TestPropertySource · BNK-889→897 9-cycle IDENTICAL)
+@RestController 81 (loose)
+HTTP 442 = GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 (57차 byte/count-exact IDENTICAL · BNK-836→897 · endpoint 신설 0)
+Flyway V1–V196 (신규 0)
+merge gate 808 (FE 34 + BE 774 · BE-heavy · auto-merge FF 대기)
+모듈 커버 KPI 97.41% (28.25/29 · 진성갭 0 · carry)
+
+---------------------------------------------------------------------
+[2] ★★★ silverangel LCMS 교육·회의·만족도·전자서명 lifecycle 5-leaf → ogada crosswalk
+    [메뉴/필드/워크플로 실측]
+---------------------------------------------------------------------
+근거: silverangel_system_feature_live_bnk897.html
+  HTTP 200 · SIZE 45,601B · md5 c950719098eecaf748bbdeea5deb93da
+  cmp vs silverangel_system_feature_live_bnk890.html = BYTE-IDENTICAL (canonical carry)
+
+silverangel 정본 verbatim (grep 추출):
+  - "연1회 개인정보보호교육 실시, 교육자료 및 사진등록, 참석자 전자서명"
+  - "연1회 급여제공지침교육 실시, 교육자료 및 사진등록, 참석자 전자서명"
+  - "반기별 1회 보호자회의 실시, 교육자료 및 사진등록, 참석자 전자서명"
+  - "월1회 사례관리회의 실시, 급여제공에 반영사항 기록"
+  - "연1회 보호자의 만족도 조사 실시, 통계자료 및 그래프 분석" / "보호자용 만족도조사"
+
+ogada 실측 crosswalk (BE @6d3c766 / FE @c3f0e05):
+
+| silverangel leaf                        | ogada Route / 서비스                                             | 판정 |
+|-----------------------------------------|------------------------------------------------------------------|------|
+| 개인정보보호교육 (연1회·전자서명)        | /staff/training-logs · StaffTrainingLog GUIDELINE_PERSONAL_INFO_PROTECTION (28-type taxonomy) | ✅ PARITY (+SUPERIOR: 28-type 구조화 + GET /compliance 이수 판정) |
+| 급여제공지침교육 (연1회·전자서명)        | /staff/training-logs · StaffTrainingLogType PROVISION_GUIDELINES / GUIDELINE_* 12종 (FAQ21808 lineage) | ✅ PARITY (+SUPERIOR: 급여제공지침 12종 enum) |
+| 사례관리회의 (월1회)                     | /case-management/meetings (CaseManagementController) + /staff/committee-meetings (StaffCommitteeMeeting: finalize + text export US-R08·attendeeNames) | ✅ PARITY |
+| 보호자회의 (반기1회·전자서명)            | guardian 전용 회의 워크플로 부재 (StaffCommitteeMeeting = 직원 위원회·guardian meeting 아님) | △ PARTIAL → G-GUARDIAN-MEETING P3「가정」 carry (기존 candidate·승격 0) |
+| 보호자 만족도조사 (연1회·통계/그래프)    | MealPreferenceSurvey(식사 한정) + ClientNeedsAssessment(욕구/만족 부분) · 보호자 전용 종합 만족도조사 부재 | △ PARTIAL → G-SATISFACTION-SURVEY-DIAL P3「가정」 carry (기존 candidate·승격 0) |
+
+집계: ✅ 3/5 PARITY (SUPERIOR 2: 교육 28-type taxonomy·급여제공지침 12종 enum)
+      △ 2/5 PARTIAL (기존 P3 candidate 2 carry: G-GUARDIAN-MEETING·G-SATISFACTION-SURVEY-DIAL·승격 0)
+      ❌ GAP 0 · 신규 진성갭 0
+
+ogada SUPERIOR 근거 (git 실측):
+  - StaffTrainingLogType.java = 28 상수 (ELDERLY_HUMAN_RIGHTS·OPERATING_REGULATION·DISASTER_RESPONSE·
+    FIRE_SAFETY_EQUIPMENT·STAFF_RIGHTS·OP_REG_* 10·GUIDELINE_* 12 incl. GUIDELINE_PERSONAL_INFO_PROTECTION)
+  - StaffTrainingLogController = GET(list) + POST(create) + PATCH /{logId} + GET /compliance (이수 판정 endpoint)
+  - StaffTrainingLogEntity: trainingType·referenceYear·referenceHalf(연1회/반기 주기 추적)·trainedAt·
+    trainingMethod·instructorName·trainingContent·attendeeNames·newHireOrientation
+  → silverangel 자유텍스트 교육 이력 대비 ogada 구조화 taxonomy + 주기(year/half) + compliance 판정 SUPERIOR
+  - StaffCommitteeMeeting: finalize + finalizedAt + text export(US-R08·carefor 8-6) + attendeeNames
+
+전자서명 축: ogada Signature 6 files (LeadCaregiverWorkLog·Monitoring·QrToken·TransportMonthlyReport·
+  TransportService) — 교육/회의 참석자 전자서명 전용 UI 는 부재 (attendeeNames 텍스트 기록) →
+  silverangel 「참석자 전자서명」 은 G-GUARDIAN-MEETING/교육 서식 축의 세부로 흡수(승격 0·MVP out-of-scope)
+
+메뉴 depth: silverangel = 급여제공/교육/회의/만족도 flat feature list (CMS 정적 소개 페이지) ↔
+  ogada = /staff/{training-logs,training,committee-meetings} + /case-management/meetings + /care/meal-preference-surveys
+  = 라벨-우선 IA·감사 보관형(finalize/GET-POST-PATCH only·물리삭제 0)
+
+---------------------------------------------------------------------
+[3] 규제 백본 재실측 (기존 URL 재실측 + drift 기록)
+---------------------------------------------------------------------
+NHIS #44 제34조 (이동서비스비 러-1~4):
+  URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  cmp vs nhis_jo44_live_bnk896.html = BYTE-IDENTICAL (619차 · BNK-896 618차 → +1)
+  verbatim: 러-1/러-4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지
+  ↔ ogada TransportServiceFeeParityCatalog (RU_1..RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) + TransportServiceLog*
+     full-stack 1:1 SUPERIOR · 상수 재조정 불요
+
+law 2025-247 (MOHW admRul):
+  URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+  HTTP 200 · SIZE 78,450B · raw md5 a74e09bbcec4bc2673fa898d718fd905 (cache-buster ?Time= DRIFT)
+  strip ?Time= → md5 0e07cef162aca47d37a65b8d93b69f08
+  strip vs bnk890 strip = IDENTICAL (diff 0-line · BNK-885 lineage · canonical admRulSeq 고정)
+
+carefor func.php: LIVE HTTP 000 timeout (118-cycle+ carry·「미확인」·disk canonical 6226e6eb/98,328B 우선)
+
+---------------------------------------------------------------------
+[4] audit-first HTTP 442 posture (git 실측)
+---------------------------------------------------------------------
+GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442 · controller 81 · 비율 5.46
+BNK-836→897 = 57차 byte/count-exact IDENTICAL · endpoint 신설 0
+  - 교육/회의 도메인(StaffTrainingLog GET/POST/PATCH·StaffCommitteeMeeting GET/POST/PATCH+finalize)
+    = 물리삭제/PUT 0 → 감사 우선 posture 정합·기존 endpoint 분류 흡수(신규 0)
+API 안정성 57-cycle 동결 · 물리삭제 API 신설 금지 · PATCH>PUT · DELETE 2.3% 최소(soft-delete/감사 보관·PIPA §21)
+
+---------------------------------------------------------------------
+[5] 교차검증·가정 번복 판정 (엔젤·롱텀·규제 4–6h rotation)
+---------------------------------------------------------------------
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- silverangel 교육·회의·만족도 5-leaf = 3✅ PARITY + 2△ (기존 P3 candidate 2 carry)
+  → G-GUARDIAN-MEETING(BNK-553~590 lineage)·G-SATISFACTION-SURVEY-DIAL(BNK-645 lineage) carry·승격 0
+- BE @Test strict 2413 = BNK-889→897 9-cycle IDENTICAL (drift 경보 없음)
+- 모듈 97.41% carry · P3/P4「가정」 candidate 11종 전부 carry (승격 0)
+- silverangel byte-IDENTICAL(canonical) · law strip diff 0-line · NHIS #44 619차 byte-IDENTICAL
+- 주력 snapshot: angel_longterm_regulatory_crossverify_bnk897.txt +
+  silverangel_system_feature_live_bnk897.html + nhis_jo44_live_bnk897.html +
+  law_mohw_2025_247_admRulInfoP_live_bnk897.html (신규 4 · txt 1 + html 3 · 덮어쓰기 0)
+- per-cycle minimum 4종 충족: 신규 evidence(NHIS 619차 재실측 +1·silverangel/law drift 기록) ·
+  메뉴/필드/워크플로 1블록(교육·회의·만족도 5-leaf crosswalk) · MATRIX 4행 @HEAD · BENCHMARK §897 신규 5-절

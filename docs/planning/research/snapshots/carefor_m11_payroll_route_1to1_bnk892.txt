@@ -1,0 +1,46 @@
+# carefor_m11_payroll_route_1to1_bnk892.txt
+# BNK-892 | 2026-07-19T08:10:00Z | 케어포 역공학 0-2h
+# 초점: func.php M11 「직원 급여관리」 6-leaf → ogada /payroll/* Route 1:1 재-크로스워크
+# (BNK-602 당시 0/6 P2 신규 갭 → 현재 coder BNK-709~720 구현 후 재측정)
+#
+# === 근거 소스 ===
+# carefor func.php disk canonical: 98,328B md5=6226e6eb92fdd25ed3e50842a5e8a00b (toolbar-stripped)
+# carefor func.php LIVE direct: HTTP 000 timeout 30s (116-cycle+ carry·「미확인」 carry)
+# ogada BE develop @6d3c766 (zero advance·ahead 774·@Test strict 2413)
+# ogada FE develop @aab11b2 (zero advance·ahead 33)
+# StaffPayrollController: @RequestMapping("/api/v1/staff/payroll") · @PreAuthorize HQ_ADMIN/BRANCH_ADMIN/SOCIAL_WORKER
+#
+# === M11 「직원 급여관리」 6-leaf 1:1 crosswalk (func.php 정본) ===
+#
+# 11-1. 월별 급여대장       → ogada /payroll/ledger  + POST /api/v1/staff/payroll/ledger-preview           ✅ PARITY
+# 11-2. 퇴직적립금 관리     → ogada /payroll/retirement-accrual + POST /retirement-accrual-preview          ✅ PARITY
+# 11-3. 직원 급여계약 설정  → ogada /payroll/basis (급여기초·명세 preview) + POST /simple-payment-statement-preview △ PARTIAL
+#                            (계약 엔티티 CRUD 아님·기초/간편명세 preview 축·「가정」 G-PAYROLL-CONTRACT-CRUD P3)
+# 11-4. 급여기초 설정(수당/공제) → ogada GET /allowance-deduction-catalog (9-entry: 3수당 + 6공제 static catalog) ✅ PARITY
+# 11-5. 인건비 지출비율 참고자료 → ogada /payroll/labor-cost-ratio + POST /labor-cost-ratio-preview          ✅ SUPERIOR
+#                            (LABOR_COST_RATIO_THRESHOLD_PERCENT=60.00 compliance preview·컴플라이언스 임계 판정)
+# 11-6. 직원 급여대장 리포트 → ogada /payroll/reports                                                       ✅ PARITY
+#
+# === 집계 ===
+# M11 = 5 ✅ PARITY (11-1·11-2·11-4·11-5·11-6) + 1 △ PARTIAL (11-3 급여계약 설정)
+#     = BNK-602 「0/6 P2 신규 갭」 → 현재 5/6 PARITY + 1 PARTIAL = ★★★ P2 갭 CLOSED
+# SUPERIOR 축: 11-5 인건비 지출비율 = 단순 참고자료(carefor) vs ogada 60% 임계 compliance preview 판정
+# SUPERSET: /accounting (수지파인 외부 BPO SSO OTP handoff·GET /billing/accounting/bpo-launch) — carefor M11 무관
+# 잔여 △ 1건: 11-3 급여계약 설정 = ogada /payroll/basis 는 기초/간편명세 preview 축(계약 엔티티 CRUD 아님)
+#            → G-PAYROLL-CONTRACT-CRUD P3「가정」(SaaS MVP out-of-scope·rules §11·§17 과대구축 회피·승격 0)
+#
+# === 메뉴 depth / IA 비교 ===
+# carefor M11: flat 6-leaf 2-depth (jqGrid 셸)
+# ogada payroll: /payroll/{ledger,reports,basis,labor-cost-ratio,retirement-accrual} 5-route nested React Router
+#              + BE 5-endpoint(catalog GET + 4 preview POST) + accounting BPO superset
+#
+# === HTTP posture (audit-first) ===
+# payroll = GET 1(catalog) + POST 4(preview) — 물리 삭제/PUT 없음·감사 우선 read-create dominant 정합
+# audit-first HTTP 442 (GET231/POST144/PATCH44/PUT13/DELETE10) 52차 byte/count-exact IDENTICAL (BNK-836→892)
+#
+# === 판정 요약 ===
+# - carefor func.php 11모듈 전수 대비 ogada 진성갭: M11 P2 갭 CLOSED 재확인 → 잔여 진성갭 0
+# - M8 3-gap(근무일정표·연간일정계획·자원봉사자 활동일지) P3「가정」 carry
+# - M9 2-gap(비품관리대장·연간부담금현황) P3「가정」 carry
+# - M10 3-gap(보호자 급여기록 열람·보호자 앱·기관 공지사항) — 10-4 공지사항은 BNK-729 BE FacilityNotice CRUD 착지
+# - 신규 진성갭 승격 0 · KPI promote 0 · 모듈 97.41% carry

@@ -1,14 +1,144 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-18T02:21:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-19T17:30:00+09:00 -->
 # 보안 감사 보고서 (security/SECURITY_AUDIT.md)
 
 > **작성**: security_auditor (`SEC`)  
-> **감사일**: 2026-07-18 (31차 일일 재점검)  
-> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `a742788`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `592a483`**, **WT CLEAN**), PostgreSQL  
-> **baseline**: workspace **git 실측** — backend develop **`a742788`**(+735 vs origin/test · 30차 `e4123c3` → 31차 **`a742788`** +30 commit) · origin/test **`598d108`**(**735 unpushed**·불변) · frontend develop **`592a483`**(+0 vs origin/test · 30차 `ed48077` → 31차 **`592a483`** +37 commit) · origin/test **`592a483`**(**★ FULLY SYNCED**)  
-> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `592a483`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **735+0 ahead**(BE +30 · FE **★ sync 종결**·SEC-D18 **비대칭**: BE 악화 / FE **0**)  
-> **워킹트리**: backend **CLEAN** · frontend **CLEAN**(SEC-D35 **★ Fixed**)  
+> **감사일**: 2026-07-19 (33차 일일 재점검)  
+> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `6d3c766`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `6a9e85e`**, **WT CLEAN**), PostgreSQL  
+> **baseline**: workspace **git 실측** — backend develop **`6d3c766`**(+774 vs origin/test · 32차 `6329323` → 33차 **`6d3c766`** +10 commit·SEC-D34 excel amount normalize) · origin/test **`598d108`**(**774 unpushed**·불변) · frontend develop **`6a9e85e`**(+37 vs origin/test · 32차 `9f12482` → 33차 **`6a9e85e`** +18 commit·a11y `<time>`+date-range 폼검증) · origin/test **`b23711f`**(불변)  
+> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `b23711f`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **774+37 ahead**(SEC-D18 **비대칭**: BE +10 / FE +18 재적층·QA-B116 origin/test push carry)  
+> **local test**: backend **`6d3c766`**(develop==test·**SEC-D34 excel-amount normalize FF-merged**·TSR1884) — 검증 코드=develop 정합·origin push만 대기  
+> **워킹트리**: backend **CLEAN** · frontend **CLEAN**(SEC-D35 **Fixed 유지**)  
 > **기준**: OWASP Top 10 (2021), 개인정보보호법(PIPA), `docs/ops/DATA_RETENTION_POLICY.md`, `docs/technical/API_SPEC.md`  
 > **코드 변경**: 없음 (읽기 전용 점검)
+
+---
+
+## 1.35 일일 재점검 델타 (2026-07-19 33차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `6d3c766` · `git -C src/frontend rev-parse HEAD` → `6a9e85e` · `git log 6329323..6d3c766`(+10) / `git log 9f12482..6a9e85e`(+18) · `git status`(양 스트림 **WT CLEAN**·origin/develop SYNCED) · `npm audit --omit=dev`(**0건**) · `npm audit`(**0건**·SEC-D26 Fixed 유지) · `pom.xml`(poi **5.3.0** · Boot **3.3.1** 불변) · 신규 `ExcelAmountNormalizer` 정규화 유틸 · `NhisExcelParser`/`BankDepositExcelParser` parseAmount/parseInteger 경로 · FE `git diff 9f12482..6a9e85e`에서 `dangerouslySetInnerHTML`/`fetch(`/`innerHTML`/`eval(`/`localStorage`/`sessionStorage` **0 hit**)를 32차 `6329323`/`9f12482` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 32차 develop | 33차 develop HEAD | origin/test | local test | WT |
+|--------|--------------|-------------------|--------------|------------|----|
+| backend | `6329323` | **`6d3c766`**(+774 vs origin/test: **SEC-D34 excel amount 정규화 row-level graceful-degrade** 10커밋·통화/fullwidth/no-break·ideographic space 정규화·`ExcelAmountNormalizer` DRY 추출) | `598d108`(불변·**774 unpushed**·QA-B116) | **`6d3c766`**(develop==test·FF-merged) | **CLEAN** |
+| frontend | `9f12482` | **`6a9e85e`**(+37 vs origin/test: a11y `<time dateTime>` 래핑 UXD-196~201·reversed date-range 폼 사전검증·G16 transport service-fee 폼 폴리시) | **`b23711f`**(불변·+37) | — | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. BE **local test==develop `6d3c766`**(SEC-D34 excel-amount normalize FF-merged·검증 코드=develop 정합) · origin/test push만 대기(SEC-D18/QA-B116 BE **774**). FE origin/test **37 unpushed**(SEC-D18 비대칭 재적층). **33차 신규 BLOCK급 audit Open 0** · **QA Open [SEC] 0** · **npm audit prod·dev 모두 0건**.
+
+### (B) ✅ 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **SEC-D34 excel amount 정규화** (`ExcelAmountNormalizer` `e60e288` 추출 + `ad2c0b1`~`6d3c766` 통화/fullwidth/공백 정규화) | **Pass — 회귀 없음** | 신규 `ExcelAmountNormalizer.normalizeNumeric`/`mapFullwidthDigitsToAscii`는 **단일 패스 문자열 정규화**(₩ U+20A9·￦ U+FFE6·fullwidth comma·원·no-break/ideographic space strip + fullwidth digit→ASCII) · **인젝션 표면 無**(String→BigDecimal/Integer 파싱만) · **ReDoS 無**(정적 char range 루프 + 이미 정규화된 문자열에 `\s+` 선형 매칭만) · `NhisExcelParser`/`BankDepositExcelParser` 모두 **`NumberFormatException`→null 구조 유지**(파일 signature/OOXML/OLE fail-closed 가드 불변·grep 실측) · row-level graceful-degrade(단일 오염 셀→null)만 완화·**전체 파일 fail-closed 불변**. 정상 ASCII 입력 behavior-neutral |
+| **FE a11y `<time dateTime>` 래핑** (UXD-196~201 `9b0481d`~`6a9e85e`) | **Pass — 표면 없음** | 리스트/리포트 테이블 날짜 셀을 `<time dateTime>` semantic 마크업으로 래핑 + reversed date-range 폼 사전검증 · **신규 outbound URL/fetch 없음**(`git diff` grep 0 hit) · `dangerouslySetInnerHTML`/`eval`/`localStorage`/`sessionStorage` 도입 없음 · React 이스케이프 유지(T-I5) · 클라이언트 입력 검증(BE 권위 유지·UXD-196 필드 라우팅) |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **33차 신규 BLOCK급 audit Open 0건** | — | — | SEC-D34 amount 정규화·FE a11y 전부 Pass/회귀無 · prod·dev audit **0** · **QA Open [SEC] 0** |
+| SEC-D26 | npm audit dev form-data | High(dev-only) | **Fixed 유지** | `npm audit`(dev 포함)·`--omit=dev` **모두 0건** 재실측 |
+| SEC-D34 | excel import 확장자/Content-Type/magic + amount 정규화 | Low~Medium | **Mitigated 강화 유지** | 8-축 fail-closed(32차) + amount row-level graceful-degrade(33차) · 잔여는 SEC-D4(poi CVE)·zip-bomb |
+| SEC-D4 | poi-ooxml 5.3.0 — 5 파서 | **Medium** | **Open** | CVE-2025-31672 · 5.4.0+ 권고 · **불변**(pom `<version>5.3.0</version>` 실측) |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | 패치 라인 상향 권고 · **불변**(pom `<version>3.3.1</version>` 실측) |
+| SEC-D18 | origin/test push | Low | **Monitor(비대칭)** | BE **774** unpushed(QA-B116) · FE **37**(origin/test `b23711f` 재적층) · **local test==develop `6d3c766`**(검증 코드 정합) |
+| SEC-D25 | 첨부 magic-byte | Low~Medium | **Open(Monitor)** | carry — image decode·AV·zip-bomb·공개 serve endpoint 잔여 |
+| SEC-D35 | FE/BE WT DIRTY | Low(process) | **Fixed 유지** | 양 스트림 WT CLEAN |
+| SEC-D41·D42 | Safety GET 무제한/payload_json PII | Low~Medium | **Open(Monitor)** | carry |
+| SEC-D43 | BPO SSO | Low(잔여) | **Mitigated** | host+path+query/fragment 봉인 유지 |
+| SEC-D33·D36·D37·D38·D39·D32·D40·D44~D46 | carry | Low | **Open(Monitor)/Mitigated** | 불변 |
+| SEC-D22·D29 | Mitigated | Low | **Mitigated** | carry |
+
+### (D) ✅ 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 33차 재확인 |
+|------|-------------|
+| SEC-D26 npm audit | **Fixed 유지** — prod·dev 모두 0건 |
+| SEC-D34 excel import | **Mitigated 강화 유지** — 8-축 fail-closed + amount 정규화 row-level |
+| SEC-D17 raw fetch | **Fixed 유지** — FE 신규 a11y 커밋 raw fetch 도입 0 |
+| SEC-D19 error handler | **Fixed 유지** — excel 실패 카피 내부 상세 미노출 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — BE `598d108` / FE `b23711f` P0 포함 |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(33차 실측) |
+| SEC-D24 SecurityConfig | **Fixed 유지** |
+| SEC-D35 WT | **Fixed 유지** — 양 스트림 CLEAN |
+
+### (E) 우선순위 (33차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 (excel import 하드닝 완성으로 잔여 최우선) |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 상향 |
+| 3 | SEC-D18 | BE 774 origin/test unpushed(QA-B116) — 검증 코드는 local test 정합 |
+| 4 | SEC-D25 | 첨부 image decode·AV·zip-bomb (magic-byte는 대부분 착지) |
+
+---
+
+## 1.34 일일 재점검 델타 (2026-07-18 32차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `6329323` · `git -C src/frontend rev-parse HEAD` → `9f12482` · `git log a742788..6329323`(+29) / `git log 592a483..9f12482`(+34) · `git status`(양 스트림 **WT CLEAN**) · `npm audit --omit=dev`(**0건**) · `npm audit`(**0건 — ★ SEC-D26 Fixed**·form-data 4.0.6 `637bad8`) · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · 5 excel parser·5 import service의 magic-byte/OOXML/OLE fail-closed 가드 · `RfidTransmissionExcelParser.parseTime`·`NhisVisitScheduleExcelParser` row-level graceful-degrade · FE transport departure-round 입력 검증)를 31차 `a742788`/`592a483` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 31차 develop | 32차 develop HEAD | origin/test | WT |
+|--------|--------------|-------------------|--------------|----|
+| backend | `a742788` | **`6329323`**(+764 vs origin/test: **SEC-D34 excel import fail-closed full-stack 완성**·5 파서 magic/OOXML/OLE/empty/null/corrupt-body·row-level graceful-degrade·QA-B95 bare-hex decode) | `598d108`(불변·**764 unpushed**·+29 vs 31차) | **CLEAN** |
+| frontend | `592a483` | **`9f12482`**(+19 vs origin/test: SEC-D34 pre-upload magic/MIME-spoof reject·zero-byte/empty-header fail-close·RFID dual-excel·transport 입력 검증·a11y UXD-192/194) | **`b23711f`**(31차 `592a483` → **FF 전진**·일부 SEC-D34 승격) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. FE origin/test **전진**(`592a483`→`b23711f`·SEC-D34 일부 승격) — 31차 완전 sync 이후 신규 delta(+19)가 재적층(SEC-D18 FE 비대칭). BE origin/test **764 unpushed**(SEC-D18 BE **더 악화** +29). **32차 신규 BLOCK급 audit Open 0** · **QA Open [SEC] 0**. **★ SEC-D26 Fixed**(npm audit prod·dev **모두 0건**) · **★ SEC-D34 excel import 하드닝 full-stack 완성**.
+
+### (B) ✅ 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **SEC-D34 excel import fail-closed 완성** (5 파서·5 import service·`f6e4d88`~`6329323`) | **★ Mitigated 강화 (near-Fixed)** | 5 파서(BankDeposit·NHIS billing·StaffNhisCaregiver·NhisVisitSchedule·RfidTransmission) + 5 import service에 **OOXML `PK\x03\x04` magic + .xls OLE magic + truncated OOXML + corrupt OOXML body + empty-file + null payload + missing file + empty header** 8-축 fail-closed 착지 · `MISSING_EXCEL_MESSAGE`/`UNREADABLE_EXCEL_MESSAGE` 상수로 카피 통일 — **내부 예외 상세(POI NotOfficeXmlFileException 등) 미노출** · Content-Type `;param` strip. **잔여**: poi-ooxml 5.3.0(SEC-D4)·zip-bomb 대응 미검증 |
+| **row-level graceful-degrade** (`13eb863` oversized service-minutes → time-diff fallback · `6329323` out-of-range compact RFID tag time `"9999"`→null) | **Pass — 회귀 없음** | 개별 **셀 값**(숫자/시간) 파싱만 row-level로 완화 — **파일 signature/구조 fail-closed 가드는 불변**(grep 실측: magic·OOXML·OLE·corrupt-body throw 유지). 인젝션 표면 無(numeric/LocalTime 파싱)·파일 검증 우회 無 · 정상 NHIS/RFID import의 단일 오염 셀로 인한 전체 거부(가용성 저하) 해소. **정보성**: 잘못된 원본 값의 silent null-coalescing은 데이터 품질(QA) 관심사·보안 BLOCK 아님 |
+| **FE transport departure-round 입력 검증** (`f72af3f`~`5aaee88`) | **Pass — 입력 하드닝** | exponent/hex/음수/범위초과 거부 · **BE Integer max 경계** bound · wheel silent 변경 차단 · 실패 시 필드 focus · 공유 helper 추출. 클라이언트 검증(BE 권위 유지)·서버 필드 오류 라우팅(UXD-194) |
+| **FE SEC-D34 lockstep** (`3042a53`~`5e816e6`) | **Pass — SEC-D17 유지** | 업로드 전 magic-byte/MIME-spoof reject · zero-byte·empty-header fail-close · RFID dual-excel(계획+RFID) 매직 검증 · BE house-style 카피 정합 · 전부 `apiFetch` |
+| **QA-B95 bare-hex blocker decode** (`ae1c6a1`) | **Pass — SEC-D29/D40 lineage** | bare-hex entity fail-closed decode · 인증 우회 없음 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **32차 신규 BLOCK급 audit Open 0건** | — | — | SEC-D34 excel·transport 입력·graceful-degrade 전부 Pass/회귀無 · prod·dev audit **0** · **QA Open [SEC] 0** |
+| SEC-D26 | npm audit dev form-data | High(dev-only) | **★ Fixed** | `637bad8` form-data **4.0.6** → `npm audit`(dev 포함) **0건** 실측(31차 1 HIGH → 32차 0) |
+| SEC-D34 | excel import 확장자/Content-Type/magic | Low~Medium | **★ Mitigated 강화(near-Fixed)** | 5 파서·5 service 8-축 fail-closed full-stack 완성 · 잔여는 SEC-D4(poi CVE)·zip-bomb |
+| SEC-D25 | 첨부 magic-byte | Low~Medium | **Open(Monitor)·대폭 진전** | ClientPhoto·ProgramPhoto·BenefitContract·LtcGradeHistory·StaffHrFile·보수교육 전부 magic-byte 착지 · **잔여**: image decode·AV 스캔·zip-bomb·공개 serve endpoint |
+| SEC-D4 | poi-ooxml 5.3.0 — 5 파서 | **Medium** | **Open** | CVE-2025-31672 · 5.4.0+ 권고 · 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | 패치 라인 상향 권고 · 불변 |
+| SEC-D18 | origin/test push | Low | **Monitor(비대칭)** | BE **764** unpushed(+29) · FE **19**(origin/test `b23711f`로 전진·31차 sync 후 재적층) |
+| SEC-D35 | FE WT DIRTY | Low(process) | **Fixed 유지** | 양 스트림 WT CLEAN |
+| SEC-D43 | BPO SSO | Low(잔여) | **Mitigated** | host+path+query/fragment 봉인 유지 |
+| SEC-D41 | Safety GET 무제한 응답 | Low~Medium | **Open(Monitor)** | carry |
+| SEC-D42 | safety payload_json PII | Low | **Open(Monitor)** | carry |
+| SEC-D40 | allow-recovered-auth | Low | **Open(Monitor)** | carry |
+| SEC-D44~D46 | carry | Low | **Open(Monitor)/Mitigated** | 불변 |
+| SEC-D33·D36·D37·D38·D39·D32 | carry | Low | **Open(Monitor)** | 불변 |
+| SEC-D22·D29 | Mitigated | Low | **Mitigated** | carry · QA-B95 decode 지속 긍정 |
+
+### (D) ✅ 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 32차 재확인 |
+|------|-------------|
+| SEC-D26 npm audit dev | **★ Fixed** — form-data 4.0.6 · dev 포함 audit **0건** |
+| SEC-D34 excel import | **★ Mitigated 강화** — 5 파서·5 service 8-축 fail-closed |
+| SEC-D17 raw fetch | **Fixed 유지** — SEC-D34 FE 검증도 `apiFetch` |
+| SEC-D19 error handler | **Fixed 유지** — excel 실패 카피 내부 상세 미노출 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — BE `598d108` / FE `b23711f` P0 포함 |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(32차 실측) |
+| SEC-D24 SecurityConfig | **Fixed 유지** |
+| SEC-D35 WT | **Fixed 유지** — 양 스트림 CLEAN |
+
+### (E) 우선순위 (32차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 (excel import 하드닝 완성으로 잔여 최우선) |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 상향 |
+| 3 | SEC-D18 | BE 764 origin/test unpushed |
+| 4 | SEC-D25 | 첨부 image decode·AV·zip-bomb (magic-byte는 대부분 착지) |
+| — | SEC-D26 | **★ Fixed** — 우선순위 제거 |
 
 ---
 

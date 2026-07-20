@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-19T01:10:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-20T12:46:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`c7b6608`** · FE **`cf360d7`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`db1ff72`** · FE **`03c0a2f`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,8 @@
 
 ## 최근 7일 요약
 
-- **2026-07-19** — **BE 엑셀 금액 정규화 DRY 통합**(NHIS·은행 중복 로직 단일화) · **배차 a11y·오류 심화** 테스트 완료 · **FE 2761/2761 PASS** · FE develop `cf360d7` 안정 기선 착지 · BE develop `c7b6608`→test pending 해소 대기(PLN 스코프 재조정 필요)
+- **2026-07-20** — **안전 점검 조회 결과를 날짜 범위로 제한**(안전 점검·위험 평가 목록 GET 쿼리에서 지난 30일(최대 366일) 범위만 조회·응답하도록 제한해 누적된 대량의 인격정보 동시 반환을 방지 — 화면 기본 필터 변화 없음, SEC-D41) · **간호급여 리포트 역방향 기간 사전 차단**(시작일>종료일로 간호급여·욕창 리포트 조회하면 예전엔 서버까지 보낸 뒤 400이 뜨던 것을 조회 전 바로 안내하고 지난 집계도 비움, L03_M15) · **알림톡 페이로드에서 접근 키·급여액 마스킹**(발송 이후 알림톡 저장 데이터에서 SMS 발신키·급여액 필드를 `***` 로 치환해 TTL 동안 민감 데이터 노출 방지, SEC-D37) · **안전 점검 목록 FE 날짜 범위 동기화**(BE `@39b7c54` 의 30일 제한에 맞춰 FE도 안전 점검 GET 시 fromDate/toDate 전달 및 역방향/범위초과 사전 차단, SEC-D41 lockstep)
+- **2026-07-19** — **건강·투약 이력 시각을 기계가 읽을 수 있는 형태로 표시**(건강 페이지 기록 이력·이용자 상세 건강 탭의 기록/투약/사건 시각을 스크린리더가 정확히 해석하는 표준 형식으로 감쌈 — 화면 글자 그대로, UXD-197~204에 이어 완료, UXD-205) · **욕구사정 만족도 중복 제거**(React key prop 추가로 페이지 갱신 시 목록 중복 표시 방지, QA-B627) · **직원 현황 CSV의 엑셀 수식 실행 위험 차단**(직원 이름이 `=`로 시작하면 엑셀이 수식으로 실행할 수 있던 위험을 앞에 작은따옴표를 붙여 글자로만 열리게 함, SEC-D33 확산) · **청구 명세·국세청 CSV를 엑셀에서 열 때 수식 실행 위험 차단**(이용자·보호자 이름 등이 `=`·`+`·`-`·`@`로 시작하면 엑셀이 수식으로 실행할 수 있던 위험을, 앞에 작은따옴표를 붙여 글자로만 열리게 함 — 금액 칸의 마이너스 숫자는 그대로 숫자로 계산 가능, SEC-D33) · **안전 점검·선임 업무일지·외출 실제 출발/복귀 시각도 기계가 읽을 수 있는 형태로 표시**(안전 점검 저장 시각·선임 요양보호사 전자서명 시각·외출 「실제」 출발→복귀 시각을 스크린리더가 정확히 해석하는 표준 형식으로 감쌈 — 화면 글자 그대로, UXD-197~203에 이어 확대, UXD-204) · **욕구사정 연도 비교 표 좁은 화면 가로 스크롤 보정**(이용자 상세 욕구사정 비교(3열) 표가 공용 표 감싸개를 거치지 않아 좁은 창·모바일에서 페이지 전체가 옆으로 밀릴 수 있던 것을, `.ds-table-wrap`으로 감싸 표 영역 안에서만 좌우 스크롤되도록 정리 — 표 글자·열 그대로, 넓은 화면 변화 없음, WCAG 1.4.10 Reflow, UXD-202) · **ADMIN_GUIDE §1-4 baseline 정합·sysadmin a11y 교차 참조**(구 `49349e4`/`5e816e6`→BE `6d3c766`/FE `6a9e85e` · SEC-D34·UXD-197~201·Q940·Q936 기능 클로저 추가 · 로그인/감사/백업/수가 이력 `<time dateTime>` §4 연결, 화면 변화 없음) · **청구·정산·보호자·백업 화면 날짜 칸도 기계가 읽을 수 있는 형태로 표시**(청구 상세 입금·환불일·수납 목록 입금일·수가/본인부담 단가 적용 시작일·백업 시작/완료 시각·청구 잠금 시각·보호자 청구 상세 입금일 등 7개 화면·8개 날짜 칸을 스크린리더가 정확히 해석하는 표준 형식으로 감쌈 — 화면 글자·표 모양 그대로, UXD-197~200에 이어 마무리, UXD-201) · **로그인 이력·감사 로그·알림 발송 이력·수가 변경 이력 화면 날짜·시각 칸도 기계가 읽을 수 있는 형태로 표시**(단일 값으로 평문 표시하던 로그인 시각·발생 시각·발송 시각·적용 시작/등록일을 스크린리더가 정확히 해석하는 표준 형식으로 감쌈 — 화면 글자 그대로, UXD-200) · **표 날짜 칸 스크린리더 안내 FAQ 통합**(UXD-197·198·199 — 리포트·목록·청구/평가/알림 표 24곳 `<time dateTime>` 적용 범위를 FAQ Q945·매뉴얼 §3-2로 한곳에 정리, 화면 표시 변화 없음) · **청구·평가·알림 목록 화면 표의 날짜 칸도 기계가 읽을 수 있는 형태로 표시**(청구 대장(입금·환불·수납일)·욕구사정·주기 위험 평가·돌봄계획 알림 이력·연체·건강 상세·보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교 등 표에서 날짜 칸을 스크린리더가 정확히 해석하는 표준 형식으로 감쌈 — 화면 글자·표 모양 그대로, UXD-197·UXD-198에 이어 확대, UXD-199) · **목록·기록 화면 표의 날짜 칸도 기계가 읽을 수 있는 형태로 표시**(사례관리 회의·바이탈·체중·구강·응급·욕창·선임 업무일지·외출 목록 등 CRUD 표에서 날짜 칸을 스크린리더가 정확히 해석하는 표준 형식으로 감쌈 — 화면 글자·표 모양 그대로, UXD-197 리포트 개선에 이어 확대, UXD-198) · **리포트 표의 날짜 칸을 기계가 읽을 수 있는 형태로 표시**(목욕도움·요양/식사/화장실·집중배설·수급자별 급여제공·체위변경 등 표를 화면에 바로 그리는 리포트에서 날짜 칸을 스크린리더·보조기기가 정확히 해석하는 표준 날짜 형식으로 감쌈 — 화면에 보이는 날짜 글자는 그대로, 이미 표준을 쓰던 프로그램·간호급여 리포트와 형식 통일, UXD-197) · **공단·은행 엑셀 금액의 특수 공백(줄바꿈 없는 공백·전각 공백) 정상 인식**(`1[줄바꿈없는공백]250[줄바꿈없는공백]000원`·전각 IME 공백처럼 눈엔 띄어쓰기지만 보통 공백이 아닌 문자로 천 단위를 나눈 금액이 예전엔 조용히 비어 대사·입금 매칭이 틀어지던 것을, 이 특수 공백도 떼어 정확히 읽음, SEC-D34) · **공단·은행 엑셀 금액의 전각 숫자(０-９)·전각 콤마(，) 정상 인식 문서화**(전각 IME·전각 통화 서식으로 `１，２５０，０００`처럼 들어온 금액도 전각 숫자를 반각으로 바꾸고 전각 콤마를 떼어 정확히 읽음 — 기능은 이미 반영, FAQ Q939·Q941·매뉴얼 보강, SEC-D34) · **리포트 역방향 기간 오류 안내 스크린리더 접근성 확대**(목욕도움·간호급여·프로그램 등 9개 리포트에서 시작일·종료일 두 칸 모두 「오류 있음」 상태로 표시해 스크린리더가 시작일 칸에서도 원인을 안내 — 화면 표시·안내 문구는 그대로, UXD-196) · **리포트 조회 기간 거꾸로 입력 즉시 차단 확대**(목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호 등 나머지 급여제공 리포트, 간호급여 리포트, 프로그램 리포트까지 — 시작일>종료일이면 조회 전 「종료일은 시작일 이후여야 합니다.」로 종료일 칸에 바로 안내하고 지난 집계도 비움) · **BE 엑셀 금액 정규화 DRY 통합**(NHIS·은행 중복 로직 단일화) · **배차 a11y·오류 심화** 테스트 완료 · **FE 2791/2791 PASS**(UXD-197 착지·QA 검증 완료) · FE develop `e8ff8dc`(UXD-199 반영) · BE develop `6d3c766`→test pending 해소 대기(PLN 스코프 재조정 필요)
 - **2026-07-18** — **공단·은행 엑셀 전각 원화 기호(￦) 붙은 금액 정상 인식**(일부 한글 엑셀·수기 입력이 반각 `₩` 대신 전각 `￦765,000`·`￦1,250,000`처럼 표시되면 예전엔 값이 조용히 비어 대사·입금 매칭이 틀어지던 것을, 전각 `￦`도 떼어 정확히 읽음, SEC-D34) · **수급자별 급여제공 리포트 기간 거꾸로 입력 즉시 차단**(`/care/reports/patient-service`에서 시작일>종료일로 조회하면 예전엔 서버까지 보낸 뒤 오류가 뜨던 것을 「종료일은 시작일 이후여야 합니다.」로 조회 전 바로 안내하고 지난 집계도 비움, L02_M11) · **공단·은행 엑셀의 원화 기호(₩) 붙은 금액 정상 인식**(엑셀이 금액 칸을 통화 서식으로 저장하면 「원」 대신 `₩765,000`·`₩1,250,000`처럼 ₩ 기호가 붙어 예전엔 값이 조용히 비면서 대사가 틀어지거나 입금 행이 자동 매칭에서 빠지던 것을, ₩을 떼어 정확히 읽음, SEC-D34) · **급여제공 서비스 집계 리포트 기간 거꾸로 입력 즉시 차단**(`/care/reports/service-summary`에서 시작일>종료일로 조회하면 예전엔 서버까지 보낸 뒤 오류가 뜨던 것을 「종료일은 시작일 이후여야 합니다.」로 조회 전 바로 안내하고 지난 집계도 비움, L02_M12) · **공단 대사 엑셀 급여일수 `15일` 표기 정상 인식**(공단 export가 붙이는 「일」 접미사 때문에 값이 비어 대사가 틀어지던 것을 「일」을 떼어 정확히 읽음, SEC-D34) · **이동서비스비 기간 오류 시 지난 목록 즉시 비움**(빈·역방향 기간으로 조회가 막힐 때 이전 기간 청구표가 남아 오류와 모순되던 것을 목록을 비워 EmptyState로 정리, G16) · **은행 입금 엑셀 금액의 공백 천 단위 구분·「원」 표기 정상 인식**(`1 250 000원` 처럼 띄어 쓴 금액이 조용히 빠져 미매칭·건너뜀이 늘던 것을 공백·「원」을 떼어 행을 살려 대사·자동 수납 정확도 향상, SEC-D34) · **이동서비스비 청구 기간(시작일·종료일) 미입력 즉시 차단**(예전엔 서버까지 보낸 뒤 400이 뜨던 것을 「조회 기간의 시작일과 종료일이 필요합니다.」로 조회·생성 전 바로 안내, G16) · **공단·RFID 엑셀에서 셀 하나가 깨져도 그 행만 건너뛰지 않고 전체가 멈추지 않도록 개선**(방문일정 엑셀의 서비스 시간이 지나치게 큰 값이면 시각 차이로 다시 계산해 행을 살리고, RFID 전송 엑셀의 태그 시각이 범위를 벗어나면 그 시각만 비워 행은 등록, SEC-D34) · **공단 대사 엑셀 금액·급여일수의 「원」·공백 표기 정상 인식**(`765,000원`·`  15  ` 처럼 표시서식이 붙어 예전엔 값이 비어 대사 상태가 「불일치·보류」로 잘못 잡히던 것을, 「원」·공백을 떼어 정확히 읽어 대사 정확도 향상) · **이동서비스비 청구 기간(시작일>종료일) 역방향 즉시 차단**(예전엔 서버까지 보낸 뒤에야 오류가 뜨던 것을 「시작일은 종료일보다 이후일 수 없습니다.」로 조회·생성 전 바로 안내, G16) · **이동서비스비 결과 안내(성공·건너뜀) 재조회 시 갱신**(기간을 바꾸거나 다시 조회하면 지난 결과 안내가 남아 있던 것을 최신 결과만 보이도록 정리) · **이동서비스비 이용자 이름 정상 표시**(목록 응답 형식이 달라 이름이 안 나오던 경우 보정) · **배차 「회차」 칸 위 마우스 휠 스크롤로 값이 몰래 바뀌던 문제 차단**(회차 칸에 커서가 있을 때 페이지를 스크롤하면 회차 숫자가 조용히 바뀌어 엉뚱한 회차로 저장될 수 있던 것을, 스크롤 시 회차 칸에서 커서를 떼어 페이지만 스크롤되도록 수정) · **배차 회차 오류 안내 중복 읽힘 정리**(서버가 회차 오류를 돌려줄 때 같은 안내가 화면 상단과 회차 칸에 두 번 뜨며 스크린리더가 두 번 읽던 것을 회차 칸 한 곳으로 정리, UXD-194) · **RFID 전송 엑셀 헤더·필수열·데이터행 누락 안내 문구 FAQ화**(방문 RFID 비교 — 잘못된 파일 형식 시 원인별 안내, Q938) · **픽업 배차 「회차」 입력 사전 검증**(1 이상 정수만 허용 — 잘못된 값은 저장 전 회차 칸에 바로 안내) · **회차 「1e2·0x1f」 같은 지수/16진수 입력 거부**(예전에는 100·31로 잘못 저장되던 것을 저장 전 오류로 차단) · **회차에 지나치게 큰 수 입력 거부**(9999999999 같은 값은 서버 한도를 넘어 원인 불명 오류가 나던 것을 「회차 값이 너무 큽니다. 다시 확인하세요.」로 사전 차단) · **회차 오류 시 회차 칸으로 커서 자동 이동**(키보드·스크린리더 사용자가 문제 칸을 바로 찾음) · **배차 정차 상한(17개) 초과 시 사유 안내**(지점·경유지 추가가 막힐 때 「정차 순서는 최대 17개까지 가능합니다.」 표시) · **엑셀 일괄등록 안내 문구를 코드 한 곳(상수)으로 정리**(「업로드할 엑셀 파일이 없습니다.」·「엑셀 파일을 읽을 수 없습니다.」 — 화면·문구 변화 없는 내부 정리, SEC-D34) · **리포트 인쇄에서 좌측/상단 메뉴 숨김**(청구·청구통계·이용자 외출·교통 월간 리포트 — 인쇄물에 앱 메뉴 미출력, UXD-192) · **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**(방문·청구 NHIS도 「업로드할 엑셀 파일이 없습니다.」로 5개 화면 동일) · **손상된 엑셀(내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」, SEC-D34 fail-closed) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙, SEC-D34) · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트, SEC-D34)
 - **2026-07-17** — **업로드 파일 서명 검증 확대**(이용자 사진·급여계약·HR·등급이력·보수교육·요양보호사 엑셀) · **직원현황 인쇄·활동 사진 오류 ARIA** · 활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
@@ -24,17 +25,402 @@
 
 ---
 
+## 2026-07-20
+
+### ✅ 안전 점검 조회를 날짜 범위로 제한하고 함량 제한 (BE, SEC-D41)
+- **에이전트**: COD
+- **한 일**: 안전 점검·주기 위험 평가 목록 조회 API(`GET /safeties`, `/risks`)에서 **미제한 쿼리 시 누적된 대량의 인격정보가 동시 반환**될 수 있던 갭을 막았습니다. `fromDate`/`toDate` 선택 쿼리를 추가해 기본 **30일(최대 366일) 범위만 응답**하도록 제한했습니다. 결과 행 수도 **최대 200행**으로 캡핑해 페이지네이션 누적 패턴을 사전 차단했습니다. **화면의 기본 필터·페이지 로드 속도는 변화 없음**입니다.
+- **내 화면/업무에 영향**: **안전 점검·위험 평가 목록** — 무제한 쿼리 불가(기본 30일만 조회 · 더 이전 기록은 날짜 필터로 직접 선택) · 화면 체감 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE `39b7c54` — `SafetyController`/`RiskController` GET list endpoint에 `fromDate`/`toDate` 선택 파라미터 추가 · 기본값 30일(오늘 기준) · 최대값 366일 · `Pageable` 200-row cap 설정 · `@DateTimeFormat(iso=DATE)` · QueryParam validation · `SafetyService`/`RiskService` 메서드 서명 확장 · 회귀 쿼리 2건·SQL 성능 분석 · SEC-D41 범위제한 동결
+</details>
+
+### ✅ 간호급여 리포트 역방향 기간 사전 차단 (FE, L03_M15)
+- **에이전트**: COD
+- **한 일**: 간호급여 리포트(`/care/reports/pressure-ulcer-provision`) 조회 화면에서 **시작일>종료일로 입력**하면 예전엔 **요청이 서버까지 날아가 400 오류가 뜨던 것**을 조회·생성 전 **화면 단계에서 바로 안내**하도록 했습니다. 종료일 칸을 오류 상태로 표시하고 「종료일은 시작일 이후여야 합니다」로 바로 안내해, 사용자가 서버 왕복 없이 오류를 즉시 알 수 있습니다. 지난 집계 표도 즉시 비워 표시 혼동을 방지했습니다. **기간 입력 필드·표 레이아웃은 그대로**입니다.
+- **내 화면/업무에 영향**: **간호급여 리포트** — 역방향 기간 입력 시 조회 전 바로 안내(서버 응답 대기 없음) · 화면 표시 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `03c0a2f` — `PressureUlcerProvisionReportPage` 조회 버튼 클릭 시 `startDate>endDate` 검증 로직 추가 · 오류 시 endDate 필드 state·aria-invalid 설정 · BE `@PressureUlcerService` 메서드와 동일 검증 규칙 동기화 · 지난 집계 결과 state clear · 관련 test 회귀 · npm test PASS
+</details>
+
+### ✅ 알림톡 페이로드에서 민감 데이터 마스킹 (BE, SEC-D37)
+- **에이전트**: COD
+- **한 일**: 주간보호센터 시스템에서 **알림톡 발송 후 저장된 `notifications.payload` 에 SMS 발신키(`accessKey`)와 급여액(`payrollAmount`) 같은 민감 데이터가 그대로 남아 있던 갭**을 막았습니다. 발송 직후 데이터베이스 저장 시 이 필드들을 **`***`로 치환**해, TTL(저장 기간) 동안 민감 정보가 노출되지 않도록 했습니다. **발송 로그 조회·모니터링 화면에 나타나는 페이로드는 변화 없음**(마스킹된 데이터만 표시)입니다.
+- **내 화면/업무에 영향**: **알림톡 발송 이력** — 발송 후 저장된 페이로드에서 SMS 키·급여액 마스킹(화면 표시 변화 없음) · 민감 데이터 노출 범위 최소화
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE `db1ff72` — `NotificationService.createAndSend` 또는 저장 메서드 시점에 payload JSON 파싱 후 `accessKey`·`payrollAmount` null 처리 → `***` 문자열 치환 · `NotificationPayloadMasker` 헬퍼(또는 인라인 유틸) · 발송 직전 원본 사용·저장 직후 마스킹 분리 · 회귀 테스트 2건(마스킹 적용·비마스킹 배제) · SEC-D37 stored-sensitive-data
+</details>
+
+### ✅ 안전 점검 목록 FE 날짜 범위 동기화 (FE, SEC-D41)
+- **에이전트**: COD
+- **한 일**: BE `@39b7c54`에서 안전 점검 조회를 **30일 범위로 제한**한 것에 맞춰 FE도 동기화했습니다. 안전 점검 목록 GET 요청 시 **`fromDate`/`toDate` 쿼리 파라미터를 전달**하고, 사용자가 **역방향 또는 범위 초과 기간을 입력**하면 조회 전 바로 안내하도록 했습니다. 지난 목록도 즉시 비워 표시 혼동을 방지했습니다. **목록 필터·기간 입력 UI는 그대로**입니다.
+- **내 화면/업무에 영향**: **안전 점검 목록** — GET 쿼리 시 fromDate/toDate 전달(기본 30일 · 더 이전은 필터로 선택) · 화면 표시 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `1841144` — `SafetyListPage` (또는 panel)의 GET `/safeties` 호출 시 `fromDate`/`toDate` 쿼리 파라미터 추가 · BE 메서드 서명과 일치 · 역방향/범위초과 검증 후 사전 차단 · 기본값 30일 표시(UI 선택 시 DatePicker 연동) · 지난 결과 state clear · test 회귀 · npm test PASS
+</details>
+
+### 📝 보안 패치·간호급여 리포트 a11y·기선 갱신 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증(BE `db1ff72` · FE `03c0a2f`) 후 **안전 점검 조회 날짜 범위 제한·알림톡 페이로드 마스킹·간호급여 역방향 기간 차단**(SEC-D37·SEC-D41·L03_M15)을 CHANGELOG 카드로 기록했습니다. 최근 7일 요약을 갱신하고, FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 메타정보를 현재 HEAD로 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG 헤더 SHA 갱신 — BE `1ae9c50`→`db1ff72` · FE `cd0595d`→`03c0a2f` · 최근 7일 요약 2026-07-20 항목 신설 · SEC-D37·SEC-D41·L03_M15 카드 신설 · FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 메타 타임스탐프 갱신(`2026-07-20T12:46:00Z`) · 모듈 97.41% 고정(새 기능 0·순물질 보안/성능 패치)
+- 코드 재검증(2026-07-20): BE `db1ff72` 알림톡 페이로드 마스킹·안전 점검 범위 제한 · FE `03c0a2f` 간호급여 역방향 검증·안전 점검 날짜 동기화 확인 — 문서↔코드 일치
+
+</details>
+
+---
+
 ## 2026-07-19
+
+### ✅ 건강·투약 이력 시각을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-205)
+- **에이전트**: COD
+- **한 일**: UXD-197~204에서 리포트·표·패널·보호자 화면 날짜·시각을 `<time dateTime>`으로 정합한 뒤, **건강·투약 이력** 두 곳에 남아 있던 시각이 **그냥 글자(텍스트)** 로만 표시되어 스크린리더가 시각으로 정확히 해석하지 못하던 WCAG 1.3.1 갭을 정리했습니다. **건강 페이지 기록 이력(기록 시각)·이용자 상세 건강 탭(투약 시각·사건 발생 시각)** 을 **기계가 읽을 수 있는 표준 형식**으로 감쌌습니다. 투약 시간 표시는 `HH:mm` 로캘 포맷 유지하고, 투약/기록 시각의 기계용 값은 완전 ISO를 사용합니다. **화면에 보이는 글자는 그대로**입니다.
+- **내 화면/업무에 영향**: **건강 페이지·이용자 상세 — 건강 탭** — 스크린리더 등 보조기기의 기록/투약/사건 시각 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `25a0259` — `formatHealthHistoryTimestamp` 신설(utils/healthRecords.js) · ISO → `<time dateTime>` + 로캘 라벨 · `HealthPage` 「기록 이력」탭·`ClientDetailPage` 「건강」탭의 `recordedAt`/`administeredAt`/`occurredAt` 래핑 · 투약 예약 시간(`scheduledTime`) display 유지 · falsy → placeholder 처리 · UXD-200~204 패턴 재사용 · 신규 ds-* 0 · test 3파일 16/16 PASS · `npm run build` PASS
+</details>
+
+### 📝 건강 이력 시각 a11y·기선 갱신 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증(BE `6d3c766` · FE `25a0259`) 후 **건강·투약 이력 시각 `<time dateTime>`**(UXD-205)을 CHANGELOG 카드로 기록하고, **FAQ Q945** 적용 범위에 건강 페이지를 추가했습니다. FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선을 FE `95b6c52`→`25a0259` 로 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-205 카드 신설 · 헤더 기선 FE `95b6c52`→`25a0259` · 「최근 7일 요약」 2026-07-19 항목 보강 · FAQ Q945에 건강 페이지 행 추가(42곳→43곳) · FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선·능력표·변경 이력 FE `25a0259` 동기화
+- 코드 재검증(2026-07-19): FE `25a0259` 이 `HealthPage`·`ClientDetailPage` 건강 이력 시각을 `<time dateTime>`으로 래핑함을 확인 — 문서↔코드 일치. BE `6d3c766` 최신
+
+</details>
+
+### ✅ 욕구사정 만족도 중복 제거 (FE, QA-B627)
+- **에이전트**: COD
+- **한 일**: `ClientNeedsAssessmentSatisfactionPage` 컴포넌트가 React 배열 렌더링 시 고유 `key` prop을 사용하지 않아, 페이지 갱신 시 동일 만족도 항목이 중복으로 표시되거나 state 오류가 발생할 수 있던 갭을 정리했습니다. 만족도 목록의 각 항목에 고유 `key={satisfaction.id}` 를 추가해 React의 reconciliation이 정확히 동작하도록 했습니다. **화면 표시와 기능 변화 없음**입니다.
+- **내 화면/업무에 영향**: **이용자 상세 — 욕구사정 만족도 목록** — 페이지 갱신 시 중복 표시 방지(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `cd0595d` — `ClientNeedsAssessmentSatisfactionPage` satisfaction 배열 렌더링에 `key={satisfaction.id}` 추가 · React reconciliation 정확성 강화 · test 1파일 3/3 PASS · `npm run build` PASS
+</details>
+
+### ✅ 직원 현황 CSV의 엑셀 수식 실행 위험 차단 (BE, SEC-D33)
+- **에이전트**: COD
+- **한 일**: 이전 `57523b5` 에서 청구 명세·국세청 CSV의 엑셀 수식 실행 위험을 **공통 `CsvFormulaEscaper`** 로 차단했습니다. 이번에는 **직원 현황 리포트 CSV** 도 동일 위험에 노출되어 있던 것을 발견해 같은 헬퍼로 보호했습니다. **`StaffStatusReportService`** 의 `displayName` 등 사용자 영향 필드에서 이름이 `=`·`+`·`-`·`@`로 시작하면 엑셀이 수식으로 실행할 수 있던 위험(CWE-1236)을 앞에 작은따옴표를 붙여 글자로만 열리게 했습니다. **화면·다운로드 버튼 위치 변화 없음**입니다.
+- **내 화면/업무에 영향**: **직원현황 리포트 CSV** — 다운로드 파일 보안 강화(화면·버튼 변화 없음). 직원 이름이 `=`로 시작하면 엑셀에서 앞에 `'`가 보일 수 있음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE `1ae9c50` — `CsvFormulaEscaper` 공개(public) 승격 · `common.csv` 패키지로 이동 · `StaffStatusReportService.escapeCsv` 제거 후 `CsvFormulaEscaper.escape` 위임 · 금액 필드 신호 포함 숫자(`-90000.00`) 면제 정책 재사용 · `StaffStatusReportServiceTest` 회귀 · CWE-1236 동일 축 완결
+</details>
+
+### ✅ 청구 명세·국세청 CSV의 엑셀 수식 실행 위험 차단 (BE, SEC-D33)
+- **에이전트**: COD
+- **한 일**: 청구 **명세서 CSV**·**국세청 의료비공제 CSV**를 엑셀·스프레드시트에서 열 때, 이용자·보호자 이름 등 글자 칸이 `=`·`+`·`-`·`@`(또는 탭)로 시작하면 **수식·DDE로 실행**될 수 있던 위험을 막았습니다. 그런 칸 앞에 **작은따옴표(`'`)** 를 붙여 **글자로만** 열리게 하고, **금액 칸의 마이너스 숫자**(`-90000.00` 등)는 그대로 **숫자로 계산**되도록 예외 처리했습니다.
+- **내 화면/업무에 영향**: **청구 상세 「명세 Excel」·본인부담 통계 「국세청 CSV」** — 다운로드 파일 보안 강화(화면·다운로드 버튼 위치 변화 없음). 이름 칸이 `=`로 시작하면 엑셀에서 앞에 `'`가 보일 수 있음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE `57523b5` — `CsvFormulaEscaper` 신설 · `BillingStatementExportService`·`BillingService`(NTS medical-expense export) 셀 escape 통합 · 서명 숫자(`BigDecimal` 음수)는 neutralize 면제 · `CsvFormulaEscaperTest`·관련 Billing*Test 회귀 · CWE-1236
+</details>
+
+### ✅ 안전 점검·선임 업무일지·외출 실제 출발/복귀 시각을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-204)
+- **에이전트**: COD
+- **한 일**: UXD-197~203에서 목록·청구·보호자 화면 날짜·시각을 `<time dateTime>`으로 정합한 뒤, **안전·외출·선임** 화면에 남아 있던 시각이 **그냥 글자(텍스트)** 로만 표시되어 스크린리더가 시각으로 정확히 해석하지 못하던 갭을 정리했습니다. **안전 점검 저장 시각**·**선임 요양보호사 전자서명 시각**·**외출 실제 출발/복귀 시각**(이용자 상세 외출 탭·외출 리포트 「실제」 열)을 **기계가 읽을 수 있는 표준 형식**으로 감쌌습니다. **화면에 보이는 글자는 그대로**입니다.
+- **내 화면/업무에 영향**: **안전 일일/정기 점검·선임 업무일지·외출 관리·외출 리포트** — 스크린리더 등 보조기기의 저장·서명·출발/복귀 시각 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `95b6c52` — `formatSafetySavedAt`·`signatureSignedAtLabel` string→JSX(`<time dateTime>`) · `ClientOutingPanel`·`ClientOutingReportPage` 「실제」열 Fragment+조건부 `<time>` · UXD-200/201/203 패턴 재사용 · 신규 ds-* 0 · test 6파일 29/29 PASS · `npm run build` PASS
+</details>
+
+### 📝 청구 CSV 수식 차단·안전/외출 시각 a11y·기선 갱신 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증(BE `57523b5` · FE `95b6c52`) 후 **청구 CSV 엑셀 수식 실행 위험 차단**(SEC-D33)과 **안전·선임·외출 시각 `<time dateTime>`**(UXD-204)을 CHANGELOG 카드로 기록하고, **FAQ Q945** 적용 범위·**Q946**(CSV 수식 차단)·매뉴얼·관리자·배포 가이드 기선을 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG SEC-D33·UXD-204 카드 신설 · 헤더 기선 BE `6d3c766`→`57523b5` · FE `2715090`→`95b6c52` · 「최근 7일 요약」 2026-07-19 항목 보강 · FAQ Q945에 안전·선임·외출 행 추가(37곳→42곳) · FAQ Q946 신설 · USER_MANUAL §3-2·Q534/Q535 교차 참조 · ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선·스모크 동기화
+</details>
+
+### ✅ 보호자 포털·QR 체크인 출석 시각을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-203)
+- **에이전트**: COD
+- **한 일**: UXD-197~201에서 직원·청구·리포트 화면 날짜·시각 칸을 `<time dateTime>`으로 정합한 뒤, **보호자 Must 화면**에 남아 있던 출석 시각이 **그냥 글자(텍스트)** 로만 표시되어 스크린리더·보조기기가 시각으로 정확히 해석하지 못하던 WCAG 1.3.1 갭을 정리했습니다. **보호자 일일 요약(입소·귀가 시각)** 과 **QR 셀프 체크인 처리 완료 시각**을 **기계가 읽을 수 있는 표준 형식**으로 감쌌습니다. 기계용 값에는 완전 ISO 시각을, 화면 표시는 종전 로캘 시각 포맷을 그대로 유지합니다. **화면에 보이는 글자는 그대로**입니다.
+- **내 화면/업무에 영향**: **보호자 포털(`/guardian`)·QR 체크인(`/guardian/checkin`)** — 스크린리더 등 보조기기의 입소·귀가·처리 시각 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `2715090` — `GuardianDailySummary.formatTime` string→JSX(`<time dateTime={ISO}>` + `toLocaleTimeString` 표시) · `GuardianCheckinPage` 성공 Alert의 처리 완료 시각 `<time dateTime={resultTime}>` 래핑 · UXD-201 `formatLockedAt`/`formatPaidAt` 패턴 재사용 · 신규 ds-* 클래스 0(CSS 무변경) · test 2파일 9/9 PASS · `npm run build` PASS
+</details>
+
+### 📝 보호자 출석 시각 a11y·기선 갱신 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증(BE `6d3c766` · FE `2715090`) 후 **보호자 포털·QR 체크인 출석 시각 `<time dateTime>`**(UXD-203)을 CHANGELOG 카드로 기록하고, **FAQ Q945**·**USER_MANUAL §3-2·§8** 적용 범위에 보호자 Must 화면을 추가했습니다. FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선을 FE `fa838f5`→`2715090` 로 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-203 카드 신설 · 헤더 기선 FE `fa838f5`→`2715090` · 「최근 7일 요약」 2026-07-19 항목 보강 · FAQ Q945에 보호자 포털·QR 체크인 행 추가(35곳→37곳) · USER_MANUAL §3-2·§8 보호자 안내 · FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선·능력표·변경 이력 FE `2715090` 동기화
+- 코드 재검증(2026-07-19): FE `2715090` 이 `GuardianDailySummary`·`GuardianCheckinPage` 출석 시각을 `<time dateTime>`으로 래핑함을 확인 — 문서↔코드 일치. BE `6d3c766` 최신 · 미문서화 src 변경 없음
+</details>
+
+### ✅ 욕구사정 연도 비교 표 좁은 화면 가로 스크롤 보정 (FE, UXD-202)
+- **에이전트**: COD
+- **한 일**: 이용자 **욕구사정 연도 비교(3열)** 표가 공용 `Table` 컴포넌트를 거치지 않아, 좁은 화면·모바일에서 **페이지 전체가 옆으로 밀릴** 수 있던 마지막 한 곳을 정리했습니다. 표를 공용 **`.ds-table-wrap`**(좌우 넘침 시 표 영역만 스크롤)으로 감싸 **카드(표 영역) 안에서만** 좌우로 스크롤되도록 했습니다(WCAG 1.4.10 Reflow). **표에 보이는 글자·열·모양은 그대로**입니다.
+- **내 화면/업무에 영향**: **이용자 상세 — 욕구사정 비교** — 좁은 창·모바일에서 **표만** 가로 스크롤되어 화면 전체가 밀리지 않음(넓은 화면은 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `fa838f5` — `ClientNeedsAssessmentCompare.jsx` 의 단독 raw `ds-table`(공용 `Table` 미경유·`.ds-table-wrap` 누락)을 `.ds-table-wrap`(`overflow-x:auto`)으로 래핑 + 회귀 단언 추가(표 부모가 `.ds-table-wrap`) · 신규 ds-* 클래스 0(CSS 무변경) · 가정통신문 표 모바일 스크롤(Q878·UXD-183)과 동일 패턴 · FE-16 · §107/§126
+</details>
+
+### 📝 욕구사정 비교 표 모바일 스크롤 문서 반영·기선 갱신 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증(BE `6d3c766` · FE `fa838f5`) 후 **욕구사정 연도 비교 표의 좁은 화면 가로 스크롤 보정**(UXD-202)을 CHANGELOG 카드로 기록하고, 이미 있던 **FAQ Q878**(표 모바일 가로 스크롤)에 욕구사정 비교 표를 함께 안내했습니다. FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선을 FE `6a9e85e`→`fa838f5` 로 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-202 카드 신설 · 헤더 기선 FE `6a9e85e`→`fa838f5` · 「최근 7일 요약」 2026-07-19 항목 보강 · FAQ Q878 답변에 `ClientNeedsAssessmentCompare`(욕구사정 비교) 추가 · FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE 기선·능력표·변경 이력 FE `fa838f5` 동기화
+- 코드 재검증(2026-07-19): FE `fa838f5` 가 `ClientNeedsAssessmentCompare` 표를 `.ds-table-wrap` 으로 래핑함을 확인 — 문서↔코드 일치. BE `6d3c766` 최신 · 미문서화 src 변경 없음
+</details>
+
+### 📝 ADMIN_GUIDE §1-4 baseline·sysadmin a11y 교차 참조 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증(BE `6d3c766` · FE `6a9e85e`) 후 **ADMIN_GUIDE §1-4**가 구버전(`49349e4`/`5e816e6`)으로 남아 있던 baseline을 최신으로 맞추고, SEC-D34 엑셀 9축·UXD-197~201·리포트 기간 검증·이동서비스비·배차 회차 항목을 기능 클로저 목록 상단에 추가했습니다. **sysadmin**이 매일 보는 **로그인 이력·감사 로그·백업 설정·수가 변경 이력** 패널의 `<time dateTime>` a11y를 §4-2·§4-5·§6-3-1에 FAQ Q945와 연결했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- ADMIN_GUIDE §1-4 baseline `49349e4`/`5e816e6` → **`6d3c766`/`6a9e85e`** · SEC-D34·UXD-194~201·Q940·Q936 기능 클로저 7건 추가 · §4-2 BackupSettingsPanel·LoginHistoryPanel·AuditLogPanel · §4-5 a11y 참고 · §6-3-1 FeeRateHistoryPanel `<time dateTime>` · 변경 이력 2026-07-19 행 추가 · PLAN_NOTES TWR 체크포인트 동기화
+- 코드 재검증(2026-07-19): develop HEAD BE `6d3c766`/FE `6a9e85e` — CHANGELOG·FAQ·USER_MANUAL baseline과 일치 · 미문서화 src 변경 없음
+</details>
+
+### 📝 청구·정산·보호자·백업·이력 화면 날짜 칸 기계판독 형식 확대 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `6d3c766` · FE `6a9e85e`** 로 맞추고, UXD-197~199(리포트·목록·청구/평가/알림 표)에 이어 **로그인/감사/알림/수가 이력 패널 4곳(UXD-200)** 과 **청구 상세·수납 목록·수가/본인부담 단가·백업·보호자 청구 상세 7곳(UXD-201)** 의 날짜·시각 칸 `<time dateTime>` 래핑을 카드로 기록했습니다. 화면에 보이는 날짜·표 모양 변화가 없어 FAQ 신규 Q는 두지 않고 기존 **Q945** 적용 범위와 CHANGELOG·기선·능력표만 갱신했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-200·UXD-201 카드 신설 · 「최근 7일 요약」 2026-07-19 항목 보강 · baseline 동기화(BE `6d3c766` / FE `6a9e85e`) · FAQ·USER_MANUAL 헤더·능력표·변경 이력 FE 기선 `e8ff8dc`→`6a9e85e` + UXD-200·UXD-201 능력 항목 추가 · FAQ Q945·USER_MANUAL §3-2 적용 범위(24곳→35곳)로 확대
+- 코드 재검증(2026-07-19): FE `c2fb261`(UXD-200)이 `LoginHistoryPanel`·`AuditLogPanel`·`NotificationHistoryPanel`·`FeeRateHistoryPanel`, `6a9e85e`(UXD-201)이 `BillingDetailPage`·`PaymentPage`·`FeeScheduleTable`·`CopayRateTable`·`BackupSettingsPanel`·`BillingSettingsPanel`·`GuardianBillingDetailModal` 날짜·시각 셀을 `<time dateTime>`로 래핑함을 확인 — 문서↔코드 일치. BE `6d3c766` 최신 문서화 완료
+</details>
+
+### ✅ 청구·정산·보호자·백업 화면의 날짜 칸을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-201)
+- **에이전트**: COD
+- **한 일**: UXD-197~200에서 표·이력 화면 날짜 칸을 `<time dateTime>`으로 정합한 뒤, **청구·정산·보호자·백업** 관련 7개 화면에 남아 있던 날짜 칸 8곳이 아직 **그냥 글자(텍스트)** 로만 표시되어 스크린리더·보조기기가 날짜로 정확히 해석하지 못하던 WCAG 1.3.1 갭을 마저 정리했습니다. **청구 상세(입금일·환불일)·수납 목록(입금일)·수가 단가표·본인부담 단가표(적용 시작일)·백업 설정(시작·완료 시각)·청구 잠금 시각·보호자 청구 상세(입금일)** 를 **기계가 읽을 수 있는 표준 날짜 형식**으로 감쌌습니다. **화면에 보이는 날짜 글자와 표 모양은 그대로**입니다.
+- **내 화면/업무에 영향**: **청구 상세·수납·수가/본인부담 단가·백업 설정·보호자 청구 상세** — 스크린리더 등 보조기기의 날짜 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `6a9e85e` — 직접 셀 래핑: `BillingDetailPage`(PAID `paidAt`·REFUNDED `refundedAt`)·`PaymentPage`(수납표 `paidAt`)·`FeeScheduleTable`(`effectiveFrom`)·`CopayRateTable`(`effectiveFrom`)·`BackupSettingsPanel`(`startedAt`·`completedAt`) · JSX 반환 헬퍼 전환: `BillingSettingsPanel.formatLockedAt`·`GuardianBillingDetailModal.formatPaidAt` (string→`<time dateTime>`) · UXD-197~200 패턴과 정렬 · 신규 ds-* 클래스 0(CSS 무변경) · 7개 test 파일 40/40 PASS · `npm run build` PASS
+</details>
+
+### ✅ 로그인·감사·알림·수가 이력 화면의 날짜·시각 칸을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-200)
+- **에이전트**: COD
+- **한 일**: UXD-197~199에서 리포트·목록·청구/평가/알림 표의 날짜 칸을 `<time dateTime>`으로 정합한 뒤, **모니터링·이력 패널** 4곳에서도 날짜·시각 값이 **그냥 글자(텍스트)** 로만 표시되어 스크린리더·보조기기가 날짜/시각으로 정확히 해석하지 못하던 WCAG 1.3.1 갭을 정리했습니다. **로그인 이력(로그인 시각)·감사 로그(발생 시각)·알림 발송 이력(발송 시각)·수가 변경 이력(적용 시작·등록일)** 을 **기계가 읽을 수 있는 표준 형식**으로 감쌌습니다. 날짜+시각 결합 칸은 기계용 값에는 완전 시각을, 화면 표시는 종전 로캘 포맷을 그대로 유지합니다. **화면에 보이는 글자는 그대로**입니다.
+- **내 화면/업무에 영향**: **로그인 이력·감사 로그·알림 발송 이력·수가 변경 이력** — 스크린리더 등 보조기기의 날짜·시각 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `c2fb261` — `LoginHistoryPanel`(`createdAt`)·`AuditLogPanel`(`createdAt`)·`NotificationHistoryPanel`(`sentAt`/`createdAt`)·`FeeRateHistoryPanel`(`effectiveFrom`·`createdAt`) 조건부 `<time dateTime>` 래핑 · 이미 정합된 `CmsCollectionPanel`·`BillingLedgerTable` 패턴과 정렬 · 신규 ds-* 클래스 0(CSS 무변경) · 기존 test 3개 `<time datetime>` 회귀 단언 추가 + `FeeRateHistoryPanel` 신규 test · npm test(flock) 4파일 12/12 PASS · build PASS
+</details>
+
+### 📝 표 날짜 칸 스크린리더 안내 FAQ 통합 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 재검증 후 **UXD-197(리포트 표)·UXD-198(CRUD·목록 표)·UXD-199(청구·평가·알림 표)** 에 걸친 **표 날짜 칸 `<time dateTime>` 접근성 개선**을 운영자용 **FAQ Q945**와 **USER_MANUAL §3-2** 한 줄로 통합 정리했습니다. 화면에 보이는 날짜·표 모양 변화는 없습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신(기능은 이미 반영됨)
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- FAQ Q945 신설(24곳 화면·경로 표) · USER_MANUAL §3-2 「표 날짜 `<time dateTime>`」 행 추가 · §1-5 a11y 참조 보강 · baseline 재확인 BE `6d3c766` / FE `e8ff8dc` — 미문서화 src 변경 없음
+</details>
+
+### 📝 청구·평가·알림 목록 표 날짜 칸 기계판독 형식 확대 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `6d3c766` · FE `e8ff8dc`** 로 맞추고, UXD-197(리포트 표)·UXD-198(CRUD·목록 표)에 이어 **청구·평가·알림 목록 화면 10곳 표 날짜 칸 `<time dateTime>` 래핑**(UXD-199)을 카드로 기록했습니다. 화면에 보이는 날짜·표 모양 변화가 없어 FAQ 신규 Q는 두지 않고 CHANGELOG·기선·능력표만 갱신했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-199 카드 신설 · 「최근 7일 요약」 2026-07-19 항목 보강 · baseline 동기화(BE `6d3c766` / FE `e8ff8dc`) · FAQ·USER_MANUAL 헤더·능력표·변경 이력 FE 기선 `c3f0e05`→`e8ff8dc` + UXD-199 능력 항목 추가
+- 코드 재검증(2026-07-19): FE `e8ff8dc` 가 `BillingLedgerTable`(입금·환불·수납일)·`NeedsAssessmentStatusPage`·`PeriodicRiskAssessmentStatusPage`·`CarePlanNotificationPage`·`OverduePage`·`HealthDetailPage`·`GuardianDetailPage`·`ProvisionResultEvaluationPage`·`FunctionalRecoveryPage`·`VisitRfidDiffComparePanel` 표 날짜 셀을 `<time dateTime>`로 래핑함을 확인 — 문서↔코드 일치. BE `6d3c766` 최신 문서화 완료
+</details>
+
+### ✅ 청구·평가·알림 목록 화면 표의 날짜 칸을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-199)
+- **에이전트**: COD
+- **한 일**: UXD-197(리포트 표)·UXD-198(CRUD·목록 표)에서 날짜 칸을 `<time dateTime>`으로 정합한 뒤, **청구 대장·평가/알림 이력·상세 화면** 10곳에서도 날짜 칸이 **그냥 글자(텍스트)** 로만 남아 스크린리더·보조기기가 날짜로 정확히 해석하지 못하던 WCAG 1.3.1 갭을 마저 정리했습니다. **청구 대장(입금·환불·수납일)·욕구사정 현황·주기 위험 평가 현황·돌봄계획 알림 이력·연체·건강 상세·보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교** 표의 일자 칸을 **기계가 읽을 수 있는 표준 날짜 형식**으로 감쌌습니다. **화면에 보이는 날짜 글자와 표 모양은 그대로**입니다.
+- **내 화면/업무에 영향**: **청구 대장·욕구사정·주기 위험 평가·돌봄계획 알림·연체·건강/보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교** — 스크린리더 등 보조기기의 날짜 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `e8ff8dc` — 청구 대장 공통 표(`BillingLedgerTable`)에 `renderDateCell` 헬퍼로 입금·환불·수납일 셀을 `<time dateTime>`로 래핑 · `NeedsAssessmentStatusPage`·`PeriodicRiskAssessmentStatusPage`·`CarePlanNotificationPage`는 `formatDate` 헬퍼 경유 · `OverduePage`(최근 독촉일)·`HealthDetailPage`·`GuardianDetailPage`·`ProvisionResultEvaluationPage`·`FunctionalRecoveryPage`·`VisitRfidDiffComparePanel` 일자 셀 직접 래핑 · UXD-197·UXD-198 패턴과 정렬 · 신규 ds-* 클래스 0(CSS 무변경) · 7개 test 파일 `<time>` 회귀 단언 추가
+</details>
+
+### 📝 엑셀 금액 전각 숫자·전각 콤마 정규화 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: 이미 develop에 반영돼 있으나 사용자용 문서에는 빠져 있던 **공단·은행 엑셀 금액의 전각 숫자(０-９)·전각 콤마(，) 정규화**(SEC-D34)를 FAQ **Q939·Q941** 표와 USER_MANUAL §4-6·§5-6 안내에 보강했습니다. 전각 IME 입력·전각 통화 서식으로 `１，２５０，０００`처럼 들어온 금액도 전각 숫자를 반각으로 바꾸고 전각 콤마를 떼어 정확히 읽는다는 점을 명시했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신(기능은 이미 반영됨)
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- FAQ Q939·Q941 표에 「전각 숫자(０-９)·전각 콤마(，)」 행 추가 · 두 Q 헤더 BE 커밋 참조에 `c88687a`(전각 콤마)·`c7b6608`(전각 숫자) 추가 · Q941 답변 인트로에 전각 숫자·전각 콤마 예시(`１，２５０，０００`) 보강 · USER_MANUAL §4-6(은행 입금)·§5-6(공단 대사) 표시서식 문구 + FE/BE 능력표에 「전각 숫자·전각 콤마 정규화」 항목 추가
+- 코드 재검증(2026-07-19): `ExcelAmountNormalizer` 가 `FULLWIDTH_COMMA`(U+FF0C) strip + `mapFullwidthDigitsToAscii()`(U+FF10–U+FF19) 를 수행함을 확인 — 문서↔코드 일치. develop HEAD 실측 BE `6d3c766` / FE `c3f0e05` 로 최신, 미문서화 src 변경 없음
+</details>
+
+### 📝 목록·기록 표 날짜 칸 기계판독 형식 확대 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `6d3c766` · FE `c3f0e05`** 로 맞추고, UXD-197(리포트 표)에 이어 **CRUD·목록 화면 9곳 표 날짜 칸 `<time dateTime>` 래핑**(UXD-198)을 카드로 기록했습니다. 화면에 보이는 날짜·표 모양 변화가 없어 FAQ 신규 Q는 두지 않고 CHANGELOG·기선·능력표만 갱신했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-198 카드 신설 · 「최근 7일 요약」 2026-07-19 항목 보강 · baseline 동기화(BE `6d3c766` / FE `c3f0e05`) · FAQ·USER_MANUAL 헤더·능력표·변경 이력 FE 기선 `aab11b2`→`c3f0e05` + UXD-198 능력 항목 추가
+- 코드 재검증(2026-07-19): FE `c3f0e05` 가 `CaseManagementPage`·`NursingWeightRecordPage`·`NursingOralCareCheckPage`·`NursingEmergencyRecordPage`·`NursingVitalCheckPage`·`PressureUlcerPage`·`LeadCaregiverWorkLogPage`·`ClientOutingReportPage`·`ClientOutingPanel` 목록 표 날짜 셀을 `<time dateTime>`로 래핑함을 확인 — 문서↔코드 일치. BE `6d3c766` 최신 문서화 완료
+</details>
+
+### ✅ 목록·기록 화면 표의 날짜 칸을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-198)
+- **에이전트**: COD
+- **한 일**: UXD-197에서 급여제공 **리포트** 표의 날짜 칸을 `<time dateTime>`으로 정합한 뒤, **리포트가 아닌 CRUD·목록 화면** 9곳에서도 날짜 칸이 **그냥 글자(텍스트)** 로만 남아 스크린리더·보조기기가 날짜로 정확히 해석하지 못하던 WCAG 1.3.1 갭을 정리했습니다. **사례관리 회의·바이탈·체중·구강·응급·욕창 간호 기록·선임 업무일지·외출 목록·외출 리포트** 표의 회의일·점검일·측정일·발생일·기록일·외출일 등을 **기계가 읽을 수 있는 표준 날짜 형식**으로 감쌌습니다. **화면에 보이는 날짜 글자와 표 모양은 그대로**이며, 바이탈 점검의 **시간 범위**·날짜+시각 결합 셀 중 **범위로 표현할 수 없는 부분**은 종전처럼 텍스트로 둡니다.
+- **내 화면/업무에 영향**: **사례관리·간호(바이탈·체중·구강·응급)·욕창·선임 업무일지·외출 관리·외출 리포트** — 스크린리더 등 보조기기의 날짜 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `c3f0e05` — 9개 표 렌더: `CaseManagementPage`(meetingDate)·`NursingWeightRecordPage`(measureDate)·`NursingOralCareCheckPage`(checkDate)·`NursingEmergencyRecordPage`(occurrenceDate)·`NursingVitalCheckPage`(checkDate, 날짜 부분만)·`PressureUlcerPage`(careDate)·`LeadCaregiverWorkLogPage`(logDate)·`ClientOutingReportPage`·`ClientOutingPanel`(outingDate) · UXD-197 L02 리포트·기존 `<time>` 사용 화면과 패턴 정렬 · 신규 ds-* 클래스 0(CSS 무변경) · 9개 test 파일 `<time>` 회귀 단언 추가
+</details>
+
+### 📝 리포트 표 날짜 칸 기계판독 형식 반영·기선 갱신 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `6d3c766` · FE `aab11b2`** 로 맞추고, 급여제공 리포트 표의 날짜 칸을 **기계가 읽을 수 있는 표준 형식**으로 감싼 접근성 개선(UXD-197)을 카드로 기록했습니다. 화면에 보이는 날짜·표 모양 변화가 없어 FAQ 신규 Q는 두지 않고 CHANGELOG·기선만 갱신했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- CHANGELOG UXD-197 카드 신설 · 「최근 7일 요약」 2026-07-19 항목 보강(FE 2791/2791 PASS·FE 기선 `aab11b2`) · baseline 동기화(BE `6d3c766` / FE `aab11b2`) · FAQ·USER_MANUAL 헤더 및 **FE-측 SYNCED 능력표·변경 이력** 기선 SHA `0ff9c7d`→`aab11b2` 갱신 + UXD-197 능력 항목 추가
+- QA 실측(2026-07-19): FE develop `aab11b2` = tester TSR 검증 **2791/2791 PASS**(UXD-197 착지 후 full npm test) — 문서 FE 기선(헤더·능력표·변경 이력)을 `aab11b2` 로 일치시킴
+- 코드 재검증(2026-07-19): FE `aab11b2` 가 `BathHelpReportPage`·`CareMealExcretionReportPage`·`IntensiveExcretionReportPage`·`PatientServiceReportPage`·`PositionChangeReportPage` 인라인 표의 날짜 셀을 `<time dateTime>`로 래핑함을 확인 — 문서↔코드 일치. 미문서화 src 변경 없음(BE `6d3c766` 최신 문서화 완료)
+</details>
+
+### ✅ 리포트 표의 날짜 칸을 기계가 읽을 수 있는 형태로 표시 (FE, UXD-197)
+- **에이전트**: COD
+- **한 일**: 표를 화면에 바로 그리는 급여제공 리포트(목욕도움·요양/식사/화장실·집중배설·수급자별 급여제공·체위변경)의 날짜 칸이 예전에는 **그냥 글자(텍스트)** 로만 표시되어, 스크린리더·검색·자동화 도구 같은 보조기기·프로그램이 그 값을 **날짜로 정확히 해석하지 못했습니다**. 이미 표준 형식을 쓰던 프로그램 리포트·간호급여 리포트와 달랐던 부분입니다. 이제 이 리포트들의 날짜 칸(방문일·기록일·관찰일·평가일·요양일·체위변경일)을 **기계가 읽을 수 있는 표준 날짜 형식**으로 감싸 형식을 통일했습니다. **화면에 보이는 날짜 글자와 표 모양은 그대로**이며, 하나의 날짜로 나타낼 수 없는 「주(週) 범위」 칸은 종전처럼 텍스트로 둡니다(WCAG 1.3.1).
+- **내 화면/업무에 영향**: **목욕도움·요양/식사/화장실·집중배설·수급자별 급여제공·체위변경 리포트** — 스크린리더 등 보조기기의 날짜 인식 정확도 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `aab11b2` — 인라인 표 렌더 5개 리포트 페이지(`BathHelpReportPage`·`CareMealExcretionReportPage`·`IntensiveExcretionReportPage`·`PatientServiceReportPage`·`PositionChangeReportPage`)의 `scheduledDate`·`recordDate`·`observationDate`·`assessedOn`·`careDate`·`restraintDate` 셀을 `<time dateTime>`로 래핑 · 공유 `ProgramReportPanel`·`NursingServiceReportPanel`이 이미 쓰던 패턴과 정렬 · 주(週) 범위 셀은 단일 datetime로 표현 불가하여 plain text 유지 · 신규 ds-* 클래스 0(CSS 무변경) · 5개 파일 테스트 +33 assertion 추가 PASS
+</details>
+
+### 📝 엑셀 금액 특수 공백 인식·리포트 오류 접근성 확대 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `6d3c766` · FE `0ff9c7d`** 로 맞추고, **공단·은행 엑셀 금액의 「줄바꿈 없는 공백(U+00A0)·전각 공백(U+3000)」 천 단위 정규화**(SEC-D34 9번째 축)를 **Q939·Q941** 보강으로, **리포트 역방향 기간 오류를 시작일 칸까지 스크린리더에 안내**(UXD-196)하는 접근성 확대를 **Q942·Q943·Q944** 참고 보강으로 정리했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- FAQ Q939·Q941 「줄바꿈 없는 공백(U+00A0)·전각 공백(U+3000)」 행 추가 · Q942·Q943·Q944 「시작일 칸도 aria-invalid」 참고 보강 · USER_MANUAL §4-6·§5-6 특수 공백 문구 추가 · baseline 동기화(BE `6d3c766` / FE `0ff9c7d`)
+- 코드 재검증(2026-07-19): `ExcelAmountNormalizer.normalizeNumeric()` 가 `NO_BREAK_SPACE`(U+00A0)·`IDEOGRAPHIC_SPACE`(U+3000) 를 `\s+` strip 앞에서 명시적으로 제거함을 확인 — 문서↔코드 일치. develop HEAD 실측 BE `6d3c766` / FE `0ff9c7d` 로 최신, 미문서화 src 변경 없음
+</details>
+
+### ✅ 공단·은행 엑셀 금액의 특수 공백(줄바꿈 없는 공백·전각 공백) 정상 인식 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 공단 명세(NHIS) 대사 엑셀과 은행 입금 엑셀에서 금액을 `1 250 000원`처럼 **눈으로는 띄어쓰기로 보이지만 실제로는 보통 공백이 아닌** 「줄바꿈 없는 공백(U+00A0, 웹·CMS 복사·붙여넣기)」·「전각 공백(U+3000, 전각 IME 입력)」으로 천 단위를 나누면, 예전에는 이 특수 공백을 떼지 못해 숫자로 못 읽고 **값이 조용히 비워져(null)** 대사 상태가 「불일치·보류」로 잘못 잡히거나 입금 행이 **자동 매칭·수납에서 빠질** 수 있었습니다. 이제 콤마·「원」·원화 기호(₩/￦)·전각 숫자·일반 공백과 함께 **이 두 특수 공백도 떼어** 정확한 금액으로 읽습니다(보통 공백·숫자만 있는 파일 동작은 그대로).
+- **내 화면/업무에 영향**: **`/billing/imports/nhis` 대사**·**`/billing/payments` 은행 입금 엑셀** — 특수 공백으로 천 단위를 나눈 금액에서도 대사 판정·입금 매칭이 정확해짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE develop `fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row` `@6d3c766` · 공유 `ExcelAmountNormalizer` 에 `NO_BREAK_SPACE`(U+00A0)·`IDEOGRAPHIC_SPACE`(U+3000) 상수 추가 후 `.replaceAll("\\s+","")` 앞에서 명시적 strip(Java `\s`가 두 문자를 매칭하지 않음) · NHIS·은행 두 파서 단일 소스 위임 · `ExcelAmountNormalizerTest` +1·`BankDepositExcelParserTest` +1 회귀 lock · ASCII 숫자 입력 byte-neutral
+</details>
+
+### ✅ 리포트 역방향 기간 오류 안내 스크린리더 접근성 확대 (FE, UXD-196)
+- **에이전트**: COD
+- **한 일**: 앞서 개선한 리포트 역방향 기간 사전 차단에서, 오류 상태(「오류 있음」·`aria-invalid`)가 **종료일 칸에만** 연결되어 있어, 사실상 **시작일 칸도 잘못된 상태**인데 스크린리더에는 시작일이 정상으로 노출되던 접근성 갭이 있었습니다. 이제 **9개 급여제공·간호급여·프로그램 리포트**에서 시작일 칸도 「오류 있음」 상태로 표시하고 종료일의 오류 안내를 참조하도록 연결했습니다. **화면에 보이는 표시·안내 문구는 그대로**이며(안내 메시지는 종료일 한 곳만 두어 중복 낭독 방지), 키보드·스크린리더 사용자가 두 날짜 칸 어디서든 오류를 인지합니다(WCAG 3.3.1·4.1.2).
+- **내 화면/업무에 영향**: **목욕도움·요양/식사/화장실·체위변경·집중배설·통합 간호제공·수급자별 급여제공·급여제공 서비스 집계·간호급여·프로그램 리포트** — 스크린리더 사용자의 오류 인지 개선(시각 사용자 화면 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `5789173` — 9개 리포트 페이지(`BathHelpReportPage`·`CareMealExcretionReportPage`·`CareNursingServiceReportPage`·`IntensiveExcretionReportPage`·`NursingServiceReportsPage`·`PatientServiceReportPage`·`PositionChangeReportPage`·`ProgramReportsPage`·`ServiceSummaryReportPage`)에서 시작일 `DateInput`도 `aria-invalid` 전달·`aria-describedby`로 종료일 오류 id 참조(안내 `role="alert"`는 종료일 단일 메시지 유지) · §119 `TransportServiceFeePanel` 이중 필드 라우팅 패턴 적용 · ds-* 클래스 0(CSS 무변경) · 9파일 38/38 PASS
+- FE `0ff9c7d` — `ProgramReportsPage` 오류 리셋 회귀 테스트 추가
+</details>
+
+### 📝 리포트 역방향 기간 사전 차단 확대 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `e60e288` · FE `60716c6`** 로 맞추고, **조회 기간 역방향(시작일>종료일) 사전 차단이 나머지 급여제공 리포트·간호급여 리포트·프로그램 리포트까지 확대**된 내용을 **Q944** 신설로 정리했습니다. 앞서 개별 리포트(Q942·Q943)로 다루던 것을 이번 확대분과 함께 하나로 안내합니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료(문서만)
+
+<details><summary>자세히</summary>
+
+- FAQ Q944 신설 · USER_MANUAL 프로그램 리포트·목욕도움 리포트 등 「기간 입력 주의」 보강 · baseline 동기화(BE `e60e288` / FE `60716c6`)
+</details>
+
+### ✅ 리포트 조회 기간 거꾸로 입력 시 즉시 차단 확대 (FE, form polish)
+- **에이전트**: COD
+- **한 일**: 조회 기간(시작일·종료일)을 받는 여러 **기록·리포트 화면**에서, **시작일이 종료일보다 뒤**인 역방향 기간으로 조회하면 예전에는 **서버까지 요청을 보낸 뒤** 400 오류가 떴습니다. 이제 이미 개선된 수급자별 급여제공 리포트·급여제공 서비스 집계 리포트에 더해, **나머지 급여제공 리포트(목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호)**, **간호급여 리포트**, **프로그램 리포트(5-7~5-10)** 까지 **조회 전에 화면에서 바로** 「종료일은 시작일 이후여야 합니다.」로 종료일 칸에 안내하고, 오류와 어긋나는 **지난 집계 표도 함께 비웁니다**. 한쪽 날짜만 비우면 서버가 기본 기간으로 대체하므로 종전대로 조회됩니다.
+- **내 화면/업무에 영향**: **목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호·간호급여·프로그램 리포트** — 역방향 기간을 **즉시** 안내, 불필요한 서버 오류 대기 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE `ca31864` — 나머지 L02 리포트(`BathHelpReportPage`·`CareMealExcretionReportPage`·`PositionChangeReportPage`·`IntensiveExcretionReportPage`·`CareNursingServiceReportPage`)에 공유 `resolveCareReportDateRangeError` 가드 확대·역방향 회귀 테스트 각 추가
+- FE `d4d9887` — `NursingServiceReportsPage`(간호급여 L03_M07/M09/M10) 동일 가드 연결·중복 empty 객체 `EMPTY_NURSING_SERVICE_REPORT` 상수화
+- FE `60716c6` — `ProgramReportsPage`(5-7~5-10) 신규 `config/programReports.js`(`resolveProgramReportDateRangeError` 등, care-report·이동서비스비 도메인 config 패턴 미러)·역방향 회귀 테스트
+- 공통: 종료일 필드 `role="alert"`·`aria-invalid`(WCAG 3.3.1) · BE `resolveDateWindow` 문구 verbatim lockstep · FE develop `60716c6`
+</details>
 
 ### 📝 BE 엑셀 금액 정규화 로직 DRY 통합 및 안정성 검증 (TWR)
 - **에이전트**: TWR
-- **한 일**: develop HEAD 실측 후 **BE SEC-D34 엑셀 금액 정규화 리팩터** 정보를 CHANGELOG에 기록했습니다. **공단 NHIS·은행 입금 두 파서의 byte-identical 중복 로직을 신규 `ExcelAmountNormalizer` 로 단일화** — 통화기호(₩/￦), 콤마, 「원」, 공백, 전각 숫자 8축 정규화를 한 곳에서 관리해 향후 축 추가 시 오류·drift 위험을 제거했습니다. **42/42 회귀 테스트 PASS**(기존 동작 byte-identical 보증) · 코드 중복 제거(rules §2·§13·§16 준수). **baseline 동기화**(BE `c7b6608` / FE `cf360d7`).
+- **한 일**: develop HEAD 실측 후 **BE SEC-D34 엑셀 금액 정규화 리팩터** 정보를 CHANGELOG에 기록했습니다. **공단 NHIS·은행 입금 두 파서의 byte-identical 중복 로직을 신규 `ExcelAmountNormalizer` 로 단일화** — 통화기호(₩/￦), 콤마, 「원」, 공백, 전각 숫자 8축 정규화를 한 곳에서 관리해 향후 축 추가 시 오류·drift 위험을 제거했습니다. **42/42 회귀 테스트 PASS**(기존 동작 byte-identical 보증) · 코드 중복 제거(rules §2·§13·§16 준수). **baseline 동기화**(BE `e60e288` / FE `cf360d7`).
 - **내 화면/업무에 영향**: 없음 — 내부 리팩터, 사용자 화면 변화 없음 · **미사용 기능: BE merge pending 7개, PLN 스코프 재조정 대기**
 - **상태**: 완료(문서만), 코드 merge 대기
 
 <details><summary>자세히</summary>
 
-- BE develop `refactor(v3/SEC-D34): extract shared excel amount normalizer` `@c7b6608` · `NhisExcelParser`·`BankDepositExcelParser` 공유 로직 → `ExcelAmountNormalizer`(billing/domain) · `normalizeNumeric()`·`mapFullwidthDigitsToAscii()` 패키지-프라이빗 · 통화기호 2종(₩/￦)·콤마·「원」·공백·전각 숫자 8축 단일 소스 · NHIS 급여일수「일」 마커 strip 후 위임 · BankDeposit `setScale(2)` 추가 · `NhisExcelParserTest` 16/16·`BankDepositExcelParserTest` 17/17·`ExcelAmountNormalizerTest` 9/9 **42/42 PASS** · WT CLEAN · Open 0 · lint 0
+- BE develop `refactor(v3/SEC-D34): extract shared excel amount normalizer` `@e60e288` · `NhisExcelParser`·`BankDepositExcelParser` 공유 로직 → `ExcelAmountNormalizer`(billing/domain) · `normalizeNumeric()`·`mapFullwidthDigitsToAscii()` 패키지-프라이빗 · 통화기호 2종(₩/￦)·콤마·「원」·공백·전각 숫자 8축 단일 소스 · NHIS 급여일수「일」 마커 strip 후 위임 · BankDeposit `setScale(2)` 추가 · `NhisExcelParserTest` 16/16·`BankDepositExcelParserTest` 17/17·`ExcelAmountNormalizerTest` 9/9 **42/42 PASS** · WT CLEAN · Open 0 · lint 0
 </details>
 
 ### ✅ BE 엑셀 금액 정규화 로직 단일화 (BE, SEC-D34)

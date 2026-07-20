@@ -1,0 +1,168 @@
+BNK-878 — 이지케어 역공학 2-4h (2026-07-18T20:19:00Z)
+====================================================================
+rotation: 이지케어 역공학 2-4h · 초점: FAQ 신규 rowid 전수 스캔 → 미포착 2건 verbatim 복원
+ + ogada full-stack crosswalk + 데모 셸/홈/FAQ live 재실측 + git 실측 baseline 갱신.
+
+--------------------------------------------------------------------
+[0] 데모 셸 / 홈 / FAQ live 재실측
+--------------------------------------------------------------------
+- ./scripts/ezcare-demo-fetch.sh : login code=0000 (oCode=DEMO)
+  · title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+  · top-nav-item-V2.js `95286775000f06c8ad13688fcb0d6dbb` `?20260428` 25,470B
+    = BYTE-IDENTICAL (BNK-864→878 carry·10-module nav 무변)
+  · demo_shell 138,099B `414550517cfd7c39ec21a26328fb3bee` (동적 콘텐츠 md5 drift)
+  · nav 10-module: 1직원·2수급자·3방문일정·4RFID점검·5본인부담·6직원급여
+    ·7재무회계·8세무·사회보험·9기관관리·10기관평가
+  · redirect stub(비로그인) 70B `e1d52bd5...` = 역공학 금지 stub 재확인
+- home  https://ezcare.easyms.co.kr/ : 69,883B `96c631a4a2d4f2e9634cb06fa409a445`
+  · BNK-871 69,122B `060a77df` → +761B (마크업 drift)
+  · data-count 5-지표 verbatim STABLE:
+      data-count1=53.2  (방문요양 ERP 시장점유율 %)
+      data-count2=9298  (이지케어 이용기관)
+      data-count3=4675  (재무회계 대행 이용기관)
+      data-count4=2353  (억·월 공단청구)
+      data-count4=1820  (억·종사자급여)  ← id 중복은 이지케어 원본 마크업 그대로
+  · 5-지표 byte-IDENTICAL (BNK-778→854→870→871→878)
+- FAQ  https://ezcare.easyms.co.kr/help/faq.ez : 80,057B `1ae41393ce303d47f2cf1738c35decd1`
+  · size 80,057B IDENTICAL·md5 오실레이션(콘텐츠 dynamic)·rowid 233·max 21781 STABLE
+  · 파일무결성 verbatim(매직/시그니처/위조/corrupt/PK/0바이트) 0-hit 재확인 carry
+
+--------------------------------------------------------------------
+[1] 신규 증거 URL #1 — FAQ rowid=21704 「기관 운영비 통장 입출금 내역」
+    (통장거래내역 간편조회 서비스 · 7.1 통장내역 조회/입력)
+--------------------------------------------------------------------
+URL   : https://ezcare.easyms.co.kr/help/faq.ez?rowid=21704&type=web
+fetch : HTTP 200 · 16,996B · md5 `db8fd61f622e86a213c39f89af9642a9`
+파일  : ezcare_faq_21704_bank_txn_lookup_bnk878.html (신규)
+
+verbatim (요지):
+ Q. 기관 운영비 통장 입출금 내역을 간편하게 확인하고 싶어요!
+ 「'통장거래내역 간편조회 서비스' 는 기관 통장의 모든 입출금 거래 내역을 한번에
+   확인 가능합니다. 거래별로 사용내역을 입력하여 관리하거나 본인부담금으로 보이는
+   입금내역은 수납관리를 위해 예상 수급자를 알려줍니다.」
+ 「7.1 통장내역 조회/입력 ▶ 조회계좌 관리 ▶ + 조회계좌(통장) 추가하기 를 통해
+   계좌등록 후 조회 가능」
+ 「통장거래내역 조회를 위해서는 먼저 (은행) '간편/빠른계좌 조회'를 등록해주세요.
+   ◎ 간편/빠른계좌 조회란? 거래내역을 다른 곳에서도 보고 싶은 사용자를 위해
+   은행에서 제공하는 기능입니다.」
+ 「등록한 계좌를 선택하여 갱신하기 를 클릭시 통장 거래내역을 입금, 출금, 기간별로
+   확[인] …」
+
+이지케어 워크플로 요약:
+ (a) 은행 웹사이트에서 '간편/빠른계좌 조회' 등록(사용자 수동)
+ (b) 이지케어 7.1 조회계좌 관리 → 계좌 추가 → 갱신하기 = 통장 거래내역 LIVE pull
+ (c) 본인부담금으로 보이는 입금 → '예상 수급자'를 제시(수동 수납관리 보조)
+
+--------------------------------------------------------------------
+[1-crosswalk] ogada BankDeposit import (git 실측 @ec7a1ce)
+--------------------------------------------------------------------
+ogada 대응 파일:
+ BE: billing/domain/BankDepositImportService.java, BankDepositExcelParser.java,
+     BankDepositFormatCatalog.java, ParsedBankDepositRow.java,
+     billing/api/BankDepositImport{Preview,Response,RowResult}.java, BillingController.java
+ BE test: BankDepositCopayLifecycleE2eTest.java (US-L01), BankDepositImportServiceTest,
+     BankDepositExcelParserTest, BankDepositFormatCatalogTest
+ FE: components/ui/BankDepositImportPanel.jsx, config/bankDepositFormats.js
+
+ogada 실측 매칭 로직(BankDepositImportService):
+ · buildMatchCandidates(orgId, branchId) → 이름(depositor) 기준 후보 map
+ · findCandidates(candidatesByName, normalizedDepositor) → row.amount == candidate.matchAmount
+   금액 매칭 → selectAmountMatch(row, amountMatches)
+ · 결과 상태: STATUS_APPLIED / STATUS_SKIPPED(autoApplicable=false) / STATUS_UNMATCHED
+ · match.autoApplicable 이면 billingService.recordCopayPayment(...) 자동 적용
+ · BankDepositCopayLifecycleE2eTest: "bank deposit excel import → copay payment
+   → PAID notification E2E (US-L01)" = 엑셀 import→copay 적용→PAID 알림 발송 lifecycle
+
+판정 = △ MIXED (경쟁 우열 축이 갈림):
+ · 이지케어 우위(ogada 부재): 은행 '간편/빠른계좌 조회' LIVE 연동 = 통장 거래내역
+   자동 갱신 pull (오픈뱅킹/스크래핑성 계좌 연동). ogada 는 은행 입금 엑셀 import 전제.
+ · ogada 우위(이지케어 부재 근거): 예상 수급자 '제시'(수동 수납관리)에 그치는 이지케어
+   대비, ogada 는 depositor-name+amount 자동 매칭 → CONFIRMED claim 에 copay 자동
+   적용 → PAID 알림 자동 발송(E2E lifecycle 자동화). + SEC-D34 매직바이트/공백그룹
+   입금액 정규화(BNK-849/877) 파일 내성.
+ · 결론: 재무 대사→수납 lifecycle 자동화는 ogada SUPERIOR, LIVE 계좌 연동 편의는
+   이지케어 우위. 진성갭 아님(엑셀 import 대체 가능).
+
+신규 P3「가정」 lever candidate (planner Q 후보·과대구축 회피):
+ · ogada 「은행 계좌 LIVE 연동(오픈뱅킹/스크래핑) 통장 거래내역 자동 갱신」 축 부재.
+ · 오픈뱅킹 API 연동은 PIPA/전자금융·인증서·계좌정보 보관 리스크 → 엑셀 import 로
+   충분히 대체 가능·핵심 운영 갭 아님·「미확인」/P3 유지·진성갭 승격 아님(rules §11·§17).
+
+--------------------------------------------------------------------
+[2] 신규 증거 URL #2 — FAQ rowid=21602 「인지선별검사 CIST 결과 관리」
+--------------------------------------------------------------------
+URL   : https://ezcare.easyms.co.kr/help/faq.ez?rowid=21602&type=web
+fetch : HTTP 200 · 15,724B · md5 `cc592c41ada0c24a6f74f16a28a55e3e`
+파일  : ezcare_faq_21602_cist_cognitive_bnk878.html (신규)
+
+verbatim (요지):
+ Q. 인지선별검사 CIST 결과를 관리하고 싶어요!
+ 「인지선별검사 CIST는 "중앙치매센터" 온라인 교육 이수 후 제공된 CIST 검사지를
+   출력하여 문항별로 검사를 진행 후 검사지의 결과를 이지케어 인지기능 결과입력
+   화면에 입력후 저장하여 실시 현황을 관리합니다.」
+ 「1  2.수급자 관리 > 수급자 선택 > 오른쪽 정보화면 기초평가
+   2  인지기능 결과입력 > 결과값을 항목에 맞게 체크 > 저장하기
+   3  인지영역별 측정 점수와 판정결과를 바로 확인할 수 있습니다.
+   4  인지선별검사 실시한 이력을 관리할 수 있습니다.
+   (전체 수급자 현황 확인경로: 2.수급자 > 2.2정기욕구평가 현황)」
+ 「참고: CIST는 보건복지부 저작권 문제로 검사지 제공 및 검사결과 출력이 불가능.
+   반드시 중앙치매센터에서 제공된 검사지로 검사 후 보관 …」
+
+--------------------------------------------------------------------
+[2-crosswalk] ogada 인지 평가 축 (git 실측 @ec7a1ce)
+--------------------------------------------------------------------
+grep 실측:
+ · CIST / 인지선별 / 중앙치매 literal = BE·FE 전량 0-hit
+ · ClientNeedsAssessmentResponse.java: `String cognitive` 필드 보유
+   (정기욕구평가 내 '인지' 항목) → clients/domain/ClientNeedsAssessmentService
+ · ClientRiskAssessmentService: admission/semi-annual/pressure-ulcer 3-screening 축
+ · 인지활동 「기록·계획·등급」축(BNK-873): CognitiveActivitySkipReason·
+   FunctionalRecoveryService·V99 인지지원등급 G9
+
+판정 = △ P3「가정」 candidate (BNK-873 인지활동북과 동일 인지 도메인 계열):
+ · ogada 는 정기욕구평가 내 cognitive 항목·인지지원등급·인지활동 기록/계획 축은 보유.
+ · 그러나 CIST 전용 「인지기능 결과입력」(인지영역별 측정 점수 + 판정결과 자동표시 +
+   실시 이력) 스코어링 화면은 부재(literal 0-hit).
+ · CIST 자체가 중앙치매센터 저작권 제약(이지케어도 검사지/결과 출력 불가·결과값만 관리)·
+   선택적·핵심 운영 갭 아님.
+ · P3「가정」·「미확인」 유지·진성갭 승격 아님. BNK-873 인지활동북(H2 pilot)과 함께
+   '인지 도메인 스코어링/콘텐츠' 소묶음으로 planner 참고 메모 carry.
+
+--------------------------------------------------------------------
+[3] ogada git 실측 baseline (@ec7a1ce / @171075f)
+--------------------------------------------------------------------
+- BE `@ec7a1ce` (BNK-877 `@dc261ed` → +1 commit
+   `fix(v3/SEC-D34): normalize day-marker-suffixed NHIS service days instead of dropping row value`
+   · NHIS 서비스 일수 「일」 접미사(day-marker) 붙은 셀을 row-drop 대신 정규화 파싱
+   · SEC-D34 normalize 축(BNK-875 통화접미사·BNK-877 공백그룹 입금액 계열) 확장
+   · +1 @Test · WT CLEAN · ahead 767 vs origin/test=598d108 · BE @Test strict 2392)
+- FE `@171075f` (BNK-877 동일 HEAD·zero advance·WT DIRTY 2M
+   TransportServiceFeePanel.jsx+test.jsx coder in-progress·ahead 22(0/22)·tester FF 대기)
+
+git 실측 KPI:
+ | KPI              | 값                                          | BNK-877 대비 |
+ | FE Route         | 133 (<Route\b 132 + <Routes> 1)             | IDENTICAL    |
+ | FE Page.jsx prod | 106                                         | IDENTICAL    |
+ | FE test files    | 541 (226 .test.js + 315 .test.jsx)          | IDENTICAL    |
+ | BE @Test strict  | 2392                                        | +1 (day-marker NHIS days normalize) |
+ | BE Test.java     | 296 (+1 Tests.java = 297)                   | IDENTICAL    |
+ | BE @RestController| 81 (loose)                                 | IDENTICAL    |
+ | BE HTTP mapping  | 442 (GET231/POST144/PATCH44/PUT13/DELETE10) | byte/count-exact IDENTICAL 38차 (BNK-836→878·endpoint 신설 0) |
+ | Flyway           | V1–V196 (196·신규 0)                        | IDENTICAL    |
+ | 모듈 커버 KPI    | 97.41% (28.25/29·진성갭 0)                  | IDENTICAL    |
+ | merge gate       | 789 (FE 22 + BE 767·BE-heavy)               | +1 (BE +1)   |
+
+--------------------------------------------------------------------
+[4] planner 반영 포인트
+--------------------------------------------------------------------
+(1) 은행 입금 대사(FAQ 21704) — ogada 자동매칭→copay 적용→PAID 알림 lifecycle 은
+    이지케어 '예상 수급자 제시(수동)' 대비 SUPERIOR. REQUIREMENTS §청구·§본인부담
+    「은행 입금 엑셀 import → 자동 대사 → 본인부담 수납 자동 반영 + PAID 알림」 우위 명문화 권고.
+(2) P3「가정」 신규 lever(과대구축 회피): 은행 계좌 LIVE 연동(오픈뱅킹) 자동 통장 갱신 —
+    엑셀 import 대체 가능·PIPA/전자금융 리스크·「미확인」/P3 유지.
+(3) P3「가정」 CIST 인지기능 결과입력(영역별 점수+판정) — 저작권 제약·선택적. BNK-873
+    인지활동북과 함께 '인지 도메인 스코어링/콘텐츠' 소묶음으로 참고 메모 carry·진성갭 아님.
+(4) 홈 data-count 5-지표(53.2%/9,298/4,675/2,353억/1,820억) STABLE·NHIS #44·audit-first
+    442 38차 IDENTICAL → 규제 상수·API posture 재조정 불요.
+(5) 신규 진성갭 0·closed band 재오픈 0·P0~P3 결정 번복 0·미확인 승격 0·KPI promote 0·
+    모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지. tester FF merge gate 789 흡수 권고.

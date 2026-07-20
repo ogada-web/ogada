@@ -1,0 +1,50 @@
+BNK-906 — ogada git 실측 (6-8h 로테이션) — 2026-07-19
+======================================================
+작성: benchmark_researcher [BNK] · 근거: git 실측 (`git -C src/{backend,frontend} rev-parse develop` · rg 집계)
+
+[0] SUBMODULE HEAD (실측 우선 — workspace_baseline.yaml 과거 SHA보다 git 실측 우선)
+- backend  develop = 6d3c766ce5d50fff7e27828605cb7b49f4521c22 (short 6d3c766)
+    last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row (2026-07-19 03:38:03 +0000)
+    → BNK-889→906 17-cycle 동일 HEAD·zero advance (BE 무변동)
+- frontend develop = 6a9e85e8aaf8159df34b4f8b6f999da1f25b3b16 (short 6a9e85e)
+    last: fix(a11y/billing): wrap billing/fee/backup/guardian date cells in <time dateTime> (UXD-201) (2026-07-19 15:35:03 +0000)
+    → BNK-905 `@6a9e85e` → BNK-906 동일 HEAD 2-cycle 연속 zero advance (FE 무변동·UXD-201 carry)
+- root HEAD = ec0d8e549d5e389e237068de42a7bd5284a8f362
+
+[1] BACKEND 실측
+- @RestController        = 81   (rg -l '@RestController' src/main/java · Δ0)
+- HTTP endpoint mapping  = 442  (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 · Δ0)
+    → BNK-836→906 byte/count-exact IDENTICAL = HTTP 442 66차 · endpoint 신설 0 · API 안정성 66-cycle 동결
+    → PATCH 44 > PUT 13 · DELETE 10 (2.3%) 최소 → soft-delete/감사 보관 audit-first posture (PIPA §21 정합)
+- @Entity                = 92   (rg -l '@Entity' src/main/java)
+- Flyway migration       = V1–V196 (196 파일·max V196·Δ0)
+- BE test class          = 298  (297 *Test.java + 1 *Tests.java)
+- @Test method (strict)  = 2413 (`^\s*@Test\b` · BNK-889→906 IDENTICAL zero drift)
+    naive `@Test` raw 2414 = strict 2413 + 1 @TestPropertySource (LiveE2eControllerRoutingTest.java:19) — BNK-894 methodology lock 재확인
+- ahead of origin/test   = 774  (origin/test = 598d108 · Δ0 vs BNK-905)
+- commits since baseline 68c2378(workspace_baseline.yaml) = +6 (SEC-D34 엑셀 금액 정규화 시리즈: 원화기호 strip → 전각원화 → 전각쉼표 → 전각숫자 → shared normalizer refactor → no-break/ideographic space grouped)
+
+[2] FRONTEND 실측
+- <Route\b> in App.jsx   = 132 (+ <Routes> 1) = Route 133 (Δ0)
+- *Page.jsx (non-test)   = 106 (Δ0)
+- FE test file           = 544 (228 .test.js + 316 .test.jsx · BNK-905 IDENTICAL)
+- accounting route       = 1 · payroll route surface = 20 (App.jsx grep)
+- ahead of origin/test   = 37  (origin/test = b23711f · Δ0 vs BNK-905 · tester FF 대기)
+
+[3] TRANSPORT 수가 상수 git grep 재확인 (경쟁 4종 유일 SUPERIOR 앵커)
+- TransportServiceFeeParityCatalog.ONE_WAY_RATIO = new BigDecimal("0.5")  (편도 비율·1일 1회)
+- TransportDistanceBand: RU_1(5km 미만) / RU_2(5~10km) / RU_3(10~20km) / RU_4(20km 이상)
+    → NHIS 고시 #44 러-1~4 이동서비스비 full-stack 1:1 매핑·상수 재조정 불요
+
+[4] 규제 앵커 live 재실측 (per-cycle 신규 evidence — 기존 URL 재실측 + 변동 기록)
+- NHIS #44 제34조 이동서비스비: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+    cmp vs nhis_jo44_live_bnk905.html = BYTE-IDENTICAL → 628차 byte-IDENTICAL (BNK-905 627차 → +1)
+    러-1~4·편도·이동서비스비·1일 1회·수급자가 부담·이동서비스 일지 verbatim carry → 규제 상수 재조정 불요
+
+[5] KPI 요약 (merge gate·모듈)
+- merge gate = 811 (FE 37 + BE 774 · BE-heavy)
+- 모듈 커버 = 97.41% (28.25/29 · carry · KPI promote 0)
+- 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0
+
+per-cycle minimum 충족: 신규 evidence(NHIS #44 628차 재실측+drift) · git 실측 상세 1블록(BE/FE/transport) · COMPETITOR_MATRIX BNK-906 @HEAD 갱신 · BENCHMARK_REPORT BNK-906 차수 메모.

@@ -1,0 +1,48 @@
+BNK-896 — ogada git 실측 remeasure (케어포 역공학 0-2h 사이클)
+조사일: 2026-07-19T10:53:00Z
+
+=== submodule HEAD ===
+BE develop = 6d3c766  (ahead 774 vs origin/test=598d108 · WT CLEAN)
+  last: fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+  BNK-890→896 = 7-cycle 동일 HEAD·zero advance
+FE develop = c3f0e05  (ahead 34 vs origin/test=b23711f · WT CLEAN · tester FF 대기)
+  last: fix(a11y/lists): wrap non-report list table date columns in <time dateTime> (UXD-198)
+  BNK-895 동일 HEAD·zero advance
+
+=== FE KPI (git grep) ===
+Route            133  (App.jsx <Route\b 132 + <Routes> 1)
+Page             107  (non-test pages/*.jsx · *Page.jsx suffix subset 106)
+FE test files    543  (228 .test.js + 315 .test.jsx)
+<time dateTime>  109 occurrences / 75 files (UXD-198 carry)
+payroll route    5 (/payroll/{ledger,reports,basis,labor-cost-ratio,retirement-accrual})
+accounting route 1 (/accounting)
+
+=== BE KPI (git grep) ===
+Test.java        297  (+1 Tests.java = 298)
+@Test strict     2413 (^\s*@Test\b · raw 2414 = strict 2413 + @TestPropertySource 1 · BNK-889→896 8-cycle IDENTICAL)
+@RestController  81 (loose)
+HTTP mapping     442  GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10
+  = audit-first 56차 byte/count-exact IDENTICAL (BNK-836→896 · endpoint 신설 0)
+Flyway           V1–V196 (신규 0)
+
+=== derived ===
+merge gate       808  (FE 34 + BE 774 · BE-heavy · auto-merge FF 대기)
+모듈 커버 KPI    97.41% (28.25/29 · 진성갭 0 · carry)
+
+=== 이번 사이클 focus 실측 (케어포 M6 crosswalk) ===
+SafetyCheckController 9 endpoint:
+  GET  /api/v1/safety/check-template-catalog
+  GET/POST /api/v1/safety/daily-checks
+  GET/POST /api/v1/safety/periodic-checks
+  GET/POST /api/v1/safety/infection-control
+  GET/POST /api/v1/safety/operation-logs
+enum: InfectionSymptomCode · InfectionActionCode · SafetyCheckResultCode
+FE: /safety(hub)·/safety/{daily-checks,periodic-checks,infection-control,operation-log}·/meals
+  → carefor M6 6-x 5-leaf 1:1 = 5/5 PARITY (GAP 0 · SUPERIOR 2 · SUPERSET 3)
+
+=== 규제 백본 재실측 ===
+NHIS #44 제34조: HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  = 618차 byte-IDENTICAL (cmp vs nhis_jo44_live_bnk895.html · BNK-895 617차 → +1)
+carefor func.php LIVE: HTTP 000 timeout 20s (117-cycle+ carry · 「미확인」 · disk canonical 6226e6eb/98,328B LOCK)
+
+constants sanity: ONE_WAY_RATIO = new BigDecimal("0.5") · LABOR_COST_RATIO_THRESHOLD_PERCENT (무변동 carry)

@@ -1,0 +1,111 @@
+BNK-873 교차검증·갭 우선순위 8h+ 주력 extract
+조사일: 2026-07-18T16:50:00Z
+rotation: 교차검증·갭 우선순위 8h+ (BNK-872 엔젤·롱텀·규제 4-6h → ~52분 후)
+
+================================================================================
+[1] ogada git baseline 재실측 (BNK-872 → BE+1 / FE+1 commit)
+================================================================================
+BE develop  @13eb863 (BNK-872 @417e2ff → +1 commit)
+  · fix(v3/SEC-D34): avoid file-level fail on oversized visit minutes
+  · NhisVisitScheduleExcelParser: NumberFormatException guard on oversized
+    service-minutes value → time-diff parsing fallback (한 셀 malformed 이
+    전체 import fail 시키지 않도록 graceful degrade). +14L test.
+  · ahead 763 vs origin/test=598d108 · WT CLEAN
+FE develop  @9f12482 (BNK-872 @5aaee88 → +1 commit)
+  · fix(v1.2.1/transport): normalize client list payload for service-fee panel
+  · TransportServiceFeePanel: normalized services shape 에서 client list 를
+    읽어 G16 fee record 의 client name 을 정확히 resolve(array payload 가정 제거)
+    + 회귀 test. +23L(-5)
+  · ahead 0/19 vs origin/test=b23711f (tester FF 대기)
+
+git 실측 KPI (@13eb863 / @9f12482):
+  FE Route         133 (<Route\b 132 + <Routes> 1)   IDENTICAL
+  FE Page.jsx      106                                 IDENTICAL
+  FE test files    541 (226 .test.js + 315 .test.jsx)  IDENTICAL
+  BE @Test strict  2387  (BNK-872 2386 → +1 oversized minutes guard)
+  BE Test.java     296 (+1 Tests.java = 297)           IDENTICAL
+  BE @RestController 81 (loose)                         IDENTICAL
+  BE HTTP mapping  442 (GET231/POST144/PATCH44/PUT13/DELETE10)
+                   byte/count-exact IDENTICAL 33차 (BNK-836→873·endpoint 신설 0)
+  Flyway           V1–V196 (196 files·신규 0)          IDENTICAL
+  모듈 커버 KPI    97.41% (28.25/29·진성갭 0)          IDENTICAL
+  merge gate       782 (FE 19 tester FF 대기 + BE 763·BE-heavy)
+
+================================================================================
+[2] ★★★ 신규 증거 — 이지케어 「인지활동북(Cognitive Activity Book)」 시범 서비스
+================================================================================
+신규 증거 URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21781&type=web
+  HTTP 200 · 13,968B · 카테고리 = 서식출력/설정
+Q(verbatim): 인지활동지를 출력하여 수급자 어르신께 활용하고 싶어요!
+A(verbatim): 인지활동북에서 인지맞춤형 학습지 및 낱장으로 출력이 가능합니다.
+             시범 서비스 메뉴로 계획표 및 표지등 세부 기능은 하반기에 확장하여
+             서비스 예정입니다.
+
+해석: 이지케어가 「인지활동북」(인지맞춤형 학습지·낱장 출력) 콘텐츠 라이브러리를
+      시범(pilot) 서비스로 신설·하반기(2026 H2) 확장 예정.
+
+ogada 대비 crosswalk (git grep @13eb863):
+  · ogada 인지활동 「기록」축 존재:
+      - programs/domain/CognitiveActivitySkipReason.java (인지활동 미실시 사유)
+      - programs/domain/FunctionalRecoveryService.java (기능회복훈련 계획/기록)
+      - clients/domain/ClientNeedsAssessmentService.java (욕구·위험 사정)
+      - V99__cognitive_support_ltc_grade_g9.sql (인지지원등급=ltc_grade 0)
+  · ogada 인지활동 「학습지 출력(콘텐츠 라이브러리)」축 = grep 0-hit
+      - '학습지'/'worksheet'/'인지활동북'/'activityBook' = src/backend·src/frontend 0-hit
+        (minimalXlsx.js 의 worksheet 는 xlsx sheet 용어·인지 무관)
+판정: ogada 는 인지활동 「기록·계획·등급」축은 커버, 이지케어의 「인지맞춤형
+      학습지·활동북 콘텐츠 출력 라이브러리」축은 미보유.
+우선순위: P3「가정」 candidate — 콘텐츠 authoring/라이브러리 성격(핵심 운영 갭
+      아님)·이지케어도 pilot(H2 확장) 단계 → 과대구축 회피(rules §11·§17)
+      「미확인」 유지·planner Q 후보. 진성갭 승격 아님(KPI 무변 97.41%).
+
+================================================================================
+[3] 규제·경쟁 백본 live 재실측 (교차검증)
+================================================================================
+NHIS #44 이동서비스비 (canonical URL):
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f · 597차 byte-IDENTICAL (BNK-872 596차 → +1)
+  verbatim hit: 러-1(1)·러-4(1)·편도(2)·이동서비스비(9)·1일 1회(1)·
+                수급자가 부담(1)·이동서비스 일지(1)
+  ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4·ONE_WAY_RATIO=0.5·
+     ONE_PER_DAY) + TransportServiceLog*(§34조 ④ 이동서비스 일지=전자 일지+
+     감사 이력) full-stack 1:1 SUPERIOR · 상수 재조정 불요 · id=2 0.85 carry
+
+longterm 502/610 오실레이션 (var s16 근본 원인 재확인):
+  502: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+       HTTP 200 · 89,171B · md5 a71379de · FULL (var s16; = 1) · BNK-872 full IDENTICAL
+  610: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+       HTTP 200 · 88,408B · md5 6b10f426 · FULL (var s16; = 1) · BNK-872 full IDENTICAL
+  판정: BNK-872 full flip 이후 BNK-873 도 full 유지 (full 2연속) → ±9B lean↔full
+        오실레이션의 근본 원인 = 단일 미초기화 JS 변수 선언 `var s16;`(9B) 재확인·
+        기능/규제 콘텐츠 변동 0·문서 위생 signal only·재측정 불요(BNK-858 종료가정
+        최종 결착 유지). 단기보호 74,060 / 통합재가 월 10만원 disk canonical carry.
+
+================================================================================
+[4] 이지케어 데모 shell / FAQ 파일무결성 / home data-count (STABLE)
+================================================================================
+FAQ list: https://ezcare.easyms.co.kr/help/faq.ez
+  HTTP 200 · 80,057B · md5 53c61c49 (BNK-871 fb294212 → 콘텐츠 오실레이션·size 불변)
+  파일 무결성 verbatim: 매직(0)·위조(0)·corrupt(0)·무결성(0)·PK(0)·0바이트(0)
+    = BNK-857/859/864/870/871/873 6-cycle carry → ogada SEC-D34 계보 SUPERIOR 재확인
+  rowid 총 233 · max rowid = 21781 (인지활동북 신규 항목)
+
+home: https://ezcare.easyms.co.kr/
+  HTTP 200 · 69,750B · md5 5e14212d (size drift·지표 byte-IDENTICAL)
+  data-count 5-지표 IDENTICAL: 53.2(시장점유율%) / 9,298(이용기관) /
+    4,675(재무회계 대행) / 2,353(억원 월 공단 청구) / 1,820(억원 종사자 급여)
+    → 재무회계 대행 4,675 STABLE 5-cycle (BNK-870/871/872/873)
+
+================================================================================
+[5] 가정 번복 재점검 (rules §14) · 갭 우선순위 동결
+================================================================================
+· BNK-858 longterm 종료가정 → var s16 근본 원인 최종 결착 유지 (full 2연속·재측정 불요)
+· BNK-826 law URL alias 폐기 유지 (canonical URL 고정)
+· 신규 P3「가정」 candidate 1건 추가: 이지케어 인지활동북(인지맞춤형 학습지 출력
+  콘텐츠 라이브러리) — 「미확인」 유지·과대구축 회피
+· 신규 진성갭 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 ·
+  KPI promote 0 · 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+
+다음 조사 우선순위: 케어포 0-2h(func.php disk canonical re-verify·Wayback CDX) 또는
+  이지케어 2-4h(인지활동북 PGID/데모 메뉴 신설 여부 추적·FAQ 신규 rowid) 또는
+  ogada git 실측 6-8h(tester FF 이후 merge gate 관찰)

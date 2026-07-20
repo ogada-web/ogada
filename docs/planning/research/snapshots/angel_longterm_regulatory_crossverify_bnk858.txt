@@ -1,0 +1,158 @@
+BNK-858 엔젤·롱텀·규제 역공학 4–6h — live 재실측 md5/SIZE 비교 + ogada git @HEAD 실측
+================================================================================
+조사일: 2026-07-18T05:48Z | UA: Chrome/120 | 방법: curl -sS -m 40 → wc -c + md5sum
+직전 rotation 사이클: BNK-851 (2026-07-18T00:51Z) 이후 4·5·6·7 rotation cycle 경과 (BNK-852 교차검증 / BNK-853 케어포 / BNK-854 이지케어 / BNK-855 ogada git / BNK-856 교차검증 / BNK-857 이지케어)
+직전 엔젤·롱텀·규제 rotation: BNK-851 — 7-cycle 만의 endangered-rotation 복귀 (agents.yaml `reverse_engineering.rotation_frequency` 준수)
+
+[규제 백본 8-URL live 재실측]
+--------------------------------------------------------------------------------
+# | target                     | HTTP | SIZE     | md5(raw)   | 판정
+--+----------------------------+------+----------+------------+---------------------------
+1 | NHIS #44 이동서비스비       | 200  |  7,572B  | c886ff1f   | 585차 byte-IDENTICAL zero drift (BNK-857 584차 → +1)
+2 | silverangel system_feature | 200  | 45,601B  | c9507190   | byte-IDENTICAL (BNK-795 canonical / BNK-851 재확인)
+3 | silverangel extraService   | 200  | 81,637F  | f9c5d877   | byte-IDENTICAL (CMS 3-method fee LOCK)
+4 | silverangel feeService     | 200  | 44,513B  | eab352a8   | byte-IDENTICAL
+5 | silverangel home           | 200  | 101,220B | 66382835   | byte-IDENTICAL (BNK-851 STABLE)
+6 | longterm 502 월 한도액      | 200  | 89,171B  | a71379de   | full-shell IDENTICAL (BNK-851 `a71379de`/89,171B 재확인·BNK-842 lean 89,162B → BNK-851/852/858 89,171B 안정 착지·오실레이션 종료 「가정」)
+7 | longterm 610 통합재가       | 200  | 88,408B  | 6b10f426   | full-shell IDENTICAL (BNK-851 재확인)
+8 | law 2025-247 canonical     | 200  | 78,450B  | bd050c04(raw) / a913639a(strip Time=) | semantic IDENTICAL (BNK-835/837/851 strip a913639a LOCK · raw md5 는 Time= epoch 캐시버스터-only DRIFT)
+
+URL:
+1 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+2 https://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+3 https://www.silverangel.kr/newSilverangel/service/extraService.do
+4 https://www.silverangel.kr/newSilverangel/service/feeService.do
+5 https://www.silverangel.kr/
+6 https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+7 https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+8 https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110
+
+[verbatim grep 근거]
+--------------------------------------------------------------------------------
+NHIS #44 (fetch_nhis_jo44 · docs/planning/research/snapshots/nhis_jo44_live_bnk858.html):
+  "이동서비스비" × 9 · "러-1" × 1 · "러-4" × 1 · "편도" × 2
+  → 러-1~4 이동서비스비 정액/편도 구조 verbatim carry
+  ↔ ogada BE `@2c102e5` `TransportServiceFeeParityCatalog` 상수 `RU_1..RU_4` · `ONE_WAY_RATIO=0.5` · `ONE_PER_DAY` IDENTICAL
+  → id=2 0.85 carry · 상수 재조정 불요 · 경쟁 4종(silverangel/이지케어/케어포/롱텀 벤더 몫) 유일 full-stack
+
+law 2025-247 (fetch_law2025_247 · docs/planning/research/snapshots/law_mohw_2025_247_admRulInfoP_live_bnk858.html):
+  raw md5 = bd050c04(78,450B) ≠ BNK-851 af1d2b46 → strip 's/Time=[0-9]*//g' md5 = a913639a(BNK-835/837/851 LOCK) IDENTICAL
+  → Time= epoch 캐시버스터-only DRIFT · 본문 semantic 무변
+  verbatim carry: "제2025-247호" × 1 · "장기요양급여 제공기준" × 3 · "급여비용" × 3 · "고시" × 5
+  → 2025 장기요양급여 제공기준 및 급여비용 산정방법에 관한 고시 본문 STABLE · Transport/청구 재조정 트리거 0
+
+silverangel extraService CMS 3-method (fetch_sa_extraService · docs/planning/research/snapshots/silverangel_extraService_live_bnk858.html):
+  "CMS" × 12 · "자동이체" × 6 · "가상계좌" × 7 · "이용료" × 6 · "이메일" × 2 · "가정통신문" × 4
+  "30,000원" × 1 · "250원" × 1 · "300원" × 1 · "월 이용료" × 1
+  → CMS 월 이용료 30,000원 / 자동이체 건당 250원 / 가상계좌 건당 300원 LOCK (엔젤 3-method) — BNK-843/851/856 IDENTICAL
+  ↔ ogada `payment-method-catalog` 5-method(CMS·가상계좌·자동이체+2 추가) SUPERSET carry
+  ★★ 「가정통신문 × 4」·「이메일 × 2」 = 이메일 4-축 서식(가정통신문·급여비용 명세서·급여제공 기록지·납부확인서) verbatim carry ↔ ogada id=1-5 FULL·`/billing/reports/*`·`/programs/reports/*` 4-축 전량 대응(BNK-842 §4-축 이메일 PARITY 재확인)
+
+silverangel system_feature 9th 카테고리 (fetch_sa_system_feature · docs/planning/research/snapshots/silverangel_system_feature_live_bnk858.html):
+  "교육" × 27 · "회의" × 7 · "만족도" × 4 · "전자결재" × 2 · "월마감" × 1 · "사진" × 13
+  → 9th 「회의·교육·만족도」 카테고리 + 「전자결재」 workflow + 「월마감」 record-lock leaf 재확인 (BNK-843 ~93-leaf carry)
+  "이동서비스" × 0 · "배차" × 0 · "GPS" × 0 · "차량" × 0 → 엔젤 이동서비스/배차/GPS/차량 축 0-hit 재확인
+  → ogada Transport(id=2 full-stack: 대시보드·계획·주행·수불·규제 러-1~4·`TransportServiceFeeParityCatalog`) SUPERIOR carry
+  ★★ 「사진 × 13」 = 회의·교육·입소자 사진등록 컨텍스트(BNK-833 재확인) — 프로그램 일정 활동사진 축 아님 · ogada FE `ProgramSchedulePhotoUpload`(SEC-D25 magic-byte 3중) SUPERSET carry
+
+silverangel feeService (fetch_sa_feeService · docs/planning/research/snapshots/silverangel_feeService_live_bnk858.html):
+  "본인부담금" × 2 · byte-IDENTICAL
+  → 본인부담금 안내 페이지 본문 STABLE · CMS/자동이체/가상계좌 fee 는 extraService 로 분리 유지 · ogada v2 CMS `/billing/cms` `payment-method-catalog` 5-method SUPERSET carry
+
+longterm 502/610 SPA shell (fetch_longterm502/610):
+  502: "월 한도액" × 1 · "급여비용" × 1 · "수급자" × 1 · "장기요양보험" × 16 · "단기보호" × 0(SPA JS-load 본문 미포함) → BNK-851 full-shell 재확인(a71379de/89,171B) · BNK-842 lean 89,162B 오실레이션 종료 「가정」
+  610: "통합재가서비스" × 1 → 통합재가 메뉴 label carry
+  → SPA 사이드바 lnb 오실레이션(±9B) 종료 · canonical 메뉴 백본 carry · 단기보호 월 한도 74,060 등 정액은 정적 HTML 미포함(SPA XHR) — 규제 백본 신규 관찰 0
+
+[ogada baseline 실측 · git rev-parse + grep]
+--------------------------------------------------------------------------------
+BE develop = 2c102e5  test(v3/SEC-D34): lock visit import fail-closed at VisitService integration layer
+  - BNK-857 `@7fa8335` → +1 commit
+  - diffstat (git show --stat 2c102e5): 1 file, +111
+      visits/domain/VisitServiceTest.java              +111
+  - WT CLEAN · ahead 751 vs origin/test=598d1086 (rev-list --left-right --count origin/test...develop = 0/751)
+  - commit body verbatim (요지): "VisitService.importNhisSpreadsheet and compareRfidTransmission route uploads
+     through the shared readAndValidateImportFile SEC-D34 gate plus the real
+     NhisVisitScheduleExcelParser / RfidTransmissionExcelParser corrupt-body guards,
+     yet VisitServiceTest carried no fail-closed regression ... Add 5 service-integration
+     regression tests: spoofed magic bytes, empty file, and corrupt OOXML body for the NHIS
+     import path, plus spoofed plan magic bytes and corrupt OOXML body for the RFID compare
+     path. Test-only; product code and the audit-first HTTP surface are unchanged."
+
+FE develop = 51a3db4  test(v1.2.1/v3/SEC-D34): lock billing NHIS import MIME-spoof reject before upload
+  - BNK-857 `@6f8e349` → +2 commits (d0c8fd2, 51a3db4)
+  - d0c8fd2  ux(a11y): hide context navigation on print for report pages (UXD-192)
+      · diffstat: 2 files +44/-1 (src/styles/components.css +1/-1, src/styles/printStylesheet.test.js +43 신규)
+      · 요지: 「BillingReportPage / BillingStatisticsReportPage / ClientOutingReportPage / TransportMonthlyReportsPage 인쇄 시
+        .ds-context-nav 이 리포트에 인쇄되던 회귀 → .ds-context-nav 를 global @media print hide 그룹으로 승격
+        (.ds-sidenav / .ds-topbar 와 정렬). 화면 렌더 무변경(print-only). printStylesheet.test.js 로 global print-hide 계약 lock.」
+  - 51a3db4  test(v1.2.1/v3/SEC-D34): lock billing NHIS import MIME-spoof reject before upload
+      · diffstat: 1 file +34 (src/pages/NHISImportPage.test.jsx +34)
+      · 요지 verbatim: 「NHISImportPage(공단 청구내역상세 import)만 4-validator 중 유일하게 MIME-위조(.xlsx rename·비-OOXML 시그니처)
+        reject 회귀 test 부재 → validateBillingNhisExcelImportFile 검증으로 uploadNhisImportApi 미호출 + '엑셀 파일 시그니처가 올바르지 않습니다.'
+        회귀 1건 추가. VisitNhisImportPanel/StaffNhisCaregiverImportPanel/BankDepositImportPanel/VisitRfidDiffComparePanel spoof-reject 패턴과 대칭. 제품 코드 무변경.」
+  - WT CLEAN · ahead 5 vs origin/test=b23711f (rev-list 0/5 · tester FF 대기)
+
+merge gate = 756 (FE 5 tester FF 대기 + BE 751 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+KPI 재산정 (grep 실측 · @HEAD `@2c102e5`/`@51a3db4`):
+  Route        = 133  (src/App.jsx: <Route\b 132 + <Routes> 1)
+  Page         = 106  (src/pages/*Page.jsx not test)
+  FE test .js  = 226  (BNK-857 225 → +1 · d0c8fd2 신규 `printStylesheet.test.js`)
+  FE test .jsx = 315  (carry · 51a3db4 는 in-place expand · d0c8fd2 는 별개 파일)
+  FE test      = 541  (226 + 315)
+  BE Test 클래스 = 297 (296 *Test.java + 1 *Tests.java · carry)
+  BE @Test strict = 2366  (^\s*@Test\b · BNK-857 2361 → +5 · VisitServiceTest 5-integration regression: NHIS spoof/empty/corrupt-body + RFID spoof-plan/corrupt-body)
+  @RestController = 81  (loose grep `@RestController` incl. `@RestControllerAdvice`·GlobalExceptionHandler 1 포함 · 엄격 `@RestController\b` 는 80 · BNK-836~857 카운팅 관습 carry)
+  HTTP verb    = 442  (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10) — 19차 byte-exact IDENTICAL (BNK-836~857 → 858)
+    · endpoint 신설 0 · SEC-D34 fail-closed 하드닝 test-layer dominant · print stylesheet a11y 는 API 무영향
+  Flyway       = V1–V196 (신규 0)
+  모듈 커버    = 97.41% (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0) carry
+
+[SEC-D34 계보 · BNK-858 착지축 = 「integration-layer 회귀 lock」]
+--------------------------------------------------------------------------------
+축 계보 재정리 (parser layer + service integration layer 이중 lock):
+  a 매직바이트 4-경로       BNK-848~849 (visit/청구NHIS/요양보호사NHIS/은행입금)              [FE+BE]
+  b null-safe payload       BNK-851 (QA-B604)                                              [BE]
+  c truncated OOXML         BNK-853 (efbdbec)                                              [BE]
+  d .xls OLE magic          BNK-854 (2f3be17)                                              [BE]
+  e empty-file/empty-header BNK-854 (9449e1f BE / b23711f FE)                              [FE+BE]
+  f 0-byte 회귀 lock        BNK-855 (2789553 FE)                                           [FE]
+  g corrupt OOXML body      BNK-856 (0a97b22 BE) — POI 런타임 예외 fail-closed·no-info-leak [BE]
+  h FE 은행입금 pre-upload   BNK-856 (1f9d49c FE)                                          [FE]
+  i FE RFID compare 이중엑셀 BNK-857 (6f8e349 FE) — planFile+rfidFile MIME-spoof reject     [FE]
+  j BE parser test lock     BNK-857 (7fa8335 BE) — 3-parser test +48 corrupt-body 회귀     [BE test]
+  k BE service integration  BNK-858 (2c102e5 BE) — VisitService.importNhisSpreadsheet /    [BE test]
+                             compareRfidTransmission 통합 층에서 spoof+empty+corrupt-body
+                             5-regression = parser-layer(j) 위 service-layer 회귀 축 신설
+                             (BankDepositImportServiceTest·StaffNhisCaregiverImportServiceTest sibling 과 정렬 = 3-service integration lock)
+  l FE a11y 인쇄 · billing NHIS spoof-reject
+                             BNK-858 (d0c8fd2 + 51a3db4 FE) —
+                             · d0c8fd2: 인쇄 시 .ds-context-nav global print-hide 승격
+                               (BillingReportPage/BillingStatisticsReportPage/ClientOutingReportPage/TransportMonthlyReportsPage
+                               인쇄 회귀 방지·A11Y·rules §7 접근성 정합)
+                             · 51a3db4: 4-validator 중 유일 미커버였던 NHISImportPage MIME-spoof reject 회귀 test 추가
+                               = 4-validator FE spoof-reject 커버리지 100% 완성
+                               (Visit/Staff/BankDeposit/RfidCompare + BillingNHIS)
+
+= 「부분·손상·null·OLE·빈파일·빈헤더·0-byte·corrupt-body」 8-축 · 「parser + service integration」 2-layer 이중 회귀 lock
+  · 「4-validator FE spoof-reject 커버리지 100%」 (NHISImportPage 마지막 gap 회귀 lock 완성)
+  · 「인쇄 회귀 A11Y」 rules §7(a11y) 정합 (컨텍스트 nav 는 인쇄물에 노출 금지)
+
+[교차검증 · 이전 가정/결정 재점검]
+--------------------------------------------------------------------------------
+- ogada Transport SUPERIOR carry (엔젤 배차/GPS/차량/이동서비스 0-hit 재확인·NHIS #44 러-1~4 585차)
+- CMS 3-method 30,000/250/300원 LOCK carry (엔젤 extraService `f9c5d877` 6-cycle byte-IDENTICAL)
+- law 2025-247 semantic IDENTICAL (strip Time= a913639a LOCK · 2025 수가 고시 본문 STABLE)
+- longterm 502 ±9B lnb 오실레이션 「종료」 「가정」 (BNK-842 lean 89,162B → BNK-851/852/858 89,171B 5-cycle 안정)
+  · 다음 rotation 에서 재검증 예정
+- 신규 진성갭 도출 0 · 이전 P0~P3 결정 번복 0 · SEC-D34 SUPERIOR 서사 강화(축 j/k/l 3개 추가)
+
+[결론]
+--------------------------------------------------------------------------------
+· 규제 백본 8-URL 585차 zero substantive drift · Transport 상수·CMS 3-method fee·law 2025-247 semantic 전량 STABLE
+· SEC-D34 fail-closed 계보 8-축 · parser + service integration 2-layer · FE 4-validator spoof-reject 커버리지 100% 완성
+· ogada BE @2c102e5 / FE @51a3db4 · merge gate 756 (BE-heavy) · HTTP 442 19차 byte-exact IDENTICAL(endpoint 신설 0)
+· BE @Test +5 (2361→2366) · FE test +1 (540→541) — 회귀 lock 밀도 심화
+· 경쟁 4종(케어포·이지케어·엔젤·롱텀) 엑셀/파일 무결성 근거 0 「미확인」 재확인 · ogada 유일 SUPERIOR narrative carry
+· planner 권고: (a) REQUIREMENTS §보안/§PIPA 「엑셀 import SEC-D34 계보 8-축 + parser/service 2-layer lock + FE 4-validator spoof-reject 커버리지 100%」 명시 (b) REQUIREMENTS §접근성 「모든 리포트 페이지 인쇄 시 컨텍스트 nav 노출 금지 = global print-hide 계약 회귀 test」 명시 (c) 마케팅 카피 「위·손상·부분 엑셀 즉시 거부 — 브라우저·서버 이중 서명 검증 + 통합 층 회귀 lock」

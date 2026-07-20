@@ -1,0 +1,66 @@
+# BNK-903 — 교차검증·갭 우선순위 8h+ (2026-07-19T15:11:00Z)
+# 역공학 실측 로그 (benchmark_researcher / BNK)
+
+## 0. ogada git baseline 실측
+backend  develop = 6d3c766 fix(v3/SEC-D34): normalize no-break and ideographic space grouped excel amounts instead of dropping row
+  ahead of origin/test(598d108) = 774 · WT CLEAN
+  BE @Test strict (^\s*@Test\b) = 2413  (BNK-889→903 = 15-cycle IDENTICAL)
+  @RestController = 81 · BE Test files(*Test*.java) = 298
+  HTTP mapping: GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10 = 442  (BNK-836→903 = 63차 byte/count-exact IDENTICAL · endpoint 신설 0)
+  Flyway 최신 = V196 (V1–V196)
+frontend develop = c2fb261 fix(a11y/lists): wrap monitoring/history panel date-time columns in <time dateTime> (UXD-200)
+  ahead of origin/test(b23711f) = 36 · tester FF 대기 · WT CLEAN
+  Route = 133 (<Route\b non-test 132 + <Routes> 1)
+  Page(*Page.jsx) = 106 · FE test = 544 (228 .test.js + 316 .test.jsx)
+  <time dateTime> non-test jsx = 89 files (occurrences 128) ; <time (any) non-test jsx = 92 files
+    ※ BNK-902 기록 '93 files'는 overcount → BNK-903 정정 89 files (HEAD c2fb261 IDENTICAL·재측정 authoritative)
+merge gate = 810 (FE 36 + BE 774 · BE-heavy · auto-merge FF 대기)
+모듈 커버 KPI = 97.41% (28.25/29 · 진성갭 0 · carry)
+
+## 1. 케어포 func.php disk canonical — 주야간보호급여 11-module 정본 재검증 (cross-verify)
+carefor func.php LIVE = HTTP 000 timeout 25s (123-cycle+ carry · 「미확인」)
+disk canonical carefor_func.php = md5 6226e6eb92fdd25ed3e50842a5e8a00b / 98,328B (LOCK)
+top-level leftm/subm = 6:
+  시설급여 · 주야간보호급여 · 가정방문급여 · 부가서비스 · 홈페이지 제작 · 고객센터
+주야간보호급여 c1/c2 module box = 11 (pc - 1..11 · app - 0):
+  M1  수급자관리
+  M2  이동서비스관리
+  M3  요양 급여제공
+  M4  간호/물리(작업) 급여제공
+  M5  프로그램 급여제공
+  M6  위생.안전 점검관리
+  M7  본인부담금관리
+  M8  직원관리
+  M9  기초설정 및 운영관리
+  M10 부가서비스
+  M11 직원 급여관리
+
+## 2. carefor M1–M11 → ogada @HEAD 매크로 crosswalk (module-level 11/11 PARITY)
+M1  수급자관리        → BE ClientController ×6 · FE 이용자 관리 화면          ✅
+M2  이동서비스관리    → TransportController + TransportServiceFeeParityCatalog(RU_1..RU_4) + Transport*Page ×7 + VisitRfidDiffComparePanel ✅ SUPERIOR (경쟁 4종 유일 자체 배차/이동서비스비/RFID 공단비교)
+M3  요양 급여제공     → VisitController + VisitsPage                          ✅
+M4  간호/물리(작업)   → Nursing*Page ×8 (Vital/Weight/OralCare/Emergency 등) ✅
+M5  프로그램 급여제공 → ProgramController ×2 + Program*Page ×2 (사진 SEC-D25) ✅
+M6  위생.안전 점검    → SafetyCheckController + Safety*Page ×4 + Meal*Page ×4 ✅ (BNK-896 5/5 PARITY)
+M7  본인부담금관리    → BillingController ×2 + Copay*Page ×2 (lifecycle)      ✅
+M8  직원관리          → Staff*Page ×16                                       ✅
+M9  기초설정/운영관리 → 설정/운영 화면                                       ✅
+M10 부가서비스        → 부가서비스 화면                                      ✅
+M11 직원 급여관리     → PayrollController + Payroll*Page ×5 (M11 BNK-709~714)✅
+판정: 11/11 module-level 매크로 PARITY · M2 Transport 축 SUPERIOR · 잔여 미세갭은 leaf-level P3/P4「가정」(승격 0)
+
+## 3. 규제 백본 재실측
+NHIS #44 제34조 이동서비스비 러-1~4:
+  URL https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  LIVE = HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  cmp vs nhis_jo44_live_bnk902.html = BYTE-IDENTICAL (625차 · BNK-902 624 → +1)
+  ↔ ogada TransportServiceFeeParityCatalog(RU_1..RU_4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY) + TransportServiceLog* full-stack 1:1 SUPERIOR · 상수 재조정 불요
+  snapshot 저장: nhis_jo44_live_bnk903.html
+
+## 4. 교차검증 판정
+- 신규 진성갭 승격 0 · closed band 재오픈 0 · P0~P3 결정 번복 0 · 미확인 승격 0 · KPI promote 0
+- BE @Test strict 2413 = BNK-889→903 IDENTICAL (15-cycle · drift 경보 없음)
+- HTTP 442 = 63차 byte/count-exact IDENTICAL (BNK-836→903 · endpoint 신설 0)
+- P3/P4「가정」 candidate 총 14종 전부 carry · 승격 0
+- 모듈 97.41% CARRY → ROADMAP·PLAN_NOTES 현행 유지
+- KPI 정정 1건: <time dateTime> non-test jsx 89 files (BNK-902 '93' overcount 정정)
