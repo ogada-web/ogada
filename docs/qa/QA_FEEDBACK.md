@@ -1,3 +1,681 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T04:42:00Z -->
+<!-- coder-sync: COD 2026-07-20T04:42:00Z (frontend) — QA-B652 pilotPageFlows「확정」중복 쿼리 Fixed · SEC-D46 FE IP/localhost lockstep(BE 37e6742) · related npm PASS · v1.2.1 merge_status: ready 유지 -->
+
+### [COD] Fixed — pilotPageFlows「확정」중복 쿼리 안정화 (`QA-20260720-B652`)
+
+- **id**: QA-20260720-B652
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: Fixed (COD · develop→test FF 대기)
+- **found_at**: 2026-07-20T04:07:31Z
+- **fixed_at**: 2026-07-20T04:42:00Z
+- **version**: v1.2.1 / v1.3-A transport E2E / `pilotPageFlows`
+- **summary**: US-T02 confirm 후 `StatusBadge`와 `confirmedAt` 타임스탬프가 동시에「확정」을 렌더해 `getByText("확정")`가 실패하던 회귀를, `within(배차 요약)` + `getAllByText` + `time[datetime]` 단언으로 안정화. **기능 갭 아님**.
+- **tests**: `npm test -- src/pages/pilotPageFlows.test.jsx -t "creates draft run and confirms pickup route"` **PASS** · `npm test -- src/utils/homeNewsletter.test.js` **22/22 PASS**
+- **assignee**: TSR (develop→test FF 후 full suite 재검증 · expected 0 failed)
+- **related**: QA-B655 Open(transfer · UXD-207 포함 pending 누적) · SEC-D46 FE IP lockstep 동 커밋
+- **v1.2.1**: `merge_status: ready` **유지**
+
+### [COD] Fixed — SEC-D46 FE facility-notice 첨부 URL IP·localhost fail-closed (`QA-20260720-B656`)
+
+- **id**: QA-20260720-B656
+- **severity**: HIGH (security defense-in-depth · SSRF / metadata phishing)
+- **stream**: frontend
+- **status**: Fixed (COD · develop→test FF 대기)
+- **found_at**: 2026-07-20T04:42:00Z
+- **version**: v1.2.1 / SEC-D46 / facility-notice attachment hosts
+- **summary**: BE `@37e6742` IP/localhost fail-closed lockstep — FE `resolveFacilityNoticeAttachmentUrlViolation` 에 IPv4/IPv6 literal·`localhost`/`.localhost` 거부 추가. verbatim「첨부 링크 형식이 올바르지 않습니다.」. G2 `/clients/home-newsletter` defense-in-depth.
+- **tests**: `npm test -- src/utils/homeNewsletter.test.js` **22/22 PASS**
+- **assignee**: TSR (develop→test FF 후 재검증)
+- **related**: BE QA-B653 Fixed / QA-B654 Open(transfer) · FE QA-B650/B651 SEC-D46 lineage
+- **v1.2.1**: `merge_status: ready` **유지**
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T04:35:54Z -->
+<!-- tester-sync: TSR 1999 2026-07-20T04:35:54Z (backend) — ROADMAP merged baseline @96a55fb independent fresh full re-verify; src/backend-test@test mvn -o -B test 2466/2466 PASS(01:27 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test DIVERGED 0/1(`37e6742` SEC-D46 IP/localhost fail-closed); merge SKIP; Open(BE transfer)=1(QA-B654 NEW); Open(FE)=2(QA-B655 NEW pending 7706d78 + QA-B652 Planned); QA-B649 Absorbed confirm(test@96a55fb); COD Fixed QA-B653 FF대기; transfer BLOCK(BE); cross-stream BLOCK; operation BLOCK(QA-B116 BE+784·FE+51 + QA-B95). -->
+
+### [TSR] TSR1999 backend — ROADMAP merged baseline `@96a55fb` 독립 fresh 전체 재검증 (BLOCK · NEW Open 2)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · test `@96a55fb` · develop `@37e6742` |
+| `mvn -o -B test` | **2466/2466 PASS** (01:27 min · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test divergence | **0/1** — pending `37e6742` (SEC-D46 IP/localhost fail-closed) |
+| develop WT | **CLEAN** |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(BE transfer) | **1** (`QA-20260720-B654`, BLOCK, NEW) |
+| Open(FE transfer) | **2** (`QA-20260720-B655` NEW + `QA-B652` Planned) → **COD Fixed QA-B652**(FF 대기) |
+| Absorbed confirm | `QA-B649` (test HEAD `@96a55fb`) |
+| COD Fixed (FF 대기) | `QA-20260720-B653` (`@37e6742`) · FE `QA-B652`+`QA-B656` |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 BE+784·FE+51 + QA-B95) |
+
+### [TSR] Open — backend develop→test pending 1 (`QA-20260720-B654`)
+
+- **id**: QA-20260720-B654
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (NEW · TSR1999)
+- **found_at**: 2026-07-20T04:35:54Z
+- **version**: v3 / SEC-D46 / facility-notice attachment IP·localhost fail-closed
+- **summary**: `backend-test@96a55fb` 대비 develop `@37e6742` 미이관 **1**커밋 — FacilityNotice 첨부 URL **IPv4/IPv6 literal·localhost/.localhost** allowlist 유무와 무관 fail-closed(verbatim「첨부 링크 형식이 올바르지 않습니다.」). COD Fixed `QA-B653`. endpoint 신설 0 · HTTP 442 동결. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
+- **tests**: `mvn -o -B test` **2466/2466 PASS** (test WT `@96a55fb`) · health 200 · disk 74G/50%
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `37e6742 fix(v3/SEC-D46): reject IP and localhost facility-notice attachment hosts` · diffstat 3 files (+116/−1)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: BE transfer PASS 불가 · cross-stream BLOCK(BE pending 1 + FE pending 1)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(backend)` 즉시 재발화
+- **expected**: `src/backend-test` `test..develop=0/0` 및 `QA-20260720-B654` Absorbed
+- **actual**: `test..develop=0/1` (`37e6742`)
+- **related**: COD Fixed `QA-20260720-B653` · QA-B649 Absorbed · FE QA-B655 · SEC-D46 lineage `@96a55fb`
+
+### [TSR] Open — frontend develop→test pending (`QA-20260720-B655`)
+
+- **id**: QA-20260720-B655
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (NEW · TSR1999 cross-stream · pending 누적)
+- **found_at**: 2026-07-20T04:35:54Z
+- **version**: v1.2.1 / UXD-207 / SEC-D44 a11y Field routing + QA-B652/B656
+- **summary**: `frontend-test@ac37e47` 대비 develop 미이관 — 선행 `7706d78`(UXD-207) + COD Fixed `QA-B652`/`QA-B656`. **기능 갭 아님·transfer만**. develop WT **CLEAN** 목표.
+- **tests**: FE full suite 본 사이클 미재실행(§1-1 · backend stream · Open 우선) · COD targeted PASS(US-T02 + homeNewsletter 22/22)
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → pending ≥1
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FE 사이클 FF 후 재검증)
+- **impact**: FE transfer PASS 불가 · cross-stream BLOCK · origin/test push(QA-B116) 선행 조건
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(frontend)` 즉시 재발화
+- **expected**: `src/frontend-test` `test..develop=0/0` 및 `QA-20260720-B655` Absorbed
+- **actual**: develop ahead of test (UXD-207 + QA-B652 + SEC-D46 IP FE)
+- **related**: QA-B652 Fixed · QA-B656 Fixed · QA-B651 Absorbed · BE QA-B654
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T04:35:00Z -->
+<!-- coder-sync: COD 2026-07-20T04:35:00Z (backend) — SEC-D46 IP/localhost facility-notice attachment fail-closed · related mvn PASS · v3 merge_status: ready 유지 · Planned QA-B652(FE)+QA-B116+QA-B95 -->
+
+### [COD] Fixed — SEC-D46 facility-notice 첨부 URL IP·localhost fail-closed (`QA-20260720-B653`)
+
+- **severity**: HIGH (security defense-in-depth · SSRF / metadata phishing)
+- **stream**: backend
+- **status**: Fixed (COD `@37e6742` · develop→test FF 대기)
+- **summary**: `FacilityNoticeSupport.attachmentUrlViolation` 가 IPv4/IPv6 literal·`localhost`/`.localhost` 호스트를 allowlist 유무와 무관하게 항상 fail-closed(verbatim「첨부 링크 형식이 올바르지 않습니다.」). empty allowlist 모드에서도 `127.0.0.1`·`169.254.169.254`·`[::1]` 게시 불가. endpoint 신설 0 · HTTP 442 동결.
+- **검증**: `mvn -o -B test -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest` — Support **8**/8 · Service **14**/14 PASS.
+- **related**: SEC-D46 선행 `@96a55fb`(non-default port)·`@5cb8bf0`(host allowlist) · FE pre-upload IP/localhost lockstep 후속 권고 · Planned residual **QA-B652**(FE)·**QA-B116**·**QA-B95**
+- **v3**: `merge_status: ready` **유지**
+
+---
+
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T04:14:22Z -->
+<!-- planner-sync: PLN 237차 2026-07-20T04:14:22Z — BNK-919~922·TSR 1987~1998 · git 실측 FE/BE develop/test **SYNCED** `@ac37e47`/`@96a55fb` (`test..develop=0/0`) · QA-B649/B651 Open→**Absorbed**(SEC-D46 non-default-port lockstep)·QA-B652 Open→**Planned**(pilotPageFlows「확정」중복 쿼리·COD P0) · Open(product) **0** · Planned residual **QA-B652**+**QA-B116**(origin/test push FE+51·BE+784=merge gate 835)+**QA-B95** · ★★★ SEC-D46 6-layer SUPERIOR · NHIS #44 643차·HTTP 442 82차·FE test 546·BE @Test 2447 · 신규 진성갭 0. -->
+
+### [PLN] Planned / Absorbed — QA-B649 · QA-B651 · QA-B652 (237차 · git 실측 우선)
+
+| id | 이전 | 237차 | 비고 |
+|----|------|-------|------|
+| QA-20260720-B649 | Open (BE develop→test pending `96a55fb`) | **Absorbed** | BE develop/test **SYNCED `@96a55fb`** · `test..develop=0/0` |
+| QA-20260720-B651 | Open (FE develop→test pending `ac37e47`) | **Absorbed** | FE develop/test **SYNCED `@ac37e47`** · `test..develop=0/0` |
+| QA-20260720-B652 | Open (FE full regression 1F·`pilotPageFlows`「확정」) | **Planned** | COD P0 · `within`/`getAllByText`/역할 쿼리 · full suite 0 failed 목표 · 기능 갭 아님 · transfer BLOCK until Fixed |
+
+**Planned residual**: QA-B652 + QA-B116(origin/test push FE+51·BE+784) + QA-B95 · 상세 = ROADMAP `## QA 피드백 반영 (237차)` · PLAN_NOTES `### [PLN] QA 피드백 반영 (237차)`.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T04:07:31Z -->
+<!-- tester-sync: TSR 1998 2026-07-20T04:07:31Z (frontend) — ROADMAP merged baseline @72c9cc2 regression/integration re-verify; full npm test FAIL 2835/2836(1F: pilotPageFlows "확정" duplicate query) + develop/test DIVERGED 0/1(`ac37e47` SEC-D46 non-default-port reject) merge SKIP; build PASS(9.25s)+audit0+health200; Open(FE)=2(QA-B651,QA-B652); Open(BE)=1(QA-B649 carry); transfer BLOCK; operation BLOCK(QA-B116 BE+784·FE+50 + QA-B95). -->
+
+### [TSR] TSR1998 frontend — ROADMAP merged baseline `@72c9cc2` 회귀·통합 재검증 (BLOCK · NEW Open 2)
+
+| item | value |
+|------|-------|
+| stream | frontend |
+| ROADMAP | v1.2.1 `merge_status: ready` |
+| baseline | test `@72c9cc2` / develop `@ac37e47` |
+| full regression | `npm test` **FAIL** — 2835/2836 PASS, 1 failed (`pilotPageFlows`) |
+| build/audit/health | PASS (9.25s, 1236 modules) / 0 high / 200 |
+| Open(FE transfer) | **2** (`QA-20260720-B651`, `QA-20260720-B652`) |
+| Open(BE transfer) | **1** (`QA-20260720-B649`, carry) |
+| transfer verdict | **BLOCK** |
+
+### [TSR] ~~Open~~ **Absorbed** — frontend develop→test pending 1 (`QA-20260720-B651`)
+
+- **id**: QA-20260720-B651
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Absorbed** (2026-07-20T04:14:22Z · PLN237 git 실측 · FE develop/test **SYNCED `@ac37e47`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T04:07:31Z
+- **version**: v1.2.1 / SEC-D46 / facility-notice non-default port fail-closed
+- **summary**: pending `ac37e47` local FF 완료. residual Open→Planned = **QA-B652**(regression) · operation = **QA-B116**(origin/test FE+51)+**QA-B95**.
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`ac37e47`
+- **related**: COD Fixed `QA-20260720-B650` · BE Absorbed `QA-20260720-B649`
+
+### [TSR] ~~Open~~ **Fixed (COD)** — frontend regression fail on merged baseline (`QA-20260720-B652`)
+
+- **id**: QA-20260720-B652
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Fixed** (2026-07-20T04:42:00Z · COD · develop→test FF 대기 · 상세 = 상단 `[COD] Fixed`)
+- **found_at**: 2026-07-20T04:07:31Z
+- **version**: v1.2.1 / v1.3-A transport E2E / `pilotPageFlows`
+- **summary**: ROADMAP merged baseline `@72c9cc2`(TSR1998)에서 full regression `npm test` 중 1건 실패. `screen.getByText("확정")`가 상태 배지와 타임스탬프 span 두 요소에 동시에 매칭되어 테스트가 깨짐. **기능 갭 아님** · 테스트 쿼리 안정화 → COD Fixed(`within` 배차 요약 + `getAllByText` ≥2 + `time[datetime]`).
+- **tests**: COD targeted PASS · TSR full suite 재검증 대기
+- **evidence**: `src/pages/pilotPageFlows.test.jsx` US-T02 assert 안정화
+- **assignee**: TSR (Fixed 후 full suite 재검증)
+- **impact**: FE transfer BLOCK until FF · origin/test push(QA-B116) 선행 조건
+- **prevention**: 텍스트 단건 가정 쿼리를 역할/영역 기반으로 제한(`within`, `getAllByText` + 조건 필터, 또는 더 구체적인 접근성 쿼리)
+- **expected**: full `npm test` 0 failed (>=2836 PASS)
+- **actual**: COD targeted US-T02 PASS · full suite TSR FF 후 재확인
+- **related**: `QA-20260720-B651` Absorbed · `QA-20260720-B649` Absorbed · `QA-B656` SEC-D46 FE IP lockstep
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T03:46:00Z -->
+<!-- coder-sync: COD 2026-07-20T03:46:00Z (frontend) — SEC-D46 FE non-default port fail-closed lockstep(BE 96a55fb) · homeNewsletter 22/22 PASS · v1.2.1 merge_status: ready 유지 -->
+
+### [COD] Fixed — SEC-D46 FE facility-notice 첨부 URL non-default port fail-closed (`QA-20260720-B650`)
+
+- **id**: QA-20260720-B650
+- **severity**: HIGH (security defense-in-depth)
+- **stream**: frontend
+- **status**: Fixed (COD `@ac37e47` · develop→test FF 대기)
+- **found_at**: 2026-07-20T03:46:00Z
+- **version**: v1.2.1 / SEC-D46 / facility-notice attachment ports
+- **summary**: BE `@96a55fb` 가 non-default HTTP/HTTPS port 를 fail-closed 한 직후, FE `resolveFacilityNoticeAttachmentUrlViolation` 에 identical 가드 추가 — `:4443`/`:8080` 사전 거부 · `:80`/`:443`/포트 생략 허용 · verbatim「첨부 링크 형식이 올바르지 않습니다.」. G2 `/clients/home-newsletter` defense-in-depth.
+- **tests**: `npm test -- src/utils/homeNewsletter.test.js` **22/22 PASS**(1.12s)
+- **assignee**: TSR (develop→test FF 후 재검증)
+- **related**: BE QA-B649 (transfer pending `@96a55fb`) · FE QA-B648 Absorbed · SEC-D46 lineage `@72c9cc2`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T03:43:14Z -->
+<!-- tester-sync: TSR 1997 2026-07-20T03:43:14Z (backend) — ROADMAP merged baseline @f18ad05 independent fresh full re-verify; src/backend-test@test mvn -o -B test 2465/2465 PASS(01:28 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test DIVERGED 0/1(`96a55fb` SEC-D46 fail-closed non-default ports); merge SKIP; Open(BE transfer)=1(QA-B649 NEW); Open(FE transfer)=0(QA-B648 Absorbed·FE SYNCED @72c9cc2); QA-B647 Absorbed(test@f18ad05); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1); operation BLOCK(QA-B116 BE+783·FE+50 + QA-B95). -->
+
+### [TSR] TSR1997 backend — ROADMAP merged baseline `@f18ad05` 독립 fresh 전체 재검증 (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · test `@f18ad05` · develop `@96a55fb` |
+| `mvn -o -B test` | **2465/2465 PASS** (01:28 min · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test divergence | **0/1** — pending `96a55fb` (SEC-D46 fail-closed non-default ports) |
+| develop WT | **CLEAN** |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(BE transfer) | **1** (`QA-20260720-B649`, BLOCK, NEW) |
+| Open(FE transfer) | **0** (`QA-B648` Absorbed · FE SYNCED `@72c9cc2`) |
+| Absorbed | `QA-B647` (test HEAD `@f18ad05`) · `QA-B648` (FE `0/0`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 BE+783·FE+50 + QA-B95) |
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending 1 (`QA-20260720-B649`)
+
+- **id**: QA-20260720-B649
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (2026-07-20T04:14:22Z · PLN237 git 실측 · BE develop/test **SYNCED `@96a55fb`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T03:43:14Z (TSR1997)
+- **version**: v3 / SEC-D46 / facility-notice attachment non-default port fail-closed
+- **summary**: pending `96a55fb` local FF 완료. operation residual = **QA-B116**(origin/test BE +784) + **QA-B95** · FE residual = **QA-B652 Planned**.
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`96a55fb`
+- **related**: QA-B647 Absorbed · FE QA-B651 Absorbed · SEC-D46 lineage
+
+### [TSR] ~~Open~~ **Absorbed** — frontend develop→test pending (`QA-20260720-B648`)
+
+- **id**: QA-20260720-B648
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Absorbed** (2026-07-20T03:43:14Z · TSR1997 cross-stream re-check · FE develop/test **SYNCED `@72c9cc2`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T03:33:57Z (TSR1996)
+- **summary**: pending `72c9cc2` local FF 완료. operation residual = **QA-B116**(origin/test FE +50) + **QA-B95**.
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`72c9cc2`
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260720-B647`) — confirm
+
+- **id**: QA-20260720-B647
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (confirmed TSR1997 · test HEAD `@f18ad05` · new pending=`96a55fb` → QA-B649)
+- **found_at**: 2026-07-20T03:27:31Z (TSR1995)
+- **summary**: `f18ad05` 이관 완료(test HEAD). 후속 pending `96a55fb` → QA-B649.
+- **evidence**: `git -C src/backend-test rev-parse HEAD` → `f18ad05`
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T03:33:57Z -->
+<!-- tester-sync: TSR 1996 2026-07-20T03:33:57Z (frontend) — FE test@474dd81 / develop@72c9cc2 DIVERGED 0/1; WT CLEAN; QA-B646 Absorbed(dirty→commit); QA-B647 Absorbed(BE SYNCED @f18ad05); NEW Open QA-B648 pending 1; baseline 51/51@frontend-test + develop 52/52; build PASS(9.40s)·audit 0·health 200; full 2825/2825 carry; Open(FE)=1; Open(BE)=0; transfer BLOCK(FE); operation BLOCK(QA-B116 FE+50·BE+783 + QA-B95). -->
+
+### [TSR] TSR1996 frontend — develop→test pending 1 SEC-D46 FE URL lockstep (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · test `@474dd81` · develop `@72c9cc2` |
+| develop/test divergence | **0/1** — pending `72c9cc2` (SEC-D46 malformed/userInfo FacilityNotice URL reject) |
+| develop WT | **CLEAN** (QA-B646 dirty-tree **Absorbed**) |
+| merge | **SKIP** (tester manual merge 금지) |
+| targeted (test WT) | **51/51 PASS** (2 files · 7.62s · frontend-test flock) |
+| develop corroboration | **52/52 PASS** (2 files · 7.49s · +1 SEC-D46 lock) |
+| `npm run build` | **PASS** (9.40s · 1236 modules · frontend-test) |
+| `npm audit` high | **0** |
+| full suite | **2825/2825 PASS** carry(TSR1984) · §1-1 no full re-run |
+| Open(FE transfer) | **1** (`QA-20260720-B648`, BLOCK, NEW) |
+| Open(BE transfer) | **0** (`QA-B647` Absorbed · BE SYNCED `@f18ad05`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 FE+50·BE+783 + QA-B95) |
+
+### [TSR] Open — frontend develop→test pending 1 (`QA-20260720-B648`)
+
+- **id**: QA-20260720-B648
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (NEW · TSR1996)
+- **found_at**: 2026-07-20T03:33:57Z
+- **version**: v1.2.1 / SEC-D46 / FacilityNotice attachment URL FE lockstep
+- **summary**: `frontend-test@474dd81` 대비 develop `@72c9cc2` 미이관 **1**커밋 — FacilityNotice 첨부 URL **malformed·userInfo(credentialed)** 거부 가드·필드 오류 메시지·회귀 테스트(+1). BE SEC-D46(`f18ad05` canonicalize allowlist) lockstep. endpoint 신설 0. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
+- **tests**: test WT baseline **51/51 PASS** · develop corroboration **52/52 PASS** · build PASS(9.40s) · audit high 0 · health 200 · full **2825/2825** carry(TSR1984)
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `72c9cc2 fix(v1.2.1/SEC-D46): reject malformed and credentialed facility notice URLs` · diffstat 3 files (+55/−7)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: FE transfer PASS 불가 · cross-stream BLOCK(FE pending 1) · BE `@f18ad05` SYNCED(QA-B647 Absorbed)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(frontend)` 즉시 재발화
+- **expected**: `src/frontend-test` `test..develop=0/0` 및 `QA-20260720-B648` Absorbed
+- **actual**: `test..develop=0/1` (`72c9cc2`)
+- **related**: QA-B646 Absorbed (dirty→commit) · BE SEC-D46 `@f18ad05` (QA-B647 Absorbed)
+
+### [TSR] ~~Open~~ **Absorbed** — frontend develop WT dirty-tree (`QA-20260720-B646`)
+
+- **id**: QA-20260720-B646
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Absorbed** (2026-07-20T03:33:57Z · TSR1996 · dirty 3M → commit `72c9cc2` · WT **CLEAN**)
+- **found_at**: 2026-07-20T03:18:41Z (TSR1994)
+- **summary**: SEC-D46 FE lockstep 미커밋이 `72c9cc2` 로 커밋됨. residual = develop→test pending 1 → **QA-B648**.
+- **evidence**: `git -C src/frontend status --porcelain` → empty · HEAD=`72c9cc2`
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260720-B647`)
+
+- **id**: QA-20260720-B647
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (2026-07-20T03:33:57Z · TSR1996 cross-stream re-check · BE develop/test **SYNCED `@f18ad05`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T03:27:31Z (TSR1995)
+- **summary**: pending `f18ad05` local FF 완료. operation residual = **QA-B116**(origin/test BE +783) + **QA-B95**.
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`f18ad05`
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T03:27:31Z -->
+<!-- tester-sync: TSR 1995 2026-07-20T03:27:31Z (backend) — ROADMAP merged baseline @67c439b independent fresh full re-verify; src/backend-test@test mvn -o -B test 2464/2464 PASS(01:31 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test DIVERGED 0/1(`f18ad05` SEC-D46 canonicalize allowlist hosts); merge SKIP; Open(BE transfer)=1(QA-B647 NEW); Open(FE transfer)=1(QA-B646 dirty-tree carry·FE SYNCED @474dd81); QA-B645 Absorbed(test@67c439b); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1 + FE dirty); operation BLOCK(QA-B116 BE+782·FE+49 + QA-B95). -->
+
+### [TSR] TSR1995 backend — ROADMAP merged baseline `@67c439b` 독립 fresh 전체 재검증 (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · test `@67c439b` · develop `@f18ad05` |
+| `mvn -o -B test` | **2464/2464 PASS** (01:31 min · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test divergence | **0/1** — pending `f18ad05` (SEC-D46 canonicalize allowlist hosts) |
+| develop WT | **CLEAN** |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(BE transfer) | **1** (`QA-20260720-B647`, BLOCK, NEW) |
+| Open(FE transfer) | **1** (`QA-B646` dirty-tree carry · FE SYNCED `@474dd81`) |
+| Absorbed | `QA-B645` (test HEAD `@67c439b`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 BE+782·FE+49 + QA-B95) |
+
+### [TSR] Open — backend develop→test pending 1 (`QA-20260720-B647`)
+
+- **id**: QA-20260720-B647
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (NEW · TSR1995)
+- **found_at**: 2026-07-20T03:27:31Z
+- **version**: v3 / SEC-D46 / facility-notice allowlist canonicalize
+- **summary**: `backend-test@67c439b` 대비 develop `@f18ad05` 미이관 **1**커밋 — FacilityNotice attachment allowlist host 를 trailing-dot·IDN ASCII 로 canonicalize(fail-closed 유지·포맷 변형 false mismatch 방지). endpoint 신설 0 · schema 불변. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
+- **tests**: test WT full **2464/2464 PASS**(01:31 min) · 0F/0E/0S · BUILD SUCCESS · EXIT 0
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `f18ad05 fix(v3/SEC-D46): canonicalize facility-notice attachment allowlist hosts` · diffstat 2 files (+32/−6)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: BE transfer PASS 불가 · cross-stream BLOCK(BE pending + FE dirty QA-B646) · FE HEAD `@474dd81` SYNCED but WT DIRTY
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(backend)` 즉시 재발화
+- **expected**: `src/backend-test` `test..develop=0/0` 및 `QA-20260720-B647` Absorbed
+- **actual**: `test..develop=0/1` (`f18ad05`)
+- **related**: COD Fixed QA-B642 lineage · QA-B645 Absorbed · FE QA-B646 Open
+
+### [TSR] Open — frontend develop WT dirty-tree (`QA-20260720-B646`) — **carry**
+
+- **id**: QA-20260720-B646
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (carry · TSR1995 re-check · still DIRTY 3M)
+- **found_at**: 2026-07-20T03:18:41Z (TSR1994)
+- **version**: v1.2.1 / SEC-D46 / FacilityNotice attachment URL FE lockstep
+- **summary**: FE develop/test **SYNCED `@474dd81`** 이나 WT **DIRTY 3M** 지속 — coder 커밋 선행 필요.
+- **evidence**: `git -C src/frontend status --porcelain` → 3M (HomeNewsletterLaunchPage.jsx · homeNewsletter.js · homeNewsletter.test.js)
+- **assignee**: **COD** (commit+push develop)
+- **related**: BE pending `f18ad05` (QA-B647)
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260720-B645`) — confirm
+
+- **id**: QA-20260720-B645
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (confirmed TSR1995 · test HEAD `@67c439b` · new pending=`f18ad05`)
+- **found_at**: 2026-07-20T03:08:56Z (TSR1993)
+- **summary**: `67c439b` 이관 완료(test HEAD). 후속 pending `f18ad05` → QA-B647.
+- **evidence**: `git -C src/backend-test rev-parse HEAD` → `67c439b`
+
+---<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T03:18:41Z -->
+<!-- tester-sync: TSR 1994 2026-07-20T03:18:41Z (frontend) — FE develop/test SYNCED @474dd81 (0/0) · develop WT DIRTY 3M (SEC-D46 FE attachment URL userInfo/malformed guard · uncommitted) · merge SKIP · targeted 77/77@frontend-test + build PASS(10.64s)·audit 0·health 200 · full 2825/2825 carry · Open(FE)=1(QA-B646 NEW dirty-tree) · Open(BE)=0(QA-B645 Absorbed·BE SYNCED @67c439b) · transfer BLOCK(FE dirty) · operation BLOCK(QA-B116 FE+49·BE+782 + QA-B95). -->
+
+### [TSR] TSR1994 frontend — develop WT DIRTY 3M SEC-D46 FE lockstep (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · test/develop `@474dd81` |
+| develop/test divergence | **0/0** SYNCED |
+| develop WT | **DIRTY 3M** (HomeNewsletterLaunchPage.jsx · homeNewsletter.js · homeNewsletter.test.js) |
+| merge | **SKIP** (미커밋 구현 · §1-1 coder 선행) |
+| targeted (test WT) | **77/77 PASS** (8 files · 29.02s · frontend-test flock) |
+| `npm run build` | **PASS** (10.64s · frontend-test) |
+| `npm audit` high | **0** |
+| full suite | **2825/2825 PASS** carry(TSR1984) · §1-1 no full re-run |
+| Open(FE transfer) | **1** (`QA-20260720-B646`, BLOCK, NEW) |
+| Open(BE transfer) | **0** (`QA-B645` Absorbed · BE SYNCED `@67c439b`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 FE+49·BE+782 + QA-B95) |
+
+### [TSR] Open — frontend develop WT dirty-tree (`QA-20260720-B646`)
+
+- **id**: QA-20260720-B646
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (NEW · TSR1994)
+- **found_at**: 2026-07-20T03:18:41Z
+- **version**: v1.2.1 / SEC-D46 / FacilityNotice attachment URL FE lockstep
+- **summary**: develop HEAD `@474dd81` 는 test 와 **SYNCED(0/0)** 이나 working tree **DIRTY 3M** — SEC-D46 BE(`67c439b`) lockstep용 FacilityNotice 첨부 URL **userInfo/malformed** 가드·필드 오류 메시지·회귀 테스트가 **미커밋**. 이관·FF 불가. coder 가 즉시 커밋 후 push 해야 함.
+- **tests**: test WT targeted **77/77 PASS**(committed baseline only · dirty 미검증) · build PASS · audit 0
+- **evidence**: `git -C src/frontend status --porcelain` → 3M · diffstat `+51/−7` · 신규 API `resolveFacilityNoticeAttachmentUrlViolation` + `FACILITY_NOTICE_ATTACHMENT_URL_{MALFORMED,USERINFO}_ERROR`
+- **assignee**: **COD** (commit+push develop) · PLN(감시) · TSR(커밋 후 재검증)
+- **impact**: FE transfer PASS 불가 · cross-stream BLOCK(FE dirty) · BE local SYNCED `@67c439b`
+- **prevention**: coder 작업 완료 시 **반드시 커밋**(rules §6 submodule) — DIRTY 방치 금지
+- **expected**: `src/frontend` WT **CLEAN** + develop HEAD 신규 커밋 + `QA-20260720-B646` Absorbed
+- **actual**: WT DIRTY 3M · HEAD 고정 `@474dd81`
+- **related**: BE SEC-D46 `@67c439b` (QA-B645 Absorbed) · COD Fixed QA-B642
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260720-B645`)
+
+- **id**: QA-20260720-B645
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (2026-07-20T03:18:41Z · TSR1994 cross-stream re-check · BE develop/test **SYNCED `@67c439b`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T03:08:56Z (TSR1993)
+- **version**: v3 / SEC-D46 / facility-notice health
+- **summary**: TSR1993 시점 pending 1(`67c439b`)였으나 TSR1994 재실측 시 BE develop/test 모두 `@67c439b` · left-right **0/0** → local FF **완료**. operation residual = **QA-B116**(origin/test push BE +782) + **QA-B95**.
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` → `0 0` · HEAD=`67c439b`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T03:08:56Z -->
+<!-- tester-sync: TSR 1993 2026-07-20T03:08:56Z (backend) — ROADMAP merged baseline @5cb8bf0 independent fresh full re-verify; src/backend-test@test mvn -o -B test 2462/2462 PASS(01:29 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test DIVERGED 0/1(`67c439b` SEC-D46 health surface); merge SKIP; Open(BE transfer)=1(QA-B645 NEW); Open(FE transfer)=0(QA-B644 Absorbed·FE SYNCED @474dd81); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1); operation BLOCK(QA-B116 origin/test push BE+781·FE+49 + QA-B95). -->
+
+### [TSR] TSR1993 backend — ROADMAP merged baseline `@5cb8bf0` 독립 fresh 전체 재검증 (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · test `@5cb8bf0` · develop `@67c439b` |
+| `mvn -o -B test` | **2462/2462 PASS** (01:29 min · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test divergence | **0/1** — pending `67c439b` (SEC-D46 attachment allowlist health surface) |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(BE transfer) | **1** (`QA-20260720-B645`, BLOCK, NEW) |
+| Open(FE transfer) | **0** (`QA-B644` Absorbed · FE SYNCED `@474dd81`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 BE+781·FE+49 + QA-B95) |
+
+### [TSR] Open — backend develop→test pending 1 (`QA-20260720-B645`)
+
+- **id**: QA-20260720-B645
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (NEW · TSR1993)
+- **found_at**: 2026-07-20T03:08:56Z
+- **version**: v3 / SEC-D46 / facility-notice health
+- **summary**: `backend-test@5cb8bf0` 대비 develop `@67c439b` 미이관 **1**커밋 — FacilityNotice attachment URL host allowlist 를 `/api/v1/health` 응답에 surface(+ HealthController/Support tests). endpoint 신설 0 · schema 불변. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
+- **tests**: test WT full **2462/2462 PASS**(01:29 min) · 0F/0E/0S · BUILD SUCCESS · EXIT 0
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `67c439b fix(v3/SEC-D46): surface facility-notice attachment allowlist in health` · diffstat 4 files (+106/−0)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: BE transfer PASS 불가 · cross-stream BLOCK(BE only) · FE `@474dd81` SYNCED(QA-B644 Absorbed)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(backend)` 즉시 재발화
+- **expected**: `src/backend-test` `test..develop=0/0` 및 `QA-20260720-B645` Absorbed
+- **actual**: `test..develop=0/1` (`67c439b`)
+- **related**: COD Fixed QA-B642 (allowlist) · QA-B643 Absorbed · FE QA-B644 Absorbed
+
+### [TSR] ~~Open~~ **Absorbed** — frontend develop→test pending (`QA-20260720-B644`)
+
+- **id**: QA-20260720-B644
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Absorbed** (2026-07-20T03:08:56Z · TSR1993 cross-stream re-check · FE develop/test **SYNCED `@474dd81`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T02:51:00Z (TSR1992)
+- **version**: v1.2.1 / L02 care reports / form-polish
+- **summary**: TSR1992 시점 pending 1(`474dd81`)였으나 TSR1993 재실측 시 FE develop/test 모두 `@474dd81` · left-right **0/0** → local develop→test FF **완료**. 기능 갭 아님·operation residual = **QA-B116**(origin/test push FE +49) + **QA-B95**.
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`474dd81`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T02:51:00Z -->
+<!-- tester-sync: TSR 1992 2026-07-20T02:51:00Z (frontend) — FE test@3aaccd7 / develop@474dd81 DIVERGED 0/1; baseline 62/62 + develop 26/26 PASS; build PASS(11.06s)·audit 0·health 200; QA-B641 Absorbed; QA-B643 Absorbed(BE SYNCED @5cb8bf0); NEW Open(FE transfer)=1(QA-B644); Open(BE transfer)=0; transfer BLOCK(FE); cross-stream BLOCK(FE pending 1); operation BLOCK(QA-B116 FE+49·BE+781 + QA-B95). -->
+
+### [TSR] TSR1992 frontend — develop→test pending 1 L02 care stale-clear (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · test `@3aaccd7` · develop `@474dd81` |
+| develop/test divergence | **0/1** — pending `474dd81` (L02 care report stale date-range error clear) |
+| targeted (test WT) | **62/62 PASS** (7 files · 32.05s · frontend-test flock) |
+| develop corroboration | **26/26 PASS** (6 files · 22.78s) |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(FE transfer) | **1** (`QA-20260720-B644`, BLOCK, NEW) |
+| Open(BE transfer) | **0** (`QA-B643` Absorbed · BE SYNCED `@5cb8bf0`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 FE+49·BE+781 + QA-B95) |
+
+### [TSR] Open — frontend develop→test pending 1 (`QA-20260720-B644`)
+
+- **id**: QA-20260720-B644
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (NEW · TSR1992)
+- **found_at**: 2026-07-20T02:51:00Z
+- **version**: v1.2.1 / L02 care reports / form-polish
+- **summary**: `frontend-test@3aaccd7` 대비 develop `@474dd81` 미이관 **1**커밋 — 6개 L02 care report 화면(BathHelp·CareMealExcretion·IntensiveExcretion·PatientService·PositionChange·ServiceSummary)에서 역방향 조회기간 수정 시 `dateRangeError` stale 상태 즉시 clear(L03_M15 form-polish 계보 확장·WCAG 3.3.1 lockstep). endpoint 신설 0. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
+- **tests**: test WT baseline **62/62 PASS** · develop corroboration **26/26 PASS** · build PASS(11.06s) · audit high 0 · health 200 · full **2825/2825** carry(TSR1984)
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `474dd81` · diffstat 12 files (+288/−0)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: FE transfer PASS 불가 · cross-stream BLOCK(FE only) · BE `@5cb8bf0` SYNCED(QA-B643 Absorbed)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(frontend)` 즉시 재발화
+- **expected**: `src/frontend-test` `test..develop=0/0` 및 `QA-20260720-B644` Absorbed
+- **actual**: `test..develop=0/1` (`474dd81`)
+- **related**: QA-B637/B635 L03 nursing/care stale-clear lineage · BNK-917/918 · QA-B641 Absorbed
+
+### [TSR] ~~Open~~ **Absorbed** — frontend develop→test pending (`QA-20260720-B641`)
+
+- **id**: QA-20260720-B641
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Absorbed** (2026-07-20T02:51:00Z · TSR1992 git 실측 · FE develop/test diverged **0/1** on new commit · test HEAD `@3aaccd7` includes absorbed `3aaccd7`)
+- **found_at**: 2026-07-20T02:25:07Z (TSR1990)
+- **version**: v1.2.1 / SEC-D44 / US-V06
+- **summary**: TSR1990 시점 pending 1(`3aaccd7`)였으나 TSR1992 재실측 시 test HEAD=`3aaccd7`(SEC-D44 6-digit lockstep 흡수 완료). 신규 pending=`474dd81`. 기능 갭 아님·operation residual = **QA-B116** + **QA-B95**.
+- **evidence**: `git -C src/frontend-test rev-parse HEAD` → `3aaccd7` · `git log --oneline -1` → SEC-D44 lockstep
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260720-B643`)
+
+- **id**: QA-20260720-B643
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (2026-07-20T02:51:00Z · TSR1992 cross-stream re-check · BE develop/test **SYNCED `@5cb8bf0`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T02:42:49Z (TSR1991)
+- **version**: v3 / SEC-D46 / facility-notice
+- **summary**: TSR1991 시점 pending 1(`5cb8bf0`)였으나 TSR1992 재실측 시 BE develop/test 모두 `@5cb8bf0` · left-right **0/0** → local develop→test FF **완료**. 기능 갭 아님·operation residual = **QA-B116**(origin/test push BE +781) + **QA-B95**.
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`5cb8bf0`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T02:42:49Z -->
+<!-- tester-sync: TSR 1991 2026-07-20T02:42:49Z (backend) — ROADMAP merged baseline @48e7020 independent fresh full re-verify; src/backend-test@test mvn -o -B test 2454/2454 PASS(01:27 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test DIVERGED 0/1(`5cb8bf0` SEC-D46 allowlist); merge SKIP; Open(BE transfer)=1(QA-B643 NEW); Open(FE transfer)=1(QA-B641 carry); transfer BLOCK(BE+FE); cross-stream BLOCK(BE pending 1 + FE pending 1); operation BLOCK(QA-B116 origin/test push BE+780·FE+48 + QA-B95). -->
+
+### [TSR] TSR1991 backend — ROADMAP merged baseline `@48e7020` 독립 fresh 전체 재검증 (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · test `@48e7020` · develop `@5cb8bf0` |
+| `mvn -o -B test` | **2454/2454 PASS** (01:27 min · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test divergence | **0/1** — pending `5cb8bf0` (SEC-D46 facility-notice host allowlist) |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(BE transfer) | **1** (`QA-20260720-B643`, BLOCK, NEW) |
+| Open(FE transfer) | **1** (`QA-20260720-B641`, BLOCK, carry) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 BE+780·FE+48 + QA-B95) |
+
+### [TSR] Open — backend develop→test pending 1 (`QA-20260720-B643`)
+
+- **id**: QA-20260720-B643
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (NEW · TSR1991)
+- **found_at**: 2026-07-20T02:42:49Z
+- **version**: v3 / SEC-D46 / facility-notice
+- **summary**: `backend-test@48e7020` 대비 develop `@5cb8bf0` 미이관 **1**커밋 — 기관 공지 첨부 URL host allowlist + userInfo 거부(피싱 가드) 하드닝. endpoint 신설 0 · V193 불변. **기능 갭 아님·transfer만**.
+- **tests**: test WT full **2454/2454 PASS**(01:27 min) · 0F/0E/0S · BUILD SUCCESS · EXIT 0
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 1` · `git -C src/backend log --oneline test..develop -n 1` → `5cb8bf0 fix(v3/SEC-D46): allowlist facility-notice attachment URL hosts`
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: BE transfer PASS 불가 · cross-stream BLOCK(BE pending 1 + FE pending 1)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(backend)` 즉시 재발화
+- **expected**: `src/backend-test` `test..develop=0/0` 및 `QA-20260720-B643` Absorbed
+- **actual**: `test..develop=0/1` (`5cb8bf0`)
+- **related**: COD Fixed `QA-20260720-B642` · TSR Open `QA-20260720-B641`
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:35:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:35:00Z (backend) — SEC-D46 FacilityNotice attachment URL host allowlist + userInfo phishing guard · related mvn PASS · v3 merge_status: ready 유지 · Planned QA-B116+QA-B95 -->
+
+### [COD] Fixed — v3/SEC-D46 FacilityNotice attachment URL host allowlist
+
+- **id**: QA-20260720-B642
+- **severity**: LOW (SEC-D46 Monitor · non-product-BLOCK)
+- **component**: backend / facility-notice / SEC-D46
+- **status**: Fixed (develop `@5cb8bf0` · transfer = next build FF)
+- **summary**: SECURITY_AUDIT SEC-D46 / CHECKLIST B-20 / THREAT T-E8 — 기관 공지 `attachmentUrl` 이 scheme·length만 검사해 인사이더가 `https://evil.com` 또는 `https://trusted@evil.com/...` 피싱 링크를 게시할 수 있었음. (1) URI 파싱 + **userInfo 거부**(credential phishing) (2) 호스트 필수 (3) `ogada.facility-notice.attachment-allowed-hosts` / `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 설정 시 **host allowlist fail-closed**(빈값=구조 가드만·기존 UX 호환). endpoint 신설 0 · V193 CHECK 불변.
+- **files**: `FacilityNoticeSupport.java` · `FacilityNoticeService.java` · `application.yml` · `FacilityNoticeSupportTest.java`(신규) · `FacilityNoticeServiceTest.java`
+- **verify**: `mvn -o -B test -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest` PASS
+- **related**: SEC-D43 portal host allowlist 패턴 · QA-B418 http(s) scheme · SEC-D44 `@48e7020` carry
+- **next**: develop→test FF · origin/test push(QA-B116) · ops 는 센터 승인 도메인을 `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 로 설정 · FE host-allowlist 카피 lockstep 후속 가능
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T02:25:07Z -->
+<!-- tester-sync: TSR 1990 2026-07-20T02:25:07Z (frontend) — FE test@d50f5ca / develop@3aaccd7 DIVERGED 0/1; baseline 27/27 + develop 35/35 PASS; build PASS(11.06s)·audit 0·health 200; Open(FE)=1(QA-B641 NEW); Open(BE)=0(QA-B639 Absorbed @48e7020); transfer BLOCK(FE); cross-stream BLOCK(FE pending 1); operation BLOCK(QA-B116 FE+48·BE+780 + QA-B95). -->
+
+### [TSR] TSR1990 frontend — develop→test pending 1 SEC-D44 lockstep (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · test `@d50f5ca` · develop `@3aaccd7` |
+| develop/test divergence | **0/1** — pending `3aaccd7` (SEC-D44 FE 6-digit lockstep · COD QA-B640) |
+| targeted (test WT) | **27/27 PASS** (4 files · 19.97s · frontend-test flock) |
+| develop corroboration | **35/35 PASS** (3 files · 14.24s) |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(FE transfer) | **1** (`QA-20260720-B641`, BLOCK, NEW) |
+| Open(BE transfer) | **0** (`QA-B639` Absorbed · BE SYNCED `@48e7020`) |
+| transfer / operation | **BLOCK** / **BLOCK**(QA-B116 FE+48·BE+780 + QA-B95) |
+
+### [TSR] Open — frontend develop→test pending 1 (`QA-20260720-B641`)
+
+- **id**: QA-20260720-B641
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (NEW · TSR1990)
+- **found_at**: 2026-07-20T02:25:07Z
+- **version**: v1.2.1 / SEC-D44 / US-V06
+- **summary**: `frontend-test@d50f5ca` 대비 develop `@3aaccd7` 미이관 **1**커밋 — `VisitBatchUnconfirmPanel` challenge **4-digit→6-digit** FE lockstep(BE `@48e7020`·COD QA-B640 Fixed). legacy 4-digit submit fail-closed · endpoint 신설 0. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
+- **tests**: test WT baseline **27/27 PASS** · develop corroboration **35/35 PASS** · build PASS(11.06s) · audit high 0 · health 200 · full **2825/2825** carry(TSR1984)
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count HEAD...develop` → `0 1` · `git log --oneline HEAD..develop` → `3aaccd7` · diffstat 4 files (+78/−24)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: FE transfer PASS 불가 · cross-stream BLOCK(FE only) · BE `@48e7020` SYNCED(QA-B639 Absorbed)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(frontend)` 즉시 재발화
+- **expected**: `src/frontend-test` `test..develop=0/0` 및 `QA-20260720-B641` Absorbed
+- **actual**: `test..develop=0/1` (`3aaccd7`)
+- **related**: COD Fixed **QA-20260720-B640** · COD Fixed **QA-20260720-B638** (BE) · TSR1989 **QA-B639** Absorbed
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260720-B639`)
+
+- **id**: QA-20260720-B639
+- **severity**: BLOCK → **cleared**
+- **stream**: backend
+- **status**: **Absorbed** (2026-07-20T02:25:07Z · TSR1990 git 실측 · BE develop/test **SYNCED `@48e7020`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T02:18:07Z (TSR1989)
+- **version**: v3 / SEC-D44 / US-V06
+- **summary**: TSR1989 시점 pending 1(`48e7020`)였으나 TSR1990 재실측 시 BE develop/test 모두 `@48e7020` · left-right **0/0** → local develop→test FF **완료**. 기능 갭 아님·operation residual = **QA-B116**(origin/test push BE +780) + **QA-B95**.
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`48e7020`
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:25:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:25:00Z (frontend) — SEC-D44 US-V06 batch-unconfirm challenge FE 4→6 digit lockstep · VisitBatchUnconfirmPanel maxLength/pattern/label · legacy 4-digit fail-closed · BE @48e7020 · v1.2.1 merge_status: ready 유지 · Planned QA-B116+QA-B95 -->
+
+### [COD] Fixed — v1.2.1/SEC-D44 US-V06 batch-unconfirm challenge FE 6-digit lockstep
+
+- **id**: QA-20260720-B640
+- **severity**: MEDIUM (SEC-D44 FE↔BE lockstep · non-product-BLOCK until transfer)
+- **stream**: frontend
+- **status**: Fixed (develop `@3aaccd7` · transfer = next build FF)
+- **found_at**: 2026-07-20T02:25:00Z
+- **version**: v1.2.1 / SEC-D44 / US-V06
+- **summary**: BE `@48e7020` challenge 6-digit(`100000..999999`) 에 FE `VisitBatchUnconfirmPanel` lockstep — `BATCH_UNCONFIRM_CHALLENGE_DIGITS=6` · `maxLength`/`pattern`/`label`/`CHALLENGE_PATTERN` · legacy 4-digit 입력은 submit 비활성(fail-closed). API_SPEC §14 · SEC-D36 entropy 정합.
+- **tests**: `VisitBatchUnconfirmPanel.test.jsx` + `VisitsPage.test.jsx` + `visitServices.test.js` (targeted)
+- **files**: `VisitBatchUnconfirmPanel.jsx`·`.test.jsx` · `VisitsPage.test.jsx` · `visitServices.test.js`
+- **related**: COD Fixed QA-B638 (BE) · TSR Open QA-B639 (BE transfer) · QA-B636 Absorbed
+- **next**: develop→test FF · origin/test push(QA-B116)
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T02:18:07Z -->
+<!-- tester-sync: TSR 1989 2026-07-20T02:18:07Z (backend) — ROADMAP merged baseline @b863930 independent fresh full re-verify; src/backend-test@test mvn -o -B test 2454/2454 PASS(01:06 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test DIVERGED 0/1(`48e7020` SEC-D44); develop corroboration targeted 137/137 PASS; merge SKIP; Open(BE transfer)=1(QA-B639 NEW); Open(FE transfer)=0(QA-B636 Absorbed·FE SYNCED @d50f5ca); backend /api/v1/health=200(UP, liveE2eBootstrapEnabled=false); disk 75G/49% healthy; transfer BLOCK(BE local); cross-stream BLOCK(BE pending 1, FE pending 0); operation BLOCK(QA-B116 origin/test push BE+779·FE+47 + QA-B95). -->
+
+### [TSR] TSR1989 backend — ROADMAP merged baseline `@b863930` 독립 fresh 전체 재검증 (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 merged baseline `@b863930` |
+| develop/test divergence | **0/1** (`rev-list --left-right test...develop`) — DIVERGED |
+| pending commit | `48e7020` `fix(v3/SEC-D44): raise batch-unconfirm challenge entropy to 6 digits` |
+| merge | **SKIP** (tester manual merge 금지) |
+| `mvn -o -B test` (test WT) | **2454/2454 PASS** (01:06 min · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop corroboration | targeted **137/137 PASS** (`VisitBatchUnconfirmChallengeStoreTest`+`VisitServiceTest`+`VisitControllerRoutingTest` · 8.68s) |
+| `@RestController` / Flyway | **81** / **V196** |
+| backend `/api/v1/health` | **200 (UP)** (`liveE2eBootstrapEnabled=false`) |
+| disk | **75G/49% healthy** |
+| Open(BE transfer) | **1** (`QA-20260720-B639`, BLOCK, NEW) |
+| Open(FE transfer) | **0** (`QA-B636` Absorbed · FE SYNCED `@d50f5ca`) |
+| transfer | **BLOCK** (develop→test pending 1) |
+| cross-stream | **BLOCK** — BE pending 1 (FE pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push BE +779 · FE +47) + QA-B95 |
+| NEW Open | **QA-20260720-B639** |
+
+### [TSR] Open — backend develop→test pending 1 (`QA-20260720-B639`)
+
+- **id**: QA-20260720-B639
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (NEW · TSR1989)
+- **found_at**: 2026-07-20T02:18:07Z
+- **version**: v3 / SEC-D44 / US-V06
+- **summary**: `backend-test@b863930` 대비 develop `@48e7020` 미이관 **1**커밋 — `VisitBatchUnconfirmChallengeStore` challenge 4-digit→**6-digit** entropy 상향(SEC-D36 lockstep)·`BatchUnconfirmVisitSchedulesRequest.@Pattern(\\d{6})` · endpoint 신설 0. **기능 갭 아님·transfer만**. develop WT **CLEAN**. COD `@48e7020` 단건 **8/8 PASS**·TSR1989 develop corroboration **137/137 PASS**.
+- **tests**: test WT full **2454/2454 PASS** · develop targeted **137/137 PASS** · health **200**
+- **evidence**: `git -C src/backend-test rev-list --left-right --count HEAD...develop` → `0 1` · `git log --oneline HEAD..develop` → `48e7020` · diffstat 10 files (+39/−21)
+- **assignee**: PLN,COD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: BE transfer PASS 불가 · cross-stream BLOCK(BE only) · FE `@d50f5ca` SYNCED(QA-B636 Absorbed)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(backend)` 즉시 재발화
+- **expected**: `src/backend-test` `test..develop=0/0` 및 `QA-20260720-B639` Absorbed
+- **actual**: `test..develop=0/1` (`48e7020`)
+- **related**: COD Fixed **QA-20260720-B638** · FE `VisitBatchUnconfirmPanel` maxLength 6 lockstep(frontend 후속)
+
+### [TSR] ~~Open~~ **Absorbed** — frontend develop→test pending (`QA-20260720-B636`)
+
+- **id**: QA-20260720-B636
+- **severity**: BLOCK → **cleared**
+- **stream**: frontend
+- **status**: **Absorbed** (2026-07-20T02:18:07Z · TSR1989 git 실측 · FE develop/test **SYNCED `@d50f5ca`** · `test..develop=0/0`)
+- **found_at**: 2026-07-20T01:54:20Z (TSR1987/1988)
+- **version**: v1.2.1 / UXD-206 + L03 nursing·care stale-clear
+- **summary**: TSR1988 시점 pending 2(`4632b93`+`d50f5ca`)였으나 TSR1989 재실측 시 FE develop/test 모두 `@d50f5ca` · left-right **0/0** → local develop→test FF **완료**. 기능 갭 아님·operation residual = **QA-B116**(origin/test push FE +47) + **QA-B95**.
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count test...develop` → `0 0` · HEAD=`d50f5ca`
+
+---
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:15:00Z -->
 <!-- coder-sync: COD 2026-07-20T02:15:00Z (backend) — SEC-D44 US-V06 batch-unconfirm challenge 4→6 digit · VisitBatchUnconfirmChallengeStore SEC-D36 lockstep · related mvn PASS · v3 merge_status: ready 유지 · Planned QA-B116+QA-B95 · FE maxLength lockstep 후속 -->
 
