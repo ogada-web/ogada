@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-946 교차검증·갭 우선순위 8h+ · ★★★ **NHIS #44에 별지 제22호 없음 · 인용 번복** · ★★ **이지케어 공지 3건 · 엑셀 컬럼 변경 0** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · `c886ff1f` 643차. [FAQ 21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856&type=web) · [21859](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21859&type=web) · [21861](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21861&type=web). [angel_news_list](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) `03fd9d9e`. git FE `29c2304` · BE `d73aec11`.
+
+### 결정
+
+1. **★★★ 「별지 제22호」를 NHIS #44 본문의 인용으로 쓰지 않는다 (확인 · 가정 번복)** — 이 페이지는 ④ 이동서비스 일지 작성·보관과 ⑤ 공단 이사장 세부사항만 말한다. 「별지」「제22호」는 0이다. 제2026-189호 본문도 같다. **planner: 일지 화면은 유지한다. 서식 번호를 이 URL로 확인 처리하지 않는다. v1.3-C를 P0로 다시 열지 않는다.**
+
+2. **★★ 킬로 경계 가정은 유지한다 (가정)** — `resolveFromKm`의 `<= 5/10/20`은 그대로다. **planner: 경계 코드를 바꾸지 않는다.**
+
+3. **★★ G14·대시보드·이동서비스비·CMS는 닫힌 상태다 (확인)** — 네 경로가 `@29c2304`에 있다. 대시보드 위젯 id는 40이다. CMS 5코드는 수납 구현이 true다. **planner: P0 재정렬 없음. id=2는 0.85. id=5·id=7은 1.0.**
+
+4. **★★ 이지케어 7월 엑셀은 상담일지 현황 다운로드 추가다 (확인)** — 청구·RFID·입금 가져오기 컬럼 변경은 0이다. 인지활동북 40종과 약관 시행 2026-10-19는 콘텐츠·법적 공지다. **planner: SEC-D34와 학습지 모듈을 열지 않는다.**
+
+5. **★ 엔젤 idx 221607은 제140차 교육 공지다 (확인)** — 「221573 이후 공지 없음」은 번복이다. 제품 기능 공지는 아니다. **planner: 갭으로 올리지 않는다.**
+
+**가정 1**(5/10/20km 경계) · **가정 번복 2**(별지 인용 · 공지 idx 중단) · **미확인 4**(서식 번호 · 평가 PDF · 케어포 게시판 · 임금대장 출력 토글) · 신규 snapshot **8**(html 6 · txt 1 · 404 html 1) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-945 엔젤·롱텀·규제 4-6h · ★★★ **제2026-189호 제34조 금액표 1차 판독 830/2,630/5,230/8,630** · ★★ **특장차량 월 170,000원 · 통합재가 월 100,000원 · 단기보호 1등급 74,060원** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: `POST` [admRulLsInfoR.do](https://www.law.go.kr/LSW/admRulLsInfoR.do) HTTP 200 · `c5e5bc59`. [flSeq=169768531](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) GIF `31064a16`. [수가 HTML menuId=2742](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `57fd4b7e`. [lcms](https://www.lcms.or.kr/) `7775b5b4`. git FE `29c2304` · BE develop `d73aec11`.

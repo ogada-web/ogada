@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T19:40:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-945 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **제2026-189호 제34조 이미지 판독 830/2,630/5,230/8,630 · 시드 재작성 불요** · ★★ **제34조의2 특장차량 월 170,000원 · 제55조의2 통합재가 월 100,000원 · 단기보호 1등급 74,060원** · lcms type3 CJ MOU · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-946 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **NHIS #44에 별지 제22호 0 · 과거 verbatim 인용 번복** · ★★ **이지케어 홈 공지 21856/21859/21861 · 엑셀 컬럼 변경 0** · G14·대시보드·v1.3-C·CMS **P0 재오픈 0** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-946 delta·교차검증·갭 우선순위 8h+) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 별지 제22호 인용 번복 (BNK-946 #1 · 기존 URL 재실측 · 확인)** | ✅ 일지 화면은 유지. 제목에 「별지 제22호」가 있으나 이 URL이 근거는 아님. v1.3-C **P0 재오픈 0** | ⚪ | ⚪ | ⚪ | ✅ [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **643차** · 「별지」 **0** · ④ 일지 보관 · ⑤ 공단 이사장 | `nhis_jo44_live_bnk946.html` · §946-1 · 서식 번호 **미확인** |
+| **★★ closed band 4경로 (BNK-946 #2 · 워크플로 · 확인)** | ✅ `/clients/:clientId/care-plan-form` · `/dashboard`+`/hq` 위젯 id **40** · `/transport/service-fees` · `/billing/cms` 5코드 `collectionImplemented=true` · `/programs/groups` **0** | ⚪ 게시판 시간 초과 **미확인** | ⚪ 만료 7통 재대조 안 함 · P3 유지 | ⚪ | ⚪ | §946-2 · P0 재오픈 0 · id=5 **1.0** |
+| **★★ 7월 업데이트 메뉴 (BNK-946 #3 · 신규 URL · 확인)** | ⚪ 상담일지 엑셀 컬럼·세액표·`M` 표시·대장 출력 토글은 **미확인**. 가져오기 포맷 변경 아님 | ⚪ | ✅ [21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856&type=web) 1.3 상담일지 엑셀 다운로드 · 수당설정 간이세액표 · 6.3 적립 `M` · 6.1 주민번호 마스킹 ON/OFF | ⚪ | ⚪ | `ezcare_faq_rowid_21856_bnk946.html` · §946-3 · P0 아님 |
+| **★ 인지활동북 40종 · 약관 10/19 (BNK-946 #4 · 신규 URL)** | ✅ `[인지활동]` 일지 구간은 있음. 학습지 40종·약관 개정은 넣지 않음 | ⚪ | ✅ [21859](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21859&type=web) 40종(6/10/8/16) · [21861](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21861&type=web) 시행 **2026-10-19** · AI 처리 문구 | ⚪ | ⚪ | §946-3 · 콘텐츠·약관은 갭 아님 |
+| **★ 엔젤 교육 공지 · 엑셀 0 · git (BNK-946 #5)** | ✅ SHA BNK-945와 같음 · HTTP **447** · merge gate **3** | ⚪ | ✅ 홈 `52912e03` 53.9/9514/4901/2353/1820 유지 · FAQ 목록 233/21781 · `/help/notice.ez` **404** | ✅ [angel_news_list](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) `03fd9d9e` · 제140차 2026-09-17 · idx **221607** · 배차 0 | ✅ #44 일지 문장만 | `cross_gap_priority_bnk946.txt` · §946-0 · §946-3 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-945 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **제2026-189호 제34조 이미지 판독 830/2,630/5,230/8,630 · 시드 재작성 불요** · ★★ **제34조의2 특장차량 월 170,000원 · 제55조의2 통합재가 월 100,000원 · 단기보호 1등급 74,060원** · lcms type3 CJ MOU · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-945 delta·엔젤·롱텀·규제 4-6h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

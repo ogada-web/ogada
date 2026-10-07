@@ -1,5 +1,23 @@
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T15:41:05Z -->
 
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
+
+### [BNK] BNK-946 인사이트 (2026-10-07) — ★★★ **NHIS #44에 별지 제22호 없음** · ★★ **공지 3건은 FAQ 색인 밖** · ★ **closed band P0 재오픈 0**
+
+| 항목 | 내용 | 반영 |
+|---|---|---|
+| **별지 번호** | [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` · 별지 0 · 제22호 0 · ④ 일지 · ⑤ 이사장 | 인용 번복 · 화면 유지 · P0 아님 |
+| **킬로 경계** | `<= 5/10/20` vs 라벨 「미만」 | 가정 유지 · 코드 변경 없음 |
+| **closed band** | care-plan-form · dashboard 위젯 40 · service-fees · cms 5코드 | P0 재오픈 0 |
+| **이지케어 공지** | [21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856&type=web) 상담일지 엑셀 추가 · [21859](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21859&type=web) 학습지 40 · [21861](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21861&type=web) 약관 2026-10-19 | 컬럼 변경 0 · 백로그 없음 |
+| **엔젤 공지** | [목록](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) 제140차 · idx 221607 · 2026-09-17 | 교육 일정 · 제품 갭 아님 |
+| **git** | FE `@29c2304` · BE `@d73aec11` · HTTP **447** · merge gate **3** | BNK-945와 동일 SHA |
+
+1. **서식 번호**: 일지 작성·보관은 확인이다. 「별지 제22호」는 이 페이지의 문장이 아니다. 제목을 이번 사이클에서 바꾸지 않는다.
+2. **우선순위**: G14 · 대시보드 · v1.3-C · v2 CMS를 P0로 다시 열지 않는다.
+3. **엑셀**: 7월 글은 상담일지 현황 다운로드 추가다. 가져오기 양식 변경으로 적지 않는다.
+4. **약관·학습지**: 2026-10-19 시행과 인지활동북 40종은 기록만 한다.
+
 <!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T19:40:00Z -->
 
 ### [BNK] BNK-945 인사이트 (2026-10-07) — ★★★ **제34조 러-1~4 금액표 1차 판독** · ★★ **특장차량 170,000원 · 통합재가 100,000원 · 단기보호 74,060원** · ★ **lcms type3**

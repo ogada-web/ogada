@@ -1,9 +1,98 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T19:40:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §946 BNK-946 — 교차검증·갭 우선순위 8h+ · ★★★ **NHIS #44 이력 페이지에 「별지 제22호」가 없다** · 과거 verbatim 인용 번복 · ★★ **이지케어 홈 공지 3건은 FAQ 색인 밖** · 7월 업데이트·인지활동북 40종·약관 시행 2026-10-19 · 엑셀 컬럼 변경 0 · ★ **G14·대시보드·v1.3-C·v2 CMS 4경로 LIVE · P0 재오픈 0** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
+
+**조사일**: 2026-10-07T20:25:00Z | **rotation**: 교차검증·갭 우선순위 8h+. BNK-945(2026-10-07T19:40:00Z) 이후 약 45분. 초점: (1) 이전 가정 번복 (§946-1) · (2) G14·대시보드·v1.3-C·v2 CMS 재정렬 (§946-2) · (3) 신규 공지·엑셀 포맷 스캔 (§946-3) · (4) planner 액션 (§946-4).
+
+### §946-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-945와 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (origin = `1e8857b4` · **ahead 2** · local `test` 브랜치 = `4aad7cc2` · WT CLEAN · BNK-945와 동일 SHA)
+- merge gate **3**. Route **133** · Page **106** · FE test **546**(230+316) · BE test file **304**(303+1) · strict `@Test` **2473** · `@RestController` **82** · `@Entity` **92** · GET **233** / POST **146** / PATCH **45** / PUT **13** / DELETE **10** = HTTP **447** · Flyway V1–V196 · 모듈 **97.41%**
+- `npm test` / `mvn test`는 이번 사이클 **미실행**(docs only).
+
+### §946-1 · ★★★ 가정 번복 — NHIS #44는 일지를 말하고 서식 번호는 말하지 않는다
+
+[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · `c886ff1f` = BNK-945 **BYTE-IDENTICAL** · 저장계수 **643차**.
+
+이 파일의 본문 텍스트는 다음이다.
+
+1. ① 신고 차량 · 실거주지와 기관 · 편도 최단거리. 금액표는 이 HTML에 없다.
+2. ② **1일 1회**. 편도면 ‘러-1’부터 ‘러-4’까지 비용의 **50%**.
+3. ③ 제공기관 신청. **수급자가 부담하지 아니한다**.
+4. ④ 이동서비스를 제공하면 **이동서비스 일지를 작성하여 보관**.
+5. ⑤ 신청·중단·일지 작성의 세부는 **공단 이사장**이 정한다.
+
+「별지」 **0**, 「제22호」 **0**. BNK-945가 제2026-189호 본문에서 센 것과 같다. 과거 차수가 이 URL을 「별지 제22호 verbatim」의 근거로 적은 인용은 **번복**한다. 금액 830/2,630/5,230/8,630은 BNK-945 판독을 유지한다. BNK-941의 「현행 금액표 미확인」은 다시 열지 않는다.
+
+**가정(유지, 번복 아님)**: `TransportDistanceBand.resolveFromKm`은 `<= 5`, `<= 10`, `<= 20`이다. 라벨은 「5km 미만」이다. 정확히 5.000·10.000·20.000km의 구간은 이번에도 이미지 문구로 잠그지 못했다.
+
+**확인(제품 라벨과 규제 문장의 차이)**: FE `transportServiceLog.js` 등은 화면 제목에 「별지 제22호」를 쓴다. 그 번호의 근거는 이 NHIS 페이지가 아니다. 일지 화면 자체(④)는 문장과 맞다. 서식 번호만 **미확인**으로 남긴다.
+
+평가 매뉴얼 PDF는 수신이 7,203,889B 중 3,257,240B에서 끊겼다. 부분 파일은 저장하지 않았다. **미확인** 유지. 케어포 게시판 `bbs/board.php?bo_table=notice` 는 연결 시간 초과. **미확인**.
+
+### §946-2 · ★★ closed band — P0로 다시 열지 않는다
+
+`App.jsx` `@29c2304` 실측. 네 경로는 모두 1건이다. `/programs/groups` 는 0이다. id=5 커버는 BNK-943대로 **1.0** 유지.
+
+| 축 | 경로 | 이번 판정 | 우선순위 |
+|---|---|---|---|
+| G14 급여제공계획 | `/clients/:clientId/care-plan-form` | ✅ LIVE | P0 재오픈 0 |
+| 대시보드 | `/dashboard` · `/dashboard/hq` | ✅ LIVE · 위젯 id **40** | P0 재오픈 0 |
+| v1.3-C 이동서비스비 | `/transport/service-fees` | ✅ LIVE · ④ 일지와 맞음 · 서식 번호는 미확인 | P0 재오픈 0 · 번호 개명도 P0 아님 |
+| v2 CMS | `/billing/cms` | ✅ LIVE · `CmsPaymentMethodCatalog` 5코드 전부 `collectionImplemented=true` | P0 재오픈 0 |
+
+대시보드 위젯 id 40의 묶음은 출석 6(비교 갭 포함) · 사례관리 4 · 기능회복 4 · 제공결과 8 · 급여계획 3 · 위험·욕구·등급 4 · 교육 1 · 근로계약 3 · 청구 5 · 카카오 쿼터 1이다. G14와 직접 붙은 라벨은 「급여 5개월 경과」·「급여 11개월 경과」·「이용계획서 재발급 미반영」이고 링크는 `/clients/care-plan-notifications` 이다.
+
+이지케어 만료 7통(간호지시서·낙상·인지·욕창·욕구·수급자계약·인정)을 이 40개와 다시 1:1로 맞추지는 않았다. 그 대조의 빈칸을 P0로 올리지 않는다. BNK-700의 P3 가정은 유지한다.
+
+### §946-3 · ★★ 공지·엑셀 — 색인 밖 3건, 컬럼 변경 0
+
+**신규 증거**: [FAQ rowid=21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856&type=web) · [21859](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21859&type=web) · [21861](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21861&type=web). 홈의 `noticeDetail` 이 이 번호를 연다. FAQ 목록 앵커의 최대 rowid는 **21781**이라 이 세 건은 목록 233건 밖에 있다.
+
+홈 [ezcare.easyms.co.kr](https://ezcare.easyms.co.kr/) HTTP 200 · 72,517B · `52912e03`. `data-count` **53.9 / 9,514 / 4,901 / 2,353 / 1,820** = BNK-944와 같다. md5만 다르다.
+
+[FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) HTTP 200 · 80,058B · `d2bb7632` (BNK-944 `56ddc025` 와 DRIFT). rowid **233** · 최대 **21781**. 제목에 엑셀이 들어간 항목은 브라우저 다운로드 안내와 서식 출력 안내뿐이다. **가져오기 컬럼 변경 0**.
+
+7월 업데이트(21856) 메뉴 경로:
+
+| 경로 | 바뀐 것 | ogada |
+|---|---|---|
+| 1 직원관리 > 1.3 요양보호사 상담일지 | 작성 현황 **엑셀 다운로드 추가** | 상담일지 카탈로그 문구는 있음. 이 엑셀의 컬럼은 **미확인**. 가져오기 포맷 변경이 아님 |
+| 1 직원 > 수당설정 | 20세 미만 자녀 공제 · 간이세액표 갱신 | 세액표 숫자를 이번 글만으로 시드에 넣지 않음 |
+| 6 직원급여 > 6.3 퇴직금 적립 | 수정 행에 `M` 표시 | 표시 규칙 **미확인** · P0 아님 |
+| 6 직원급여 > 6.1 급여명세서 | 임금대장 출력 시 주민번호 뒷자리 마스킹 ON/OFF | ogada `MaskedRevealField` 는 화면 마스킹. 대장 출력 토글과의 1:1은 **미확인** |
+
+8월 인지활동북(21859)은 학습지 **40종**이다. 집행기능·추론 6 · 기억력·작업 10 · 일상생활 8 · 시공간·시각 16. ogada는 업무수행일지의 `[인지활동]` 구간과 프로그램 리포트를 갖고, 학습지 파일 40종은 없다. 콘텐츠 묶음이지 운영 화면 갭이 아니다. P0로 올리지 않는다.
+
+약관(21861)은 사전 공지 **2026-09-18**, 시행 **2026-10-19**이다. ERP·재무회계 처리기준 통합과 AI 기능의 개인정보 처리 문구가 있다. ogada 약관을 이 문장으로 바꾸지 않는다.
+
+`/help/notice.ez` 는 HTTP **404**. 공지 본문의 공개 입구는 홈 `noticeDetail` → FAQ rowid 이다.
+
+엔젤 [angel_news_list.do](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) HTTP 200 · 55,011B · `03fd9d9e`. 목록 10건은 활용교육 제131차(2025-11-20, idx 221164)부터 제140차(2026-09-17, idx **221607**)이다. 예전 「idx ≥221573 없음」은 **번복**이다. 제목은 교육 일정뿐이다. 엑셀·배차·대시보드 단어는 이 목록에 없다. 지원 공지 목록 HTML은 1,497,669B에서 끊겨 저장하지 않았다. 본문 **미확인**.
+
+### §946-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. P1 승격 **0**. id=2는 **0.85**. id=7은 **1.0**. 수가 시드 변경 **0**.
+
+1. NHIS #44와 제2026-189호는 이동서비스 **일지**를 요구한다. 「별지 제22호」는 두 공개 HTML에 없다. 화면 제목을 이번 사이클에서 고치지 않는다. 일지 기능을 P0 미완으로 되돌리지 않는다.
+2. 5/10/20km 경계 가정은 유지한다. `resolveFromKm`을 바꾸지 않는다.
+3. G14 · `/dashboard` · `/transport/service-fees` · `/billing/cms` 는 LIVE다. 우선순위를 다시 열지 않는다.
+4. 이지케어 7월 글의 엑셀은 상담일지 **현황 다운로드 추가**다. 청구·RFID·입금 가져오기 컬럼 변경이 아니다. SEC-D34 어댑터를 열지 않는다.
+5. 인지활동북 40종과 2026-10-19 약관·AI 처리 문구는 기록만 한다. 학습지 모듈과 약관 개정을 백로그에 넣지 않는다.
+6. 엔젤 공지 221607은 제140차 교육이다. 제품 갭이 아니다.
+7. git은 BNK-945와 같다. FE `@29c2304` · BE `@d73aec11` · HTTP **447** · merge gate **3**.
+
+주력 `cross_gap_priority_bnk946.txt` + `nhis_jo44_live_bnk946.html` + `ezcare_faq_rowid_21856_bnk946.html` + `ezcare_home_live_bnk946.html` + `silverangel_angel_news_list_bnk946.html`. 신규 증거 URL 4(FAQ 21856·21859·21861 · angel_news_list). 가정 번복 2(별지 인용 · 공지 idx 중단). 가정 유지 1(킬로 경계). 미확인 4(서식 번호 · 평가 PDF · 케어포 게시판 · 임금대장 출력 토글). per-cycle minimum 4종 충족.
+
+---
 
 ## §945 BNK-945 — 엔젤·롱텀·규제 4-6h · ★★★ **제2026-189호 제34조 본문에서 러-1~4 표를 1차 판독** · 830 / 2,630 / 5,230 / 8,630 · 시드 재작성 불요 · ★★ **제34조의2 특장차량 월 170,000원(36개월)은 본문 텍스트** · ★★ **제55조의2 주야간보호형 통합재가 월 100,000원 · 공단 수가 HTML의 단기보호 1등급 74,060원** · ★ **lcms 배너가 type3 CJ MOU로 회전 · IP V6 유지** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
 
