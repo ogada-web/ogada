@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:05:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-946 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **NHIS #44에 별지 제22호 0 · 과거 verbatim 인용 번복** · ★★ **이지케어 홈 공지 21856/21859/21861 · 엑셀 컬럼 변경 0** · G14·대시보드·v1.3-C·CMS **P0 재오픈 0** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-947 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **케어포 443 타임아웃(HTTP 000) · 메뉴 삭제 아님** · ★★★ **시설 셸 `rpt` 30.4% ≠ 제목 리포트 23.2%** · ★★ **PDF 7-x ①–④ = 가드·4채널·출력 4종·은행 8곳** · iTunes **1.10.1 / 2021-08-18** · 깊이 4 경로 **6** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-947 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 오리진 타임아웃 · 메뉴 수 유지 (BNK-947 #1 · 기존 URL 재실측)** | ⚪ 「109」를 갭 숫자로 쓰지 않음 · 깊이 최대 **4** · d4 경로 **6**(재집계) | ⚠ [func.php](https://www.carefor.co.kr/daycare/func.php) · [demo-work](https://demo-work.carefor.co.kr/) · PDF = `58.76.184.55:443` HTTP **000**. 디스크 `0f1858cd` 화면 **105** · demo `007911c9` loadPage **112** · 시설 2번=요양 · 이동서비스 **0** | ⚪ | ⚪ | ⚪ | `carefor_m7_pdf_step_route_bnk947.txt` · §947-1 · 본문 덮어쓰기 없음 |
+| **★★★ 리포트 분모 둘 (BNK-947 #2 · 메뉴/필드/워크플로 · 확인)** | ✅ path `report` **29/132=22.0%**. 시설 셸과 우열 문장 없음 | ✅ 제목 「리포트」 **26/112=23.2%** · `class=rpt` **34/112=30.4%** · 제목 없는 rpt 8건(7-9·7-10 포함) | ⚪ | ⚪ | ⚪ | §947-2 · 두 비율을 한 숫자로 쓰지 않음 |
+| **★★ 7-x ①–④ → `/billing` (BNK-947 #3 · 워크플로 · 확인)** | ✅ 가드 `generation-guard` · `POST /claims/generate` · 기준 `ATTENDANCE_SCHEDULE`/`NHIS_IMPORT` · 4채널 우편만 날짜 수정 · 출력 주소라벨·명세서·영수증·청구리스트 · 은행 8코드 · id=7 **1.0** | ✅ 화면 7-1~7-10 = 시설 view 11 · PDF p.85–88 ①–④ · 은행 국민·우리·농협·신한·하나·부산·대구·광주 | ⚪ | ⚪ | ⚪ | §947-3 · 개별/일괄 버튼은 **가정**(월 1회 generate) · 발행일·줄수정·input name **미확인** |
+| **★ iTunes 1.10.1 · NFC는 릴리스 노트 (BNK-947 #4 · 신규 URL)** | ✅ 웹 Transport·본인부담은 앱 설명 유무로 내리지 않음 | ✅ [lookup 1220736809](https://itunes.apple.com/lookup?id=1220736809&country=kr) `0ce2a407` · 버전 **1.10.1** · 갱신 **2021-08-18** · 설명은 시설/방문/주야간 · releaseNotes NFC 출퇴근·야간점검 | ⚪ | ⚪ | ⚪ | `itunes_carefor_lookup_bnk947.json` · §947-1 · 2026 웹 카탈로그 아님 |
+| **★ git @HEAD · CDX 신규 캡처 0 (BNK-947 #5)** | ✅ SHA BNK-946과 같음 · HTTP **447** · merge gate **3** · d4=**6** | ✅ [search_menu CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/js/search_menu.js) 최신 `20260609231630` · 2026-09 이후 func.php 캡처 `[]` | ⚪ | ⚪ | ⚪ | `carefor_search_menu_cdx_bnk947.json` · §947-0 · §947-4 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-946 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **NHIS #44에 별지 제22호 0 · 과거 verbatim 인용 번복** · ★★ **이지케어 홈 공지 21856/21859/21861 · 엑셀 컬럼 변경 0** · G14·대시보드·v1.3-C·CMS **P0 재오픈 0** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-946 delta·교차검증·갭 우선순위 8h+) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

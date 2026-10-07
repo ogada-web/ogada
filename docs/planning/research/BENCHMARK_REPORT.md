@@ -1,9 +1,101 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:05:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §947 BNK-947 — 케어포 역공학 0-2h · ★★★ **오리진 443 타임아웃(HTTP 000) — 메뉴 삭제가 아님** · ★★★ **class=rpt 34/112=30.4% 와 제목 「리포트」 26/112=23.2% 는 다른 분모** · ★★ **PDF p.85–88 ①–④가 가드·4채널·출력 4종·은행 8곳과 맞음** · ★ **iTunes 1.10.1은 2021-08-18 이후 스토어 갱신 없음** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 깊이 4 경로 **6** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:05:00Z -->
+
+**조사일**: 2026-10-07T21:05:00Z | **rotation**: 케어포 역공학 0-2h. BNK-946(2026-10-07T20:25:00Z) 이후 약 40분. 초점: (1) `func.php`·`demo-work`·매뉴얼 PDF 재실측 (§947-1) · (2) loadPage 112와 리포트 분모 (§947-2) · (3) 본인부담 7-x 번호식 단계와 ogada Route (§947-3) · (4) planner 액션 (§947-4).
+
+### §947-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-946과 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (origin = `1e8857b4` · **ahead 2** · local `test` 브랜치 = `4aad7cc2` · WT CLEAN · BNK-946과 동일 SHA)
+- merge gate **3**. Route **133** · Page **106** · FE test **546**(230+316) · BE test file **304**(303+1) · strict `@Test` **2473** · `@RestController` **82** · `@Entity` **92** · GET **233** / POST **146** / PATCH **45** / PUT **13** / DELETE **10** = HTTP **447** · Flyway V1–V196 · 모듈 **97.41%**
+- path 깊이 재집계(슬래시 개수, path 132): d0=1 · d1=20 · d2=72 · d3=33 · d4=**6**. 최대는 **4**. BNK-942가 같은 SHA에 적은 d4=**4** 버킷과 개수가 다르다. 새로 생긴 라우트는 없다.
+- `npm test` / `mvn test`는 이번 사이클 **미실행**(docs only).
+
+### §947-1 · ★★★ 오리진 타임아웃 — BNK-943 HTTP 200을 이번 시각에 재현하지 못함
+
+DNS `www.carefor.co.kr` · `demo-work.carefor.co.kr` · `carefor.co.kr` 은 모두 `58.76.184.55` 이다. 443 연결은 8초 안에 끝나지 않았다. HTTP **000**.
+
+같은 시각에 타임아웃인 URL: [func.php](https://www.carefor.co.kr/daycare/func.php) · [demo-work](https://demo-work.carefor.co.kr/) · `search_menu.js` · `common.js` · `ai_response.js` · [appraisal.php](https://www.carefor.co.kr/daycare/appraisal.php) · [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf).
+
+BNK-943(18:15Z)의 func.php `0f1858cd` · demo `007911c9` · PDF `96f7d45e` 는 디스크에 그대로 있다. 이번 사이클은 그 파일을 덮어쓰지 않았다. 타임아웃을 메뉴 삭제로 적지 않는다.
+
+Wayback CDX [search_menu.js](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/js/search_menu.js&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=20) HTTP 200 · 115B · `8cf56f53`. 최신 줄은 `20260609231630` 하나다. `func.php` 를 `from=20260901` 로 조회하면 `[]` 이다. cost view 와 `common.js` 도 `[]` 이다. `ai_response.js` CDX는 25초 무응답이라 아카이브 보유는 **미확인**.
+
+**신규 증거**: [iTunes lookup id=1220736809](https://itunes.apple.com/lookup?id=1220736809&country=kr) HTTP 200 · 7,591B · `0ce2a407`. 케어포 · `kr.co.carefor` · Hangang Systems. 버전 **1.10.1**. `currentVersionReleaseDate` **2021-08-18**. 평점 1.95556 · 평가 45. 설명 283자는 시설 · 방문 · 주야간 세 줄이고 이동서비스·배차·본인부담·청구·NFC 는 **0**이다. releaseNotes 는 「NFC 태그를 이용하여 출퇴근 처리 및 야간점검을 할수 있도록 개선」이다. 2021 노트를 2026 웹 메뉴와 같은 카탈로그로 쓰지 않는다.
+
+### §947-2 · ★★★ 시설 셸 loadPage 112 · 리포트는 분모가 둘
+
+`carefor_demo_work_live_bnk943.html` 에서 HTML 주석을 뺀 `obj-type="loadPage"` li 는 **112**이다. 고유 view 는 **111**이다. `view.nursing_service` 가 2-1-2와 3-1에 두 번 있다. 메뉴 id 깊이는 2세그먼트 94 · 3세그먼트 18 · 최대 **3**.
+
+모듈 leaf: 1=13 · 2=14 · 3=13 · 4=4 · 5=13 · 6=5 · 7=11 · 8=15 · 9=7 · 10=11 · 11=6.
+
+2번 openMenu 제목은 「요양급여제공」이다. `이동서비스` · `배차` · `송영` · `RFID` 는 **0**이다. `차량` 3회는 9-5 운영관리다. 주야간 `func.php` M2는 이동서비스 **10** leaf(2-1 일정관리부터 2-9 외출 리포트)다. 시설 2번 14와 주야간 2번 10을 한 행으로 합치지 않는다.
+
+| 분모 | 값 | 비율 |
+|---|---|---|
+| 제목에 「리포트」 | 26/112 | **23.2%** (BNK-943과 같음) |
+| `class=rpt` | 34/112 | **30.4%** |
+| ogada path에 `report` | 29/132 | **22.0%** |
+
+제목에 리포트가 없는데 `rpt` 인 항목은 8개다. 1-11 호전현황 · 2-10 급여제공 집계 · 7-9 수납,환불내역 · 7-10 간편계산기 · 8-13 연차 대장 · 9-6 연간 부담금현황 · 10-9 안내발송내역 · 10-10 평가자료 출력. 반대 경우는 0이다. 23.2%와 30.4%를 한 숫자로 인용하지 않는다. 시설 셸이 ogada보다 리포트가 촘촘한지 여부는 어느 분모를 쓰느냐에 따라 달라지므로, 이번 사이클은 우열을 적지 않는다.
+
+주야간 화면 leaf **105** · 주석 **106** · 「109」 없음은 BNK-943 집계를 유지한다. 이번 정규식은 회사명 푸터를 붙여 113이 나왔고, 그 113은 쓰지 않는다.
+
+### §947-3 · ★★ 7-x 번호식 단계 — PDF ①–④와 `/billing`
+
+화면 번호는 주야간 func.php와 시설 `left_sub7` 이 같다. 2018 PDF가 본문에서 부르는 7-5 청구대장 같은 옛 번호는 현재 id가 아니다.
+
+| 화면 | demo view | ogada `@29c2304` |
+|---|---|---|
+| 7-1 청구관리 | `/share/cost/view.cost_master` | `/billing` · `/billing/claims/:claimId` |
+| 7-2 입금관리 | `/share/cost/view.cost_receipt` | `/billing/payments` |
+| 7-2-1 의료비공제 | `/share/cost/view.cost_master_statistic` | `/billing/cash-receipts` |
+| 7-3 미납관리 | `/share/cost/view.cost_nopay` | `/billing/overdue` |
+| 7-4 CMS | `/share/cost/view.cms_manage` | `/billing/cms` |
+| 7-5 간편결제 | `/share/cost/view.npay_manage` | `/billing/easy-pay` |
+| 7-6 청구대장 | `/share/cost/view.cost_master_report` | `/billing/reports/charges` |
+| 7-7 입금대장 | `/share/cost/view.cost_deposit_report` | `/billing/reports/deposits` |
+| 7-8 수납대장 | `/share/cost/view.cost_receipt_report` | `/billing/reports/receipts` |
+| 7-9 수납·환불 | `/share/cost/view.cost_receipt_apply_yearly` | `/billing/reports/refunds` |
+| 7-10 간편계산기 | `/cost/view.cost_calculator` | `/billing/calculator` |
+
+`/billing` 은 17경로다. 위 11줄 밖에 statistics · fee-schedules · copay-rates · nhis import 가 있다. id=7 은 **1.0**.
+
+PDF p.85–88에서 확인한 단계와 코드:
+
+1. 이전 달 입금 뒤에 청구. `claimGenerationGuard.js` 의 문장은 「월별 청구서 발행 시 반드시 이전달에 생성된 청구금액을 입금처리해야 합니다」이다. `GET /api/v1/billing/claims/generation-guard` · `POST /api/v1/billing/claims/generate`.
+2. 생성기준 두 값. `ATTENDANCE_SCHEDULE` 「급여일정(출석) 기반」 · `NHIS_IMPORT` 「공단 청구내역 엑셀」. PDF p.85는 한 단락 안에서 「일정으로 계산」과 「청구내역상세로 선택」이 엇갈린다. 중도퇴소에 어느 쪽인지는 **미확인**. 선택지 두 개가 있다는 점만 확인이다.
+3. 발송 4채널. `POSTAL` 우편 · `SMS` 문자 · `EMAIL` 이메일 · `IN_PERSON` 직접수령. 우편만 발송일을 고친다. 문자·이메일은 시스템 시각으로 잠긴다. PDF p.87과 같다.
+4. 출력. `BillingStatementExportKind` 는 주소라벨 · 급여비용명세서 · 영수증 · 청구리스트 · 전체다. PDF p.87의 네 가지와 같다.
+5. 은행 엑셀. `BankDepositFormatCatalog` 8코드(국민·우리·농협·신한·하나·부산·대구·광주)가 PDF p.88의 나열과 같다. PDF는 「추후 추가」라고 적혀 있어 닫힌 목록은 아니다.
+
+**가정**: PDF ② 개별 생성과 ③ 일괄 생성은 ogada에서 버튼 두 개가 아니다. `POST generate` 하나가 지점의 그 달을 만든다. id=7을 내리지 않는다.
+
+**미확인**: ① 청구서 발행일 전용 필드. ④ 일 급여수가·식사여부·비급여 줄 수정 화면. `view.cost_*` 의 input name (오리진 타임아웃, CDX에 해당 뷰 캡처 없음).
+
+### §947-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=7 은 **1.0**. id=2 는 **0.85**. 수가 시드 변경 **0**.
+
+1. 케어포 오리진이 HTTP 000이어도 BNK-943 메뉴 수를 지우지 않는다. 「109」는 여전히 쓰지 않는다. 주야간 화면 **105**, 시설 loadPage **112**.
+2. 이동서비스 정본은 func.php M2 10 leaf다. 시설 데모 2번은 요양 14 leaf이고 이동서비스 문자열이 없다.
+3. 리포트를 인용할 때 제목 23.2%와 `class=rpt` 30.4%를 구분한다. ogada `report` 경로 22.0%와 우열을 한 문장으로 쓰지 않는다.
+4. 7-1→7-2 순서는 선행입금 가드가 이미 잠그고 있다. 4채널·출력 4종·은행 8곳은 PDF와 같다. 개별/일괄 버튼을 나누는 작업을 열지 않는다. 발행일 필드와 명세서 줄 수정은 미확인이라 갭으로 올리지 않는다.
+5. 앱 1.10.1(2021-08-18)의 NFC 출퇴근·야간점검 노트는 웹 메뉴 카탈로그가 아니다. 설명문에 이동서비스가 없어도 Transport를 내리지 않는다.
+6. 같은 SHA에서 깊이 4 경로는 **6**개다. BNK-942의 d4=4는 버킷 오계다. 최대 깊이 4는 유지한다.
+7. git은 BNK-946과 같다. FE `@29c2304` · BE `@d73aec11` · HTTP **447** · merge gate **3**.
+
+주력 `carefor_m7_pdf_step_route_bnk947.txt` + `itunes_carefor_lookup_bnk947.json` + `carefor_search_menu_cdx_bnk947.json`. 신규 증거 URL 1(iTunes lookup). 기존 URL 재실측 1(케어포 443 타임아웃, 본문 해시 유지). 가정 1(개별/일괄은 월 단위 generate 하나). 미확인 4(발행일 필드 · 명세서 줄 수정 · 뷰 input name · ai_response.js 아카이브). per-cycle minimum 4종 충족.
+
+---
 
 ## §946 BNK-946 — 교차검증·갭 우선순위 8h+ · ★★★ **NHIS #44 이력 페이지에 「별지 제22호」가 없다** · 과거 verbatim 인용 번복 · ★★ **이지케어 홈 공지 3건은 FAQ 색인 밖** · 7월 업데이트·인지활동북 40종·약관 시행 2026-10-19 · 엑셀 컬럼 변경 0 · ★ **G14·대시보드·v1.3-C·v2 CMS 4경로 LIVE · P0 재오픈 0** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
 

@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-947 케어포 역공학 0-2h · ★★★ **443 타임아웃은 메뉴 삭제가 아님** · ★★★ **리포트 분모 23.2%와 30.4%를 나누어 적음** · ★★ **7-x 단계가 가드·4채널·은행 8곳과 맞음** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: 케어포 `58.76.184.55:443` HTTP **000**(func.php·demo-work·PDF). 디스크 `0f1858cd` / `007911c9` / 목차 `carefor_manual_pdf_toc_bnk943.txt`. [iTunes lookup 1220736809](https://itunes.apple.com/lookup?id=1220736809&country=kr) HTTP 200 · `0ce2a407`. git FE `29c2304` · BE `d73aec11`.
+
+### 결정
+
+1. **★★★ 이번 타임아웃으로 케어포 메뉴 수를 바꾸지 않는다 (확인)** — BNK-943의 주야간 화면 **105**와 시설 loadPage **112**를 유지한다. 「109」는 쓰지 않는다. 시설 2번은 요양이고 이동서비스 문자열은 0이다. 주야간 M2는 이동서비스 10 leaf다. **planner: 두 셸을 한 표로 합치지 않는다. Transport를 데모 공백으로 내리지 않는다.**
+
+2. **★★★ 리포트 밀도는 분모를 적는다 (확인)** — 제목 「리포트」는 26/112=**23.2%**이다. `class=rpt` 는 34/112=**30.4%**이다. ogada path `report` 는 29/132=**22.0%**이다. **planner: 한 비율로 우열을 쓰지 않는다.**
+
+3. **★★ 본인부담 7-x 번호식 흐름은 이미 코드에 있다 (확인)** — 선행입금 가드, 일정/공단엑셀 두 기준, 우편·문자·이메일·직접수령(우편만 날짜 수정), 주소라벨·명세서·영수증·청구리스트, 은행 8곳이 PDF p.85–88과 같다. **planner: id=7은 1.0. P0로 다시 열지 않는다.**
+
+4. **★★ 개별 생성과 일괄 생성은 버튼 두 개로 나누지 않는다 (가정)** — `POST /claims/generate` 가 지점의 그 달을 만든다. 발행일 필드와 명세서 줄 수정, 뷰 input name은 **미확인**이다. **planner: 그 미확인을 갭으로 올리지 않는다.**
+
+5. **★ 앱 1.10.1은 2021-08-18 릴리스다 (확인)** — 설명은 시설·방문·주야간 세 줄이다. NFC 출퇴근·야간점검은 releaseNotes에만 있다. **planner: 2026 웹 메뉴 카탈로그로 쓰지 않는다.**
+
+**가정 1**(개별/일괄은 월 단위 generate) · **미확인 4**(발행일 · 줄 수정 · input name · ai_response.js 아카이브) · 신규 snapshot **3**(txt 1 · json 2) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-946 교차검증·갭 우선순위 8h+ · ★★★ **NHIS #44에 별지 제22호 없음 · 인용 번복** · ★★ **이지케어 공지 3건 · 엑셀 컬럼 변경 0** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · `c886ff1f` 643차. [FAQ 21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856&type=web) · [21859](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21859&type=web) · [21861](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21861&type=web). [angel_news_list](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) `03fd9d9e`. git FE `29c2304` · BE `d73aec11`.
