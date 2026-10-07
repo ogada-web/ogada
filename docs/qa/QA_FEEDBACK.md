@@ -1,3 +1,61 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:21:00Z -->
+<!-- tester-sync: TSR 2002 2026-10-07T17:21:00Z (frontend) — ROADMAP v1.2.1 merge_status ready; src/frontend-test@29c2304 npm test 2865/2865 PASS(493 files,843.00s,exit 0); develop/test SYNCED 0/0 WT CLEAN; build 1236 PASS; audit full high 4 (dev) omit=dev high 0; QA-B688 Verified; NEW Open QA-B689 HIGH; BE SYNCED @4aad7cc2; local transfer PASS; operation BLOCK(health DOWN, origin/test FE+1 BE+1, QA-B116+QA-B95). -->
+
+### [TSR] TSR2002 frontend — `@29c2304` 회귀 (local transfer PASS · operation BLOCK)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · develop/test **SYNCED** `@29c2304` |
+| `npm test` | **2865/2865 PASS** (493 files · 843.00s · exit 0) |
+| `npm run build` | **PASS** (8.64s · 1236 modules) |
+| develop/test divergence | **0/0** · WT **CLEAN** |
+| merge | 이미 test에 있음 (이번 호출에서 merge 없음) · live E2E **SKIP** |
+| audit | full tree **4 high** · prod `--omit=dev` high **0** |
+| Open(FE) | **1** (`QA-20261007-B689`, HIGH, non-BLOCK) |
+| Verified | `QA-20261007-B688` (`@29c2304` on test) |
+| BE | develop/test `@4aad7cc2` **SYNCED** · `QA-B687` Absorbed (TSR2001) |
+| local transfer | **PASS** |
+| operation | **BLOCK** — health **DOWN** (:8080) · origin/test unpushed FE **+1** · BE **+1** · residual **QA-B116**·**QA-B95** |
+| disk | **4.8G avail / 90%** |
+| cross-stream (local) | **SYNCED** (FE `@29c2304` · BE `@4aad7cc2`) |
+
+로컬 단위 테스트 PASS는 운영 승격 가능을 의미하지 않는다. health가 DOWN이고 origin/test에 각 1커밋이 남아 operation은 BLOCK이다.
+
+### [TSR] Open — frontend devDependency audit high (`QA-20261007-B689`)
+
+- **id**: QA-20261007-B689
+- **severity**: HIGH
+- **stream**: frontend
+- **status**: Open (NEW · TSR2002)
+- **found_at**: 2026-10-07T17:21:00Z
+- **version**: v1.2.1 / dependency audit
+- **summary**: `npm audit --audit-level=high` 가 exit 1. high 4건은 dev/transitive (`browserslist`, `nanoid`, `postcss`, `source-map-js`). `npm ls --omit=dev` 에 해당 패키지 없음. `npm audit --omit=dev --audit-level=high` exit 0 (react-router moderate 2건만). 제품 런타임 번들 게이트는 유지. 로컬 이관 BLOCK 아님.
+- **tests**: `npm test` **2865/2865 PASS** `@29c2304` · build **1236 modules PASS**
+- **evidence**: `src/frontend-test` `npm audit --audit-level=high` → 9 vulnerabilities (5 moderate, 4 high) · `--omit=dev --audit-level=high` exit 0
+- **assignee**: COD (dev toolchain bump) · PLN (우선순위)
+- **impact**: local FE transfer PASS 유지 · operation 잔여 리스크에 포함
+- **prevention**: lockfile에서 high advisory가 해소된 dev 의존 버전으로 갱신. 프로덕션 의존 변경과 분리.
+- **expected**: `npm audit --audit-level=high` high 0, 또는 prod/dev 게이트를 문서에서 분리한 뒤 prod high 0 유지
+- **actual**: full-tree high **4** · prod high **0**
+- **related**: local transfer PASS `@29c2304` · QA-B688 Verified · Planned residual **QA-B116**·**QA-B95**
+
+### [TSR] ~~Fixed~~ **Verified** — SEC-D46 FE search-path lockstep (`QA-20261007-B688`)
+
+- **id**: QA-20261007-B688
+- **severity**: HIGH → **cleared** (on test)
+- **stream**: frontend
+- **status**: **Verified** (2026-10-07T17:21:00Z · TSR2002 · `@29c2304` · `npm test` 2865/2865 PASS)
+- **found_at**: 2026-10-07T16:53:00Z
+- **verified_at**: 2026-10-07T17:21:00Z
+- **version**: v1.2.1 / SEC-D46
+- **summary**: `29c2304` 가 develop와 test 양쪽 HEAD. 단일 라벨·`.home.arpa`·`.svc` 첨부 URL fail-closed. full suite에 `homeNewsletter` 회귀 포함. 기능 갭 아님.
+- **tests**: `npm test` **2865/2865 PASS** (493 files · 843.00s · exit 0)
+- **evidence**: `rev-list --left-right --count test...develop` → `0 0` · reflog test `merge develop: Fast-forward` at 17:02:57Z
+- **assignee**: PLN (Verified 반영)
+- **related**: BE `QA-B686` `@4aad7cc2` on test · `QA-B687` Absorbed · Open residual `QA-B689`
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:07:30Z -->
 <!-- tester-sync: TSR 2001 2026-10-07T17:07:30Z (backend) — ROADMAP v3 merge_status ready; src/backend-test@4aad7cc2 mvn -o -B test 2479/2479 PASS(02:21 min,412 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED 0/0 @4aad7cc2 WT CLEAN; merge already on test (tester merge 없음); QA-B687 Open→Absorbed; Open(BE transfer)=0; FE SYNCED @29c2304; local transfer PASS; operation BLOCK(health DOWN :8080, 원격 인증 부재, origin/test unpushed BE+1 FE+1, QA-B116+QA-B95). -->
 
@@ -47,14 +105,14 @@
 - **id**: QA-20261007-B688
 - **severity**: HIGH (security defense-in-depth · DNS search-path SSRF)
 - **stream**: frontend
-- **status**: Fixed (COD `@29c2304` · develop→test FF 대기)
+- **status**: **Verified** (2026-10-07T17:21:00Z · TSR2002 · develop/test `@29c2304` · `npm test` **2865/2865 PASS**)
 - **found_at**: 2026-10-07T16:53:00Z
 - **fixed_at**: 2026-10-07T17:02:00Z
 - **version**: v1.2.1 / SEC-D46 / facility-notice attachment hosts
 - **summary**: BE `@4aad7cc2` lockstep — `resolveFacilityNoticeAttachmentUrlViolation` 가 점 없는 단일 라벨(`metadata`, `gateway`)과 RFC 8375 `.home.arpa`, Kubernetes `.svc` 짧은 이름을 fail-closed. verbatim「첨부 링크 형식이 올바르지 않습니다.」. 공개 점 구분 도메인(`metadata.example.com`, `svc.example.com`, `home.arpa.example.com`)은 유지. G2 `/clients/home-newsletter` 작성 폼·상세 링크 모두 사전 거부. endpoint 신설 0.
 - **tests**: `npm test -- src/utils/homeNewsletter.test.js src/pages/HomeNewsletterLaunchPage.test.jsx` **77/77 PASS**
-- **assignee**: TSR (develop→test FF)
-- **related**: BE Fixed `QA-20261007-B686` `@4aad7cc2` · transfer `QA-20261007-B687` **Absorbed** (TSR2001 · develop/test `@4aad7cc2`) · Planned residual **QA-B116**·**QA-B95**
+- **assignee**: PLN (Verified · TSR2002)
+- **related**: BE Fixed `QA-20261007-B686` `@4aad7cc2` · transfer `QA-20261007-B687` **Absorbed** (TSR2001 · develop/test `@4aad7cc2`) · Open `QA-20261007-B689` · Planned residual **QA-B116**·**QA-B95**
 - **v1.2.1**: `merge_status: ready` **유지**
 
 ---

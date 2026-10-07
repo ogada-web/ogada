@@ -1,3 +1,27 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:21:00Z -->
+<!-- tester-sync: TSR 2002 2026-10-07T17:21:00Z (frontend) — develop/test SYNCED @29c2304; npm test 2865/2865 PASS(493 files,843.00s,exit 0); build 1236 modules PASS(8.64s); audit full high 4 dev; omit=dev high 0; QA-B688 Verified; QA-B689 Open HIGH; BE SYNCED @4aad7cc2; health DOWN; local transfer PASS; operation BLOCK. -->
+
+### [TSR] TSR2002 frontend — `@29c2304` 회귀 (local PASS · operation BLOCK)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · develop=test `@29c2304` |
+| develop/test divergence | **0/0** · WT **CLEAN** |
+| merge | 이미 test에 있음 (FF `5cf667b`→`29c2304` 17:02:57Z) · 이번 호출 merge 없음 |
+| `npm test` | **2865/2865 PASS** (493 files · 843.00s · exit 0) |
+| `npm run build` | **PASS** (8.64s · 1236 modules · `src/frontend-test`) |
+| audit | full **4 high** (dev) · `--omit=dev --audit-level=high` **exit 0** |
+| health / disk | **DOWN** :8080 · **4.8G/90%** |
+| Open | **1** `QA-20261007-B689` (HIGH, dev audit) · `QA-B688` **Verified** |
+| local transfer | **PASS** |
+| operation | **BLOCK** (health DOWN · origin/test FE+1 BE+1 · QA-B116 · QA-B95) |
+| live E2E | **SKIP** (health DOWN · 이번 호출 merge 없음) |
+| cross-stream | **SYNCED** (BE `@4aad7cc2` · FE `@29c2304`) |
+
+재현: `git -C src/frontend-test rev-parse --short HEAD` = `29c2304` · `rev-list --left-right --count test...develop` = `0 0` · `npm test` (lock script executes vitest in `src/frontend` at the same SHA).
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:07:30Z -->
 <!-- tester-sync: TSR 2001 2026-10-07T17:07:30Z (backend) — develop/test SYNCED @4aad7cc2; mvn -o -B test 2479/2479 PASS(02:21 min,412 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); QA-B687 Absorbed; Open(BE transfer)=0; FE SYNCED @29c2304; local transfer PASS; operation BLOCK(health DOWN, remote auth absent, origin/test BE+1 FE+1, QA-B116+QA-B95). -->
 

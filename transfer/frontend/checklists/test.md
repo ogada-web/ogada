@@ -1,3 +1,32 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:21:00Z -->
+# Frontend develop → test 이관 체크리스트
+
+> **스트림**: frontend  
+> **develop**: `src/frontend` `@29c2304` WT **CLEAN** (origin/develop `5cf667b`, ahead 1)  
+> **test**: `src/frontend-test` `@29c2304` (origin/test `5cf667b`, ahead 1)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`) · git 실측이 문서 SHA보다 우선  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-10-07T17:21:00Z
+
+> **TSR2002 (2026-10-07T17:21:00Z) — test `@29c2304` `npm test` 2865/2865 PASS** (493 files, 843.00s, exit 0) · develop `@29c2304` WT **CLEAN** · `test..develop` **0/0** · merge 이미 반영(FF `5cf667b`→`29c2304`, 이번 호출 merge 없음) · build **PASS** 1236 modules (8.64s, `src/frontend-test`) · full audit **4 high** (dev) · `--omit=dev` high **0** · **QA-B688 Verified** · **QA-B689 Open(HIGH, non-BLOCK)** · BE `@4aad7cc2` SYNCED · health **DOWN** · disk **90%**(4.8G) · **local transfer PASS** · **operation BLOCK**.
+
+로컬 이관 PASS는 단위 테스트와 HEAD 일치다. health DOWN(:8080)과 origin/test 미푸시(FE+1·BE+1)는 operation BLOCK이다. 잔여: **QA-B689**(dev audit) · **QA-B116** · **QA-B95**.
+
+| # | gate | result | notes |
+|---|------|--------|-------|
+| 1 | test HEAD | PASS | `29c2304` |
+| 2 | develop HEAD | PASS | `29c2304` WT CLEAN |
+| 3 | develop→test pending | PASS | `0/0` |
+| 4 | merge this cycle | N/A | already on test (FF 17:02:57Z) |
+| 5 | `npm test` | PASS | **2865/2865** · 493 files · 843.00s · exit 0 |
+| 6 | `npm run build` | PASS | 1236 modules · 8.64s |
+| 7 | audit high (full tree) | FAIL | **4 high** dev/transitive → `QA-20261007-B689` |
+| 8 | audit high (prod `--omit=dev`) | PASS | exit 0 |
+| 9 | live E2E | SKIP | health DOWN · this cycle did not merge |
+| 10 | Open BLOCK | PASS | no BLOCK Open · HIGH `QA-B689` only |
+| **local transfer** | | **PASS** | |
+| **operation** | | **BLOCK** | health DOWN · origin/test FE+1 BE+1 · QA-B116 · QA-B95 |
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T18:25:00Z -->
 <!-- tester-sync: TSR 1954차 2026-07-19T18:25:00Z (frontend) — ROADMAP merged baseline `@fa838f5` 재확인 reconfirm · develop/test **SYNCED `@fa838f5`** WT CLEAN · pending **0**(`rev-list --left-right test...develop`=`0 0`) · merge **N/A**(TSR1952 이후 신규 develop 커밋 없음) · full `npm test` **SKIP**(TSR1943 2802/2802 PASS carry·baseline 무변동·vitest concurrent `src/frontend` PID2079315 §5 CRITICAL·rules §1-1) · `npm audit --audit-level=high` **0 vulnerabilities**(fresh 1.04s) · backend `/api/v1/health`=200 · disk **79G/47%**(ENOSPC 회복 유지) · vitest 동시 실행 **감지**(src/frontend PID2079315·본 세션 미기동) · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@fa838f5` both pending 0) · operation **BLOCK**(QA-B116 FE +38·BE +774 + QA-B95). -->
 
