@@ -1,22 +1,17 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T16:58:12Z -->
-# develop → test diff (TSR2000)
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:07:30Z -->
+# develop → test diff (TSR2001)
 
-- measured: 2026-10-07T16:58:12Z
-- test: `1e8857b4` (`src/backend-test`, branch `test`)
+- measured: 2026-10-07T17:07:30Z
+- test: `4aad7cc2` (`src/backend-test`, branch `test`, WT CLEAN)
 - develop: `4aad7cc2` (`src/backend`, branch `develop`, WT CLEAN)
-- `test...develop`: **0 / 1**
-- merge: **SKIP**
-- regression on test: `mvn -o -B test` **2476/2476 PASS** (01:44 min, 412 suites)
+- `test...develop`: **0 / 0**
+- merge: already on test (this cycle did not merge)
+- regression on test: `mvn -o -B test` **2479/2479 PASS** (02:21 min, 412 suites, 0F/0E/0S, BUILD SUCCESS, EXIT 0)
 
-## Pending (not on test)
+## Pending
 
-`4aad7cc2` fix(v3/SEC-D46): reject search-path and reserved attachment hosts
+없음. `4aad7cc2` `fix(v3/SEC-D46): reject search-path and reserved attachment hosts` 가 develop와 test 양쪽에 있다.
 
-```
-.../domain/FacilityNoticeSupport.java              | 33 +++++++++--
-.../domain/FacilityNoticeServiceTest.java          | 53 +++++++++++++++++
-.../domain/FacilityNoticeSupportTest.java          | 68 ++++++++++++++++++++++
-3 files changed, 149 insertions(+), 5 deletions(-)
-```
+Tracker: `QA-20261007-B687` **Absorbed**. COD Fixed: `QA-20261007-B686` on test.
 
-Tracker: `QA-20261007-B687` (BLOCK). COD Fixed: `QA-20261007-B686`.
+로컬 이관 **PASS**. 운영 승격 **BLOCK** (health DOWN · 원격 인증 부재 · origin/test unpushed).

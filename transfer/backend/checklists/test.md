@@ -1,3 +1,27 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:07:30Z -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop**: `src/backend` `@4aad7cc2` WT **CLEAN** (origin/develop ahead 1)  
+> **test**: `src/backend-test` `@4aad7cc2` (origin/test ahead 1)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v3 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-10-07T17:07:30Z
+
+> **TSR2001 (2026-10-07T17:07:30Z) — test `@4aad7cc2` `mvn -o -B test` 2479/2479 PASS** (02:21 min, 412 suites, 0F/0E/0S, BUILD SUCCESS, EXIT 0) · develop `@4aad7cc2` WT **CLEAN** · `test..develop` **0/0** · merge 이미 반영 · `npm test` N/A · FE develop/test `@29c2304` **SYNCED** · origin/test unpushed BE **+1** · FE **+1** · **QA-20261007-B687 Absorbed** · health **DOWN** · disk **89%**(4.9G) · **local transfer PASS** · **operation BLOCK**.
+
+로컬 이관 PASS는 단위 테스트와 HEAD 일치만 말한다. health DOWN(:8080, 서버 없음)과 원격 인증 부재(push 미수행)는 operation BLOCK이며 로컬 PASS를 바꾸지 않는다. 잔여: **QA-B116** · **QA-B95**.
+
+| 항목 | 결과 |
+|------|------|
+| test 회귀 | PASS 2479/2479 |
+| develop→test 동기 | PASS 0/0 `@4aad7cc2` |
+| working tree | PASS CLEAN |
+| 프론트 교차 | FE SYNCED `@29c2304` · local cross-stream SYNCED |
+| 헬스 | DOWN :8080 (operation) |
+| 로컬 이관 판정 | **PASS** |
+| 운영 승격 판정 | **BLOCK** |
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T16:58:12Z -->
 # Backend develop → test 이관 체크리스트
 

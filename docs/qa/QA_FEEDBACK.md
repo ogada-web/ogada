@@ -1,3 +1,64 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:07:30Z -->
+<!-- tester-sync: TSR 2001 2026-10-07T17:07:30Z (backend) — ROADMAP v3 merge_status ready; src/backend-test@4aad7cc2 mvn -o -B test 2479/2479 PASS(02:21 min,412 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED 0/0 @4aad7cc2 WT CLEAN; merge already on test (tester merge 없음); QA-B687 Open→Absorbed; Open(BE transfer)=0; FE SYNCED @29c2304; local transfer PASS; operation BLOCK(health DOWN :8080, 원격 인증 부재, origin/test unpushed BE+1 FE+1, QA-B116+QA-B95). -->
+
+### [TSR] TSR2001 backend — `@4aad7cc2` 재검증 (local transfer PASS · operation BLOCK)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · develop/test **SYNCED** `@4aad7cc2` |
+| `mvn -o -B test` | **2479/2479 PASS** (02:21 min · 412 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test divergence | **0/0** · WT **CLEAN** |
+| merge | 이미 test에 있음 (이번 호출에서 merge 없음) · live E2E **SKIP** |
+| `npm test` | N/A |
+| Open(BE transfer) | **0** (`QA-20261007-B687` **Absorbed**) |
+| FE | develop/test `@29c2304` **SYNCED** `0/0` |
+| local transfer | **PASS** |
+| operation | **BLOCK** — health **DOWN** (:8080) · 원격 인증 부재(push 없음) · origin/test unpushed BE **+1** · FE **+1** · residual **QA-B116**·**QA-B95** |
+| disk | **4.9G avail / 89%** |
+| cross-stream (local) | **SYNCED** (BE `@4aad7cc2` · FE `@29c2304`) |
+
+로컬 단위 테스트 PASS는 운영 승격 가능을 의미하지 않는다. 서버가 없고 health가 DOWN이며 원격 push 인증이 없어 operation은 BLOCK이다.
+
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending 1 (`QA-20261007-B687`)
+
+- **id**: QA-20261007-B687
+- **severity**: BLOCK → **cleared** (local transfer)
+- **stream**: backend
+- **status**: Absorbed (2026-10-07T17:07:30Z · TSR2001 · develop/test SYNCED `@4aad7cc2` · `test..develop=0/0`)
+- **found_at**: 2026-10-07T16:58:12Z
+- **absorbed_at**: 2026-10-07T17:07:30Z
+- **version**: v3 / SEC-D46 / facility-notice attachment search-path · `.home.arpa` · `.svc`
+- **summary**: TSR2000 시점 `test@1e8857b4` 대비 develop `@4aad7cc2` 미이관 1커밋. TSR2001 재실측에서 양쪽 HEAD가 `4aad7cc2`이고 `test..develop=0/0`. 기능 갭 아님. test WT `mvn -o -B test` **2479/2479 PASS**.
+- **tests**: `mvn -o -B test` **2479/2479 PASS** (`src/backend-test` `@4aad7cc2` · 02:21 min · 412 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0)
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 0` · `git rev-parse --short HEAD` develop=`4aad7cc2` test=`4aad7cc2`
+- **assignee**: PLN (Absorbed 반영) · operation 잔여 = QA-B116 · QA-B95
+- **impact**: local BE transfer PASS · operation BLOCK은 별도 (health DOWN · 원격 인증 부재)
+- **expected**: `test..develop=0/0` 및 Absorbed
+- **actual**: `test..develop=0/0` (`4aad7cc2`)
+- **related**: COD Fixed `QA-20261007-B686` `@4aad7cc2` (now on test) · FE `@29c2304` SYNCED · Planned residual **QA-B116**·**QA-B95**
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T17:02:00Z -->
+<!-- coder-sync: COD 2026-10-07T17:02:00Z (frontend) — SEC-D46 search-path / .home.arpa / .svc FE lockstep (BE 4aad7cc2) · related npm 77/77 PASS · v1.2.1 merge_status: ready 유지 -->
+
+### [COD] Fixed — SEC-D46 FE facility-notice 첨부 URL 검색경로·home.arpa·svc fail-closed (`QA-20261007-B688`)
+
+- **id**: QA-20261007-B688
+- **severity**: HIGH (security defense-in-depth · DNS search-path SSRF)
+- **stream**: frontend
+- **status**: Fixed (COD `@29c2304` · develop→test FF 대기)
+- **found_at**: 2026-10-07T16:53:00Z
+- **fixed_at**: 2026-10-07T17:02:00Z
+- **version**: v1.2.1 / SEC-D46 / facility-notice attachment hosts
+- **summary**: BE `@4aad7cc2` lockstep — `resolveFacilityNoticeAttachmentUrlViolation` 가 점 없는 단일 라벨(`metadata`, `gateway`)과 RFC 8375 `.home.arpa`, Kubernetes `.svc` 짧은 이름을 fail-closed. verbatim「첨부 링크 형식이 올바르지 않습니다.」. 공개 점 구분 도메인(`metadata.example.com`, `svc.example.com`, `home.arpa.example.com`)은 유지. G2 `/clients/home-newsletter` 작성 폼·상세 링크 모두 사전 거부. endpoint 신설 0.
+- **tests**: `npm test -- src/utils/homeNewsletter.test.js src/pages/HomeNewsletterLaunchPage.test.jsx` **77/77 PASS**
+- **assignee**: TSR (develop→test FF)
+- **related**: BE Fixed `QA-20261007-B686` `@4aad7cc2` · transfer `QA-20261007-B687` **Absorbed** (TSR2001 · develop/test `@4aad7cc2`) · Planned residual **QA-B116**·**QA-B95**
+- **v1.2.1**: `merge_status: ready` **유지**
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T16:58:12Z -->
 <!-- tester-sync: TSR 2000 2026-10-07T16:58:12Z (backend) — ROADMAP v3 merge_status ready baseline @1e8857b4; src/backend-test mvn -o -B test 2476/2476 PASS(01:44 min,412 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test 0/1 pending 4aad7cc2 (SEC-D46 search-path/home.arpa/svc); develop WT CLEAN; merge SKIP; Open(BE transfer)=1 QA-B687; FE SYNCED @5cf667b; QA-B654 Absorbed(37e6742 in test); transfer BLOCK; operation BLOCK(health down + QA-B95). -->
 
@@ -21,23 +82,23 @@
 | transfer / operation | **BLOCK** / **BLOCK** (QA-B687 + health down + QA-B95) |
 | cross-stream | **BLOCK** (BE pending 1 · FE pending 0) |
 
-### [TSR] Open — backend develop→test pending 1 (`QA-20261007-B687`)
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending 1 (`QA-20261007-B687`)
 
 - **id**: QA-20261007-B687
-- **severity**: BLOCK
+- **severity**: BLOCK → **cleared** (local transfer)
 - **stream**: backend
-- **status**: Open (NEW · TSR2000)
+- **status**: Absorbed (2026-10-07T17:07:30Z · TSR2001 · see top entry)
 - **found_at**: 2026-10-07T16:58:12Z
+- **absorbed_at**: 2026-10-07T17:07:30Z
 - **version**: v3 / SEC-D46 / facility-notice attachment search-path · `.home.arpa` · `.svc`
-- **summary**: `backend-test@1e8857b4` 대비 develop `@4aad7cc2` 미이관 **1**커밋. 단일 라벨 호스트·RFC 8375 `*.home.arpa`·Kubernetes `*.svc` 첨부 URL을 fail-closed. COD Fixed `QA-B686`. endpoint 신설 0. **기능 갭 아님·transfer만**. develop WT **CLEAN**.
-- **tests**: `mvn -o -B test` **2476/2476 PASS** (test WT `@1e8857b4` · 01:44 min · 412 suites) · COD related **33/33** carry (미재실행) · health **DOWN**
-- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 1` · `4aad7cc2 fix(v3/SEC-D46): reject search-path and reserved attachment hosts` · diffstat 3 files (+149/−5)
-- **assignee**: PLN (auto-merge 발화) · TSR (FF 후 재검증)
-- **impact**: BE transfer PASS 불가 · cross-stream BLOCK
-- **prevention**: `merge_status: ready` 인 상태에서 `maybe_merge_version_to_test(backend)` 가 `4aad7cc2` 를 test 로 FF
-- **expected**: `src/backend-test` `test..develop=0/0` 및 `QA-20261007-B687` Absorbed
-- **actual**: `test..develop=0/1` (`4aad7cc2`)
-- **related**: COD Fixed `QA-20261007-B686` · parent `@1e8857b4` · QA-B654 Absorbed · FE `@5cf667b` SYNCED · Planned residual **QA-B95**
+- **summary**: TSR2000 시점 `backend-test@1e8857b4` 대비 develop `@4aad7cc2` 미이관 1커밋. TSR2001 재실측 `test..develop=0/0` · 양쪽 `@4aad7cc2`. 기능 갭 아님.
+- **tests**: TSR2000 carry **2476/2476** `@1e8857b4` · TSR2001 `mvn -o -B test` **2479/2479 PASS** `@4aad7cc2`
+- **evidence**: `git -C src/backend-test rev-list --left-right --count test...develop` → `0 0`
+- **assignee**: PLN
+- **impact**: local transfer PASS · operation BLOCK은 health DOWN·원격 인증 부재로 별도
+- **expected**: `test..develop=0/0` 및 Absorbed
+- **actual**: `test..develop=0/0` (`4aad7cc2`)
+- **related**: COD Fixed `QA-20261007-B686` · parent `@1e8857b4` · FE `@29c2304` SYNCED · Planned residual **QA-B116**·**QA-B95**
 
 ---
 
