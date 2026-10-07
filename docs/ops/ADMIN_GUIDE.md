@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T18:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T19:50:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
@@ -3086,7 +3086,7 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 | **G15 compliance** | **`TransportCompliancePanel`** — 5항목 수칙·계약서 Modal · **`fetchTransportContractApi`·`saveTransportContractApi`** (`9e3cab5`, Q230·Q231) · **V65** — 퇴소·비활성·비이동서비스·지점 불일치 거부 (Q235) · **`caregiver` 저장 불가** |
 | **G15 service log (FE+BE full stack, Q407)** | **`TransportServiceLogPanel`** — **`GET/PUT /transport/runs/{runId}/service-log`** — 확정 배차 **별지 제22호** 저장·인쇄·`.txt` (`0cfa970`/`aaaeb10`/`7a4b310`) · **15분 준수** 집계 · **V148** 영속화 |
 | **G15 Form18 guide (FE)** | **`TransportForm18GuidePanel`** — **5단계** + **3분리 신청 유형** + **등록상태 4단** (`fcf713a`, Q237) · **`transportForm18.js`** · **`/transport`** + **`/transport/service-fees`** · **자동 제출 없음** |
-| **G16 service-fee (BE·FE partial)** | **`TransportServiceFeeService`** — BNK-25 RU_1~4 seed · **1일 1회** UNIQUE · contract signed guard · **cross-branch update guard** (`b5218a9`, Q247) · **V68** · **`TransportServiceFeePanel`** (`88d4c59`·`9dfef92`, Q239) |
+| **G16 service-fee (BE·FE partial)** | **`TransportServiceFeeService`** — 수가 **RU_1 830 · RU_2 2,630 · RU_3 5,230 · RU_4 8,630** (V68 시드 + **V103** 보정, Q317·**Q960**) · 새 초안 기본 **RU_1** · 편도 **50%** · **1일 1회** UNIQUE · contract signed guard · **cross-branch update guard** (`b5218a9`, Q247) · **`TransportServiceFeePanel`** (`88d4c59`·`9dfef92`, Q239) · **특장차량 월 170,000원 시드 없음** |
 | **G16 vehicles** | **`VehicleService`** · **`VehiclesPage`** · **`TransportVehicleSelect`** — plate UK · capacity 1–15 · run assignment (`bd375e6`·`107bfb3`·`08dbcf0`, Q241) |
 | **G15 care-provision** | **`CareProvisionRecordService`** — 확정 배차·출석·차량 조인 · **`CareProvisionRecordPanel`** (`8bdead6`·`08dbcf0`, Q243) |
 | **G15 outings (BE·FE)** | **`ClientOutingService`** — PLANNED→OUT→RETURNED lifecycle · **`GET /reports/client-outings`** · **V67** · **`ClientOutingPanel`** (`7dfcc9e`·`a0dcfc0`, Q240) |
@@ -4023,6 +4023,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q960 신설** — §10-10 **이동서비스비 거리 구간 수가**(830·2,630·5,230·8,630원) · 특장차량 월 가산 시드 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q959 신설** — §1-4·§10-11-2·§10-11-2a **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q958 신설** — §1-4·§6-2-24h **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q956·Q957·Q955 갱신 · baseline 동기화** — §1-4 **기관 공지 첨부 HTTP/HTTPS 대소문자 허용** · **상세 차단 경고 알림** · **위생·안전 조회 기간 30일/366일 도움말** · baseline **`1e8857b`/`5cf667b`** · Flyway **V1–V196** |

@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T18:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T19:50:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
@@ -112,7 +112,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **M12 재무회계 BPO (Q782·Q785·Q801)** | `/accounting` | `GET …/bpo-launch` · `GET /health` | **수지파인 포털 진입** · **SSO FE 어댑터(HQ/BRANCH)** · **in-app 회계 없음** |
 | **G2 가정통신문·기관 공지 게시판 (Q788~Q800·Q803~Q808·Q811·Q858·Q868)** | `/clients/home-newsletter` · `#facility-notices` | `GET …/launch` · `GET …/authoring` · `POST …/compose-preview` · `GET/POST/PATCH …/facility-notices` · `GET …/{id}` · `GET …/dispatch-history?branchId=&yearMonth=&status=&q=` · `GET /health` | **운영 준비**(야간=후속·조용한 시간대, Q811) · **작성 미리보기** · **서버 DRAFT·수정·복제(후 바로 수정)·상세·첨부 http(s)·분류 NOTICE/RESOURCE만·기관 공지/자료실** · **게시·삭제 후 빈 페이지 자동 복구**(Q858) · **지점 fallback**(Q868) · **소속 지점 발송 이력+필터(기본 20건)** · 발송은 이용자 상세 (Q217) |
 | **위생·안전 점검 (US-Q01, M6 6-2~6-4, Q745·Q748·Q750·Q754·Q756·Q757·Q758·Q759·Q760·Q761·Q957)** | `/safety/daily-checks` · `/safety/periodic-checks` · `/safety/infection-control` · `/safety/operation-log` | `GET /api/v1/safety/check-template-catalog` · `GET/POST …/daily-checks` · `…/periodic-checks` · `…/infection-control` · `…/operation-logs` | **4 Route full-stack ✅** · **template catalog API consume ✅** · **item `helpText`·`required` ✅** · **`required: true` 미체크 submit 차단 ✅** (Q757) · **미명시/`false` = optional ✅** (Q758) · **vitest semantics lock ✅** (Q759) · **현장 체크리스트 ✅** (Q760) · **결과 열 StatusBadge ✅** (Q761) · **V184+V185** · **조회 기간 기본 30일·최대 366일 도움말이 시작일·종료일에 연결(Q957)** · **`hq_admin`·`branch_admin`·`social_worker` only** |
-| **G16 NHIS #44 parity rules (Q703·Q710·Q743)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` · `GET …/service-fee-rates` **`onePerDayNote`** | **4-rule catalog** · **`TransportParityRulesPanel` BE DTO wire ✅** · **1일 1회 footnote ✅** — **`ONE_PER_DAY.description` 우선** · cascade static fallback (`e19328a`) |
+| **G16 NHIS #44 parity rules (Q703·Q710·Q743·Q960)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` · `GET …/service-fee-rates` **`onePerDayNote`** | **수가 830·2,630·5,230·8,630원** · 편도 50% · 새 초안은 **러-1** · **특장차량 월 17만 원 없음** · **4-rule catalog** · **1일 1회 footnote** |
 | **이동서비스 송영표 (Q762·Q763·Q769, BE `c08329a`·FE `a6255a0`)** | `/transport/shuttle-sheet` | `GET /api/v1/transport/roster` · `GET …/runs` · `GET …/runs/{runId}` | **차량별·회차별 탑승자** · **`TransportShuttleScheduleView`** · **list a11y** (Q769) · **미배정** 목록 · **`hq_admin` DRAFT+CONFIRMED** · 직원 **CONFIRMED only** |
 | **금일 배차 제외·출발 회차·송영 주소 (Q763·Q764·Q766·Q767·Q768·Q770·Q771·Q772·Q777)** | `/transport` · `/transport/runs/new` · `/transport/vehicles` | `PATCH …/roster/{clientId}/day-status` · `POST …/runs` **`departureRound`** · `POST/PATCH …/vehicles` | **승차 명단 제외** → suggest·**UI 잠금+행 시각**(Q767·Q777)·**서버 422**(Q766) · **송영 주소 trim·비우기**(Q770·Q772) · **V190** + health **9건**(Q771) |
 | **7-5 easy-pay provider catalog (Q709)** | `/billing/easy-pay` · Swagger | `GET /api/v1/billing/easy-pay/provider-catalog` | **CARD·KAKAO_PAY 2종** · **`EasyPayProviderCatalogPanel` FE wire ✅** (`5914b2f`) · **`pgMode` stub/live** |
@@ -2678,7 +2678,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 **케어포 2-5** 대응 — 확정 배차를 기반으로 **이동서비스비 청구 기록**을 생성·확정합니다 (BE `88d4c59` + FE `9dfef92`, BNK-25).
 
 1. **`TransportContextNav`** → **「이동서비스비 청구」** (또는 `/transport/service-fees` 직접 접속).
-2. **조회 기간**(기본: 당월)을 설정합니다. 패널 상단 **1일 1회 footnote** 는 **`resolveTransportServiceFeeOnePerDayNoteFromRules`** 가 parity catalog **`ONE_PER_DAY.description`을 우선**하고, 없으면 rates API **`onePerDayNote`**, 둘 다 비면 BE catalog와 동일한 **정적 NHIS copy**를 노출합니다 (`e19328a`, Q743). **거리구간 수가표**(RU_1 830원 ~ RU_4 6,230원) 아래 **「이동서비스비 NHIS 기준 규칙」** 은 **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** catalog를 **`code`·`label`·`description`** 으로 표시합니다 — API 실패 시 **`STATIC_TRANSPORT_PARITY_RULES`** static fallback 4항(러-1~러-4·편도 50%·1일 1회·별지 제22호 일지)이 유지됩니다 (Q678·**Q703·Q710·Q743**, BE `e4f83af` · FE `afbbaa7`/`e19328a`). **catalog API 직접 호출**은 **`hq_admin`·`branch_admin`** 만 허용 — **`social_worker` 403** (Q703).
+2. **조회 기간**(기본: 당월)을 설정합니다. 패널 상단 **1일 1회 footnote** 는 **`resolveTransportServiceFeeOnePerDayNoteFromRules`** 가 parity catalog **`ONE_PER_DAY.description`을 우선**하고, 없으면 rates API **`onePerDayNote`**, 둘 다 비면 BE catalog와 동일한 **정적 NHIS copy**를 노출합니다 (`e19328a`, Q743). **거리구간 수가표**는 기관 수가(`GET /api/v1/transport/service-fee-rates`)입니다. 기본 시드는 **러-1 830원 · 러-2 2,630원 · 러-3 5,230원 · 러-4 8,630원**입니다. 옛 러-4 **6,230원**은 새 청구에 쓰지 않습니다 (Q317·**Q960**). 수가표 아래 **「이동서비스비 NHIS 기준 규칙」** 은 **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** catalog를 **`code`·`label`·`description`** 으로 표시합니다 — API 실패 시 **`STATIC_TRANSPORT_PARITY_RULES`** static fallback 4항(러-1~러-4·편도 50%·1일 1회·별지 제22호 일지)이 유지됩니다 (Q678·**Q703·Q710·Q743**, BE `e4f83af` · FE `afbbaa7`/`e19328a`). **catalog API 직접 호출**은 **`hq_admin`·`branch_admin`** 만 허용 — **`social_worker` 403** (Q703).
 
 > **동적 catalog (Q710·Q743)**: **`TransportParityRulesPanel`** 이 **`normalizeTransportParityRule()`** 로 BE DTO를 정규화해 **`/transport/service-fees`** 에 mount됩니다. **`TransportServiceFeePanel`** 은 parity **`ONE_PER_DAY.description`을 footnote 1순위**로 쓰고, panel과 **동일 copy source**를 공유합니다. **스크린리더** 사용자는 표 **caption**·행별 **「확정」·「편도/왕복 전환」** 버튼 **`aria-label`** 로 이용자·일자 맥락을 확인할 수 있습니다 (Q683, UXD-159).
 
@@ -2694,7 +2694,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 | API | 용도 |
 |-----|------|
-| `GET /api/v1/transport/service-fee-rates` | BNK-25 거리구간 수가 catalog · **`onePerDayNote`** (1일 1회 안내, Q743 — parity **`ONE_PER_DAY` 없을 때** 2순위 · static cascade) |
+| `GET /api/v1/transport/service-fee-rates` | 거리구간 수가 catalog — 기본 **830 · 2,630 · 5,230 · 8,630원** · **`onePerDayNote`** (1일 1회 안내, Q743·**Q960**) |
 | `GET /api/v1/transport/service-fee-parity-rules` | NHIS #44 **4-rule** 안내 문구 catalog · **`rules[].code`·`label`·`description`** · **`oneWayRatio=0.5`** · **`hq_admin`/`branch_admin` only** (Q703, `e4f83af`) |
 | `GET /api/v1/transport/service-fees?fromDate=&toDate=` | 기간별 청구 기록 |
 | `POST /api/v1/transport/service-fees/generate` | 확정 배차 기반 일괄 생성 |
@@ -2702,7 +2702,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 > **권한**: **`caregiver`** 는 `/transport/*` 라우트는 열리지만 **API 403** — 화면이 오류로 보일 수 있습니다 (Q239). **`hq_admin`·`branch_admin`·`social_worker`** 만 생성·확정하세요.
 >
-> **갭**: 공단 포털 **자동 제출 없음** · 거리구간 **자동 산출 미연동**(기본 RU_1).
+> **갭**: 공단 포털 **자동 제출 없음** · 거리구간 **자동 산출 미연동**(기본 RU_1, **Q960**). **특장차량 월 170,000원**(36개월)과 **통합재가 월 100,000원**(Q223)은 이 화면 수가·청구 생성에 **없습니다**.
 
 #### 5-8-2. 외출 관리·리포트 (G15 2-1-1·2-9, Q240)
 
@@ -5061,6 +5061,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q960 신설 · Q317 연결** — §1-5·§5-8-1 **이동서비스비 거리 구간**(830·2,630·5,230·8,630원) · 옛 러-4 6,230원 제거 · 특장차량 월 가산은 화면 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q959 신설** — §1-3·§1-5·§5-9 **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q958 신설** — §1-3·§1-5·§4-7-3a **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q956·Q957 신설 · Q954 제목 복구 · Q955 갱신** — §1-3·§1-5·§4-7-3a **기관 공지 첨부 HTTP/HTTPS 대소문자 허용** · **상세 차단 경고 알림** · §5-9 **위생·안전 조회 기간 기본 30일·최대 366일 도움말** · baseline **`1e8857b`/`5cf667b`** · Flyway **V1–V196** |

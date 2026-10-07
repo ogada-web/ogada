@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T18:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T19:50:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
@@ -144,6 +144,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | G-REPORT-DENSITY M5 program reports UI (Q714) | UI **`/programs/reports/participations`** · **`/programs/reports/schedules`** | **`ProgramReportNav`** 4-tab · filter form · **「다시 시도」** on error · **`ProgramReportsPage.test`** PASS (`15a3b7f`) |
 | G-REPORT-DENSITY 5-9 group-history fill (Q714 deepen) | `GET /api/v1/programs/reports/group-history?fromDate=2026-06-01&toDate=2026-06-25` | 200, **`groupConfigAvailable=true`** · **`items[]`** with **`groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** when V179 memberships exist · empty **`items:[]`** otherwise (`337453d`) |
 | 프로그램 수급자 그룹 (Q959, US-P01) | `GET /api/v1/programs/groups` · `POST /api/v1/programs/groups` body `{"name":"인지 그룹"}` (활성 지점 JWT · `hq_admin`/`branch_admin`/`social_worker`) | **200** · 목록 `items[]` `id`·`name`·`active` · 같은 활성 이름 재등록 **422** 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 · `caregiver` **403** · 화면 `/programs/groups` **없음** · **Flyway 추가 없음(V179)** · 배정 행은 위 5-9 조회에 집계 |
+| 이동서비스비 거리 구간 (Q960, G16) | `GET /api/v1/transport/service-fee-rates` (직원 JWT) | **200** · `items[]` 에 **RU_1 830 · RU_2 2630 · RU_3 5230 · RU_4 8630** · 화면 `/transport/service-fees` 와 동일 · **V103** 적용 후 러-3 4,430·러-4 6,230이 남아 있으면 마이그레이션 미적용 · 특장차량 월 170,000 행은 **없음** |
 | G-REPORT-DENSITY program report branch filter (Q715) | `GET /api/v1/programs/reports/schedules?fromDate=2026-06-01&toDate=2026-06-25&branchId={uuid}` | 200 when **`branchId` in JWT read scope** · out-of-scope → **403** (`49fe2e7`) |
 | G32 사례관리 | `GET /api/v1/case-management/compliance` | 200, `meetingsRecordedCount`, `reflectionGapCount` 반환 |
 | G42 민원상담 | `GET /api/v1/staff/grievance-counselings/follow-up/compliance` | 200, `pendingFollowUpCount`·`followUpCompletionRate` 반환 |
@@ -2278,6 +2279,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q960 신설** — §1-4 스모크 **이동서비스비 거리 구간 수가**(830·2,630·5,230·8,630원 · V103) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q959 신설** — §1-4 스모크 **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력·V179 재사용) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q958 신설** — §1-4 스모크 **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q956·Q957·Q955 갱신 · baseline 동기화** — §1-4 스모크 **기관 공지 첨부 HTTP/HTTPS 대소문자 허용** · **상세 차단 경고 알림** · **위생·안전 조회 기간 30일/366일** · baseline **`1e8857b`/`5cf667b`** · Flyway **V1–V196** · 모듈 **97.41%** |
