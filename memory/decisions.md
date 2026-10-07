@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-948 이지케어 역공학 2-4h · ★★★ **공단 엑셀은 파일 5종 · 열 이름 미확인** · ★★ **사회복지사 RFID는 실시간/제출이력 · 시간차 적색** · ★★ **가격·도입 수 유지 · 홈 후기만 교체** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: [ltm_excel_guide.png](https://ezcare.easyms.co.kr/img/ltm_excel_guide.png) HTTP 200 · `7e769b67`. [FAQ 21647](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21647&type=web) `6ec9e3cb`. [FAQ 21172](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21172&type=web) `406d7ad5`. [Channel bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) 문장 유지. 데모 로그인 code=0000 · nav `95286775`. git FE `29c2304` · BE `d73aec11`.
+
+### 결정
+
+1. **★★★ 공단 엑셀 가이드를 컬럼 스키마로 쓰지 않는다 (확인)** — 체크는 일정계획 · 청구내역 · 청구내역상세 · 청구확정내역 · RFID 전송내용이다. 열 이름은 **미확인**이다. FAQ 제목의 엑셀은 브라우저 다운로드 2건이다. **planner: SEC-D34와 파서를 열지 않는다. 가져오기 컬럼 변경은 0이다.**
+
+2. **★★ 사회복지사 RFID 두 갈래는 방문요양이다 (확인)** — `3.2 관리자-일정관리`에서 실시간 방문내용과 청구 제출이력을 고른다. 시간차가 나면 적색이다. ogada 프론트에 이 문구는 없다. **planner: 주야간 MVP에 넣지 않는다. id=2는 0.85. 신규 진성갭 0.**
+
+3. **★★ 검은/빨간 청구 반영과 이중 시점은 이미 있다 (확인)** — 검은색은 반영, 빨간색은 미반영이다. 계획일정은 출력·문자 전이고 청구일정은 급여비용 청구 후다. `billingClaimReflectionStatus`가 `REFLECTED` / `NOT_REFLECTED`다. **planner: id=7은 1.0. P0로 다시 열지 않는다.**
+
+4. **★★ 가격과 도입 수는 BNK-944를 유지한다 (확인)** — 홈 53.9% / 9,514 / 4,901. fnc 9,619. D1은 2028년까지 0원, D2는 월 70,000원 고정, 셋팅은 33,000원, 마감은 2026-10-31. 홈 후기 20건만 교체됐다. **planner: 한 요금·한 기관 수로 합치지 않는다. 수가 시드는 유지.**
+
+5. **★ 연간 명단과 중증수당 열은 그대로다 (확인)** — `schedule-p300` 월 12칸과 `schedule-s100` 중증수당 계(원) 라벨이 HEAD와 같다. 내비 `95286775`도 같다. **planner: 셸 공고 교체를 메뉴 삭제로 보지 않는다.**
+
+**가정 1**(일정계획·RFID 전송내용이 schedule-rfid 두 파일에 대응) · **미확인 2**(엑셀 열 이름 · 주야간 송영 필드) · 신규 snapshot **12**(png 1 · html 9 · txt 1 · 데모 셸 갱신) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-947 케어포 역공학 0-2h · ★★★ **443 타임아웃은 메뉴 삭제가 아님** · ★★★ **리포트 분모 23.2%와 30.4%를 나누어 적음** · ★★ **7-x 단계가 가드·4채널·은행 8곳과 맞음** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: 케어포 `58.76.184.55:443` HTTP **000**(func.php·demo-work·PDF). 디스크 `0f1858cd` / `007911c9` / 목차 `carefor_manual_pdf_toc_bnk943.txt`. [iTunes lookup 1220736809](https://itunes.apple.com/lookup?id=1220736809&country=kr) HTTP 200 · `0ce2a407`. git FE `29c2304` · BE `d73aec11`.

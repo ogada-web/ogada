@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:05:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:33:10Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-947 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **케어포 443 타임아웃(HTTP 000) · 메뉴 삭제 아님** · ★★★ **시설 셸 `rpt` 30.4% ≠ 제목 리포트 23.2%** · ★★ **PDF 7-x ①–④ = 가드·4채널·출력 4종·은행 8곳** · iTunes **1.10.1 / 2021-08-18** · 깊이 4 경로 **6** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-948 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **공단 엑셀 가이드 = 파일 5종 · 열 이름 미확인** · ★★ **사회복지사 RFID 실시간/제출이력 · 시간차 적색** · 가격·도입 수 BNK-944와 동일 · 홈 후기 20건 교체 · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-948 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 공단 엑셀 5종 · 열 이름 미확인 (BNK-948 #1 · 신규 URL · 확인)** | ✅ 가져오기 컬럼 변경 0 · SEC-D34 유지 | ⚪ | ✅ [ltm_excel_guide.png](https://ezcare.easyms.co.kr/img/ltm_excel_guide.png) `7e769b67` · 기타→엑셀다운로드 · 체크 **일정계획·청구내역·청구내역상세·청구확정내역·RFID 전송내용** · FAQ 엑셀 제목은 브라우저 다운로드 2건 | ⚪ | ✅ 화면은 장기요양정보시스템 급여제공 | `ezcare_ltm_excel_guide_bnk948.png` · §948-2 · 열 헤더 **미확인** |
+| **★★ 사회복지사 RFID 두 갈래 (BNK-948 #2 · 신규 URL · 확인)** | ⚪ 프론트에 「실시간 방문내용」「청구 제출이력」 0 · 주야간 갭으로 올리지 않음 · id=2 **0.85** | ⚪ | ✅ [FAQ 21647](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21647&type=web) `6ec9e3cb` · `3.2 관리자-일정관리` · 실시간 / 제출이력 · 방문 횟수 `1` · 시간차 **적색** · [FAQ 21183](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21183&type=web) 은 4.1 태그 미전송 | ⚪ | ⚪ | `ezcare_faq_rowid_21647_bnk948.html` · §948-2 · 방문요양 |
+| **★★ 이중 시점 · 검은/빨간 처리상태 (BNK-948 #3 · 워크플로 · 확인)** | ✅ `billingClaimReflectionStatus` `REFLECTED`/`NOT_REFLECTED` · id=7 **1.0** | ⚪ | ✅ [FAQ 21172](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21172&type=web) 계획=출력·문자 전 · 청구=급여비용 청구 후 · [bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) 검은색=반영 · 빨간색=미반영 · 청구일정=태그 시간 · 문장 유지 | ⚪ | ⚪ | §948-2 · P0 재오픈 0 |
+| **★ 연간 명단 · 중증수당 열 (BNK-948 #4 · 데모 재실측 · 확인)** | ⚪ 재가 연간 명단·중증수당 계를 주야간 갭으로 두지 않음 | ⚪ | ✅ 로그인 code=0000 · nav `95286775` IDENTICAL · `schedule-p300` 월 12칸·인정번호 · `schedule-s100` **중증수당 계(원)** · 라벨 HEAD와 동일 | ⚪ | ⚪ | §948-3 · 셸 공고만 교체 |
+| **★ 가격·도입 수 · git (BNK-948 #5 · 재실측)** | ✅ SHA BNK-947과 같음 · HTTP **447** · merge gate **3** | ⚪ | ✅ 홈 **53.9 / 9,514 / 4,901** · fnc **9,619** · D1 2028년까지 0원 · D2 월 **70,000** 고정 · 셋팅 **33,000** · 마감 **2026-10-31** · 후기 20건 교체 · FAQ 233/21781 | ⚪ | ⚪ | `ezcare_rfid_dual_excel_bnk948.txt` · §948-1 · §948-0 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-947 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **케어포 443 타임아웃(HTTP 000) · 메뉴 삭제 아님** · ★★★ **시설 셸 `rpt` 30.4% ≠ 제목 리포트 23.2%** · ★★ **PDF 7-x ①–④ = 가드·4채널·출력 4종·은행 8곳** · iTunes **1.10.1 / 2021-08-18** · 깊이 4 경로 **6** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-947 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

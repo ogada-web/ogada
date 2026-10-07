@@ -204,7 +204,7 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1791398650#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1791408722#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
@@ -816,7 +816,7 @@
 </style>
 
 
-<div class="widget" id="EC000010-13754214">
+<div class="widget" id="EC000010-27525868">
 	<div class="widget-header">
 		<h3>오늘의 업무 [10월08일]</h3>		
 	</div>
@@ -851,8 +851,8 @@
 		if(i=="insurance_expire" || i=="pat_birthdate" || i=="wor_birthdate") {if(v.length>0) data_chk=true;}
 	})
 	
-	if(data_chk) {today_check_list(schedule_data); $('#EC000010-13754214 .none_data').hide();}
-	else {$('#EC000010-13754214 .schedule-toast').hide(); $('#EC000010-13754214 .none_data').show();}  //DEV 먹여져서 hide 제대로 작동안하는거 같음
+	if(data_chk) {today_check_list(schedule_data); $('#EC000010-27525868 .none_data').hide();}
+	else {$('#EC000010-27525868 .schedule-toast').hide(); $('#EC000010-27525868 .none_data').show();}  //DEV 먹여져서 hide 제대로 작동안하는거 같음
 
 	$(document).on('click', '.insurance', function(){		
 		var winOpts = "width="+1200+",height="+700+", top=300, left=500, scrollbars=yes,status=no,resizable=yes";
@@ -862,7 +862,7 @@
 	//좌측 오늘의 업무	list_sDate
 	function today_check_list(data){
 		//if(CHK_MASTER) console.log("schedule",data);
-		let today_zone = $('#EC000010-13754214 div.today-check-list'),
+		let today_zone = $('#EC000010-27525868 div.today-check-list'),
 			today_today = today_zone.find('h3').clone(),
 			btn_footer = today_zone.find('.btn-footer').clone();
 		today_zone.empty().append(today_today);		
@@ -985,7 +985,7 @@
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
 			
-<div class="widget" id="ES000040-25537668">
+<div class="widget" id="ES000040-19706930">
 	<div class="widget-header" style="border-bottom:0px">
 		<h3>가족케어 <small>(2026-10)</small></h3>
 	</div>
@@ -1087,7 +1087,7 @@
 		});
 	}
 
-	var canvas = $('#ES000040-25537668 canvas');
+	var canvas = $('#ES000040-19706930 canvas');
 	var ctx = canvas[0].getContext("2d");
 	window.myLine = new Chart(ctx, config);
 	/*if(widget_data['가족케어']*1 != 0 && widget_data['일반']*1 != 0 ) window.myLine = new Chart(ctx, config);
@@ -1207,7 +1207,7 @@
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
 			
-<div class="widget" id="EP000060-73435415" new>
+<div class="widget" id="EP000060-44750912" new>
 	<div class="widget-header">
 		<h3 class="d-flex between">
 			<span>2026년 기초평가 실시현황</span>
@@ -1282,7 +1282,7 @@
 		<div class="content">
 			
 <style type="text/css">
-	#widget_code-57266223.widget div.box {
+	#widget_code-42908579.widget div.box {
 		border-radius:1em;
 		width:100%;
 		height:100%;
@@ -1291,22 +1291,22 @@
 		align-items:center;
 		justify-content:center;
 	}
-	#widget_code-57266223.widget div.box h5 {
+	#widget_code-42908579.widget div.box h5 {
 		font-size:1.4em;
 		font-weight:800;
 	}
-	#widget_code-57266223.widget div.box .desc {
+	#widget_code-42908579.widget div.box .desc {
 		text-align:center;
 		font-size:1em;
 	}
-	#widget_code-57266223.widget div.box .desc.sub {
+	#widget_code-42908579.widget div.box .desc.sub {
 		font-size:1.1em;
 	}
-	#widget_code-57266223.widget div.box .desc em {
+	#widget_code-42908579.widget div.box .desc em {
 		font-size:1.5em; color:green; ;font-weight:bold
 	}
 
-	#widget_code-57266223.widget div.box button, #widget_code-57266223.widget .rfreshBtn124 {
+	#widget_code-42908579.widget div.box button, #widget_code-42908579.widget .rfreshBtn124 {
 		font-weight:bolder;
 		border-radius:5px;
 		border:1px solid #9ad9c8;
@@ -1314,19 +1314,19 @@
 		background-color:#23c097;
 		color:#FFF;
 	}
-	#widget_code-57266223.widget div.box button:hover, #widget_code-57266223.widget .rfreshBtn124:hover{
+	#widget_code-42908579.widget div.box button:hover, #widget_code-42908579.widget .rfreshBtn124:hover{
 	background:#0ba37b; color:#fff;/* background:#ff9900; color:#333; */
 		border:1px solid #333;
 	}
 
-	#widget_code-57266223 table.tbl-widget tbody td { text-align:right !important}
-	#widget_code-57266223 td {font-family:Arial, 맑은고딕;}
-	#widget_code-57266223 td span.cnt {display:inline-block; width:25px; text-align:right; color:#ccc; font-size:11px; letter-spacing:-1px;}
-	#widget_code-57266223 #reload_bank_log {background:rgba(229,229,229,.9); /* background:rgba(150,255,150,.9); */position:absolute; text-align:center; padding:.5em 2em; border-radius:.3em; font-size:1.1em;left:10px; top:35px; width:calc(100% - 20px); height:170px; font-weight:bold; }
-	#widget_code-57266223 #reload_bank_log em { color:#3269c8; /* color:red; */ font-size:1.3em }
+	#widget_code-42908579 table.tbl-widget tbody td { text-align:right !important}
+	#widget_code-42908579 td {font-family:Arial, 맑은고딕;}
+	#widget_code-42908579 td span.cnt {display:inline-block; width:25px; text-align:right; color:#ccc; font-size:11px; letter-spacing:-1px;}
+	#widget_code-42908579 #reload_bank_log {background:rgba(229,229,229,.9); /* background:rgba(150,255,150,.9); */position:absolute; text-align:center; padding:.5em 2em; border-radius:.3em; font-size:1.1em;left:10px; top:35px; width:calc(100% - 20px); height:170px; font-weight:bold; }
+	#widget_code-42908579 #reload_bank_log em { color:#3269c8; /* color:red; */ font-size:1.3em }
 </style>
 
-<div class="widget" id="widget_code-57266223">
+<div class="widget" id="widget_code-42908579">
 		<div class="widget-header">
 		<h3 class="d-flex" >
 			<span>통장 거래내역 집계</span>
@@ -1388,7 +1388,7 @@
 	</div>
 
 <script>
-	var widgetID = 'widget_code-57266223';
+	var widgetID = 'widget_code-42908579';
 	var thisBox = $('#' + widgetID).closest('.grid-item');
 	var widgetCode = thisBox.attr('widget_code');
 
@@ -1426,10 +1426,10 @@
 		<div class="content">
 			
 <style type="text/css">
-	#EP000010-76017066 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
+	#EP000010-7115804 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
 </style>
 
-<div class="widget" id="EP000010-76017066">
+<div class="widget" id="EP000010-7115804">
 	<div class="widget-header">
 		<h3>일정관리 현황</h3>
 	</div>
@@ -1457,17 +1457,17 @@
 <script>
 	var widget_data = {"2026-07":{"Ym":"2026-07","pCnt":"28","wCnt":"27"},"2026-08":{"Ym":"2026-08","pCnt":"28","wCnt":"27"},"2026-09":{"Ym":"2026-09","pCnt":"28","wCnt":"27"},"2026-10":{"Ym":"2026-10","pCnt":"5","wCnt":"5"},"2026-11":{"Ym":"2026-11","pCnt":"0","wCnt":"0"}};
 
-	$("#EP000010-76017066").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
+	$("#EP000010-7115804").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
 	if(widget_data){
 		$.each(widget_data, function(tmp_Ym, tmp_data){
-			let tmp_tr = $("#EP000010-76017066").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
+			let tmp_tr = $("#EP000010-7115804").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
 			setNameCol(tmp_tr, tmp_data, "name");			
 			if(tmp_Ym == "2026-10") tmp_tr.addClass("nowMonth");
-			$("#EP000010-76017066").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
+			$("#EP000010-7115804").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
 		});
 	}
 	
-	$(document).on('click', '#EP000010-76017066 th[name=Ym]', function(){		
+	$(document).on('click', '#EP000010-7115804 th[name=Ym]', function(){		
 		ScheduleManager('',$(this).text());
 	})
 
@@ -1476,7 +1476,7 @@
 	<div widget_code="EP000030" class="grid-item" widget-cols="2" style="grid-column: 4 / span 2;">
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
-			<div class="widget" id="EP000030-31023930">
+			<div class="widget" id="EP000030-50309597">
 	<div class="widget-header" style="border-bottom:0px">
 		<h3>최근 12개월 서비스제공 수급자수</h3>
 	</div>
@@ -1546,7 +1546,7 @@
 		config.data.datasets[0].data.push(wCnt);
 	});
 
-	var ctx = $("#EP000030-31023930 .patient-chart-month-cnt")[0].getContext("2d");
+	var ctx = $("#EP000030-50309597 .patient-chart-month-cnt")[0].getContext("2d");
 	window.myLine = new Chart(ctx, config);
 </script><div class='dsbd-widget_code'>EP000030</div>		</div>
 	</div>
@@ -1554,9 +1554,9 @@
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
 			<style type="text/css">
-	/* #EW000010-20943146 .tbl-widget{width:auto;} */
+	/* #EW000010-46748399 .tbl-widget{width:auto;} */
 </style>
-<div class="widget" id="EW000010-20943146">
+<div class="widget" id="EW000010-46748399">
 	<div class="widget-header">
 		<h3 class="d-flex between">
 			<span>직원 현황</span>
@@ -1609,10 +1609,10 @@
 		<div class="content">
 			
 <style type="text/css">
-	#EP000010-78195888 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
+	#EP000010-92291102 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
 </style>
 
-<div class="widget" id="EP000010-78195888">
+<div class="widget" id="EP000010-92291102">
 	<div class="widget-header">
 		<h3>일정관리 현황</h3>
 	</div>
@@ -1640,17 +1640,17 @@
 <script>
 	var widget_data = {"2026-07":{"Ym":"2026-07","pCnt":"28","wCnt":"27"},"2026-08":{"Ym":"2026-08","pCnt":"28","wCnt":"27"},"2026-09":{"Ym":"2026-09","pCnt":"28","wCnt":"27"},"2026-10":{"Ym":"2026-10","pCnt":"5","wCnt":"5"},"2026-11":{"Ym":"2026-11","pCnt":"0","wCnt":"0"}};
 
-	$("#EP000010-78195888").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
+	$("#EP000010-92291102").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
 	if(widget_data){
 		$.each(widget_data, function(tmp_Ym, tmp_data){
-			let tmp_tr = $("#EP000010-78195888").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
+			let tmp_tr = $("#EP000010-92291102").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
 			setNameCol(tmp_tr, tmp_data, "name");			
 			if(tmp_Ym == "2026-10") tmp_tr.addClass("nowMonth");
-			$("#EP000010-78195888").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
+			$("#EP000010-92291102").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
 		});
 	}
 	
-	$(document).on('click', '#EP000010-78195888 th[name=Ym]', function(){		
+	$(document).on('click', '#EP000010-92291102 th[name=Ym]', function(){		
 		ScheduleManager('',$(this).text());
 	})
 
@@ -1660,21 +1660,21 @@
 	<div widget_code="ES000020" class="grid-item" widget-cols="2" widget-rows="2" style="grid-column: 1 / span 3;">
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
-			<div class="widget" id="ES000020-21808099">
+			<div class="widget" id="ES000020-43465291">
 	<div class="widget-header d-flex size-sm" style="border-bottom:0px">
 		<h3>일일 방문일정 (<span id="total_cnt"></span>)</h3>
-		<input type="text" name="sDate" id="ES000020-21808099-input-01" class="datepicker ml-auto" value="2026-10-08" style="width:75px;">
-		<button type="button" class="ui-button ml-2" id="ES000020-21808099-btn-01"><svg class="icon"><use xlink:href="#icon-printer"></use></svg> 일일 방문일정표 출력</button>
+		<input type="text" name="sDate" id="ES000020-43465291-input-01" class="datepicker ml-auto" value="2026-10-08" style="width:75px;">
+		<button type="button" class="ui-button ml-2" id="ES000020-43465291-btn-01"><svg class="icon"><use xlink:href="#icon-printer"></use></svg> 일일 방문일정표 출력</button>
 	</div>
 
 	<div class="widget-body size-sm">
-		<table id="ES000020-21808099-grid" min-height="150" max-height="370" margin-bottom="10" min-width="200"></table>
+		<table id="ES000020-43465291-grid" min-height="150" max-height="370" margin-bottom="10" min-width="200"></table>
 	</div>
 </div>
 
 <script>
 /* 일일방문일정 그리드 -------------------------------------------------------------------------------- */
-$("#ES000020-21808099-grid").ezGrid({
+$("#ES000020-43465291-grid").ezGrid({
 	datatype:"json",
 	url: "/page/worker/json-worker.php?data=daySchedule",
 	postData: { "sDate" : "2026-10-08" },
@@ -1702,20 +1702,20 @@ $("#ES000020-21808099-grid").ezGrid({
 	}
 });
 
-$("#ES000020-21808099-input-01").on("change",function(){			
-	$("#ES000020-21808099-grid").jqGrid("setGridParam",{
+$("#ES000020-43465291-input-01").on("change",function(){			
+	$("#ES000020-43465291-grid").jqGrid("setGridParam",{
 		page:1, postData:{sDate:  $(this).val()}
 	}).trigger('reloadGrid');
 });
 
-$("#ES000020-21808099-btn-01").click(function(){
+$("#ES000020-43465291-btn-01").click(function(){
 	/*url_print({
 		"url":"/schedule_print/statusTable.day.html",
-		"postData":{ "sDate" : $("#ES000020-21808099-input-01").val() }
+		"postData":{ "sDate" : $("#ES000020-43465291-input-01").val() }
 	});*/
 	html_document({
 		formFile:"scheduleTable.day.html",
-		postData:{sDate: $("#ES000020-21808099-input-01").val()}
+		postData:{sDate: $("#ES000020-43465291-input-01").val()}
 	});
 });
 
@@ -1740,7 +1740,7 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 	<div widget_code="EP000020" class="grid-item" widget-cols="2" widget-rows="2" style="grid-column: 4 / span 2;">
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
-			<div class="widget" id="EC000010-83158166">
+			<div class="widget" id="EC000010-71301981">
 	<div class="widget-header d-flex size-sm" style="border-bottom:0px">
 		<h3>인정만료일</h3>
 		<select name="state" class="main-state ml-auto">
@@ -1749,12 +1749,12 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 	</div>
 
 	<div class="widget-body size-sm" >
-		<table id="EC000010-83158166-grid" min-height="100" max-height="370" margin-bottom="10" min-width="200"></table>
+		<table id="EC000010-71301981-grid" min-height="100" max-height="370" margin-bottom="10" min-width="200"></table>
 	</div>
 </div>
 
 <script>
-	$("#EC000010-83158166-grid").ezGrid({
+	$("#EC000010-71301981-grid").ezGrid({
 		datatype:"json",
 		url: "/page/patient/json-patient.php?data=sDateCheck",
 		postData: { "state" : "01" },
@@ -1784,8 +1784,8 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 		]
 	});
 
-	$("#EC000010-83158166 .main-state").change(function(){
-		$("#EC000010-83158166 #EC000010-83158166-grid").jqGrid("setGridParam",{
+	$("#EC000010-71301981 .main-state").change(function(){
+		$("#EC000010-71301981 #EC000010-71301981-grid").jqGrid("setGridParam",{
 			page:1, postData:{state: $(this).val()}
 		}).trigger('reloadGrid');
 	});

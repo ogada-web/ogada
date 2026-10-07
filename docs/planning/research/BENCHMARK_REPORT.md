@@ -1,9 +1,90 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:05:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:33:10Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §948 BNK-948 — 이지케어 역공학 2-4h · ★★★ **공단 엑셀 가이드는 파일 5종이지 열 이름이 아니다** · ★★ **사회복지사 RFID는 실시간과 제출이력 두 갈래 · 시간차는 적색** · ★★ **가격·도입 수는 BNK-944와 같고 홈 후기만 교체** · ★ **검은/빨간 청구 반영 문장은 유지** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:33:10Z -->
+
+**조사일**: 2026-10-07T21:33:10Z | **rotation**: 이지케어 역공학 2-4h. BNK-947(2026-10-07T21:05:00Z) 이후 약 28분. 초점: (1) 가격·도입 기관 수 (§948-1) · (2) 공단 엑셀 가이드·RFID·이중 일정·처리상태 (§948-2) · (3) 데모 `/new.ez` 연간 명단·중증수당 (§948-3) · (4) planner 액션 (§948-4).
+
+### §948-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-947과 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (origin = `1e8857b4` · **ahead 2** · local `test` = `4aad7cc2` · WT CLEAN · BNK-947과 동일 SHA)
+- merge gate **3**. Route **133** · Page **106** · FE test **546**(230+316) · BE test file **304**(303+1) · strict `@Test` **2473** · HTTP **447** · 모듈 **97.41%**. 같은 SHA라 BNK-947 집계를 유지한다.
+- `npm test` / `mvn test`는 이번 사이클 **미실행**(docs only).
+
+### §948-1 · ★★ 가격·도입 수 — 산식은 같고 홈 후기만 바뀜
+
+| 표면 | 실측 |
+|---|---|
+| [홈](https://ezcare.easyms.co.kr/) | HTTP **200** · 73,767B · `e32435d8` |
+| [요금](https://ezcare.easyms.co.kr/index.html?PG=price) | HTTP **200** · 64,928B · `0a87d4e8` |
+| [주요기능](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | HTTP **200** · 17,870B · `249f0b83` |
+| [셋팅비](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | HTTP **200** · 22,979B · `a32d2b1e` |
+| [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) | HTTP **200** · 80,058B · `2b681694` |
+
+`?숫자` 쿼리를 지우면 price · fnc · charge 는 BNK-944 본문과 같다. 홈 `data-count`는 **53.9 / 9,514 / 4,901 / 2,353 / 1,820**. fnc 헤더는 **9,619**. 셋팅비는 **33,000원**, 마감은 **2026-10-31**. D1 모달은 `promotionFree` 로 **2028년까지 전액 무료**. D2 본문은 「수급자가 몇 명이든 **월 70,000원** 고정」. D3는 `70000 + count * 2000`.
+
+홈 후기 20건은 BNK-946과 겹치는 문장이 없다. 도입 수는 그대로다. 후기 교체를 기관 수 변동으로 적지 않는다.
+
+FAQ 제목 233개 · 최대 rowid **21781**은 BNK-946과 같다. 엑셀 제목은 rowid **21563** · **21534** 둘이다. 조회수가 오른 글은 **21602** 인지선별검사 CIST(20440→20442)와 **21738** 운영위원회 회의록(14721→14722)이다.
+
+### §948-2 · ★★★ 엑셀은 공단 화면의 5종 파일이고, 처리상태는 색과 두 갈래다
+
+**신규 증거**: [ltm_excel_guide.png](https://ezcare.easyms.co.kr/img/ltm_excel_guide.png) HTTP **200** · 90,545B · `7e769b67` · PNG 1300×728. `schedule-rfid` 의 `#dialog_excel_down` 이 이 파일을 연다. 저장 파일은 이번이 처음이다.
+
+화면은 장기요양정보시스템 급여제공의 엑셀다운로드다. 빨간 번호와 OCR이 같이 가리키는 경로:
+
+1. 기타
+2. 엑셀다운로드
+3. 급여제공 월 선택
+4. 조회
+5. 체크 5종 — **일정계획 · 청구내역 · 청구내역상세 · 청구확정내역 · RFID 전송내용**
+6. 엑셀 다운로드
+
+**미확인**: 표의 열 이름. 칸이 흐리고 `tesseract` 한글 출력이 헤더 순서를 고정하지 못했다. 「요양」「자동」「60분」은 셀처럼 보이나 컬럼 정의로 쓰지 않는다.
+
+**가정**: 이지케어 `schedule-rfid` 의 계획일정 파일과 RFID 전송내역 파일은 위 5종 중 일정계획 · RFID 전송내용에 대응한다. 청구내역 3종을 받는 PGID는 이 이미지에 없다.
+
+| URL | 상태 | 워크플로 |
+|---|---|---|
+| [FAQ 21647](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21647&type=web) | HTTP **200** · 16,789B · `6ec9e3cb` · 상세 스냅샷 최초 | `3.방문일정 > 3.2 관리자-일정관리`. **실시간 방문내용 가져오기**는 월중 사회복지사 RFID. **청구 제출이력 가져오기**는 제출이력. 방문이 있으면 횟수 `1`. 요양보호사와 시간차가 나면 시각이 **적색** |
+| [FAQ 21183](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21183&type=web) | HTTP **200** · 14,915B · `11c6c1a9` | `4.RFID점검 > 4.1`. 계획일정 엑셀과 RFID 전송내역 엑셀을 올린 뒤 **공단 계획↔태그 비교 결과**와 **급여제공자별 비교 결과**에서 태그 미전송을 본다 |
+| [FAQ 21172](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21172&type=web) | HTTP **200** · 15,029B · `406d7ad5` | **계획일정 가져오기**는 공단 등록·수정 뒤, 일정표 출력·문자 전. **청구일정 가져오기**는 급여비용 청구가 끝난 뒤, 본인부담금·직원 급여 전 |
+| [Channel bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) | HTTP **200** · 230,251B · `bdc34937` | 반영되면 공단청구 금액이 **진한 검은색**. 빠지면 **빨간색**. 적색이면 청구일정 가져오기를 다시 한다. 일정확정 전에 검은색을 확인한다. 계획일정은 청구 전 예정 시간. 청구일정은 **태그(출퇴근 기록)** 시간 |
+
+Channel 글의 「진한 검은색」「빨간색 숫자」「태그(출퇴근」은 기존 `channelio_bc7f4cd9.html` 과 각 2회다. 문자 수는 같고 바이트만 다르다. 문장 변경으로 적지 않는다.
+
+### §948-3 · ★ 데모 셸 — 연간 명단·중증수당 열은 그대로
+
+`./scripts/ezcare-demo-fetch.sh --menu-catalog --batch schedule-p300,schedule-s100` · 로그인 code=**0000**. 비로그인 `/new.ez`는 **70B** `e1d52bd5`. 제목은 「[DEMO 이지케어] 체험 이지케어 재가복지센터」. 내비 `top-nav-item-V2.js?20260428` md5 `95286775` / 25,470B는 BNK-944와 **BYTE-IDENTICAL**. 카탈로그는 모듈 **10** · leaf **148** · PGID **59**.
+
+| PGID | 탭 | 열 (확인, 이전 라벨과 동일) |
+|---|---|---|
+| `schedule-p300` | 수급자 / 요양보호사 | 수급자 쪽 `장기요양인정번호` · `고유번호` · `1월`–`12월`. 직원 쪽 `직원명` · `입사일` · `퇴사일` · 월 12칸. `sKind` 전체/001 요양/003 목욕/002 간호 |
+| `schedule-s100` | 요양보호사 기준 / 수급자 기준 | `일정표` · `해당수급자` 또는 `해당직원` · `해당건` · **중증수당 계(원)** |
+
+두 화면의 `label` 순서는 HEAD 스냅샷과 같다. 바이트가 준 이유는 셸 위젯 id와 사이드 공고(인력풀 문구가 빠지고 추석선물·공동구매가 들어옴)다. 메뉴 삭제로 적지 않는다. 데모 계정은 재가복지센터다. 주야간 송영 필드는 이번 PGID에 없다. **미확인** 유지.
+
+### §948-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=7 은 **1.0**. id=2 는 **0.85**.
+
+1. 공단 엑셀 가이드의 5종은 다운로드 체크다. 열 이름은 미확인이다. 이지케어 FAQ 제목에 가져오기 컬럼 변경은 없다. SEC-D34와 엑셀 파서를 열지 않는다.
+2. 사회복지사 RFID의 실시간/제출이력과 적색 시간차는 `3.2 관리자-일정관리`다. 방문요양 절차다. 주야간 화면에 이 메뉴를 넣지 않는다.
+3. 검은색/빨간색 청구 반영은 `VisitsPage` 의 `billingClaimReflectionStatus`(`REFLECTED` / `NOT_REFLECTED`)가 이미 가진다. id=7을 내리지 않는다.
+4. 계획일정은 출력·문자 전, 청구일정은 청구 완료 후라는 시점은 FAQ 21172와 Channel이 같다. 이중 일정 탭을 P0로 올리지 않는다.
+5. 가격은 카드와 모달을 같이 둔 BNK-944 문장을 유지한다. 홈 9,514와 fnc 9,619를 한 숫자로 합치지 않는다. 후기 20건 교체는 카피 순환이다.
+6. git은 BNK-947과 같다. FE `@29c2304` · BE `@d73aec11` · HTTP **447** · merge gate **3**.
+
+주력 `ezcare_rfid_dual_excel_bnk948.txt` + `ezcare_ltm_excel_guide_bnk948.png` + `ezcare_faq_rowid_21647_bnk948.html`. 신규 증거 URL 1(공단 엑셀 가이드 PNG). 기존 URL 재실측 1(가격·홈·FAQ·Channel 검은/빨강, 문장 유지). 가정 1(일정계획·RFID 전송내용이 schedule-rfid 두 파일에 대응). 미확인 2(엑셀 열 이름 · 주야간 송영 필드). per-cycle minimum 4종 충족.
+
+---
 
 ## §947 BNK-947 — 케어포 역공학 0-2h · ★★★ **오리진 443 타임아웃(HTTP 000) — 메뉴 삭제가 아님** · ★★★ **class=rpt 34/112=30.4% 와 제목 「리포트」 26/112=23.2% 는 다른 분모** · ★★ **PDF p.85–88 ①–④가 가드·4채널·출력 4종·은행 8곳과 맞음** · ★ **iTunes 1.10.1은 2021-08-18 이후 스토어 갱신 없음** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 깊이 4 경로 **6** · 신규 진성갭 0 · merge gate **3**
 
