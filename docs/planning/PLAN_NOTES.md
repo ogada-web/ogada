@@ -15,6 +15,18 @@
 2. **금액 시드**: V103 830/2,630/5,230/8,630을 현행으로 단정하지 않는다. 제2026-189호 별표 이미지를 읽기 전에는 수정하지 않는다.
 3. 보고서 §919~§940 본문은 `BENCHMARK_REPORT.md`에 없다. 이번 차수는 **BNK-941**.
 
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T17:35:00Z -->
+<!-- coder-sync: COD 2026-10-07T17:35:00Z (backend) — v3.1 in_progress · US-P01 program client group CRUD + member assignment · related mvn 14/14 PASS · merge_status: pending · residual catalog/feedback/plans -->
+
+### [COD] 코더 메모 (2026-10-07 — v3.1 US-P01 프로그램 수급자 그룹 배정 API)
+
+- **v3.1**: `status: planned` → **`in_progress`**. `merge_status: pending` 유지. 완료 기준 전부 `[x]` 아님.
+- **이번 범위**: V179 `program_client_groups`·`program_client_group_members` 위에 쓰기 API. 신규 마이그레이션 0 · 물리 삭제 0.
+- **계약**: `GET/POST /api/v1/programs/groups` · `PATCH /api/v1/programs/groups/{groupId}` (`name`, `active`) · `GET/POST /api/v1/programs/groups/{groupId}/members` (`clientId`, `effectiveFrom`, `effectiveTo`). 역할 `HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`. 활성 지점 스코프.
+- **fail-closed**: 활성 그룹 이름 중복(trim·대소문자 무시) · 비활성 그룹 배정 · 지점 불일치 · 종료일이 시작일보다 앞선 경우 · 동일 이용자 기간 겹침. 메시지 verbatim은 서비스 상수.
+- **검증**: `mvn -o -B test -Dtest=ProgramClientGroupServiceTest,ProgramClientGroupControllerRoutingTest,ProgramClientGroupControllerAccessTest` **14/14 PASS**.
+- **잔여**: 마스터·의견수렴·월/분기 계획 · FE `/programs/groups` wire · `merge_status: ready` 아님.
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T17:02:00Z -->
 <!-- coder-sync: COD 2026-10-07T17:02:00Z (frontend) — v1.2.1 completion reconfirm · SEC-D46 search-path / .home.arpa / .svc FE↔BE lockstep (BE @4aad7cc2) · related npm 77/77 PASS · merge_status: ready 유지 · residual QA-B116+QA-B95 -->
 

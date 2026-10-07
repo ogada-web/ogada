@@ -1702,7 +1702,7 @@ v3 — Extensions & market differentiation (P3)
 
 ## v3.1 — 요양 리포트·프로그램 확장·위생안전 (결정 94, 사용자 확정 2026-06-09)
 
-- **status**: planned
+- **status**: in_progress
 - **merge_status**: pending
 - **stream**: backend + frontend + DBA
 - **목표**: 케어포 **3-3~3-7** · **5-3~5-10** · **6-2~6-4** leaf 패리티 — v3 기본(식단·프로그램 일정) 위 **운영·리포트** 레이어
@@ -1738,7 +1738,8 @@ v3 — Extensions & market differentiation (P3)
 - [ ] **G-NURSING live E2E harness 실행** 1회 — L03 13/14 leaf (post-merge 권장 · **P1**)
 - [ ] 목욕 일정 CRUD + 제공 완료 + 이용자별 조회
 - [ ] 요양/식사/화장실·목욕·급여제공 **리포트** 화면 + 인쇄
-- [ ] 프로그램 그룹·마스터·의견·계획 + **리포트 4종**
+- [ ] 프로그램 그룹·마스터·의견·계획 + **리포트 4종** — 그룹 CRUD·배정 API ✅(아래). 마스터·의견·계획은 잔여
+- [x] **(v3.1/US-P01)** 프로그램 수급자 그룹 CRUD·이용자 배정 API — `GET/POST/PATCH /api/v1/programs/groups` · `GET/POST /api/v1/programs/groups/{groupId}/members` (V179 재사용·물리 삭제 없음·활성 이름 중복·기간 겹침 fail-closed)
 - [ ] 위생·안전 점검·감염·시설운영일지 CRUD
 - [ ] `pilotPageFlows` v3.1 E2E · `merge_status: ready`
 - [ ] **G29** 인지활동북 — 학습지 PDF·낱장 출력·수급자별 배포 (이지케어 FAQ 21781 패리티 · BNK-59)

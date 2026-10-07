@@ -1486,6 +1486,20 @@
 
 > **상태 (v3 · BNK-833/834 · QA-B576~B579 · QA-B585 SEC-D25 · Fixed)**: `POST /programs/schedule/{programId}/photo` = **LANDED** — BE `ProgramController` `@PostMapping(consumes=MULTIPART_FORM_DATA_VALUE)` + `ProgramPhotoStorageService`(`@d1ff63a`). 허용 MIME = `image/jpeg`·`image/png`·`image/webp` allow-list, **content-type parameter normalize**(`trim`→`;` split→`toLowerCase(Locale.ROOT)`→empty→null → `image/jpeg; charset=binary` 등 실제 브라우저 헤더 수용) + **magic-byte fail-closed**(JPEG `FF D8 FF` · PNG `89 50 4E 47…` · WEBP `RIFF….WEBP` · MIME/서명 불일치·truncated reject). reject 시 `BusinessRuleException`「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」. FE `services.js` `uploadProgramSchedulePhotoApi(programId, file)` + `ProgramSchedulePhotoUpload`. 보존/파기·용량·EXIF strip 정책 = PLAN_NOTES §추가 질문 228-2.
 
+### 13-1. 프로그램 수급자 그룹 (US-P01, v3.1)
+
+활성 지점 스코프. 역할 `hq_admin`, `branch_admin`, `social_worker`. 행은 비활성화만 하고 삭제하지 않는다. 스키마는 V179.
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| GET | `/programs/groups` | 지점 그룹 목록 (`id`, `name`, `active`) |
+| POST | `/programs/groups` | 생성. body `name` (필수, trim, 120자) |
+| PATCH | `/programs/groups/{groupId}` | 부분 수정. body `name` 또는 `active` 중 하나 이상 |
+| GET | `/programs/groups/{groupId}/members` | 배정 이력 (`id`, `groupId`, `clientId`, `clientName`, `effectiveFrom`, `effectiveTo`) |
+| POST | `/programs/groups/{groupId}/members` | 배정. body `clientId`, `effectiveFrom`, `effectiveTo`(null 이면 진행 중) |
+
+거부: 활성 이름 중복 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 · 비활성 그룹 배정 · 지점 불일치 · 종료일이 시작일보다 앞섬 · 기간 겹침 「같은 기간에 이미 배정된 이용자입니다.」
+
 > **가정**: 엔드포인트는 frontend `services.js` 클라이언트와 정합 — DBA·BE 구현 시 본 절 확정.
 
 ---
