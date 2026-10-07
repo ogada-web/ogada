@@ -1,9 +1,87 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T16:50:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T17:35:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §942 BNK-942 — ogada git 실측 6-8h · ★★★ **FE `@5cf667b` → `@29c2304` +1 · BE `@1e8857b4` → `@4aad7cc2` +1 — SEC-D46 단일 라벨 search-path·예약 접미사 첨부 호스트 거부(FE/BE lockstep)** · 케어포 `func.php` LIVE **HTTP 200 복귀**(disk `6226e6eb` 대비 메뉴 DRIFT) · NHIS #44 **641차** BYTE-IDENTICAL · HTTP **442** count-exact IDENTICAL · 모듈 **97.41%** · 신규 진성갭 0** — Route **133** · Page **106** · FE test file **546** · BE @Test **2459**(+3) · filtered npm **77/77** · targeted mvn **33/33** · merge gate **2**(origin 미push)
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T17:35:00Z -->
+
+**조사일**: 2026-10-07T17:35:00Z | **rotation**: ogada git 실측 6-8h. BNK-941(엔젤·롱텀·규제 4-6h·2026-10-07T16:50:00Z) 이후 약 45분. 초점: (1) develop HEAD·Route·Page·테스트·모듈 커버 재산정 (§942-0) · (2) SEC-D46 첨부 URL 워크플로 (§942-1) · (3) 케어포 `func.php` LIVE 복귀와 메뉴 DRIFT (§942-2) · (4) planner 액션 (§942-3).
+
+### §942-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin/develop = origin/test = `5cf667b` · **ahead 1** · WT CLEAN · `fix(v1.2.1/SEC-D46): reject search-path and reserved attachment hosts (BE lockstep)` · 3 files +193/−4 · 신규 페이지 0)
+- ogada backend develop = `4aad7cc2d1ea7556a2d10f8cac443fa99d17d332` (**local develop = test** · origin/develop = origin/test = `1e8857b4` · **ahead 1** · WT CLEAN · `fix(v3/SEC-D46): reject search-path and reserved attachment hosts` · 3 files +149/−5 · `@Test` **+3**)
+- merge gate **2** (FE 1 + BE 1, origin 대비). 로컬 develop과 test는 같다. `AGENT_AUTO_PUSH=0` 이라 이번 사이클은 origin push를 하지 않는다. BNK-941의 merge gate 0은 origin SHA `5cf667b`/`1e8857b4` 시점이다.
+- Route **133**(`<Route` 132 + `<Routes>` 1) · path depth max **4**(path 132: d0=1 · d1=24 · d2=73 · d3=30 · d4=4) · Page **106**(`*Page.jsx`) · `src/pages/*.jsx` non-test **107**은 `RootRedirect.jsx` 포함. 106↔107을 다시 뒤집지 않는다.
+- FE test file **546**(230 `.test.js` + 316 `.test.jsx`) IDENTICAL · BE Test file **301**(300+1) · `@Test` strict **2459**(BNK-941 2456+3) · `@RestController` **81** · `@Entity` **92** · GET **231** / POST **144** / PATCH **44** / PUT **13** / DELETE **10** = HTTP **442** count-exact IDENTICAL · Flyway V1–V196 · endpoint 신설 0
+- 모듈 **97.41%**(배열 29 · 합 28.25 · 비-1.0은 id=2/8/10=0.85 · id=12=0.7). 파일 헤더 JSDoc `coverage: 1 =` 은 배열 밖이라 `grep coverage:`=30은 오염이다. id=1-5는 이미 1.0. KPI promote 0.
+- closed band 6경로(`care-plan-form` · `/dashboard/hq` · `/clients/home-newsletter` · `/clients/linkage-records` · `/billing/cms` · `/transport/service-fees`) App.jsx **존재**.
+- **테스트**: 전체 `npm test`·전체 `mvn test`는 **미실행**(rules §5 · 전체 vitest 6–8분 · 선행 vitest 프로세스 0). 변경면만 실행했다. `./scripts/npm-test-locked.sh` 로 `homeNewsletter.test.js` + `HomeNewsletterLaunchPage.test.jsx` = **77/77 PASS**(2 files · 7.94s · vitest 4.1.8). `mvn -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest` = Support **12/0** · Service **21/0**. `.agents/workspace_baseline.yaml` 주석의 `2479/2479 PASS`는 이번 strict `@Test` **2459**와 다르다. 전체 surefire 리포트는 이 2개 클래스뿐이라 2479를 주석 카운트로 쓰지 않는다.
+
+### §942-1 · ★★★ SEC-D46 첨부 URL — search-path · `.home.arpa` · `.svc`
+
+화면은 `/clients/home-newsletter` 기관 공지(케어포 10-4 · id=1-5). 필드 `attachmentUrl` 최대 **500**자. FE `resolveFacilityNoticeAttachmentUrlViolation` 과 BE `FacilityNoticeSupport.attachmentUrlViolation` 이 같은 구조 가드를 본다. DNS 조회는 하지 않는다.
+
+| 입력 | 결과 | 메시지 |
+|---|---|---|
+| 빈 값 | 허용(선택) | — |
+| `https://cdn.example.com/a.pdf` · `https://metadata.example.com/guide.pdf` | 허용 | 공개 도메인. 예약 접미사 아님 |
+| `javascript:` · `data:` · `HTTP` 이외 스킴 | 거부 | 「첨부 링크는 http:// 또는 https:// 로 시작해야 합니다.」 |
+| 포트가 80/443이 아님 · IP·localhost·난독화 숫자·선행 0·점-16진 · `http://metadata/` · `http://gateway/` · `*.home.arpa` · `*.svc` · hosts 별칭(`broadcasthost` · `ip6-allnodes` · `ip6-allhosts`) | 거부 | 「첨부 링크 형식이 올바르지 않습니다.」 |
+| `https://user@host/` | 거부 | 「첨부 링크에 사용자 정보를 포함할 수 없습니다.」 |
+| allowlist 밖 공개 호스트(목록이 비어 있지 않을 때) | 거부 | 「첨부 링크 호스트가 허용되지 않습니다. 센터에서 승인한 도메인만 사용할 수 있습니다.」 |
+| allowlist에 `metadata`가 있어도 `http://metadata/latest` | 거부 | search-path 호스트는 목록으로 되살리지 않음(테스트 확인) |
+
+빈 allowlist여도 위 구조 거부는 유지된다. 운영 미설정이면 health blocker `facility-notice-attachment-host-allowlist-unconfigured` 가 남고, 환경키는 `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS`.
+
+**확인(표준·공격 표면, 신규 URL)**:
+
+- [OWASP SSRF Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) HTTP 200 · 115,663B · `c56be3c2`. 인용: metadata 서비스(AWS/Azure/GCP), `metadata.google.internal`, `169.254.169.254`, localhost, RFC1918. 「Domain allowlisting alone does not prevent DNS rebinding.」
+- [RFC 8375](https://www.rfc-editor.org/rfc/rfc8375.html) HTTP 200 · 36,035B · `7abd3736`. 인용: `home.arpa` 는 special-use이며 residential home network의 non-unique 이름.
+
+**미확인(잔여)**: 허용 목록에 올린 공개 호스트가 나중에 DNS rebinding 되는 경우는 이 커밋이 막지 않는다. 구현은 DNS를 조회하지 않는다. 경쟁사 로그인 뒤 첨부 호스트 정책은 **미확인**. 케어포 마케팅 `func.php` 본문 「첨부」는 **0**.
+
+### §942-2 · ★★ 케어포 `func.php` LIVE 200 · 메뉴 DRIFT
+
+| 소스 | 결과 |
+|---|---|
+| https://www.carefor.co.kr/daycare/func.php | HTTP **200** · 98,268B · `0f1858cd` · `carefor_func_live_bnk942.php` |
+| disk `carefor_func.php` | `6226e6eb` · 98,328B · 주석 leaf **107** (역사적 정본 유지) |
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | HTTP 200 · 7,572B · `c886ff1f` = bnk941 **BYTE-IDENTICAL** · 저장계수 **641차** · 러-1=1 · 러-4=1 · 편도=2 · 1일 1회=1 · 수급자가 부담=1 · 이동서비스=13 |
+
+BNK-941까지 LIVE는 HTTP 000 계열이었다. 이번 본문과 `6226e6eb`의 차이는 캐시버스터만이 아니다.
+
+**확인(화면 문구 vs HTML 주석)**:
+
+1. CSS/JS 쿼리 `v_20260427` → `v_20260911_2`. 날짜 토큰이지 배포일 확정은 아니다(가정).
+2. 주석 leaf **107 → 106**. 빠진 id는 `8-11` 「질향상노력」. 예전 화면은 「8-11.질향상노력(삭제예정)」이었다. 화면 번호가 한 칸 당겨져 옛 8-12 직원 현황 리포트가 **8-11**, 옛 8-13 연차·유급휴일 대장이 **8-12**로 보인다. 주석 `<!--8-12-->` `<!--8-13-->` 은 그대로다.
+3. 화면 5-3 라벨이 「프로그램 수급자 그룹 설정(필요시)」에서 「**수급자별** 프로그램 그룹 설정(필요시)」로 바뀌었다. 주석은 옛 문구다.
+4. 화면 5-3-1 「프로그램 그룹 관리」 줄은 빈 `<br />` 이다. 주석 `<!--5-3-1.프로그램 그룹 관리-->` 는 남았다. 로그인 화면에서 메뉴가 사라졌는지는 **미확인**.
+5. 화면 8-3에 「(필요시)」가 붙었다. 주석은 그대로다.
+6. `10-4.기관 공지사항, 자료실` 주석은 유지. 이동서비스 모듈 헤더 「2.이동서비스관리」와 `2-1.일정관리(공단연동)` 도 유지. 개인정보 보존 문구는 결제기록 3년에서 접속기록·IP 3개월(통신비밀보호법)로 바뀌었다. 제품 기능 갭은 아니다.
+
+**107 lock**: 폐기하지 않는다. `6226e6eb` 가 주석 107의 역사 정본이고, live `0f1858cd` 가 현재 마케팅 문구다. planner는 직원 리포트 번호를 인용할 때 live 화면 번호와 주석 번호를 섞지 않는다.
+
+### §942-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. id=5·id=1-5 커버 변경 **0**. P0 재오픈 **0**. 수가 시드 변경 **0**(BNK-941 현행 금액표 미확인 유지).
+
+**planner가 읽을 항목**:
+
+1. 기준 SHA는 FE `@29c2304` · BE `@4aad7cc2` 이다. 로컬 develop=test. origin보다는 각각 1커밋 앞이고 merge gate는 **2**다. push는 이 사이클 범위 밖이다.
+2. SEC-D46은 기관 공지 첨부 URL의 search-path(`metadata` · `gateway`)와 `.home.arpa` · `.svc` 거부를 FE/BE가 같이 잠근 것이다. 공개된 케어포 10-4 문구에는 첨부 호스트 규칙이 없다. 제품 문장에는 「공개 도메인만 · 기본 포트 · 계정정보 불가 · 500자」를 쓴다. 운영은 `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 를 채운다. 빈 목록이어도 구조 거부는 켜져 있다.
+3. OWASP가 말한 DNS rebinding은 허용된 공개 호스트에 남는다. 이번 커밋은 DNS를 보지 않는다. 시드나 커버 숫자를 올리지 않는다.
+4. 케어포 마케팅 번호를 인용할 때 질향상노력 8-11은 화면에서 빠졌다. 직원 현황은 화면 **8-11**, 연차 대장은 화면 **8-12**다. 주석 8-12/8-13과 다르다. 5-3-1은 주석만 남았고 로그인 메뉴는 미확인이다. ogada 프로그램 그룹을 갭으로 내리지 않는다.
+5. Page **106** · Route **133** · HTTP **442** · 모듈 **97.41%** · `@Test` **2459**. `workspace_baseline.yaml`의 ahead 750과 `2479/2479` 주석은 이 실측으로 덮어쓸 대상이다.
+6. NHIS #44 문언은 641차째 같다. `ONE_WAY_RATIO` 와 `RU_1`~`RU_4` 를 바꾸지 않는다. 제2026-189호 금액표는 여전히 미확인이다.
+
+주력 `ogada_git_baseline_bnk942.txt` + `carefor_func_live_bnk942.php` + `owasp_ssrf_prevention_cheat_sheet_bnk942.html` + `rfc8375_home_arpa_bnk942.html` + `nhis_jo44_live_bnk942.html`. 신규 snapshot 5. 가정 1(cachebuster 날짜 토큰). 미확인 3(로그인 후 첨부 호스트 정책 · 5-3-1 실메뉴 · 허용된 공개 호스트의 DNS rebinding). per-cycle minimum 4종 충족.
+
+---
 
 ## §941 BNK-941 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **현행 고시가 제2026-189호(시행 2026-10-01·`admRulSeq=2100000285470`)로 전환 — 제2025-247호는 연혁(nwYn Y→N)** · 제34조 ②~⑤(1일 1회·러-1~4의 50%·수급자 부담 없음·이동서비스 일지)는 현행 미러와 공단 이력에서 확인 · **① 금액표는 이미지라 2026-189 원 단위는 미확인**(구 lawImg 830/2,630/5,230/8,630 재실측은 구 이력 표) · lcms 로그인 **접속허용관리 V6**(IPERR 레이어·SMS 발신 팝업 제거) · 엔젤 배차 0-hit·CMS 라벨 5종 단가 3종 LOCK · 롱텀 502/610 s16 LEAN flip(본문 strip IDENTICAL) · git develop=test **FULLY SYNCED** · 신규 진성갭 0** — FE `@5cf667b` / BE `@1e8857b4` · Route **133** · Page **106** · FE test **546** · BE @Test **2456** · HTTP **442** count-exact IDENTICAL · NHIS #44 저장계수 **640차** · 모듈 **97.41%** · merge gate **0**
 

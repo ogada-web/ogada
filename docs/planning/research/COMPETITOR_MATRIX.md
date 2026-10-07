@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T16:50:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T17:35:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-941 — 엔젤·롱텀·규제 4-6h** · ogada FE `@5cf667b` / BE `@1e8857b4` · **develop = test = origin** · WT CLEAN · merge gate **0** · BNK-918 `@6f1e620`/`@b863930` 이후 FE +23 · BE +18 · Route **133** · Page **106** · FE test **546**(230+316) · BE @Test **2456** · HTTP **442** count-exact IDENTICAL · 모듈 **97.41%**). ★★★ **현행 고시 제2026-189호(시행 2026-10-01)** · 제2025-247호는 연혁 · 제34조 ②~⑤ 확인 · 현행 금액표 **미확인** · lcms IP 허용 V6 · 엔젤 배차 0-hit · CMS 라벨 5종 · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-942 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@4aad7cc2` · **local develop = test** · origin은 `@5cf667b`/`@1e8857b4` · ahead **1+1** · WT CLEAN · merge gate **2** · Route **133** · Page **106** · FE test **546** · BE @Test **2459** · HTTP **442** IDENTICAL · 모듈 **97.41%**). ★★★ **SEC-D46 search-path·`.home.arpa`·`.svc` 첨부 호스트 거부** · 케어포 func.php LIVE **200**(`0f1858cd` · 주석 leaf 107→106) · NHIS #44 **641차** · filtered npm **77/77** · targeted mvn **33/33** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-942 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@4aad7cc2` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ SEC-D46 첨부 URL search-path·예약 접미사 거부 (BNK-942 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ `/clients/home-newsletter` `attachmentUrl` ≤500 · FE `resolveFacilityNoticeAttachmentUrlViolation` = BE `attachmentUrlViolation` · `http://metadata/` · `gateway` · `*.home.arpa` · `*.svc` · hosts 별칭 거부 · allowlist로 부활 불가 · 빈 목록이어도 구조 가드 · health `facility-notice-attachment-host-allowlist-unconfigured` | ⚠ [func.php](https://www.carefor.co.kr/daycare/func.php) 10-4 라벨만 · 본문 「첨부」 **0** · 로그인 화면 **미확인** | ⚪ 로그인 첨부 정책 **미확인** | ⚪ | ⚪ | `ogada_git_baseline_bnk942.txt` · §942-1 · id=1-5 **1.0 유지** |
+| **★★ OWASP SSRF + RFC 8375 근거 (BNK-942 #2 · 신규 증거 URL)** | ✅ DNS 조회 없음 · 공개 도메인 `metadata.example.com` 은 허용 · DNS rebinding 잔여는 **미확인** | ⚪ | ⚪ | ⚪ | ⚪ | [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) `c56be3c2` · [RFC 8375](https://www.rfc-editor.org/rfc/rfc8375.html) `7abd3736` · §942-1 |
+| **★★ 케어포 func.php LIVE 200 · 메뉴 DRIFT (BNK-942 #3 · 기존 URL 재실측)** | ⚪ 프로그램 그룹·직원 리포트 번호를 갭으로 내리지 않음 · id=5 **1.0** | ✅ HTTP 200 · `0f1858cd`/98,268B ≠ disk `6226e6eb` · 주석 leaf **106**(8-11 질향상노력 삭제) · 화면 5-3 「수급자별」 · 5-3-1 화면 공백·주석 잔존 **미확인** · 화면 직원현황 **8-11** · 연차대장 **8-12** · 10-4 유지 · `v_20260911_2` | ⚪ | ⚪ | ⚪ | `carefor_func_live_bnk942.php` · §942-2 · 107 lock은 disk 정본 |
+| **★ git @HEAD KPI · HTTP 442 IDENTICAL (BNK-942 #4)** | ✅ Route **133** · Page **106** · FE test **546** · @Test **2459** · GET231/POST144/PATCH44/PUT13/DELETE10=**442** · 모듈 **97.41%**(28.25/29) · merge gate **2** · WT CLEAN | ⚪ | ⚪ | ⚪ | ✅ [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **641차** IDENTICAL | §942-0 · §942-3 |
+| **★ SEC-D46 대상 테스트 (BNK-942 #5 · 실측)** | ✅ locked vitest **77/77** · mvn Support **12/0** + Service **21/0** · 전체 `npm test`/`mvn test` **미실행** · yaml `2479/2479` ≠ strict @Test **2459** | ⚪ | ⚪ | ⚪ | ⚪ | §942-0 · rules §5 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-941 — 엔젤·롱텀·규제 4-6h** · ogada FE `@5cf667b` / BE `@1e8857b4` · **develop = test = origin** · WT CLEAN · merge gate **0** · BNK-918 `@6f1e620`/`@b863930` 이후 FE +23 · BE +18 · Route **133** · Page **106** · FE test **546**(230+316) · BE @Test **2456** · HTTP **442** count-exact IDENTICAL · 모듈 **97.41%**). ★★★ **현행 고시 제2026-189호(시행 2026-10-01)** · 제2025-247호는 연혁 · 제34조 ②~⑤ 확인 · 현행 금액표 **미확인** · lcms IP 허용 V6 · 엔젤 배차 0-hit · CMS 라벨 5종 · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-941 delta·엔젤·롱텀·규제 4-6h) | ogada `@5cf667b`/`@1e8857b4` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

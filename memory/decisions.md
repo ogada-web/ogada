@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-942 ogada git 실측 6-8h · ★★★ **SEC-D46 search-path·예약 접미사 첨부 호스트 FE/BE lockstep** · ★★ **케어포 func.php LIVE 200 · 주석 leaf 107→106** · ogada `@29c2304`/`@4aad7cc2` · merge gate **2**
+
+**근거**: FE `29c2304` · BE `4aad7cc2` · 로컬 develop=test · origin `@5cf667b`/`@1e8857b4` · WT CLEAN. Route 133 · Page 106 · FE test 546 · @Test 2459 · HTTP 442 · 모듈 97.41%. locked vitest 77/77 · targeted mvn 33/33. [func.php](https://www.carefor.co.kr/daycare/func.php) HTTP 200 · `0f1858cd`. [OWASP SSRF](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) `c56be3c2`. [RFC 8375](https://www.rfc-editor.org/rfc/rfc8375.html) `7abd3736`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 641차.
+
+### 결정
+
+1. **★★★ 기관 공지 첨부 URL 기준을 SEC-D46 구조 가드로 둔다 (확인)** — 단일 라벨(`metadata` · `gateway`), `.home.arpa`, `.svc`, hosts 별칭, IP·난독화 호스트, userinfo, 비기본 포트는 FE/BE가 같이 거부한다. allowlist에 이름을 넣어도 search-path 호스트는 통과하지 않는다. **planner: 도움말 문구는 「공개 도메인만 · 기본 포트 · 계정정보 불가 · 500자」. 운영 키 `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 를 채운다. id=1-5 커버는 1.0 유지. 숫자를 올리지 않는다.**
+
+2. **★★ DNS rebinding은 잔여로 남긴다 (미확인)** — OWASP 문장은 도메인 allowlist만으로 rebinding을 막지 못한다고 한다. ogada는 DNS를 조회하지 않는다. **planner/coder: 허용된 공개 호스트의 rebinding을 이번 사이클에서 확인된 갭으로 쓰지 않는다. 시드·커버 변경 없음.**
+
+3. **★★ 케어포 마케팅 메뉴 번호를 live와 주석으로 나눠 인용한다 (확인)** — live `0f1858cd`에서 질향상노력 8-11 주석이 빠지고 화면 직원 현황은 8-11, 연차 대장은 8-12다. 5-3 화면 라벨은 「수급자별」이다. 5-3-1은 화면이 비고 주석만 남았다. disk `6226e6eb` 주석 107은 역사 정본으로 유지한다. **planner: 8-12/8-13을 현재 화면 번호로 쓰지 않는다. 5-3-1 삭제를 ogada 갭으로 올리지 않는다.**
+
+4. **★ baseline SHA와 테스트 카운트 (확인)** — FE `@29c2304` · BE `@4aad7cc2` · merge gate **2**(origin 미push). strict `@Test` **2459**. `workspace_baseline.yaml`의 ahead 750과 `2479/2479`는 이 실측과 다르다. **planner: 문서 SHA는 git 실측을 따른다.**
+
+**가정 1**(cachebuster `v_20260911_2` 는 날짜 토큰) · **신규 진성갭 0** · **미확인 3**(로그인 첨부 정책 · 5-3-1 실메뉴 · DNS rebinding) · 신규 snapshot 5 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-941 엔젤·롱텀·규제 4-6h · ★★★ **현행 고시 제2026-189호(시행 2026-10-01) · 제2025-247호는 연혁** · ★★ **제34조 ②~⑤ 확인 · 현행 금액표 미확인** · ★★ **lcms 접속허용 V6** · ogada `@5cf667b`/`@1e8857b4` develop=test · merge gate **0**
 
 **근거**: [제2026-189호](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000285470) HTTP 200 · `72ce5c4e` · `nwYn=Y` · `efYd=20261001`. [제2025-247호](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)는 `nwYn` Y→N · 「행정규칙(연혁)」. [제34조 미러](https://govbrief.kr/scan/2100000285470/34/) ② 1일 1회·러-1~4의 50% · ③ 수급자 부담 없음 · ④ 이동서비스 일지. ①은 `<img id="169768531">`. 구 [lawImg](https://www.nhis.or.kr/lm/lmxsrv/law/lawImg.do?SEQ_HISTORY=611677&ID=153966057) `05030599` IDENTICAL(830/2,630/5,230/8,630)은 이력 표. [lcms](https://www.lcms.or.kr/) `b76e658c` IPERR 레이어. 엔젤 system_feature `c9507190`·extraService `f9c5d877`·daycareEssential `c79c1be3` BYTE-IDENTICAL. git FE `5cf667b` · BE `1e8857b4` · 양쪽 develop=test=origin · WT CLEAN.
