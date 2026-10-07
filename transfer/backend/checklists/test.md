@@ -1,3 +1,26 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T16:58:12Z -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop**: `src/backend` `@4aad7cc2` WT **CLEAN** (origin/develop ahead 1)  
+> **test**: `src/backend-test` `@1e8857b4`  
+> **검증 기준**: `docs/planning/ROADMAP.md` v3 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-10-07T16:58:12Z
+
+> **TSR2000 (2026-10-07T16:58:12Z) — test `@1e8857b4` `mvn -o -B test` 2476/2476 PASS** (01:44 min, 412 suites, 0F/0E/0S, BUILD SUCCESS) · develop `@4aad7cc2` WT **CLEAN** · `test..develop` **0/1** · merge **SKIP** · `npm test` N/A · FE develop/test `@5cf667b` **SYNCED** · origin/test lag **0/0** (local ref) · **QA-20261007-B687 Open(BLOCK)** · QA-B654 Absorbed · health **DOWN** · disk **88%**(5.4G) · 판정 **BLOCK** · **transfer BLOCK**.
+
+> **PASS 금지 사유 (TSR2000)**: **QA-B687 Open(BLOCK)** — develop WT **CLEAN**이지만 `test..develop` **0/1** (`@4aad7cc2`, COD `QA-B686`)이라 merge 게이트 미충족. test 회귀 **2476/2476 PASS**. **테스트 PASS ≠ develop 이관 가능**.
+
+| 항목 | 결과 |
+|------|------|
+| test 회귀 | PASS 2476/2476 |
+| develop→test 동기 | FAIL pending 1 |
+| working tree | PASS CLEAN |
+| 프론트 교차 | FE SYNCED · cross-stream BLOCK(BE only) |
+| 헬스 | DOWN :8080 |
+| 이관 판정 | **BLOCK** |
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:03:00+00:00 -->
 # Backend develop → test 이관 체크리스트
 

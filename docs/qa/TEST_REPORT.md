@@ -1,3 +1,22 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T16:58:12Z -->
+<!-- tester-sync: TSR 2000 2026-10-07T16:58:12Z (backend) — ROADMAP v3 ready baseline @1e8857b4; mvn -o -B test 2476/2476 PASS(01:44 min,412 suites,0F/0E/0S,BUILD SUCCESS); develop@4aad7cc2 WT CLEAN pending 1; merge SKIP; Open QA-B687 BLOCK; FE SYNCED @5cf667b; health DOWN; transfer BLOCK; operation BLOCK. -->
+
+### [TSR] TSR2000 backend — ROADMAP merged baseline `@1e8857b4` 회귀 (BLOCK · NEW Open 1)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 `merge_status: ready` · test `@1e8857b4` |
+| develop/test divergence | **0/1** — `4aad7cc2` SEC-D46 search-path/reserved hosts |
+| merge | **SKIP** |
+| `mvn -o -B test` | **2476/2476 PASS** (01:44 min · 412 suites · 0F/0E/0S · EXIT 0) |
+| `npm test` | N/A |
+| health / disk | **DOWN** :8080 · **5.4G/88%** |
+| Open | **1** `QA-20261007-B687` (BLOCK) · FE Open **0** |
+| transfer / operation | **BLOCK** / **BLOCK** (QA-B687 + health down + QA-B95) |
+| live E2E | **SKIP** (backend stream · merge 없음) |
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T01:19:10Z -->
 <!-- tester-sync: TSR 1986 2026-07-20T01:19:10Z (frontend) - ROADMAP merged baseline @03c0a2f; FE test@03c0a2f develop@6f1e620 DIVERGED 0/1 (`6f1e620`); merge SKIP; targeted pressure-ulcer 38/38 PASS(frontend-test flock,20.09s); build PASS(9.77s,1236)+audit 0+health 200; full 2825/2825 carry; QA-B631/B634 Absorbed; NEW Open QA-B635; transfer BLOCK(FE); operation BLOCK(QA-B116 FE+44·BE+779 + QA-B95). -->
 
