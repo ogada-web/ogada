@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T19:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T21:00:00Z -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 갱신 BE `d73aec1` / FE `29c2304` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · Flyway **V1–V196** · 모듈 **97.41%** · 이동서비스 일지 서식 번호는 화면 라벨)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -23,7 +23,7 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 | 백엔드 API | **Must + … + V196 ✅** @ `d73aec1` · **프로그램 수급자 그룹 등록·배정 API ✅** (**Q959**, 화면 없음·V179 재사용) · **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부 ✅** (**Q958**, SEC-D46) · **기관 공지 첨부 HTTP/HTTPS 대소문자 허용 ✅** (**Q956**, SEC-D46) · **기관 공지 첨부 localhost6 hosts-file 별칭·hosts-file resolver 별칭(broadcasthost·ip6-allnodes 등)·localhost 별칭(localdomain·ip6-localhost·ip6-loopback)·변형 IP·내부망 도메인·IP/localhost·호스트 허용 목록·비기본 포트·깨진/userInfo URL 차단·health 허용 목록 노출 ✅** (**Q947**·**Q950**·**Q951**·**Q952**·**Q953**, SEC-D46) · **방문일정 일괄 확정취소 확인번호 6자리 ✅** (**Q818**, SEC-D44) · **알림톡 중첩 페이로드 민감정보 마스킹 ✅** (**Q949**, SEC-D37) · **청구 명세·국세청 CSV 엑셀 수식(formula) 실행 위험 차단 ✅** (**Q946**, SEC-D33, CWE-1236) · **공단·은행 엑셀 금액 줄바꿈 없는 공백(U+00A0)·전각 공백(U+3000) 천 단위 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 특수 공백) · **공단·은행 엑셀 금액 정규화 로직 DRY 통합(`ExcelAmountNormalizer`) ✅** (SEC-D34, 내부 리팩터) · **공단·은행 엑셀 전각 원화 기호(￦) 붙은 금액 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 전각·반각 통화 서식) · **공단·은행 엑셀 전각 숫자(０-９)·전각 콤마(，) 붙은 금액 정규화 ✅** (**Q939**·**Q941**, SEC-D34, 전각 IME·통화 서식) · **공단·은행 엑셀 원화 기호(₩) 붙은 금액 정규화 ✅** · **공단 대사 엑셀 급여일수 `15일`(「일」 접미사) 정규화 ✅** (**Q939**, SEC-D34, 대사 정확도) · **은행 입금 엑셀 금액 공백·「원」 정규화 ✅** (**Q941**, SEC-D34, 입금 매칭 정확도) · **공단 대사 엑셀 금액·급여일수 「원」·공백 정규화 ✅** (**Q939**, SEC-D34, 대사 정확도) · **공단·RFID 엑셀 깨진 셀 행 복원(전체 실패 방지) ✅** (**Q939**, SEC-D34) · **RFID 전송 엑셀 파서 fail-closed 분기 회귀 lock ✅** (SEC-D34, 헤더/필수열/데이터행 누락, **Q938**) · **라이브 E2E 준비상태 bare-hex 엔티티(`&x2d;`) fail-closed 디코딩 ✅** (QA-B95, 내부 점검) · **요양보호사 공단 엑셀 파서 fail-closed 분기 회귀 lock ✅** (SEC-D34, 헤더/필수열/데이터행 누락) · **엑셀 「읽을 수 없습니다」 문구 상수 통일 ✅** (`UNREADABLE_EXCEL_MESSAGE`, 내부 리팩터링) · **엑셀 import 손상(내용 깨진) 파일 fail-closed ✅** (**Q934**, SEC-D34, 5개 파서) · **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**, SEC-D34) · **SEC-D34 엑셀 import 4경로 magic-byte ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**, SEC-D25/D34) · **v3 활동 사진 magic-byte ✅** (**Q924**, SEC-D25) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime(bprime/tprime/qprime/backprime) ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~295 suites** · Flyway **V186–V196** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
 | 프론트엔드 | **133 route · 106 page** @ `29c2304` **SYNCED** | **프로그램 수급자 그룹 화면(`/programs/groups`) 없음** — 배정 결과는 **5-9** `/programs/reports/group-history` (**Q959**) · **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 사전 차단 ✅** (**Q958**, SEC-D46) · **기관 공지 첨부 HTTP/HTTPS 대소문자 허용 ✅** (**Q956**) · **상세 차단 경고 알림·위생·안전 조회 기간 도움말 연결 ✅** (**Q955**·**Q957**, UXD-209) · **기관 공지 상세 불안전 첨부 차단 사유 구체 표시 ✅** (**Q955**, SEC-D46) · **기관 공지 첨부 localhost6·hosts-file resolver 별칭·localhost 별칭·변형 IP·내부망 도메인·IP/localhost·비기본 포트·깨진/userInfo URL FE 사전 차단 ✅** (**Q950**·**Q951**·**Q952**·**Q953**, SEC-D46) · **기관 공지 첨부 URL 입력 도움말·aria-describedby ✅** (**Q954**, UXD-208) · **일괄 확정취소 확인번호 6자리·오류 Field 전담 ✅** (**Q818**·**Q951**, SEC-D44·UXD-207) · **급여·간호 리포트 기간 오류 수정 즉시 해제 ✅** (**Q948**) · **안전 점검 기간 오류 단일 칸·배차/의료비 수납 시각 `<time dateTime>` ✅** (**Q945**, UXD-206) · **안전 점검 저장·선임 전자서명·외출 실제 출발/복귀 시각 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-204, a11y·화면 표시 무변경) · **보호자 포털·QR 체크인 출석 시각 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-203, a11y·화면 표시 무변경) · **욕구사정 연도 비교 표 좁은 화면 가로 스크롤(`.ds-table-wrap`) ✅** (**Q878**, UXD-202, WCAG 1.4.10 Reflow·화면 표시 무변경) · **청구 상세(입금·환불일)·수납 목록·수가/본인부담 단가·백업 설정·청구 잠금 시각·보호자 청구 상세 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-201, a11y·화면 표시 무변경) · **로그인 이력·감사 로그·알림 발송 이력·수가 변경 이력 날짜·시각 칸 `<time dateTime>` 기계판독 형식 ✅** (**Q945**, UXD-200, a11y·화면 표시 무변경) · **청구 대장·욕구사정·주기 위험 평가·돌봄계획 알림·연체·건강/보호자 상세·급여제공 결과 평가·기능회복 훈련·방문 RFID 비교 표 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (UXD-199, a11y·화면 표시 무변경) · **사례관리·간호(바이탈·체중·구강·응급)·욕창·선임 업무일지·외출 목록·외출 리포트 표 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (UXD-198, a11y·화면 표시 무변경) · **목욕도움·요양/식사/화장실·집중배설·수급자별 급여제공·체위변경 리포트 표 날짜 칸 `<time dateTime>` 기계판독 형식 ✅** (UXD-197, a11y·화면 표시 무변경) · **목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호·간호급여·프로그램 리포트 역방향 기간 오류 시작일·종료일 두 칸 aria-invalid 라우팅 ✅** (**Q942**~**Q944**, UXD-196, a11y) · **목욕도움·요양/식사/화장실·체위변경·집중배설·요양 간호·간호급여·프로그램 리포트 역방향 기간 사전 차단 확대 ✅** (**Q944**) · **수급자별 급여제공 리포트(L02_M11) 역방향 기간 사전 차단·지난 집계 비움·종료일 필드 a11y ✅** (**Q943**) · **급여제공 서비스 집계 리포트(L02_M12) 역방향 기간 사전 차단·지난 집계 비움·종료일 필드 a11y ✅** (**Q942**) · **이동서비스비 청구 기간 오류 시 지난 청구 목록 즉시 비움·빈 기간·역방향 기간 사전 차단·결과 안내 재조회 갱신·이용자 이름 정상 표시 ✅** (**Q940**, G16) · **픽업 배차 「회차」 저장 전 사전 검증·지수/16진수·한도 초과 큰 수 거부·휠 스크롤 값 변경 차단·서버 오류 중복 읽힘 정리·오류 시 포커스 이동 ✅** (**Q936**, UXD-194) · **배차 정차 상한(17) 초과 사유 안내 ✅** (**Q937**) · **은행 입금 엑셀 FE 사전검증 ✅** (**Q932**, SEC-D34) · **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·급여계약·HR·등급이력·보수교육 magic-byte ✅** (**Q926~Q928**) · **직원현황 인쇄·활동 사진 ARIA ✅** (**Q930**) · **활동 사진 magic-byte FE lockstep ✅** (**Q924**) · **NoBreakSpace mid-token strip FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**, UXD-187) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi long-alias live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
-| 본 FAQ | **Q217 정정** · **Q788~Q960** | **P1 잔여**: **프로그램 수급자 그룹 화면** · **프로그램 카탈로그·의견·월간 계획** · M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
+| 본 FAQ | **Q217 정정** · **Q788~Q961** | **P1 잔여**: **프로그램 수급자 그룹 화면** · **프로그램 카탈로그·의견·월간 계획** · M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
@@ -7128,7 +7128,7 @@ Authorization: Bearer <branch_admin JWT>
 
 ### Q236. **이동서비스일지(별지 제22호)** 는 어디서 출력하나요?
 
-**A.** **✅ full stack (`0cfa970`·`aaaeb10`·`aa42b9c`·`5994d15` / FE `088e906`·`dff2f32`·`3cc5a08`, G15 v1.3-C, US-T05, Q407·Q411)** — **확정 배차** 루트 상세에서 법정 형식 일지를 **서버 저장·감사 trail read·보관 안내·인쇄·텍스트 다운로드**할 수 있습니다.
+**A.** **✅ full stack (`0cfa970`·`aaaeb10`·`aa42b9c`·`5994d15` / FE `088e906`·`dff2f32`·`3cc5a08`, G15 v1.3-C, US-T05, Q407·Q411)** — **확정 배차** 루트 상세에서 일지를 **서버 저장·감사 trail read·보관 안내·인쇄·텍스트 다운로드**할 수 있습니다. 화면 제목은 **「별지 제22호」** 입니다. 공단 조문 본문에는 그 서식 번호가 없고, 확인된 문장은 **이동서비스 일지를 작성하여 보관**입니다 (**Q961**).
 
 | 항목 | 내용 |
 |------|------|
@@ -12757,6 +12757,7 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q961 신설 · Q236·Q678 연결** — **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · 확인된 의무는 작성·보관 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q960 신설 · Q239·Q678 금액 정정** — **이동서비스비 거리 구간**(830·2,630·5,230·8,630원) · 옛 러-4 6,230원 제거 · 특장차량 월 가산은 화면 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q959 신설 · Q714 연결** — **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q958 신설 · Q952·Q954·Q955 연결** — **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** |
@@ -15290,11 +15291,11 @@ PUT /api/v1/billing/reports/filters
 | **러-1~러-4** | 거리구간별 수가 — 러-1 **830원** · 러-2 **2,630원** · 러-3 **5,230원** · 러-4 **8,630원** (옛 러-4 6,230원은 쓰지 않음, **Q317**·**Q960**) |
 | **편도 50%** | 왕복 대비 편도는 **50%** 산정 |
 | **1일 1회** | 수급자별 **서비스일 1건** (UK) |
-| **별지 제22호** | **이동서비스 일지 작성·보관** 의무 |
+| **이동서비스 일지 (화면 제목: 별지 제22호)** | 조문 ④는 **작성·보관**. 화면 제목의 서식 번호는 그 조문 본문에 없음 (**Q961**) |
 
 **접근성 (UXD-159, `0869589`)** — 조회 form **`aria-label="이동서비스비 조회 기간"`** · 수가·청구 표 **`caption`+`captionVisuallyHidden`** · 행별 **「확정」·「편도/왕복 전환」** 버튼에 **`aria-label`**·**`aria-busy`** (Q683).
 
-> 관련: Q239 · Q247 · Q317 · **Q703** · **Q743** · **Q960** · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4
+> 관련: Q239 · Q247 · Q317 · **Q703** · **Q743** · **Q960** · **Q961** · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4
 
 ---
 
@@ -17953,6 +17954,30 @@ function normalizeLiveOperationBlockers(blockers) {
 - **통합재가 월 100,000원**도 이 화면이 아닙니다. 지점을 통합재가로 두면 안내만 나오고, 청구에 자동 가산되지 않습니다(Q223).
 
 > 관련: **Q239** · **Q317** · **Q678** · **Q223** · USER_MANUAL §5-8-1 · ADMIN_GUIDE §10-10 · DEPLOYMENT §1-4 · CHANGELOG 2026-10-07
+
+---
+
+### [TWR] Q961. 이동서비스 일지 화면의 **「별지 제22호」** 는 공단 조문에 있는 서식 번호인가요? (G15, `/transport/compliance`)
+
+**A.** **화면 제목은 그대로이고, 그 조문 본문에는 서식 번호가 없습니다.** 수칙·계약(`/transport/compliance`)의 **「이동서비스일지 작성 (별지 제22호)」**, 운행 상세의 **「이동서비스일지 (별지 제22호)」**, 이동서비스비 규칙의 `SERVICE_LOG` 문구는 코드에 **「별지 제22호」** 로 적혀 있습니다. 버튼 이름을 바꾸지 않습니다.
+
+공단 이동서비스 조문(제34조) HTML 본문을 확인하면 다음만 있습니다.
+
+| 항 | 본문에 있는 말 |
+|----|----------------|
+| ④ | 이동서비스를 제공하면 **이동서비스 일지를 작성하여 보관** |
+| ⑤ | 신청·중단·**일지 작성의 세부**는 **공단 이사장**이 정한다 |
+
+같은 본문에 **「별지」**, **「제18호」**, **「제19호」**, **「제20호」**, **「제22호」** 는 없습니다. 화면의 제18·19·20호 안내는 공단 포털로 가는 **절차 라벨**이고, ogada가 그 서식을 제출하지는 않습니다(Q237).
+
+| 현장 동작 | 그대로 |
+|-----------|--------|
+| 작성 위치 | 확정 배차 → **「일지 작성·보관」** → `PUT /api/v1/transport/runs/{runId}/service-log` |
+| 필수 | 정차별 실제 시각·동승 여부·하차 시각, 운전자 서명 성명·서명일 |
+| 출력 | 저장한 뒤에만 **인쇄**·**텍스트 저장** |
+| 평가·실사 인용 | 조문을 말할 때는 **일지 작성·보관**을 인용합니다. 이 조문 페이지를 서식 번호의 근거로 쓰지 않습니다 |
+
+> 관련: **Q236** · **Q237** · **Q407** · **Q678** · USER_MANUAL §5-8-0-1 · ADMIN_GUIDE §10-10 · DEPLOYMENT §1-4 · CHANGELOG 2026-10-07
 
 ---
 

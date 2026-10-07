@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T19:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T21:00:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 갱신 BE `d73aec1` / FE `29c2304` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · Flyway **V1–V196** · 모듈 **97.41%** · 이동서비스 일지 서식 번호는 화면 라벨)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -112,7 +112,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **M12 재무회계 BPO (Q782·Q785·Q801)** | `/accounting` | `GET …/bpo-launch` · `GET /health` | **수지파인 포털 진입** · **SSO FE 어댑터(HQ/BRANCH)** · **in-app 회계 없음** |
 | **G2 가정통신문·기관 공지 게시판 (Q788~Q800·Q803~Q808·Q811·Q858·Q868)** | `/clients/home-newsletter` · `#facility-notices` | `GET …/launch` · `GET …/authoring` · `POST …/compose-preview` · `GET/POST/PATCH …/facility-notices` · `GET …/{id}` · `GET …/dispatch-history?branchId=&yearMonth=&status=&q=` · `GET /health` | **운영 준비**(야간=후속·조용한 시간대, Q811) · **작성 미리보기** · **서버 DRAFT·수정·복제(후 바로 수정)·상세·첨부 http(s)·분류 NOTICE/RESOURCE만·기관 공지/자료실** · **게시·삭제 후 빈 페이지 자동 복구**(Q858) · **지점 fallback**(Q868) · **소속 지점 발송 이력+필터(기본 20건)** · 발송은 이용자 상세 (Q217) |
 | **위생·안전 점검 (US-Q01, M6 6-2~6-4, Q745·Q748·Q750·Q754·Q756·Q757·Q758·Q759·Q760·Q761·Q957)** | `/safety/daily-checks` · `/safety/periodic-checks` · `/safety/infection-control` · `/safety/operation-log` | `GET /api/v1/safety/check-template-catalog` · `GET/POST …/daily-checks` · `…/periodic-checks` · `…/infection-control` · `…/operation-logs` | **4 Route full-stack ✅** · **template catalog API consume ✅** · **item `helpText`·`required` ✅** · **`required: true` 미체크 submit 차단 ✅** (Q757) · **미명시/`false` = optional ✅** (Q758) · **vitest semantics lock ✅** (Q759) · **현장 체크리스트 ✅** (Q760) · **결과 열 StatusBadge ✅** (Q761) · **V184+V185** · **조회 기간 기본 30일·최대 366일 도움말이 시작일·종료일에 연결(Q957)** · **`hq_admin`·`branch_admin`·`social_worker` only** |
-| **G16 NHIS #44 parity rules (Q703·Q710·Q743·Q960)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` · `GET …/service-fee-rates` **`onePerDayNote`** | **수가 830·2,630·5,230·8,630원** · 편도 50% · 새 초안은 **러-1** · **특장차량 월 17만 원 없음** · **4-rule catalog** · **1일 1회 footnote** |
+| **G16 NHIS #44 parity rules (Q703·Q710·Q743·Q960·Q961)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` · `GET …/service-fee-rates` **`onePerDayNote`** | **수가 830·2,630·5,230·8,630원** · 편도 50% · 새 초안은 **러-1** · **특장차량 월 17만 원 없음** · **4-rule catalog** · **1일 1회 footnote** · **일지 화면 제목은 별지 제22호, 조문 본문에는 서식 번호 없음** |
 | **이동서비스 송영표 (Q762·Q763·Q769, BE `c08329a`·FE `a6255a0`)** | `/transport/shuttle-sheet` | `GET /api/v1/transport/roster` · `GET …/runs` · `GET …/runs/{runId}` | **차량별·회차별 탑승자** · **`TransportShuttleScheduleView`** · **list a11y** (Q769) · **미배정** 목록 · **`hq_admin` DRAFT+CONFIRMED** · 직원 **CONFIRMED only** |
 | **금일 배차 제외·출발 회차·송영 주소 (Q763·Q764·Q766·Q767·Q768·Q770·Q771·Q772·Q777)** | `/transport` · `/transport/runs/new` · `/transport/vehicles` | `PATCH …/roster/{clientId}/day-status` · `POST …/runs` **`departureRound`** · `POST/PATCH …/vehicles` | **승차 명단 제외** → suggest·**UI 잠금+행 시각**(Q767·Q777)·**서버 422**(Q766) · **송영 주소 trim·비우기**(Q770·Q772) · **V190** + health **9건**(Q771) |
 | **7-5 easy-pay provider catalog (Q709)** | `/billing/easy-pay` · Swagger | `GET /api/v1/billing/easy-pay/provider-catalog` | **CARD·KAKAO_PAY 2종** · **`EasyPayProviderCatalogPanel` FE wire ✅** (`5914b2f`) · **`pgMode` stub/live** |
@@ -2564,9 +2564,11 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 > **G15 일지 (Q407/Q411/Q426, v1.3-C full stack)**: 확정 루트 **`TransportServiceLogPanel`** 에서 **서버 저장·감사 추적·보관 안내·인쇄·텍스트 다운로드**가 모두 지원됩니다. **수칙·계약 화면(`/transport/compliance`)** 에서도 확정 배차별 **일지 작성·보관** 링크로 바로 이동할 수 있습니다 (Q426). 수칙·계약(§5-8-0 step 3) 완료 후 일지를 기록하세요.
 
-#### 5-8-0-1. 이동서비스 일지 기록 (별지 제22호, G15, Q407·Q411)
+#### 5-8-0-1. 이동서비스 일지 기록 (화면 제목: 별지 제22호, G15, Q407·Q411·Q961)
 
-**2026 평가 지표 41·42** 대응 **이동서비스 일지(별지 제22호)** 기록·저장·보관·인쇄입니다 (BE `0cfa970`·`aaaeb10`·`aa42b9c`·`5994d15` + FE `088e906`/`dff2f32`/`3cc5a08`, **v1.3-C G15 full stack**, Q407·Q411).
+**2026 평가 지표 41·42** 대응 **이동서비스 일지** 기록·저장·보관·인쇄입니다 (BE `0cfa970`·`aaaeb10`·`aa42b9c`·`5994d15` + FE `088e906`/`dff2f32`/`3cc5a08`, **v1.3-C G15 full stack**, Q407·Q411).
+
+> **서식 번호 (Q961)**: 카드·인쇄 제목은 **「이동서비스일지 (별지 제22호)」** 입니다. 공단 조문 본문에는 「별지」와 「제22호」가 없습니다. ④는 **이동서비스 일지를 작성하여 보관**이고, ⑤는 일지 작성의 세부를 **공단 이사장**이 정한다고 되어 있습니다. 메뉴를 찾아 저장하는 방법은 아래와 같고, 조문을 인용할 때는 작성·보관 의무를 말합니다.
 
 **일일 일지 기록**
 
@@ -5061,6 +5063,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q961 신설** — §1-5·§5-8-0-1 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q960 신설 · Q317 연결** — §1-5·§5-8-1 **이동서비스비 거리 구간**(830·2,630·5,230·8,630원) · 옛 러-4 6,230원 제거 · 특장차량 월 가산은 화면 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q959 신설** — §1-3·§1-5·§5-9 **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q958 신설** — §1-3·§1-5·§4-7-3a **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** |

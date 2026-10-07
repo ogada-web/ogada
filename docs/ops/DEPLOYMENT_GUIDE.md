@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T19:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T21:00:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 갱신 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 이동서비스 일지 서식 번호는 화면 라벨)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -145,6 +145,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | G-REPORT-DENSITY 5-9 group-history fill (Q714 deepen) | `GET /api/v1/programs/reports/group-history?fromDate=2026-06-01&toDate=2026-06-25` | 200, **`groupConfigAvailable=true`** · **`items[]`** with **`groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** when V179 memberships exist · empty **`items:[]`** otherwise (`337453d`) |
 | 프로그램 수급자 그룹 (Q959, US-P01) | `GET /api/v1/programs/groups` · `POST /api/v1/programs/groups` body `{"name":"인지 그룹"}` (활성 지점 JWT · `hq_admin`/`branch_admin`/`social_worker`) | **200** · 목록 `items[]` `id`·`name`·`active` · 같은 활성 이름 재등록 **422** 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 · `caregiver` **403** · 화면 `/programs/groups` **없음** · **Flyway 추가 없음(V179)** · 배정 행은 위 5-9 조회에 집계 |
 | 이동서비스비 거리 구간 (Q960, G16) | `GET /api/v1/transport/service-fee-rates` (직원 JWT) | **200** · `items[]` 에 **RU_1 830 · RU_2 2630 · RU_3 5230 · RU_4 8630** · 화면 `/transport/service-fees` 와 동일 · **V103** 적용 후 러-3 4,430·러-4 6,230이 남아 있으면 마이그레이션 미적용 · 특장차량 월 170,000 행은 **없음** |
+| 이동서비스 일지 서식 번호 (Q961, G15) | UI `/transport/compliance` · `/transport/runs/:runId` · `GET /api/v1/transport/service-fee-parity-rules` 의 `SERVICE_LOG` | 화면·규칙 문구는 **「별지 제22호」** · 조문 ④는 **이동서비스 일지 작성·보관** · 같은 본문에 「별지」·제18·19·20·22호 **없음** · 저장은 `PUT /api/v1/transport/runs/{runId}/service-log` · 코드 변경 없음 |
 | G-REPORT-DENSITY program report branch filter (Q715) | `GET /api/v1/programs/reports/schedules?fromDate=2026-06-01&toDate=2026-06-25&branchId={uuid}` | 200 when **`branchId` in JWT read scope** · out-of-scope → **403** (`49fe2e7`) |
 | G32 사례관리 | `GET /api/v1/case-management/compliance` | 200, `meetingsRecordedCount`, `reflectionGapCount` 반환 |
 | G42 민원상담 | `GET /api/v1/staff/grievance-counselings/follow-up/compliance` | 200, `pendingFollowUpCount`·`followUpCompletionRate` 반환 |
@@ -2279,6 +2280,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q961 신설** — §1-4 스모크 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q960 신설** — §1-4 스모크 **이동서비스비 거리 구간 수가**(830·2,630·5,230·8,630원 · V103) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q959 신설** — §1-4 스모크 **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력·V179 재사용) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q958 신설** — §1-4 스모크 **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
