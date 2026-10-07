@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-945 엔젤·롱텀·규제 4-6h · ★★★ **제2026-189호 제34조 금액표 1차 판독 830/2,630/5,230/8,630** · ★★ **특장차량 월 170,000원 · 통합재가 월 100,000원 · 단기보호 1등급 74,060원** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: `POST` [admRulLsInfoR.do](https://www.law.go.kr/LSW/admRulLsInfoR.do) HTTP 200 · `c5e5bc59`. [flSeq=169768531](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) GIF `31064a16`. [수가 HTML menuId=2742](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `57fd4b7e`. [lcms](https://www.lcms.or.kr/) `7775b5b4`. git FE `29c2304` · BE develop `d73aec11`.
+
+### 결정
+
+1. **★★★ 러-1~4 원 단위는 현행 고시 이미지와 시드가 같다 (확인)** — 판독은 5km 미만 830, 5km 이상~10km 미만 2,630, 10km 이상~20km 미만 5,230, 20km 이상 8,630이다. ② 1일 1회·편도 50%·③ 수급자 부담 없음·④ 일지는 본문 텍스트다. **planner: V103 금액을 고치지 않는다.**
+
+2. **★★ 정확 킬로 경계는 아직 가정이다 (가정)** — `resolveFromKm`의 `<= 5/10/20`이 표의 「미만」과 다를 수 있다. 기계 OCR이 조사 문구를 잠그지 못했다. **planner: 경계 코드를 이번 판독만으로 바꾸지 않는다.**
+
+3. **★★ 제34조의2 특장차량 월 170,000원은 청구 가산 후보다 (확인)** — 1·2등급에게 월 1회 이상, 36개월, 수급자 부담 없음. ogada 시드에는 없다. 엔젤 공개 페이지에 배차가 없으므로 경쟁 갭이 아니다. **planner: id=2는 0.85. 신규 진성갭 0.**
+
+4. **★★ 통합재가 월 100,000원과 단기보호 1등급 74,060원은 규제 교차검증이다 (확인)** — 제55조의2는 월한도 80%와 방문요양·주야간 각 월 1회를 요구한다. 74,060원은 공단 수가 HTML이다. **planner: 주야간 단일 MVP 시드에 넣지 않는다.**
+
+5. **★ lcms 배너는 type3로 돌아왔고 CMS 단가는 같다 (확인)** — CJ 식단 제휴는 로그인 광고다. IP 허용 V6는 유지된다. 자동이체 250원·가상계좌 300원·월 30,000원은 그대로다. **planner: 식단 모듈과 효성 월 대행료를 넣지 않는다.**
+
+**가정 1**(5/10/20km 정확 경계) · **미확인 2**(별지 제22호 · 평가 매뉴얼 PDF) · 신규 snapshot **8**(html 6 · gif 1 · txt 1) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-944 이지케어 역공학 2-4h · ★★★ **주야간 모달 가격이 카드와 다름** · ★★ **도입 수 상승 · 일정확정 취소는 급여를 삭제** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: [price](https://ezcare.easyms.co.kr/index.html?PG=price) HTTP 200 · `9ebcb65c`. [홈](https://ezcare.easyms.co.kr/) `8d8fd308` · 53.9 / 9514 / 4901 / 2353 / 1820. [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) 9,619. [Channel 81ecba1b](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95-%ED%99%95%EC%A0%95-%EC%8B%9C%EC%A0%90-81ecba1b) · [a27fc9bd](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%99%95%EC%A0%95-%EC%B7%A8%EC%86%8C%EB%B0%A9%EB%B2%95-a27fc9bd). 데모 로그인 code=0000 · nav `95286775` BYTE-IDENTICAL. git FE `29c2304` · BE develop `d73aec11` · BE local test `4aad7cc2`.
