@@ -958,27 +958,15 @@ def _roadmap_mark_merged(version_id: str) -> None:
 
     if not ROADMAP_FILE.exists():
         return
-    import re
-
     text = ROADMAP_FILE.read_text(encoding="utf-8")
-    pattern = rf"(## {re.escape(version_id)}[^\n]*\n.*?)(- \*\*merge_status\*\*:\s*)\w+"
-    if not re.search(pattern, text, re.DOTALL):
+    pattern = rf"^## {re.escape(version_id)}(?=[ \t\r\n])[^\n]*\n.*?(?=^## v|\Z)"
+    match = re.search(pattern, text, re.M | re.S)
+    if not match:
         return
-    text = re.sub(
-        pattern,
-        r"\1\2merged",
-        text,
-        count=1,
-        flags=re.DOTALL,
-    )
-    status_pat = rf"(## {re.escape(version_id)}[^\n]*\n.*?)(- \*\*status\*\*:\s*)\w+"
-    text = re.sub(
-        status_pat,
-        r"\1\2done",
-        text,
-        count=1,
-        flags=re.DOTALL,
-    )
+    block = match.group(0)
+    for name, value in (("merge_status", "merged"), ("status", "done")):
+        block = re.sub(rf"(^- \*\*{name}\*\*:[ \t]*)\w+", rf"\g<1>{value}", block, count=1, flags=re.M)
+    text = text[:match.start()] + block + text[match.end():]
     ROADMAP_FILE.write_text(text, encoding="utf-8")
 
 

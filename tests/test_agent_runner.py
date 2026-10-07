@@ -232,5 +232,28 @@ class TesterVerdictTests(unittest.TestCase):
             self.validate(present=False)
 
 
+class RoadmapTests(unittest.TestCase):
+    def test_version_prefix_does_not_mark_a_different_release(self):
+        with tempfile.TemporaryDirectory(prefix="ogada-roadmap-test-") as folder:
+            path = Path(folder) / "ROADMAP.md"
+            text = ("## v3.1 — future\n- **status**: planned\n- **merge_status**: pending\n"
+                    "## v3 — current\n- **status**: in_progress\n- **merge_status**: ready\n"
+                    "## v4 — future\n- **status**: planned\n- **merge_status**: pending\n")
+            path.write_text(text)
+            with patch.object(runner, "ROADMAP_FILE", path):
+                runner._roadmap_mark_merged("v3")
+            expected = text.replace("**status**: in_progress", "**status**: done").replace("**merge_status**: ready", "**merge_status**: merged")
+            self.assertEqual(path.read_text(), expected)
+
+    def test_missing_version_does_not_modify_another_section(self):
+        with tempfile.TemporaryDirectory(prefix="ogada-roadmap-test-") as folder:
+            path = Path(folder) / "ROADMAP.md"
+            text = "## v3.1 — future\n- **status**: planned\n- **merge_status**: pending\n"
+            path.write_text(text)
+            with patch.object(runner, "ROADMAP_FILE", path):
+                runner._roadmap_mark_merged("v3")
+            self.assertEqual(path.read_text(), text)
+
+
 if __name__ == "__main__":
     unittest.main()
