@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:15:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:55:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-943 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · **local develop = test** · origin `@5cf667b`/`@1e8857b4` · ahead **1+2** · WT CLEAN · merge gate **3** · Route **133** · Page **106** · FE test **546** · BE @Test **2474** · HTTP **447** · 모듈 **97.41%**). ★★★ **「109」폐기(화면 105·주석 106·데모 loadPage 112)** · demo-work LIVE **200** 시설 셸 이동서비스 **0** · M7 7-1~7-10 → `/billing` **11/11** · 5-3-1 noready · PDF `96f7d45e` IDENTICAL · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-944 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **주야간 베이직 모달 2028년까지 0원 · 스탠다드 모달 월 70,000원 고정 · 카드는 30,000/100,000** · 셋팅 마감 **2026-10-31** · 홈 **53.9% / 9,514 / 4,901** · fnc **9,619** · 일정확정 취소는 급여 삭제+원천세 잠금 · 엑셀 컬럼 변경 0 · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-944 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 주야간 요금 모달 vs 카드 (BNK-944 #1 · 기존 URL 재실측 · 확인)** | ⚪ 이용료 시드 변경 없음 · 한 숫자로 인용 금지 | ⚪ | ✅ [price](https://ezcare.easyms.co.kr/index.html?PG=price) `9ebcb65c` · D1 카드 월 30,000부터 / 모달 **2028년까지 0원** · D2 카드 월 100,000부터 / 모달 **월 70,000 고정** · 셋팅 **33,000** · 마감 **2026-10-31** · [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) 동일 마감 | ⚪ | ⚪ | `ezcare_price_live_bnk944.html` · §944-1 · 결제 금액 **미확인** |
+| **★★ 도입 수 세 표면 (BNK-944 #2 · 재실측 · 확인)** | ⚪ | ⚪ | ✅ [홈](https://ezcare.easyms.co.kr/) **53.9% / 9,514 / 4,901** · 2,353억·1,820억 유지 · [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) 헤더 **9,619** | ⚪ | ⚪ | BNK-918 홈은 53.2/9298/4675 · §944-1 |
+| **★★★ 일정확정 상태·취소 (BNK-944 #3 · 신규 URL · 확인)** | ✅ `/visits` 일괄 확정취소는 급여·퇴직금을 지우지 않음 · id=7 **1.0** | ⚪ | ✅ `PGID=schedule-fix` `fixed` = 전체/`fix`/`noFix` · 취소 시 청구서·명세서·임금대장·퇴직금 초기화 · [81ecba1b](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95-%ED%99%95%EC%A0%95-%EC%8B%9C%EC%A0%90-81ecba1b) · [a27fc9bd](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%99%95%EC%A0%95-%EC%B7%A8%EC%86%8C%EB%B0%A9%EB%B2%95-a27fc9bd) 원천세 신고 후 취소 제한 · [FAQ 21657](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21657&type=web) | ⚪ | ⚪ | §944-2 · §944-3 · 삭제 동작을 갭으로 올리지 않음 |
+| **★★ 이중 일정 탭 + RFID 8필터 (BNK-944 #4 · 워크플로 · 확인)** | ✅ 급여제공·근무일지·송영이 분리 · RFID 비교 유지 · id=2 **0.85** · 송영 화면 **미확인** | ⚪ | ✅ `schedule-p100` 수급자 일정표 / 요양보호사 일정표 · `sKind` 001/003/002 · `schedule-rfid` `detail` 01·03·04·05·06·07·08·09 · `./run.php` 이중 엑셀 | ⚪ | ⚪ | §944-2 · P4 유지 · 진성갭 아님 |
+| **★ FAQ 전수 · 엑셀 컬럼 0 · git (BNK-944 #5)** | ✅ Route 133 · Page 106 · HTTP **447** · strict @Test **2473** · 모듈 **97.41%** · BE local test `@4aad7cc2` | ⚪ | ✅ [FAQ](https://ezcare.easyms.co.kr/help/faq.ez) rowid **233** · max **21781** · 제목 동일 · 엑셀 제목은 브라우저 다운로드 2건 · [Channel 과금](https://docs.channel.io/ezcare/ko/articles/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-%EC%9B%94-%EC%9D%B4%EC%9A%A9%EB%A3%8C-%EB%B0%8F-%EA%B3%BC%EA%B8%88-%EA%B8%B0%EC%A4%80-19a1422e) SMS **20P** / LMS **50P** · 방문 10,000+500 | ⚪ | ⚪ | `ezcare_price_confirm_workflow_bnk944.txt` · §944-0 · §944-3 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-943 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · **local develop = test** · origin `@5cf667b`/`@1e8857b4` · ahead **1+2** · WT CLEAN · merge gate **3** · Route **133** · Page **106** · FE test **546** · BE @Test **2474** · HTTP **447** · 모듈 **97.41%**). ★★★ **「109」폐기(화면 105·주석 106·데모 loadPage 112)** · demo-work LIVE **200** 시설 셸 이동서비스 **0** · M7 7-1~7-10 → `/billing` **11/11** · 5-3-1 noready · PDF `96f7d45e` IDENTICAL · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-943 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

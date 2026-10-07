@@ -1,9 +1,108 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:15:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:55:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §944 BNK-944 — 이지케어 역공학 2-4h · ★★★ **주야간 베이직 모달이 「2028년까지 전액 무료」로 바뀌었고 스탠다드 모달은 월 70,000원 고정** · 카드 헤드라인은 30,000원·100,000원을 유지 · ★★★ **셋팅비 마감 2026-07-31 → 2026-10-31** · 33,000원 유지 · ★★ **홈 점유율 53.2→53.9 · 이용기관 9,298→9,514 · 회계대행 4,675→4,901** · fnc 헤더는 9,619 · ★★ **일정확정 취소는 급여·퇴직금을 지우고, 원천세 신고가 끝나면 취소를 막음** · ★ 엑셀 컬럼 변경 0 · FAQ 233/21781 동일 · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:55:00Z -->
+
+**조사일**: 2026-10-07T18:55:00Z | **rotation**: 이지케어 역공학 2-4h. BNK-943(2026-10-07T18:15:00Z) 이후 약 40분. 초점: (1) 가격·도입 기관 수 (§944-1) · (2) 데모 `/new.ez` 이중 일정·RFID·일정확정 필드 (§944-2) · (3) FAQ 233건 분류와 Channel.io 확정 글 (§944-3).
+
+### §944-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin/develop = origin/test = `5cf667b` · **ahead 1** · WT CLEAN · BNK-943과 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (origin/develop = origin/test = `1e8857b4` · **ahead 2** · WT CLEAN · BNK-943과 동일 SHA)
+- backend **local test = `4aad7cc2`**. develop 보다 1커밋 뒤다. `d73aec11` US-P01 그룹 API는 local test에 없다.
+- merge gate **3** (FE 1 + BE 2, origin/test 기준). `AGENT_AUTO_PUSH=0`.
+- Route **133** · Page **106** (`*Page.jsx`) · pages jsx 107번째 파일은 `RootRedirect.jsx` · FE test **546**(230+316) · BE test file **304**(303+1) · strict `^\s*@Test\b` **2473** · `@RestController` **82** · `@Entity` **92** · GET **233** / POST **146** / PATCH **45** / PUT **13** / DELETE **10** = HTTP **447** · Flyway V1–V196
+- BNK-943 헤더의 `@Test` **2474**는 같은 SHA에서 이번 strict grep으로 재현되지 않았다. 코드 변경은 없다.
+- `competitorModuleCoverage.js` 29항목 합 **28.25** = **97.41%**. 1 미만은 id=2·8·10 각 0.85, id=12 0.7. FE `/programs/groups` 없음.
+- 전체 `npm test` · 전체 `mvn test`는 이번 문서 사이클에서 **미실행**.
+
+### §944-1 · ★★★ 가격표와 도입 수 — 카드와 모달이 다른 금액을 말한다
+
+| 표면 | 실측 |
+|---|---|
+| [홈](https://ezcare.easyms.co.kr/) | HTTP **200** · 72,778B · `8d8fd308` · `ezcare_home_live_bnk944.html` |
+| [요금](https://ezcare.easyms.co.kr/index.html?PG=price) | HTTP **200** · 64,928B · `9ebcb65c` · `ezcare_price_live_bnk944.html` |
+| [셋팅비 페이지](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | HTTP **200** · 22,979B · `b4dfa146` · `ezcare_charge_live_bnk944.html` |
+| [주요기능](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | HTTP **200** · 17,870B · `bbfbbdff` · `ezcare_fnc_live_bnk944.html` |
+| [Channel 과금](https://docs.channel.io/ezcare/ko/articles/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-%EC%9B%94-%EC%9D%B4%EC%9A%A9%EB%A3%8C-%EB%B0%8F-%EA%B3%BC%EA%B8%88-%EA%B8%B0%EC%A4%80-19a1422e) | HTTP **200** · 263,948B · `80aeb8ab` · `channelio_19a1422e_bnk944.html` |
+
+홈 `data-count`는 BNK-918 `ezcare_home_live_bnk918.html`(53.2 / 9298 / 4675 / 2353 / 1820)과 다르다.
+
+| 라벨 | BNK-918 | BNK-944 |
+|---|---|---|
+| 방문요양 ERP 시장점유율 | 53.2% | **53.9%** |
+| 이지케어 이용기관 | 9,298개 | **9,514개** |
+| 재무회계 대행 이용기관 | 4,675개 | **4,901개** |
+| 월 공단 청구 처리 | 2,353억 원 | 2,353억 원 |
+| 종사자 급여 처리 | 1,820억 원 | 1,820억 원 |
+
+`ezCare_fnc.html` 헤더는 「전국 **9,619개** 기관 사용중」이다. 디스크 `ezcare_fnc.html`은 9,436개였다. 홈 9,514와 fnc 9,619는 같은 시각의 다른 문장이다. 하나의 도입 수로 합치지 않는다.
+
+요금 모달 `priceMap`은 `ezcare_price_live_bnk912.html`(2026-07-19)과 산식이 다르다. 카드 헤드라인은 그 모달과 어긋난다.
+
+| 코드 | 카드에 보이는 말 | 모달 산식 (확인) | 2026-07-19 모달 |
+|---|---|---|---|
+| 셋팅 | 33,000원 · 기준 55,000원 · 40% | **2026. 10. 31**까지 | 「~7월 31일까지」 |
+| V1 방문 기본 | 월 10,000원부터 | 10명까지 10,000 · 이후 1명 500 | 같은 구조 |
+| V2 방문 회계대행 | 월 60,000원부터 · ERP 1만원 포함 | 0명이면 0원, 아니면 50,000+인원×2,000 · 50명부터 문의 | 기본 62,000 표기, 1~10명 2,000 · 11명부터 2,500 |
+| D1 주야간 베이직 | 월 30,000원부터 · **일정·송영 관리** 포함 | `promotionFree` 로 계산액을 지우고 **0원**. 안내 「**2028년까지 전액 무료**」 | 30,000 + 10명 초과 1명당 1,000. 무료 플래그 없음 |
+| D2 주야간 스탠다드 | 월 100,000원부터 | **월 70,000원 고정** · 인원 무관 · 업무 프로그램 0원 | 100,000 + 11명부터 1,000 |
+| D3 주야간 풀케어 | 월 100,000원부터 | 70,000+인원×2,000 · 50명 이상 문의 | 100,000 + 1~10명 2,000 · 11명부터 3,000 |
+| C1·C2 | 통합 베이직 · 통합 풀케어 | C2는 「별도 맞춤 협의」 | priceMap에 없음 |
+
+셋팅비 전용 페이지도 「(2026년 10월 31일까지)」→ 33,000원이다. BNK-798 스냅샷은 「(2026년 07월 31일까지)」였다.
+
+Channel 과금 글은 방문요양 식만 적는다. 「기본료(월 10,000원) + {(해당월+전월 일정관리 수급자 수 − 10) × 500원}」. 문자 단가는 단문 20P(90byte) · 장문 50P(2000byte) · 무료포인트 소진 후. 이 글에는 2028년 무료와 70,000원 고정이 없다. 요금 카드의 사용량 과금 목록은 HTML 주석으로 「사용량과금 삭제」다.
+
+어느 금액이 결제에 쓰이는지는 로그인 가입 화면을 열지 않았다. **미확인**.
+
+### §944-2 · ★★ 데모 셸의 이중 일정 · RFID 필터 · 일정확정
+
+`./scripts/ezcare-demo-fetch.sh --menu-catalog --batch schedule-p100,schedule-rfid,schedule-fix` · 로그인 code=**0000**. 비로그인 `/new.ez`는 **70B** stub `e1d52bd5`. 데모 제목은 「[DEMO 이지케어] 체험 이지케어 재가복지센터」. 내비 `top-nav-item-V2.js?20260428` md5 `95286775` / 25,470B는 기존 정본과 **BYTE-IDENTICAL**. 카탈로그는 모듈 **10** · leaf **148** · PGID **59**.
+
+| PGID | 화면 | 필드 |
+|---|---|---|
+| `schedule-p100` | 「3. 방문일정 - 일정표 출력 및 문자발송」 | 탭 **수급자 일정표** / **요양보호사 일정표**. `sKind` 001 요양 · 003 목욕 · 002 간호. 일정표 가로·세로, 서비스제공 현황표 엑셀, 급여제공기록지, 근무현황표 A/B |
+| `schedule-rfid` | 계획일정 엑셀 + RFID 엑셀 | `./run.php` · `files[]` · `mode=ltm_sDataUpload` / `mode=rfid_upload`. 점검 `detail` 01 모두 안함 · 03 종료만 안함 · 04 시작 · 05 종료 · 06 인정시간 · 07 급여제공자 다름 · 08 직접 입력 · 09 계획없음 |
+| `schedule-fix` | 「4. 일정확정」 | `fixed` 라디오 전체 / `fix` 확정 / `noFix` 미확정. 그리드는 `bill_log`가 있으면 「확정」. 버튼 일정 일괄확정하기 · 일괄 확정취소. 취소 문구는 본인부담금청구서·급여명세서·임금대장·퇴직금을 초기화한다고 한다. `confirmNum_a` 4자리. 확정 전 체크 `chk-ltm-fix` 「공단 청구명세서와 비교하기」 |
+
+BNK-912 `schedule-fix`에 있던 `job_time_*` 등 행 편집 필드는 이번 목록 HTML에 없다. 편집 다이얼로그가 응답에 포함되지 않은 것으로 본다. **가정**. 필드 삭제로 적지 않는다.
+
+요금 카드의 「일정·송영 관리」는 주야간 베이직 문구다. 이번 데모 계정 셸은 재가복지센터이고, 연 세 PGID에 송영 배차 필드는 없다. 주야간 송영 화면은 **미확인**.
+
+### §944-3 · FAQ 233건과 Channel.io 확정 글
+
+[FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) HTTP **200** · 80,058B · `56ddc025`. rowid **233** · 최대 **21781**. 제목 집합은 `ezcare_faq_live_bnk918.html`과 같다. 엑셀 제목은 rowid **21563**(엣지 다운로드) · **21534**(크롬 다운로드) 둘뿐이다. 컬럼·양식·포맷 변경 제목은 **0**.
+
+카테고리 태그(한 글이 두 칸이면 둘 다 센다): 수당/급여관리 64 · 직원관리 47 · 서식출력/설정 35 · 수급자관리 28 · 본인부담금 26 · 일정관리 26 · 기타 20 · 4대보험 15 · 문자발송 8 · 공단연동 7 · 세무 7 · 재무회계 6 · 이용료/요금 5 · 모바일앱 3 · 빈 태그 20.
+
+| URL | 상태 | 본문 |
+|---|---|---|
+| [FAQ 21657 일정확정 가이드](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21657&type=web) | HTTP **200** · 16,726B · `b279860c` · 상세 스냅샷 최초 | 공단 본인부담금이 맞으면 일정 일괄확정. 청구일정 금액은 검은색, 적색이면 계획일정. 월중 본인부담률은 「2.수급자 관리 > 공단조회 변경이력 > 인증서」 |
+| [FAQ 21167 일정확정 취소](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21167&type=web) | HTTP **200** · 14,809B · `884b333a` · 상세 스냅샷 최초 | 일괄 취소, 방문일정 개별 취소, 일정표 아이콘 개별 취소. 급여(퇴직금) 초기화 |
+| [FAQ 21589 RFID 문자](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web) | HTTP **200** · 15,971B · `a5e2e48c` | 방문요양만. 「4.RFID점검 > 4.1 비교 > 급여제공내역(요양)전송」. 평가문항 29번 월 1회 |
+| [Channel 일정 확정 시점](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95-%ED%99%95%EC%A0%95-%EC%8B%9C%EC%A0%90-81ecba1b) | HTTP **200** · 239,032B · `48035519` · 보고서 인용 0회 = **신규 URL** | 그 달 일정을 입력·점검한 뒤 급여 산정과 청구 준비로 마무리 |
+| [Channel 일정확정 취소방법](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%99%95%EC%A0%95-%EC%B7%A8%EC%86%8C%EB%B0%A9%EB%B2%95-a27fc9bd) | HTTP **200** · 243,050B · `251625f3` · 보고서 인용 0회 = **신규 URL** | 급여/퇴직금 초기화. 확인번호 4자리. 급여명세서가 있고 원천세 신고까지 끝났으면 취소가 막히고, 재무회계에 마감 해제를 요청 |
+| [Channel 허브](https://docs.channel.io/ezcare/ko) | HTTP **200** · 218,877B · `1a90fe0b` | article slug **222** |
+
+`ezCare_fnc.html` 본문 기능 6개는 요양보호사·수급자 관리, 일정관리, 공단일정 엑셀 가져오기, 방문일정 조회/집계, 본인부담금, 요양보호사 급여다. 「공단사이트와의 연동」 문단은 주석 처리되어 있고 「2016.03.28 서비스종료(엑셀파일 연동으로 변경)」가 남아 있다.
+
+### §944-4 · planner 액션
+
+1. **주야간 가격을 한 숫자로 인용하지 않는다.** D1 카드는 월 30,000원부터이고 모달은 2028년까지 0원이다. D2 카드는 월 100,000원부터이고 모달은 월 70,000원 고정이다. Channel 과금 글은 방문요양 10,000원+500원만 적는다. ogada 수가·이용료 시드는 바꾸지 않는다.
+2. **셋팅비 프로모션 종료일은 2026-10-31이다.** 금액은 55,000원에서 40%를 뺀 33,000원. 홈 도입 수는 9,514, fnc 헤더는 9,619. 둘을 한 지표로 쓰지 않는다. 청구 2,353억·급여 1,820억은 그대로다.
+3. **일정확정의 급여 삭제와 원천세 잠금은 ogada 갭이 아니다.** 이지케어는 확정 취소 때 급여·퇴직금 자료를 지우고, 원천세 신고가 끝나면 취소를 막는다. ogada `batchUnconfirmVisitsApi`는 그 삭제를 따라 하지 않는다. id=7 커버는 1.0.
+4. **이중 일정 탭은 P4로 둔다.** `schedule-p100`은 수급자 일정표와 요양보호사 일정표를 한 화면의 탭으로 둔다. ogada는 급여제공 기록·근무일지·송영 시트가 나뉘어 있다. 진성갭으로 올리지 않는다. 주야간 송영 화면 필드는 미확인. id=2는 0.85 유지.
+5. **RFID 비교 필터 8종은 방문요양 엑셀 대조다.** ogada `VisitRfidDiffCompare`와 급여제공 문자(FAQ 21589)는 유지. 엑셀 컬럼 변경 신호는 0. id=10은 0.85.
+6. **baseline.** FE `@29c2304` · BE develop `@d73aec11` · BE local test `@4aad7cc2` · HTTP **447** · 모듈 **97.41%** · 신규 진성갭 **0**.
+
+**가정 1**(schedule-fix 행 편집 필드가 목록 응답에 없을 뿐 삭제된 것은 아님) · **미확인 2**(가입 결제가 카드/모달/Channel 중 어느 금액을 쓰는지 · 주야간 송영 화면 필드) · 신규 snapshot **13**(html 12 + txt 1) · per-cycle minimum 충족.
 
 ## §943 BNK-943 — 케어포 역공학 0-2h · ★★★ **「109」폐기 — 주야간 화면 leaf 105 · 주석 106 · 시설 데모 loadPage 112** · ★★★ **demo-work LIVE HTTP 200 복귀(시설 셸, 이동서비스 모듈 0)** · ★★ **M7 7-1~7-10 화면 번호가 두 셸에서 같고 ogada `/billing` 11/11** · ★★ **5-3-1 그룹관리는 마케팅 공백·데모 noready** · ★ **PDF LIVE `96f7d45e` 동일 · 2018 번호는 현재 메뉴 id가 아님** · ★ **BE `@4aad7cc2` → `@d73aec11` US-P01 그룹 API · HTTP 442→447** — FE `@29c2304` · Route **133** · Page **106** · FE test **546** · @Test **2474** · 모듈 **97.41%** · 신규 진성갭 0 · merge gate **3**
 

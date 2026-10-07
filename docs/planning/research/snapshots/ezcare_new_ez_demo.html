@@ -33,7 +33,7 @@
 	<script src="/assets/ui-custom.js?20260318" type="text/javascript"></script>
 
 	<link href="/assets/common.css?20260514" rel="stylesheet" type="text/css" />
-	<script src="/assets/common.js?20260629" type="text/javascript"></script>
+	<script src="/assets/common.js?20260910" type="text/javascript"></script>
 
 <!-- 상단 메인메뉴 항목 -->
 	<script src="/assets/top-nav-item-V2.js?20260428" type="text/javascript"></script>
@@ -204,7 +204,7 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1784496493#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1791398650#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
@@ -286,10 +286,6 @@
 					<a class="nav-link popup-icon yellow" href="#" onclick="window.open('https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96','ezFaq','width=1330,height=1000, top=50, left=0, popup=yes, scrollbars=yes')" hit-id="4813">FAQ</a>
 				</div>
 			</li>
-			<!-- 채널톡 -->
-			<!-- <li class="nav-item">
-				<a class="nav-link btn-ChannelIO" href="javascript:;" style="background:yellow; color:#333; font-weight:bold; text-align:center;animation: Blink_bg .5s 10 alternate;" hit-id="50180">AI 상담원에<br>채팅으로<br>문의 하기</a>
-			</li> -->
 			<li class="small_title ">2026년 기관평가</li>
 			<li>
 				<a class="py-2 nav-link" href="?PGID=guide-E100#tab0" hit-id="4814">서류작성현황</a>
@@ -299,385 +295,8 @@
 			<li class="small_title" style="letter-spacing:-1px">구인구직 | 케어매치</li>
 			<li style="position:relative">
 				
-<!-- jquery -->
-<script src="/js2/plugin/mh.jquery.select-search.js" type="text/javascript"></script>
-
 <style type="text/css">
-	#frm-jobPostInsert .form-item{ margin:1.5em 0 ; }
-	#frm-jobPostInsert .form-item dt { color:#444; font-size:12px; line-height:1.2; margin-bottom:3px; border-radius:3px }
-	#frm-jobPostInsert .form-item label:not(.ui-button):hover{ cursor:pointer; font-weight:bold; color:blue; text-decoration:underline}
-
-	dt small { font-size:11px; font-weight:normal; color:666}
-
-	.timepicker { text-align:center }
-
-	#frm-jobPostInsert .form-item .checkbox {
-		display:grid; grid-template-columns: repeat(3, 1fr);
-		margin-left:1em;
-	}
-	#frm-jobPostInsert .form-item .checkbox label { height:25px; }
-</style>
-
-<div id="dialog-post-insert" title="구인공고 등록" dialog-win>
-	<div>
-		<div style="color:#999; font-size:11px;">
-			추가 상세 정보는 등록 후 ‘구인공고 관리’에서 입력/수정할 수 있습니다.
-		</div>
-		<div style="background:#ccffcc; ; padding:5px 10px; border-radius:5px;">
-			<ul style="margin:0; padding:0; padding-left:1.5em; list-style:disc">
-				<li>필수 정보만 입력하면 구인공고가 등록됩니다.</li>
-				<!-- <li>[현재] 즉시 <em style="font-weight:bold">종사자 이용앱(약 1만 5천명)</em>에 노출됩니다.</li> -->
-				<li>[예정] ’26년 3월 이내 <em style="text-decoration:underline; font-weight:bold;">고용24(워크넷) 연동 등록을 지원</em>합니다.</li>
-			</ul>
-		</div>
-	</div>
-	<form name="frm-jobPostInsert" id="frm-jobPostInsert" onsubmit="return false;" autocomplete="off">
-		<input type="hidden" name="wanted_auth_no" value="">
-		<input type="text" style="position:absolute; left:-10000px;">
-		<div class="form-item">
-			<dt>대상 수급자 선택(선택/생략가능) <small>선택시 등급/성별/근무지 정보를 자동으로 불러옵니다.</small></dt>
-			<select id="pick_patient" style="width:190px" ><option>---</option></select> 
-			<input type="hidden" id="pCode" name="pCode" >
-		</div>
-		<div class="d-flex" style="margin:0 !important; padding:0 !important">
-			<div class="form-item mr-5" style="margin:0; padding:0 !important">
-				<dt>성별</dt>
-				<div class="ui-group">
-					<label><input type="radio" name="rcp_sex" value="남" required>남</label>
-					<label><input type="radio" name="rcp_sex" value="여" >여</label>
-				</div>
-			</div>
-			<div class="form-item mx-5" style="margin:0; padding:0 !important">
-				<dt>등급</dt>
-				<select name="rcp_grade" required>
-					<option value="">=등급=</option>
-					<option value="1등급">1등급</option>
-					<option value="2등급">2등급</option>
-					<option value="3등급">3등급</option>
-					<option value="4등급">4등급</option>
-					<option value="5등급">5등급</option>
-					<option value="기타">기타</option>
-				</select>
-			</div>
-			<div class="form-item mx-5" style="margin:0; padding:0 !important">
-				<dt>수급자 연령대</dt>
-				<select name="rcp_age" required>
-					<option value="">-선택-</option>
-					<option value="100세 이상">100세 이상</option>
-					<option value="">--------</option>
-					<option value="90대 후반">90대 후반</option>
-					<option value="90대 중반">90대 중반</option>
-					<option value="90대 초반">90대 초반</option>
-					<option value="">--------</option>
-					<option value="80대 후반">80대 후반</option>
-					<option value="80대 중반">80대 중반</option>
-					<option value="80대 초반">80대 초반</option>
-					<option value="">--------</option>
-					<option value="70대 후반">70대 후반</option>
-					<option value="70대 중반">70대 중반</option>
-					<option value="70대 초반">70대 초반</option>
-					<option value="">--------</option>
-					<option value="60대 후반">60대 후반</option>
-					<option value="60대 중반">60대 중반</option>
-					<option value="60대 초반">60대 초반</option>
-					<option value="">--------</option>
-					<option value="60대 이하">60대 이하</option>
-
-				</select>
-				<!-- <input type="text" name="rcp_age" required placeholder="예: 70대 초반"> -->
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="form-item">
-				<dt>급여종류</dt>
-				<div class="ui-group">
-											<label><input type="radio" name="job_type" value="01" required>방문요양</label>
-											<label><input type="radio" name="job_type" value="02" required>방문목욕</label>
-											<label><input type="radio" name="job_type" value="03" required>방문간호</label>
-									</div>
-			</div>
-			<div class="form-item ml-7">
-				<dt>임금조건</dt>
-				<select name="job_pay_type">
-											<option value="01">시급</option>
-											<option value="02">일급</option>
-											<option value="03">월급</option>
-											<option value="04">건당</option>
-									</select>
-				<input type="text" name="job_pay" placeholder="예: 12,500" required amt style="text-align:right; padding-right:7px;"> 원
-			</div>
-		</div>
-		<div class="form-item" >
-			<dt>서비스제공요일(근무요일)</dt>
-			<div class="ui-group">
-				<label style="width:35px"><input type="checkbox" name="job_days" value="월">월</label>
-				<label style="width:35px"><input type="checkbox" name="job_days" value="화">화</label>
-				<label style="width:35px"><input type="checkbox" name="job_days" value="수">수</label>
-				<label style="width:35px"><input type="checkbox" name="job_days" value="목">목</label>
-				<label style="width:35px"><input type="checkbox" name="job_days" value="금">금</label>
-				<label style="width:35px"><input type="checkbox" name="job_days" value="토">토</label>
-				<label style="width:35px"><input type="checkbox" name="job_days" value="일">일</label>
-			</div>
-		</div>
-		<div class="form-item" style="grid-column: 2 / span 2">
-			<dt>근무&서비스 시간 <small>시작/종료 입력 시 근무시간이 자동 계산됩니다.</small>
-			</dt>
-			<input type="text" name="job_time_start" id="job_time_start" class="timepicker" required placeholder="시작" readonly> ~
-			<input type="text" name="job_time_end" id="job_time_end" class="timepicker" required placeholder="종료" readonly>
-			<input type="text" name="job_time_min" id="job_time_min" placeholder="서비스시간" required style="margin-left:20px; text-align:center" readonly>
-		</div>
-		<div class="form-item ">
-			<dt>근무지<small>(수급자 소재지. 공고에는 시/구까지만 노출됩니다.)</small></dt>
-			<input type="text" name="job_location" class="width60" required placeholder="예: 대구광역시 수성구" readonly>
-			<button type="button" class="ui-button btn-searchAddress">주소검색</button>
-			<input type="hidden" name="job_address">
-			<input type="hidden" name="job_location_code">
-			<input type="hidden" name="search_address_string" id="search_address_string"><!-- 주소검색시 수급자 주소 자동 전달위해 추가 삭제금지 -->
-		</div>
-		<div class="form-item  ">
-			<dt>구인 공고 제목</dt>
-			<input type="text" name="subject" required placeholder="예: 방문요양 요양보호사 구인(금천구/주 3일/오후 3시간)" style="width:100%">
-		</div>
-		<div>
-		</div>
-
-		<div class="bottom-action-button" style="border:0px; text-align:right">
-			<button type="button" class="ui-button" dialog-close>닫기</button>
-			<button type="submit" class="ui-button" >구인공고 등록하기</button>
-		</div>
-	</form>
-</div>
-
-
-
-<script>
-
-	function patient_data(obj){
-		//수급자 리스트 select 셋
-		ezAjax({
-			url: '/addService/recruit/json.php?data=get-patient-data',
-			type: 'post',
-			dataType: 'json', //data: postData,
-			mask: '#contentsFrame',
-			success: function (data) {
-				$.each(data, function(code, info){
-					var option = $("<option>")
-						.val(`
-							{
-								"code":"${info.code}",
-								"age":"${info.age}",
-								"dLevel":"${info.dLevel}",
-								"sex":"${info.sex}",
-								"address":"${info.address1}"
-							}
-						`)
-						.text(`${info.name} / ${info.sex} / ${info.dLevel} / ${info.age||"--"}세`);
-					$(obj).append(option);
-				});
-
-				$(obj).searchSelect({
-					onSelect:function(val, txt){
-						//console.log('check11');
-						//console.log(val, txt);
-						let o = $(obj).closest("form");
-						val = JSON.parse(val);
-						o.find(`#pCode`).val(val.code);
-						o.find(`[name="rcp_age"]`).val(ageGroup(val.age));
-						o.find(`[name="rcp_sex"][value="${val.sex}"]`).prop("checked", true).trigger("change");
-						o.find(`[name="rcp_grade"]`).val(val.dLevel);
-						o.find(`#search_address_string`).val(val.address);
-					},
-					beforeSearch:function(){}
-				});
-
-				//console.log(data);
-				//console.log($(obj));
-			}
-		});
-	}
-	patient_data("#pick_patient-a2");
-
-
-	$("#frm-jobPostInsert").submit(function(){
-		
-					alert("데모체험 중입니다.<br>구인공고를 등록할 수 없습니다.");
-			return;
-				const postData = mk_postData(this, "name");
-		if(!postData) return;
-
-		let set_of = "";
-		let set_button = "";
-
-		if (location.href.includes("?PGID=job-post")) {
-			set_of = "#jobPostDetail";
-			set_button = {
-				"확인": function(){
-					$(this).dialog("close");
-					$("#grid-job-post-list tr.jqgrow:eq(0)").trigger('click');
-				}
-			}
-		}else{
-			set_of = "main";
-			set_button = {
-				"닫기": function(){
-					$(this).dialog("close");
-				},
-				"구인공고 관리로 이동하기": function(){
-					$(this).dialog("close");
-					location.href="?PGID=job-post#focus";
-				}
-			}
-		}
-
-		ezAjax({
-			url: '/addService/recruit/run.php?mode=job-post-create',
-			type: 'post',
-			data: postData,
-			success: function (result) {
-				if(result=="0000"){
-					$("#dialog-post-insert").dialog("close");
-					alert({
-						width:400, height:220,
-						position:{my:"center", at:"center", of: set_of},
-						title:"구인공고가 등록되었습니다",
-						message:"<div style='font-size:13px'>구인공고 관리 - 상세 영역에서 내용을 확인·수정할 수 있습니다.<br><br>근무조건/상세내용을 더 입력할수록<br>구직자에게 더 정확히 노출되어 조회·지원율이 올라갑니다.</div>",
-						buttons:set_button,
-						open:function(){
-							$("#grid-job-post-list").trigger('reloadGrid');
-							$("#dialog-post-insert").dialog("close");
-						}
-					});
-
-				}else alert(result);
-			}
-		});
-	});
-
-$(document).on("change keyup",
-    '#frm-jobPostInsert [name="job_location"], #frm-jobPostInsert [name="job_type"], #frm-jobPostInsert [name="rcp_grade"], #frm-jobPostInsert [name="rcp_sex"], #frm-jobPostInsert [name="rcp_age"]',
-    makeJobTitle
-);	
-function extractLastAddressPart(addr) {
-    if (!addr) return "";
-    const parts = addr.trim().split(/\s+/);
-    return parts[parts.length - 1];
-}
-function makeJobTitle() {
-    const fullPlace = $('#frm-jobPostInsert [name="job_location"]').val()?.trim() || "";
-    const place   = extractLastAddressPart(fullPlace);
-    const jobType = $('#frm-jobPostInsert [name="job_type"]:checked').parent().text() || "";
-    const grade   = $('#frm-jobPostInsert [name="rcp_grade"]').val() || "";
-    const sex     = $('#frm-jobPostInsert [name="rcp_sex"]:checked').val() || "";
-    const age     = $('#frm-jobPostInsert [name="rcp_age"]').val() || "";
-
-    // sex 값 한국어 처리
-    const sexLabel = sex ? (sex === "남" ? "남자" : "여자") : "";
-
-    // grade 뒤에 “등급” 붙이기
-    const gradeLabel = grade ? `${grade}` : "";
-
-    // 배열로 구성 후 빈값 제거
-    let  parts = [place, jobType, age, gradeLabel, sexLabel].filter(v => v);
-
-    // ➜ 순서를 랜덤으로 섞기
-    parts = shuffle(parts);
-
-    // " / " 로 연결
-    let title = parts.join(" / ");
-	title += " 어르신 케어 모집";
-
-    $('#frm-jobPostInsert [name="subject"]').val(title);
-}
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; // swap
-    }
-    return array;
-}
-
-function ageGroup(age){
-	age = Number(age);
-	if (!Number.isFinite(age)) return ""; // 필요 없으면 삭제
-
-	if (age >= 100) return "100세 이상";
-	if (age <= 60)  return "60대 이하";
-
-	const d = Math.floor(age / 10) * 10;
-	const r = age % 10;
-	return `${d}대 ${r <= 3 ? "초반" : r <= 6 ? "중반" : "후반"}`;
-}
-</script>
-<style type="text/css">
-	#carematch-sidebar-bubble {
-		display:none;
-		position: absolute;
-		max-width: 520px;
-		padding: 10px 12px;
-		border-radius: 12px;
-		background: #f4f7fb;
-		border: 1px solid #42B9C3;
-		box-shadow: 3px 3px 10px rgba(10,10,10,0.5);
-		color: #111827;
-		line-height: 1.3;
-		top:-10px; left:105px; z-index:1;
-		width:270px;
-		text-align:left;
-	}
-	#carematch-sidebar-bubble::before{
-		content:"";
-		position:absolute;
-		left:-10px;          /* 꼬리가 밖으로 */
-		top: 14px;           /* 높이 위치 */
-		width:0; height:0;
-		border-top:8px solid transparent;
-		border-bottom:8px solid transparent;
-		border-right:10px solid #f4f7fb; /* 말풍선 배경색과 동일 */
-	}
-	#carematch-sidebar-bubble::after{
-		content:"";
-		position:absolute;
-		left:-11px;
-		top: 14px;
-		width:0; height:0;
-		border-top:9px solid transparent;
-		border-bottom:9px solid transparent;
-		border-right:11px solid #42B9C3; /* border 색상과 동일 */
-		z-index:-1; /* 말풍선 뒤로 */
-	}
-	#carematch-sidebar-bubble:hover { border-color:#0a8f9a  }
-	#carematch-sidebar-bubble:hover::after{border-right:11px solid #42B9C3;}
-	#carematch-sidebar-bubble ul { list-style:disc; padding-left:1em; font-size:12px;}
-	#carematch-sidebar-bubble ul li {list-style:none;  margin:8px 0px}
-	#carematch-sidebar-bubble ul li p{display:inline-block; width:80%; margin:0; }
-	#carematch-sidebar-bubble ul li .small-txt{font-size:11px; color:#777;}
-	#carematch-sidebar-bubble ul li:hover *{ cursor:pointer; text-decoration:underline;/* background:#efefef; font-weight:bold; */ }
-	#carematch-sidebar-bubble .top.close-bubble::after {
-		content: "\d7";
-		font-size: 20px; display:inline-block;
-		height: 22px; font-weight:500; border:1px solid #ccc; border-radius:3px;
-		line-height: 20px;
-		color: #666;
-		cursor: pointer;
-		text-align: center;
-		position:absolute; right:5px; top:5px
-	}
-	#carematch-sidebar-bubble .top.close-bubble:hover::after{
-	background:red; color:#fff;
-	}
-	#carematch-sidebar-bubble .close-bubble {cursor:pointer}
-	#carematch-sidebar-bubble .close-bubble:hover{ font-weight:bold}
-	#carematch-sidebar-bubble h3{font-size:16px; margin-bottom:1em; color:#0A8F9A;}
-	#carematch-sidebar-bubble .cnt {display:inline-block; width:40px; padding-right:5px; text-align: right; font-weight:700; color:#f4580b; font-size:1.1em}
-	#btn-carmatch-open.blink:after{ border-color: transparent transparent red transparent  !important; -webkit-animation:Blink .8s infinite;}
-	#dialog-goyong24-post table{width:100%;}
-	#dialog-goyong24-post table th{background:#eee;}
-	#dialog-goyong24-post table td{padding:2px 5px;}
-	#dialog-goyong24-post em {font-weight:bold;}
-	#dialog-goyong24-post #postCompleteMessage {display:none; position:absolute; background-color:rgba(255,255,200,.85); width:100%; height:calc(100% - 25px);z-index:10;  text-align:center; font-weight:700; padding:2em;}
-	#dialog-goyong24-post .act-button {background:#0A8F9A; color:#fff; outline:none; border:0; }
-
+	
 	#carematch-notify{
 		background:red; color:#fff !important;
 		font-weight:500; text-align:center; font-size:13px;
@@ -686,89 +305,207 @@ function ageGroup(age){
 	}
 </style>
 
-<div id="carematch-sidebar-bubble">
-	<div class="close-bubble top" value="0"></div>
-	<h3>🔔 구인구직(케어매치) 알림</h3>
-	<ul hit-id="52240">
-		<li class="goyong24">
-			<div class="d-flex between">
-				<div>고용24 구인공고 등록 알림</div>
-				<div><span class="cnt">00</span>건</div>
-			</div>
-			<div class="small-txt">(최근 1개월 이내)</div>
-		</li>
-		<li class="jobPost1" onclick="openCareMatch('job-post')">
-			<div class="d-flex between">
-				<div>케어매치 등록 채용공고(진행중)</div>
-				<div><span class="cnt">00</span>건</div>
-			</div>
-		</li>
-		<li class="jobPost2" onclick="openCareMatch('job-post')">
-			<div class="d-flex between">
-				<div>미확인 입사지원자</div>
-				<div><span class="cnt">00</span>명</div>
-			</div>
-		</li>
-		<li class="talentPool" onclick="openCareMatch('talent-pool')">
-			<div class="d-flex between">
-				<div>대구광역시 요양보호사 인력풀 현황 </div>
-				<div><span class="cnt">00</span>명</div>
-			</div>
-			<div class="small-txt">(최근 30일 이내 활동)</div>
-		</li>
-	</ul>
-	<div class="d-flex ">
-		<div class="ml-auto mr-3 close-bubble" value="5">7일간 그만보기</div>
-		<div class="close-bubble" value="1">오늘 그만보기</div>
-	</div>
+<style>
+  /* 팝업 컨테이너 */
+  .notify-popover {
+  	display:none;
+  	position:absolute;
+  	top:-10px;
+  	left:105px;
+  	z-index:200;
+    width: 280px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 5px 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.7);
+    border: 2px solid #B71C1C;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    overflow: hidden;
+  }
+
+  /* 헤더 스타일 */
+  .popover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #eff6ff;
+    color: #B71C1C;
+    border-radius: 50%;
+  }
+
+  .header-title h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #B71C1C;
+  }
+
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.15s ease;
+  }
+
+  .btn-close:hover {
+    color: #475569;
+  }
+
+  /* 본문 스타일 */
+  .popover-body {
+  	text-align: left;
+    padding: 12px;
+  }
+
+  .message-box {
+    margin-bottom: 16px;
+  }
+
+  .notice-tag {
+    margin: 0 0 6px 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: -0.2px;
+  }
+
+  .notice-desc {
+    margin: 0 0 4px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #334155;
+    font-weight: 500;
+  }
+
+  .highlight-badge {
+    display: inline-block;
+    color: #2563eb;
+    font-weight: 700;
+    background: #dbeafe;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* 메인 버튼 */
+  .btn-sidebar-alert {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #D32F2F;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .btn-sidebar-alert:hover {
+    background: #B71C1C;
+  }
+
+  .btn-sidebar-alert:active {
+    transform: scale(0.99);
+  }
+
+  /* 푸터 스타일 */
+  .popover-footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 8px;
+    padding: 6px 16px;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .btn-sub {
+    background: none;
+    border: none;
+    font-size: 11px;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .btn-sub:hover {
+    color: #334155;
+    text-decoration: underline;
+  }
+
+  .divider {
+    font-size: 10px;
+    color: #cbd5e1;
+  }
+</style>
+
+<div id="carematch-notify" class="d-none">0</div>
+
+<div class="notify-popover" id="carematch-sidebar-bubble">
+  <!-- 헤더 영역 -->
+  <div class="popover-header">
+    <div class="header-title">
+      <div class="icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+      </div>
+      <h2>요양보호사 지원 알림</h2>
+    </div>
+    <button type="button" class="btn-close close-bubble" value="0" aria-label="닫기">&times;</button>
+  </div>
+
+  <!-- 본문 영역 -->
+  <div class="popover-body">
+  	<div class="message-box">
+  		<p class="notice-tag">채용 공고에 새로운 지원자가 있습니다.</p>
+  		<div id="popover-notice-list"></div>
+  	</div>
+
+    <!-- 메인 액션 버튼 -->
+    <button type="button" class="btn-sidebar-alert" onclick="openCareMatch('job-post')" hit-id="52240">
+      미확인 지원자 <span class="apply_cnt"></span>명 확인하기
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 푸터 영역 (옵션) -->
+  <div class="popover-footer">
+    <button type="button" class="btn-sub close-bubble" value="1">오늘 그만보기</button>
+  </div>
 </div>
 
-
-<div id="dialog-goyong24-post" dialog-win title="고용24 채용공고 → 케어매치 등록">
-<input type="text" style="position:absolute;top:-1000px">
-	<p style="font-size:13px;">
-		<em>체험 이지케어 재가복지센터</em>(617-80-0000)의 고용24 채용공고(Open API)를 조회한 결과,<br>
-		1개월 이내 다음( 0건 )의 채용공고가 확인됩니다.<br>
-		동일 채용공고를 케어매치에도 등록하시겠습니까?
-	</p>
-	<div style="position:relative">
-		<div id="postCompleteMessage">
-			케어매치에 채용공고가 등록되었습니다.</span><br><br>케어매치는 불필요한 입력과 공고 노출 부담을 줄이며,<br>인력풀 확장과 현장 의견을 반영해 채용 지원 서비스를 지속 고도화하겠습니다.<br><br>
-			<button type="button" class="ui-button act-button" style="font-size:14px" onclick="openCareMatch('job-post')">케어매치 등록공고 확인하기</button>
-		</div>
-		<table border="1" style="min-height:120px" id="wanted-list-table">
-			<tr align="center" style="height:30px">
-				<th>등록일</th>
-				<th>공고제목</th>
-				<th>근무지</th>
-				<!-- <th>공고상세</th> -->
-				<th>케어매치 등록</th>
-			</tr>
-			<tbody id="wanted-list-table-body">
-				<tr style="height:80px;">
-					<td colspan="4" style="text-align:center;">확인된 공고가 없습니다.</td>
-				</tr>
-			</tbody>
-		</table>
-
-	</div>
-</div>
 
 <script>
 
-	let bubbleClose = null;
-
-	$(".btn-searchAddress").on("click", function(){
-		jusoSearch($(this).closest("form").attr("id"));
-	});
-
-	const tmp_ADD_SERVICE_JOB = "Y";
-
-	// 사이드바 데이터 가져오기
-	initCarematchSidebarData();
-
-	function initCarematchSidebarData() {
-
+	$(function(){
 		$.ajax({
 			url: '/addService/recruit/work24/json.work24.php?data=carematch-sidabar-data',
 			type: 'post',
@@ -776,74 +513,32 @@ function ageGroup(age){
 			data: {},
 		})
 		.done(function(data) {
-			//console.log("success");
-			//console.log(data);
-			const carematchSidebarData = data;
+			console.log(data);
+
 			let csd_hasAny = false;
-			let alarm_cnt = 0;
-
-			$.each($("#carematch-sidebar-bubble ul li"),function(idx, obj){
-				let key = $(obj).attr("class");
-				if (carematchSidebarData[key]) {
-					$(`#carematch-sidebar-bubble .${key} .cnt`).text(carematchSidebarData[key]);
-					csd_hasAny = true;
-					alarm_cnt += carematchSidebarData[key];
-					//console.log(cnt);
-				} else {
-					$(`#carematch-sidebar-bubble .${key}`).remove();
-				}
-			});
-
-			if($.cookie("carematch-sidebar-bubble")!="hide" && csd_hasAny){
-				setTimeout(function(){
+			let apply_cnt = data.apply_cnt;
+			let popoverNoticeList = document.getElementById('popover-notice-list');
+			popoverNoticeList.innerHTML = '';
+			
+			if (apply_cnt > 0) {
+				$(`#carematch-sidebar-bubble .apply_cnt`).text(apply_cnt);
+				csd_hasAny = true;
+				if($.cookie("carematch-sidebar-bubble")!="hide")
 					$("#carematch-sidebar-bubble").show("fast");
-				},500);
-			}else{
-				if(csd_hasAny) {
-					$("#btn-carmatch-open").addClass("blink");
+				$("#btn-carmatch-open").addClass("blink");
+				$("#carematch-notify").text(apply_cnt).removeClass("d-none");
+
+				let noticeListHtml = '';
+				for (let el of data.apply_data) {
+					noticeListHtml += `
+						<p class="notice-desc">
+			  			<span class="highlight-badge">${(el.wanted_auth_no != '') ? '고용24' : '케어매치'}</span>
+			  			${ el.job_location }
+			  		</p>
+					`;
 				}
+				popoverNoticeList.innerHTML = noticeListHtml;
 			}
-
-			$("#btn-carmatch-open.blink").mouseover(function(){
-				//if($.cookie("carematch-sidebar-bubble")!="hide") $("#carematch-sidebar-bubble").show();
-				$("#carematch-sidebar-bubble").show();
-
-				// // 사이드바 버튼 hover 시 띄운 알림말풍선 2초 후 사라지도록
-				// // (#carematch-sidebar-bubble 에 hover 시 timeout 을 취소한다)
-				// bubbleClose = setTimeout(function() {
-				// 	$("#carematch-sidebar-bubble").fadeOut();
-				// }, 2000);
-			});
-			$("#btn-carmatch-open.blink").mouseleave(function(){
-				$("#carematch-sidebar-bubble").fadeOut();				
-			});
-
-			 // 구인구직 알림 말풍선 (#carematch-sidebar-bubble) 에 hover 시 timeout 을 취소한다
-			$('#carematch-sidebar-bubble').mouseenter(function() {
-				clearTimeout(bubbleClose);
-			});
-
-			 // 구인구직 알림 말풍선에서 mouseleave 하면 말풍선 사라지도록
-			$('#carematch-sidebar-bubble').mouseleave(function() {
-				bubbleClose = setTimeout(function() {
-					$("#carematch-sidebar-bubble").fadeOut();
-				}, 2000);
-			});
-
-
-			if (carematchSidebarData.goyong24 && carematchSidebarData.goyong24 > 0) {
-				$('#wanted-list-table-body').html('');
-				for (let row of carematchSidebarData.wantedData.wanted) {
-					let rowHTML = '<tr>';
-					rowHTML += '<td align="center">' + row.regDt + '</td>';
-					rowHTML += '<td><a href="' + row.wantedInfoUrl + '" target="_blank">' + row.title + '</a></td>';
-					rowHTML += '<td>' + row.region + '</td>';
-					rowHTML += '<td align="center"><button class="ui-button size-sm" onclick="openPostInsertForm(\'' + row.wantedAuthNo + '\')"> 등록하기</button></td>';
-					rowHTML += '</tr>';
-					$('#wanted-list-table-body').append(rowHTML);
-				}
-			}
-			if(alarm_cnt) $("#carematch-notify").text(alarm_cnt).removeClass("d-none");;
 		})
 		.fail(function() {
 			console.log("initCarematchSidebarData error");
@@ -851,94 +546,30 @@ function ageGroup(age){
 		.always(function(res) {
 			//console.log("complete");
 		});
-	}
-
-	function openPostInsertForm(authNo) {
-		if(tmp_ADD_SERVICE_JOB!="Y"){
-			alert({
-				title:"요양보호사 구인(케어매치) 알림",
-				message:"이지케어 요양보호사 구인 서비스(케어매치)<br> 서비스 이용 정보 등록 후 이용가능합니다.",
-				position:{my:"left top", at:"right+10 top", of:"#dialog-goyong24-post"},
-				buttons:{
-					"케어매치 더알아보기":function(){
-						openCareMatch();
-						$(this).dialog("close");
-					}
-				}
-			});
-			return false;
-		}
-
-		$("#dialog-post-insert").dialog({
-			modal: true,
-			width: 550,
-			height: 'auto',
-			position: {my:'left top', at:'right+5 top+55', of:'#side-bar'},
-			open: function(){
-
-				ezAjax({
-					url: '/addService/recruit/work24/json.work24.php?data=wanted-info',
-					type: 'post',
-					dataType: 'json',
-					data: {auth_no: authNo},
-					success: function (data) {
-						//console.log(data);
-						patient_data("#pick_patient");
-						setNameCol('#frm-jobPostInsert', {
-							job_type: '01',
-							job_days: data.jobDays || '',
-							job_time_start: data.jobTimeStart || '',
-							job_time_end: data.jobTimeEnd || '',
-							job_time_min: data.jobTimeMin || '',
-							job_pay: data.jobPay || '',
-							job_location: data.jobLocation || '',
-							job_location_code: data.jobLocationCode || '',
-							job_address: data.jobAddress || '',
-							subject: data.wantedTitle || '',
-							wanted_auth_no: data.wantedAuthNo || '',
-						}, 'name');
-						$('#frm-jobPostInsert input[name="job_type"]').checkboxradio("refresh");
-						$('#frm-jobPostInsert input[name="job_days"]').checkboxradio("refresh");
-					}
-				});
-			}
-		});
-	}
-
-	
-
-	
-
-	$("#carematch-sidebar-bubble .goyong24").click(function(){
-		$("#dialog-goyong24-post").dialog({
-			modal:true,
-			width:"550", height:"auto",
-			position:{my:"left bottom", at:"left bottom", of:"#carematch-sidebar-bubble"}
-		});
 	});
+
 
 	$("#carematch-sidebar-bubble .close-bubble").click(function(){
 		var day = $(this).attr("value")*1;
-		//console.log(day);
-		/*$.cookie("carematch-sidebar-bubble","hide", {
-			path: "/",
-			//(day > 0 ? { expires: day } : {})
-		});*/
 		$.cookie("carematch-sidebar-bubble", "hide", Object.assign(
 			{ path: "/" },
 			day > 0 ? { expires: day } : {}
 		));
 		$("#carematch-sidebar-bubble").hide("fast");
 	});
-
-
 </script>
-
-<div id="carematch-notify" class="d-none">0</div>
 				<a class="nav-link popup-icon" id="btn-carmatch-open" href="javascript:;" hit-id="52190" style="letter-spacing:-1px;" onclick="openCareMatch()">요양보호사 구인</a>
 			</li>
-
-						<div style="position:fixed; bottom:0px; width:98px;">
+			<!-- <li class="mall-event">
+				<a class="py-1 nav-link popup-icon"
+				   href="/Mall.ez"
+				   hit-id="49840"
+				   target="_blank">
+					<span>🎁</span>추석선물<br>
+					<strong>공동구매</strong>
+				</a>
+			</li> -->
+			<div style="position:fixed; bottom:0px; width:98px;">
 				<li class="small_title ">주요 홈페이지</li>
 				<li class="nav-item">
 					<a class="py-1 nav-link popup-icon"  href="https://www.longtermcare.or.kr" target="_blank" hit-id="4803">공단</a>
@@ -1053,14 +684,14 @@ function ageGroup(age){
 		url: "/page/main/left_box/_naver.cafe.php",
 		dataType: "json",
 		success: function(data){
-			if(!data){
+			if(!data || !Array.isArray(data.rows)){
 				$("#main-rssTicker ul").append("<li>None</li>");
 				return;
 			}
 
 			data.rows.forEach(v => {
 				//비공개 글 제외
-				let isBanned = data.banned_data.some(v2 => v2.articleId == v.articleId);
+				let isBanned = (data.banned_data || []).some(v2 => v2.articleId == v.articleId);
 				if (isBanned) return; 
 
 				if(v.type=='fix'){ //공지 및 직접 추가
@@ -1072,7 +703,9 @@ function ageGroup(age){
 				} else { //그 외 일반 게시글
 					$("#main-rssTicker ul").append(
 						$("<li>").append(
-							$("<a>", { href: v.link, target: "_blank" }).html(`${v.title} <span style='color:#fff'>${v.menuName}</span>`)
+							$("<a>", { href: v.link, target: "_blank" }).text(v.title + " ").append(
+								$("<span>", { style: "color:#fff" }).text(v.menuName)
+							)
 						)
 					);				
 				}
@@ -1183,9 +816,9 @@ function ageGroup(age){
 </style>
 
 
-<div class="widget" id="EC000010-74058999">
+<div class="widget" id="EC000010-13754214">
 	<div class="widget-header">
-		<h3>오늘의 업무 [07월20일]</h3>		
+		<h3>오늘의 업무 [10월08일]</h3>		
 	</div>
 
 	<div class="widget-body">
@@ -1206,7 +839,7 @@ function ageGroup(age){
 </div>
 
 <script>
-	var schedule_data = {"dateInfo":{"cd_no":"46222","cd_sgi":"4359","cd_sy":"2026","cd_sm":"7","cd_sd":"20","cd_ly":"2026","cd_lm":"6","cd_ld":"7","cd_hyganjee":"\u4e19\u5348","cd_kyganjee":"\ubcd1\uc624","cd_hmganjee":"\u4e59\u672a","cd_kmganjee":"\uc744\ubbf8","cd_hdganjee":"\u4e59\u672a","cd_kdganjee":"\uc744\ubbf8","cd_hweek":"\u6708","cd_kweek":"\uc6d4","cd_stars":"\u5f35","cd_moon_state":null,"cd_moon_time":null,"cd_leap_month":"0","cd_month_size":"1","cd_hterms":"NULL","cd_kterms":"NULL","cd_terms_time":null,"cd_keventday":null,"cd_ddi":"\ub9d0","cd_sol_plan":null,"cd_lun_plan":null,"cd_plan":"","holiday":"0"},"wor_birthdate":[],"pat_birthdate":[],"social_worker_schedule":{"2026-07-20":[{"rowid":"2931","wCode":"DEMO220004","Ym":"202607","sDate":"2026-07-20","pCode":"17-DEMO0007","sTime":"1300","eTime":"1600","memo":"","pName":"\uc774\uc7040","wName":"\ub958\uc2dc0"},{"rowid":"2930","wCode":"DEMO220004","Ym":"202607","sDate":"2026-07-20","pCode":"10-DEMO0003","sTime":"0900","eTime":"1200","memo":"","pName":"\uae40\uc21c0","wName":"\ub958\uc2dc0"}]},"expire":{"\uac04\ud638\uc9c0\uc2dc\uc11c":[],"\ub099\uc0c1\uc704\ud5d8":[],"\uc778\uc9c0\uae30\ub2a5":[],"\uc695\ucc3d\uc704\ud5d8":[],"\uc695\uad6c\uc0ac\uc815":[],"\uc218\uae09\uc790\uacc4\uc57d":[],"\uc218\uae09\uc790\uc778\uc815":[]},"insurance_expire":[],"p_schedule":{"2026-04-06":[{"rowid":"299","category":"","wdate_s":"2026-04-06","wdate_e":"0000-00-00","wdate_time_s":"","wdate_time_e":"","allDay":"","oneDay":"","repeats":"every_week","title":"test","post":"test","wid":"admin","open":"","not_print":""}]},"category_color":[{"rowid":"103","title":"","color":"","memo":"","orders":"0"},{"rowid":"104","title":"","color":"","memo":"","orders":"0"}]};
+	var schedule_data = {"dateInfo":{"cd_no":"46302","cd_sgi":"4359","cd_sy":"2026","cd_sm":"10","cd_sd":"8","cd_ly":"2026","cd_lm":"8","cd_ld":"28","cd_hyganjee":"\u4e19\u5348","cd_kyganjee":"\ubcd1\uc624","cd_hmganjee":"\u620a\u620c","cd_kmganjee":"\ubb34\uc220","cd_hdganjee":"\u4e59\u536f","cd_kdganjee":"\uc744\ubb18","cd_hweek":"\u6728","cd_kweek":"\ubaa9","cd_stars":"\u4e95","cd_moon_state":null,"cd_moon_time":null,"cd_leap_month":"0","cd_month_size":"1","cd_hterms":"\u5bd2\u9732","cd_kterms":"\ud55c\ub85c","cd_terms_time":"202610081541","cd_keventday":null,"cd_ddi":"\ub9d0","cd_sol_plan":null,"cd_lun_plan":null,"cd_plan":"","holiday":"0"},"wor_birthdate":[],"pat_birthdate":[],"social_worker_schedule":null,"expire":{"\uac04\ud638\uc9c0\uc2dc\uc11c":[],"\ub099\uc0c1\uc704\ud5d8":[],"\uc778\uc9c0\uae30\ub2a5":[],"\uc695\ucc3d\uc704\ud5d8":[],"\uc695\uad6c\uc0ac\uc815":[],"\uc218\uae09\uc790\uacc4\uc57d":[],"\uc218\uae09\uc790\uc778\uc815":[]},"insurance_expire":[],"p_schedule":null,"category_color":[]};
 
 	var data_chk = false;
 	$.each(schedule_data, function(i,v){
@@ -1218,8 +851,8 @@ function ageGroup(age){
 		if(i=="insurance_expire" || i=="pat_birthdate" || i=="wor_birthdate") {if(v.length>0) data_chk=true;}
 	})
 	
-	if(data_chk) {today_check_list(schedule_data); $('#EC000010-74058999 .none_data').hide();}
-	else {$('#EC000010-74058999 .schedule-toast').hide(); $('#EC000010-74058999 .none_data').show();}  //DEV 먹여져서 hide 제대로 작동안하는거 같음
+	if(data_chk) {today_check_list(schedule_data); $('#EC000010-13754214 .none_data').hide();}
+	else {$('#EC000010-13754214 .schedule-toast').hide(); $('#EC000010-13754214 .none_data').show();}  //DEV 먹여져서 hide 제대로 작동안하는거 같음
 
 	$(document).on('click', '.insurance', function(){		
 		var winOpts = "width="+1200+",height="+700+", top=300, left=500, scrollbars=yes,status=no,resizable=yes";
@@ -1229,7 +862,7 @@ function ageGroup(age){
 	//좌측 오늘의 업무	list_sDate
 	function today_check_list(data){
 		//if(CHK_MASTER) console.log("schedule",data);
-		let today_zone = $('#EC000010-74058999 div.today-check-list'),
+		let today_zone = $('#EC000010-13754214 div.today-check-list'),
 			today_today = today_zone.find('h3').clone(),
 			btn_footer = today_zone.find('.btn-footer').clone();
 		today_zone.empty().append(today_today);		
@@ -1352,9 +985,9 @@ function ageGroup(age){
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
 			
-<div class="widget" id="ES000040-18293341">
+<div class="widget" id="ES000040-25537668">
 	<div class="widget-header" style="border-bottom:0px">
-		<h3>가족케어 <small>(2026-07)</small></h3>
+		<h3>가족케어 <small>(2026-10)</small></h3>
 	</div>
 
 	<div style="widget-body height:200px;">
@@ -1370,16 +1003,16 @@ function ageGroup(age){
 		</thead>
 		<tbody>
 			<tr>
-				<td>2</td>
-				<td>5</td>
-				<td>7</td>
+				<td>0</td>
+				<td>0</td>
+				<td>0</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
 
 <script>
-	var widget_data = {"\uac00\uc871\ucf00\uc5b4":"7","\uc77c\ubc18":21};
+	var widget_data = {"\uac00\uc871\ucf00\uc5b4":"0","\uc77c\ubc18":5};
 	
 
 	function getRandomColor() {
@@ -1454,7 +1087,7 @@ function ageGroup(age){
 		});
 	}
 
-	var canvas = $('#ES000040-18293341 canvas');
+	var canvas = $('#ES000040-25537668 canvas');
 	var ctx = canvas[0].getContext("2d");
 	window.myLine = new Chart(ctx, config);
 	/*if(widget_data['가족케어']*1 != 0 && widget_data['일반']*1 != 0 ) window.myLine = new Chart(ctx, config);
@@ -1574,7 +1207,7 @@ function ageGroup(age){
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
 			
-<div class="widget" id="EP000060-73785133" new>
+<div class="widget" id="EP000060-73435415" new>
 	<div class="widget-header">
 		<h3 class="d-flex between">
 			<span>2026년 기초평가 실시현황</span>
@@ -1598,10 +1231,10 @@ function ageGroup(age){
 				<tr>
 					<th>수급중</th>
 					<td>28</td>
-					<td>36</td>
-					<td>36</td>
+					<td>39</td>
+					<td>38</td>
 					<td>28</td>
-					<td>31</td>
+					<td>37</td>
 				</tr>
 				<tr>
 					<th>입원</th>
@@ -1617,7 +1250,7 @@ function ageGroup(age){
 					<td>0</td>
 					<td>0</td>
 					<td>0</td>
-					<td>0</td>
+					<td>1</td>
 				</tr>
 				<tr>
 					<th style="border-bottom:2px solid #ddd">기타</th><!-- 등급외,사망,해지,보류 -->
@@ -1625,22 +1258,22 @@ function ageGroup(age){
 					<td style="border-bottom:2px solid #ddd">2</td>
 					<td style="border-bottom:2px solid #ddd">0</td>
 					<td style="border-bottom:2px solid #ddd">0</td>
-					<td style="border-bottom:2px solid #ddd">2</td>
+					<td style="border-bottom:2px solid #ddd">3</td>
 				</tr>
 				<tr>
 					<th>계</th>
 					<td>30</td>
+					<td>41</td>
 					<td>38</td>
-					<td>36</td>
 					<td>28</td>
-					<td>33</td>			
+					<td>41</td>			
 				</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
 <script>
-//console.log('full_data',{"2346":{"p_cnt":2,"state_name":"\uae30\ud0c0","naksang":2,"yokgu":2},"01":{"state_name":"\uc218\uae09\uc911","p_cnt":"28","naksang":36,"yokchang":36,"yokgu":31,"inji":28}});
+//console.log('full_data',{"2346":{"p_cnt":2,"state_name":"\uae30\ud0c0","naksang":2,"yokgu":3},"01":{"state_name":"\uc218\uae09\uc911","p_cnt":"28","naksang":39,"yokchang":38,"yokgu":37,"inji":28},"05":{"state_name":"\ud0c0\uae30\uad00","yokgu":"1"}});
 </script><div class='dsbd-widget_code'>EP000060</div>		</div>
 	</div>
 
@@ -1649,7 +1282,7 @@ function ageGroup(age){
 		<div class="content">
 			
 <style type="text/css">
-	#widget_code-92590172.widget div.box {
+	#widget_code-57266223.widget div.box {
 		border-radius:1em;
 		width:100%;
 		height:100%;
@@ -1658,22 +1291,22 @@ function ageGroup(age){
 		align-items:center;
 		justify-content:center;
 	}
-	#widget_code-92590172.widget div.box h5 {
+	#widget_code-57266223.widget div.box h5 {
 		font-size:1.4em;
 		font-weight:800;
 	}
-	#widget_code-92590172.widget div.box .desc {
+	#widget_code-57266223.widget div.box .desc {
 		text-align:center;
 		font-size:1em;
 	}
-	#widget_code-92590172.widget div.box .desc.sub {
+	#widget_code-57266223.widget div.box .desc.sub {
 		font-size:1.1em;
 	}
-	#widget_code-92590172.widget div.box .desc em {
+	#widget_code-57266223.widget div.box .desc em {
 		font-size:1.5em; color:green; ;font-weight:bold
 	}
 
-	#widget_code-92590172.widget div.box button, #widget_code-92590172.widget .rfreshBtn124 {
+	#widget_code-57266223.widget div.box button, #widget_code-57266223.widget .rfreshBtn124 {
 		font-weight:bolder;
 		border-radius:5px;
 		border:1px solid #9ad9c8;
@@ -1681,23 +1314,23 @@ function ageGroup(age){
 		background-color:#23c097;
 		color:#FFF;
 	}
-	#widget_code-92590172.widget div.box button:hover, #widget_code-92590172.widget .rfreshBtn124:hover{
+	#widget_code-57266223.widget div.box button:hover, #widget_code-57266223.widget .rfreshBtn124:hover{
 	background:#0ba37b; color:#fff;/* background:#ff9900; color:#333; */
 		border:1px solid #333;
 	}
 
-	#widget_code-92590172 table.tbl-widget tbody td { text-align:right !important}
-	#widget_code-92590172 td {font-family:Arial, 맑은고딕;}
-	#widget_code-92590172 td span.cnt {display:inline-block; width:25px; text-align:right; color:#ccc; font-size:11px; letter-spacing:-1px;}
-	#widget_code-92590172 #reload_bank_log {background:rgba(229,229,229,.9); /* background:rgba(150,255,150,.9); */position:absolute; text-align:center; padding:.5em 2em; border-radius:.3em; font-size:1.1em;left:10px; top:35px; width:calc(100% - 20px); height:170px; font-weight:bold; }
-	#widget_code-92590172 #reload_bank_log em { color:#3269c8; /* color:red; */ font-size:1.3em }
+	#widget_code-57266223 table.tbl-widget tbody td { text-align:right !important}
+	#widget_code-57266223 td {font-family:Arial, 맑은고딕;}
+	#widget_code-57266223 td span.cnt {display:inline-block; width:25px; text-align:right; color:#ccc; font-size:11px; letter-spacing:-1px;}
+	#widget_code-57266223 #reload_bank_log {background:rgba(229,229,229,.9); /* background:rgba(150,255,150,.9); */position:absolute; text-align:center; padding:.5em 2em; border-radius:.3em; font-size:1.1em;left:10px; top:35px; width:calc(100% - 20px); height:170px; font-weight:bold; }
+	#widget_code-57266223 #reload_bank_log em { color:#3269c8; /* color:red; */ font-size:1.3em }
 </style>
 
-<div class="widget" id="widget_code-92590172">
+<div class="widget" id="widget_code-57266223">
 		<div class="widget-header">
 		<h3 class="d-flex" >
 			<span>통장 거래내역 집계</span>
-			<button hit-id="47350" type="button" onclick="BACCUPDATE();" class="ui-button size-xs ml-auto">갱신일시: 2026-07-15 23:36:24&nbsp;&nbsp;<svg class="icon"><use xlink:href="#icon-reload"></use></svg></button>
+			<button hit-id="47350" type="button" onclick="BACCUPDATE();" class="ui-button size-xs ml-auto">갱신일시: 2026-10-02 09:35:01&nbsp;&nbsp;<svg class="icon"><use xlink:href="#icon-reload"></use></svg></button>
 			<button hit-id="47370" type="button" onclick="openListPage('');" class="ui-button size-xs ml-1"><svg class="icon"><use xlink:href="#icon-popup"></use></svg></button>
 		</h3>
 	</div>
@@ -1732,19 +1365,19 @@ function ageGroup(age){
 					<td>0</td>
 				</tr>
 									<tr>
-						<th class="action" hit-id="47370" onclick="openListPage('202607');">2026-07</th>
+						<th class="action" hit-id="47370" onclick="openListPage('202610');">2026-10</th>
 						<td class="amt"><span>0</span> <span class='cnt'>(0)</span></td>
 						<td class="amt"><span>0</span> <span class='cnt'>(0)</span></td>
 						<td>0</td>
 					</tr>
 									<tr>
-						<th class="action" hit-id="47370" onclick="openListPage('202606');">2026-06</th>
+						<th class="action" hit-id="47370" onclick="openListPage('202609');">2026-09</th>
 						<td class="amt"><span>22,827,150</span> <span class='cnt'>(13)</span></td>
 						<td class="amt"><span>22,409,800</span> <span class='cnt'>(48)</span></td>
 						<td>417,350</td>
 					</tr>
 									<tr>
-						<th class="action" hit-id="47370" onclick="openListPage('202605');">2026-05</th>
+						<th class="action" hit-id="47370" onclick="openListPage('202608');">2026-08</th>
 						<td class="amt"><span>22,827,150</span> <span class='cnt'>(13)</span></td>
 						<td class="amt"><span>22,409,800</span> <span class='cnt'>(48)</span></td>
 						<td>417,350</td>
@@ -1755,7 +1388,7 @@ function ageGroup(age){
 	</div>
 
 <script>
-	var widgetID = 'widget_code-92590172';
+	var widgetID = 'widget_code-57266223';
 	var thisBox = $('#' + widgetID).closest('.grid-item');
 	var widgetCode = thisBox.attr('widget_code');
 
@@ -1771,7 +1404,7 @@ function ageGroup(age){
 				if (data.success) {
 					/*alert('\
 						<p><b>거래내역이 갱신되었습니다.</b></p>\
-						<p><span style="color:red;">기간 : 2026-05 ~ 2026-07</span></p>\
+						<p><span style="color:red;">기간 : 2026-08 ~ 2026-10</span></p>\
 					');*/
 					
 					get_widget(thisBox, widgetCode);
@@ -1793,10 +1426,10 @@ function ageGroup(age){
 		<div class="content">
 			
 <style type="text/css">
-	#EP000010-21342675 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
+	#EP000010-76017066 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
 </style>
 
-<div class="widget" id="EP000010-21342675">
+<div class="widget" id="EP000010-76017066">
 	<div class="widget-header">
 		<h3>일정관리 현황</h3>
 	</div>
@@ -1822,19 +1455,19 @@ function ageGroup(age){
 </div>
 
 <script>
-	var widget_data = {"2026-04":{"Ym":"2026-04","pCnt":"28","wCnt":"27"},"2026-05":{"Ym":"2026-05","pCnt":"28","wCnt":"27"},"2026-06":{"Ym":"2026-06","pCnt":"28","wCnt":"27"},"2026-07":{"Ym":"2026-07","pCnt":"28","wCnt":"27"},"2026-08":{"Ym":"2026-08","pCnt":"1","wCnt":"1"}};
+	var widget_data = {"2026-07":{"Ym":"2026-07","pCnt":"28","wCnt":"27"},"2026-08":{"Ym":"2026-08","pCnt":"28","wCnt":"27"},"2026-09":{"Ym":"2026-09","pCnt":"28","wCnt":"27"},"2026-10":{"Ym":"2026-10","pCnt":"5","wCnt":"5"},"2026-11":{"Ym":"2026-11","pCnt":"0","wCnt":"0"}};
 
-	$("#EP000010-21342675").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
+	$("#EP000010-76017066").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
 	if(widget_data){
 		$.each(widget_data, function(tmp_Ym, tmp_data){
-			let tmp_tr = $("#EP000010-21342675").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
+			let tmp_tr = $("#EP000010-76017066").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
 			setNameCol(tmp_tr, tmp_data, "name");			
-			if(tmp_Ym == "2026-07") tmp_tr.addClass("nowMonth");
-			$("#EP000010-21342675").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
+			if(tmp_Ym == "2026-10") tmp_tr.addClass("nowMonth");
+			$("#EP000010-76017066").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
 		});
 	}
 	
-	$(document).on('click', '#EP000010-21342675 th[name=Ym]', function(){		
+	$(document).on('click', '#EP000010-76017066 th[name=Ym]', function(){		
 		ScheduleManager('',$(this).text());
 	})
 
@@ -1843,7 +1476,7 @@ function ageGroup(age){
 	<div widget_code="EP000030" class="grid-item" widget-cols="2" style="grid-column: 4 / span 2;">
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
-			<div class="widget" id="EP000030-25009752">
+			<div class="widget" id="EP000030-31023930">
 	<div class="widget-header" style="border-bottom:0px">
 		<h3>최근 12개월 서비스제공 수급자수</h3>
 	</div>
@@ -1854,7 +1487,7 @@ function ageGroup(age){
 </div>
 
 <script>
-	var widget_data = {"month_pCnt":{"2025-07":"28","2025-08":"28","2025-09":"28","2025-10":"28","2025-11":"28","2025-12":"28","2026-01":"28","2026-02":"28","2026-03":"28","2026-04":"28","2026-05":"28","2026-06":"28","2026-07":"28"}};
+	var widget_data = {"month_pCnt":{"2025-10":"28","2025-11":"28","2025-12":"28","2026-01":"28","2026-02":"28","2026-03":"28","2026-04":"28","2026-05":"28","2026-06":"28","2026-07":"28","2026-08":"28","2026-09":"28","2026-10":"5"}};
 
 	var config = {
 		type: "bar",
@@ -1913,7 +1546,7 @@ function ageGroup(age){
 		config.data.datasets[0].data.push(wCnt);
 	});
 
-	var ctx = $("#EP000030-25009752 .patient-chart-month-cnt")[0].getContext("2d");
+	var ctx = $("#EP000030-31023930 .patient-chart-month-cnt")[0].getContext("2d");
 	window.myLine = new Chart(ctx, config);
 </script><div class='dsbd-widget_code'>EP000030</div>		</div>
 	</div>
@@ -1921,9 +1554,9 @@ function ageGroup(age){
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
 			<style type="text/css">
-	/* #EW000010-24064733 .tbl-widget{width:auto;} */
+	/* #EW000010-20943146 .tbl-widget{width:auto;} */
 </style>
-<div class="widget" id="EW000010-24064733">
+<div class="widget" id="EW000010-20943146">
 	<div class="widget-header">
 		<h3 class="d-flex between">
 			<span>직원 현황</span>
@@ -1948,8 +1581,8 @@ function ageGroup(age){
 				</tr>
 				<tr>
 					<th>퇴사</th>
-					<td>18</td>
-					<td>0 / 18</td>
+					<td>13</td>
+					<td>0 / 13</td>
 				</tr>
 				<tr>
 					<th>기타</th>
@@ -1958,13 +1591,13 @@ function ageGroup(age){
 				</tr>
 				<tr>
 					<th style="border-bottom:2px solid #ddd">계</th>
-					<td style="border-bottom:2px solid #ddd">48</td>
-					<td style="border-bottom:2px solid #ddd">4 / 44</td>
+					<td style="border-bottom:2px solid #ddd">43</td>
+					<td style="border-bottom:2px solid #ddd">4 / 39</td>
 				</tr>
 				<tr >
 					<th>친족.활동</th>
-					<td>6</td>
-					<td>0 / 6</td>
+					<td>9</td>
+					<td>0 / 9</td>
 				</tr>
 			</tbody>
 		</table>
@@ -1976,10 +1609,10 @@ function ageGroup(age){
 		<div class="content">
 			
 <style type="text/css">
-	#EP000010-9894393 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
+	#EP000010-78195888 .dsbd-schedule-tbl tbody tr:first-child{display:none;}
 </style>
 
-<div class="widget" id="EP000010-9894393">
+<div class="widget" id="EP000010-78195888">
 	<div class="widget-header">
 		<h3>일정관리 현황</h3>
 	</div>
@@ -2005,19 +1638,19 @@ function ageGroup(age){
 </div>
 
 <script>
-	var widget_data = {"2026-04":{"Ym":"2026-04","pCnt":"28","wCnt":"27"},"2026-05":{"Ym":"2026-05","pCnt":"28","wCnt":"27"},"2026-06":{"Ym":"2026-06","pCnt":"28","wCnt":"27"},"2026-07":{"Ym":"2026-07","pCnt":"28","wCnt":"27"},"2026-08":{"Ym":"2026-08","pCnt":"1","wCnt":"1"}};
+	var widget_data = {"2026-07":{"Ym":"2026-07","pCnt":"28","wCnt":"27"},"2026-08":{"Ym":"2026-08","pCnt":"28","wCnt":"27"},"2026-09":{"Ym":"2026-09","pCnt":"28","wCnt":"27"},"2026-10":{"Ym":"2026-10","pCnt":"5","wCnt":"5"},"2026-11":{"Ym":"2026-11","pCnt":"0","wCnt":"0"}};
 
-	$("#EP000010-9894393").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
+	$("#EP000010-78195888").find(".dsbd-schedule-tbl tbody tr:not(:eq(0))").remove();
 	if(widget_data){
 		$.each(widget_data, function(tmp_Ym, tmp_data){
-			let tmp_tr = $("#EP000010-9894393").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
+			let tmp_tr = $("#EP000010-78195888").find(".dsbd-schedule-tbl tbody tr:eq(0)").clone();
 			setNameCol(tmp_tr, tmp_data, "name");			
-			if(tmp_Ym == "2026-07") tmp_tr.addClass("nowMonth");
-			$("#EP000010-9894393").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
+			if(tmp_Ym == "2026-10") tmp_tr.addClass("nowMonth");
+			$("#EP000010-78195888").find(".dsbd-schedule-tbl tbody tr:eq(0)").after(tmp_tr);
 		});
 	}
 	
-	$(document).on('click', '#EP000010-9894393 th[name=Ym]', function(){		
+	$(document).on('click', '#EP000010-78195888 th[name=Ym]', function(){		
 		ScheduleManager('',$(this).text());
 	})
 
@@ -2027,24 +1660,24 @@ function ageGroup(age){
 	<div widget_code="ES000020" class="grid-item" widget-cols="2" widget-rows="2" style="grid-column: 1 / span 3;">
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
-			<div class="widget" id="ES000020-61282975">
+			<div class="widget" id="ES000020-21808099">
 	<div class="widget-header d-flex size-sm" style="border-bottom:0px">
 		<h3>일일 방문일정 (<span id="total_cnt"></span>)</h3>
-		<input type="text" name="sDate" id="ES000020-61282975-input-01" class="datepicker ml-auto" value="2026-07-20" style="width:75px;">
-		<button type="button" class="ui-button ml-2" id="ES000020-61282975-btn-01"><svg class="icon"><use xlink:href="#icon-printer"></use></svg> 일일 방문일정표 출력</button>
+		<input type="text" name="sDate" id="ES000020-21808099-input-01" class="datepicker ml-auto" value="2026-10-08" style="width:75px;">
+		<button type="button" class="ui-button ml-2" id="ES000020-21808099-btn-01"><svg class="icon"><use xlink:href="#icon-printer"></use></svg> 일일 방문일정표 출력</button>
 	</div>
 
 	<div class="widget-body size-sm">
-		<table id="ES000020-61282975-grid" min-height="150" max-height="370" margin-bottom="10" min-width="200"></table>
+		<table id="ES000020-21808099-grid" min-height="150" max-height="370" margin-bottom="10" min-width="200"></table>
 	</div>
 </div>
 
 <script>
 /* 일일방문일정 그리드 -------------------------------------------------------------------------------- */
-$("#ES000020-61282975-grid").ezGrid({
+$("#ES000020-21808099-grid").ezGrid({
 	datatype:"json",
 	url: "/page/worker/json-worker.php?data=daySchedule",
-	postData: { "sDate" : "2026-07-20" },
+	postData: { "sDate" : "2026-10-08" },
 	rownumbers: true,	rownumWidth: 30,
 	colModel:[
 		{ label:'방문시간', name:'sTime', align:'center', width:60, sortable:false, },
@@ -2069,20 +1702,20 @@ $("#ES000020-61282975-grid").ezGrid({
 	}
 });
 
-$("#ES000020-61282975-input-01").on("change",function(){			
-	$("#ES000020-61282975-grid").jqGrid("setGridParam",{
+$("#ES000020-21808099-input-01").on("change",function(){			
+	$("#ES000020-21808099-grid").jqGrid("setGridParam",{
 		page:1, postData:{sDate:  $(this).val()}
 	}).trigger('reloadGrid');
 });
 
-$("#ES000020-61282975-btn-01").click(function(){
+$("#ES000020-21808099-btn-01").click(function(){
 	/*url_print({
 		"url":"/schedule_print/statusTable.day.html",
-		"postData":{ "sDate" : $("#ES000020-61282975-input-01").val() }
+		"postData":{ "sDate" : $("#ES000020-21808099-input-01").val() }
 	});*/
 	html_document({
 		formFile:"scheduleTable.day.html",
-		postData:{sDate: $("#ES000020-61282975-input-01").val()}
+		postData:{sDate: $("#ES000020-21808099-input-01").val()}
 	});
 });
 
@@ -2107,7 +1740,7 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 	<div widget_code="EP000020" class="grid-item" widget-cols="2" widget-rows="2" style="grid-column: 4 / span 2;">
 		<a class="btn-more"><i class="xi-ellipsis-v"></i></a>
 		<div class="content">
-			<div class="widget" id="EC000010-65768505">
+			<div class="widget" id="EC000010-83158166">
 	<div class="widget-header d-flex size-sm" style="border-bottom:0px">
 		<h3>인정만료일</h3>
 		<select name="state" class="main-state ml-auto">
@@ -2116,12 +1749,12 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 	</div>
 
 	<div class="widget-body size-sm" >
-		<table id="EC000010-65768505-grid" min-height="100" max-height="370" margin-bottom="10" min-width="200"></table>
+		<table id="EC000010-83158166-grid" min-height="100" max-height="370" margin-bottom="10" min-width="200"></table>
 	</div>
 </div>
 
 <script>
-	$("#EC000010-65768505-grid").ezGrid({
+	$("#EC000010-83158166-grid").ezGrid({
 		datatype:"json",
 		url: "/page/patient/json-patient.php?data=sDateCheck",
 		postData: { "state" : "01" },
@@ -2151,8 +1784,8 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 		]
 	});
 
-	$("#EC000010-65768505 .main-state").change(function(){
-		$("#EC000010-65768505 #EC000010-65768505-grid").jqGrid("setGridParam",{
+	$("#EC000010-83158166 .main-state").change(function(){
+		$("#EC000010-83158166 #EC000010-83158166-grid").jqGrid("setGridParam",{
 			page:1, postData:{state: $(this).val()}
 		}).trigger('reloadGrid');
 	});
@@ -2341,14 +1974,23 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 			<thead>
 				<tr>
 				<th>1번</th>
-					<th colspan="4"> 프로그램 문의</th>
+					<th colspan="4"> 방문요양 ERP 문의</th>
+				</tr>
+			</thead>
+		</table>
+
+		<table>
+			<thead>
+				<tr>
+				<th>2번</th>
+					<th colspan="4"> 주야간보호 ERP 문의</th>
 				</tr>
 			</thead>
 		</table>
 
 		<table class="mt-2">
 			<tr> 
-				<th>2번</th>
+				<th>3번</th>
 				<th colspan="4" class="w4c">재무회계 대행</th>
 			</tr>
 			<tr>
@@ -2376,8 +2018,8 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 
 		<table class="mt-2">
 			<tr> 
-				<th>3번</th>
-				<th colspan="4" class="w4c">4대보험</th>
+				<th>4번</th>
+				<th colspan="4" class="w4c">4대보험 대행</th>
 			</tr>
 			<tr>
 				<td rowspan="4" valign="top" align="right">└</td>
@@ -2399,8 +2041,8 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 		</table>
 		<table class="mt-2">
 			<tr> 
-				<th>4번</th>
-				<th colspan="4" class="w4c">원천세</th>
+				<th>5번</th>
+				<th colspan="4" class="w4c">세무 대행</th>
 			</tr>
 			<tr>
 				<td rowspan="3" valign="top" align="right">└</td>
@@ -3036,7 +2678,7 @@ $(".datepicker:not(.hasDatepicker)").datepicker();
 <!-- 공지사항 시작 -->
 <script type="text/javascript">
 <!--
-	var ezc_dialog_notice = null;
+	var ezc_dialog_notice = {"21858":{"rowid":"21858","subject":"\uace0\uac1d\uc13c\ud130 \uc804\ud654 \uc5f0\uacb0 \uc9c0\uc5f0\uc548\ub0b4(261006)","content":"<style type=\"text\/css\">a{outline:none;}\n.wrap2602{display:flex;align-items:center;gap:20px; width:900px;height:450px; text-align:center;}\n.wrap2602 .wrap-item{padding-top:25px;height:100%}\n.faq-box2602{width:440px;margin:0 auto; padding:25px 15px; background-color:#f5f8ff;            border:1px solid #c8d6ff;   border-radius:12px;     }\n.faq-box2602 h2{margin-bottom:2rem;}\n.faq-box2602 a{margin-left:5px; color:#333; text-decoration:none;}\n.faq-box2602 a:hover{font-weight:bold;}\n.faq-box2602 p{margin:1em 0; text-align:left; }\n.btn-cover-faq{cursor:pointer; outline:none; display: flex;  align-items: center;  justify-content: center;  height: 40px; padding: 5px 20px;  border:0;  border-radius: 999px;font-size: 15px; font-weight: 700;background: #777; color:#fff;transition:all .5s; margin:6rem auto 2rem auto;}\n.btn-cover-faq:hover{background:#aaa;}\n.notice-box2602{text-align:left;}\n<\/style>\n<div class=\"wrap2602\">\n<div class=\"wrap-item  faq-box2602\">\n<h2 style=\"color: #0078ff;\">\uc790\uc8fc\ud558\ub294 \uc9c8\ubb38 Top 5<\/h2>\n\n<p><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EA%B3%84%ED%9A%8D%EC%9D%BC%EC%A0%95%EA%B3%BC-%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95%EC%9D%98-%EC%B0%A8%EC%9D%B4-8d304da8\" target=\"_blank\"><strong>1<\/strong><\/a><strong>.<\/strong>&nbsp;<a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/revisions\/f4d73ce3\" target=\"_blank\"><font color=\"#c0392b\"><strong>\uacf5\ub2e8\uacfc \ubcf8\uc778\ubd80\ub2f4\uae08\uc774 \ub9de\uc9c0 \uc54a\uc544\uc694?&nbsp;<\/strong><\/font><\/a><\/p>\n\n<p><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4%EC%99%80-%EA%B3%B5%EB%8B%A8-%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0-%EB%B6%88%EC%9D%BC%EC%B9%98-%ED%99%95%EC%9D%B8%EB%B0%A9%EB%B2%95-2d53ea63\" target=\"_blank\"><strong>2.<\/strong><\/a>&nbsp;<a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EA%B8%89%EC%97%AC-%ED%99%94%EB%A9%B4-%EC%B5%9C%EC%A0%80%EC%9E%84%EA%B8%88-%ED%99%95%EC%9D%B8-%EC%95%84%EC%9D%B4%EC%BD%98-%ED%91%9C%EC%8B%9C-af150715\" target=\"_blank\"><strong>\uae09\uc5ec \ud654\uba74\uc5d0 &#39;<span style=\"color:#c0392b;\">\ucd5c\uc800\uc784\uae08 \ud655\uc778<\/span>&#39; \ud45c\uc2dc\uac00 \ub098\uc640\uc694!<\/strong><\/a><\/p>\n\n<p><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EA%B8%89%EC%97%AC-%ED%99%94%EB%A9%B4-%EC%B5%9C%EC%A0%80%EC%9E%84%EA%B8%88-%ED%99%95%EC%9D%B8-%EC%95%84%EC%9D%B4%EC%BD%98-%ED%91%9C%EC%8B%9C-af150715\" target=\"_blank\"><strong>3.<\/strong><\/a>&nbsp;<a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/revisions\/1d76655f\" target=\"_blank\"><strong>\uc694\uc591\ubcf4\ud638\uc0ac <span style=\"color:#c0392b;\">\uc2dc\uae09\uc744 \uc218\uc815<\/span>\ud558\uace0 \uc2f6\uc5b4\uc694!<\/strong><\/a><\/p>\n\n<p><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EC%9E%A5%EA%B8%B0%EA%B7%BC%EC%86%8D%EC%9E%A5%EB%A0%A4%EA%B8%88%EC%A4%91%EC%A6%9D%EC%88%98%EB%8B%B9%EB%B3%B4%EC%88%98%EA%B5%90%EC%9C%A1%EB%B9%84-%EA%B8%B0%EA%B4%80%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%A0%9C%EC%99%B8-%EB%B0%A9%EB%B2%95-6459d9a4\" target=\"_blank\"><strong>4. <\/strong><\/a>&nbsp;<strong>\uc7a5\uae30\uadfc\uc18d\uc7a5\ub824\uae08,<\/strong><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EC%9E%A5%EA%B8%B0%EA%B7%BC%EC%86%8D%EC%9E%A5%EB%A0%A4%EA%B8%88%EC%A4%91%EC%A6%9D%EC%88%98%EB%8B%B9%EB%B3%B4%EC%88%98%EA%B5%90%EC%9C%A1%EB%B9%84-%EA%B8%B0%EA%B4%80%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%A0%9C%EC%99%B8-%EB%B0%A9%EB%B2%95-6459d9a4\" target=\"_blank\"><strong>\uc911\uc99d\uc218\ub2f9 <span style=\"color:#c0392b;\">\uae30\uad00\ubd80\ub2f4\uae08\uc744 \uc81c\uc678<\/span>\ud558\uace0 \uc2f6\uc5b4\uc694?<\/strong><\/a><\/p>\n\n<p><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EC%9D%BC%EC%A0%95%ED%99%95%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C-01805b93\" target=\"_blank\"><strong>5.<\/strong><\/a>&nbsp;<strong><span style=\"color:#c0392b;\"> \uae09\uc5ec\ub97c<\/span><\/strong><a href=\"https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EA%B8%89%EC%97%AC-%ED%99%95%EC%A0%95-%ED%9B%84-%EC%88%98%EC%A0%95-%EB%B0%A9%EB%B2%95-4b8e1d3c\" target=\"_blank\"><strong><span style=\"color:#c0392b;\">\uc800\uc7a5\ud588\ub294\ub370 \uc218\uc815<\/span>\ud558\uace0 \uc2f6\uc5b4\uc694?<\/strong><\/a><\/p>\n\n<p>&nbsp;<\/p>\n<button class=\"btn-cover-faq\" hit-id=\"\" onclick=\"window.open('https:\/\/docs.channel.io\/ezcare\/ko\/articles\/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96')\">\uc774\uc9c0\ucf00\uc5b4 FAQ \ubc14\ub85c\uac00\uae30<\/button><\/div>\n\n<div class=\"wrap-item notice-box2602\">\n<h1 style=\"margin:0; padding:0 width:100%; text-align:center\"><b>\uace0\uac1d\uc13c\ud130 <\/b> <span style=\"color:#e74c3c;\">\uc804\ud654\uc5f0\uacb0 \uc9c0\uc5f0 \uc548\ub0b4<\/span><\/h1>\n\n<p>\uc548\ub155\ud558\uc138\uc694,&nbsp;\uc774\uc9c0\ucf00\uc5b4\uc785\ub2c8\ub2e4.<br \/>\n<strong>\ubcf8\uc778\ubd80\ub2f4\uae08 \uccad\uad6c, \uc9c1\uc6d0 \uae09\uc5ec \ub4f1 \uc5c5\ubb34\ubb38\uc758\uac00&nbsp;<\/strong>\uae09\uc99d\ud558\uc5ec&nbsp;<br \/>\n\uace0\uac1d\uc13c\ud130 \uc804\ud654 \uc5f0\uacb0\uc774 \uc6d0\ud560\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.<\/p>\n\n<p>\uc804\ud654 \uc0c1\ub2f4 \uc804 \uc67c\ucabd&nbsp;&nbsp;<strong><span style=\"color:#0078ff;\">\uc790\uc8fc \ubb3b\ub294 \uc9c8\ubb38(FAQ)<\/span><\/strong>\uc744 \ud1b5\ud574&nbsp;<br \/>\n\ubb38\uc758\uc0ac\ud56d\uc744 \uba3c\uc800 \ud655\uc778\ud558\uc2e4 \uc218 \uc788\uc2b5\ub2c8\ub2e4.<br \/>\n<br \/>\n\ubaa8\ub4e0 \uc0c1\ub2f4\uc6d0\uc774 \ucd5c\uc120\uc744 \ub2e4\ud574 \uc751\ub300\ud558\uace0 \uc788\uc73c\ub098, \ud1b5\ud654\ub7c9 \uc99d\uac00\ub85c \uc778\ud574<br \/>\n<strong>\ucf5c\ubc31\uc744 \ub0a8\uaca8\uc8fc\uc154\ub3c4 \uc778\uc785\ub7c9\uc5d0 \ub530\ub77c&nbsp;\uc5f0\uacb0\uc774 \uc9c0\uc5f0\ub420 \uc218 \uc788\ub294 \uc810 <\/strong><br \/>\n\ub108\ub978 \uc591\ud574 \ubd80\ud0c1\ub4dc\ub9bd\ub2c8\ub2e4.<\/p>\n\n<p>\uc2e0\uc18d\ud55c \uc548\ub0b4\ub97c \uc704\ud574 \ucd5c\uc120\uc744 \ub2e4\ud558\uaca0\uc2b5\ub2c8\ub2e4.<\/p>\n<\/div>\n\n<p>&nbsp;<\/p>\n<\/div>","preview":"0"}};
 	$(function(){
 		if(ezc_dialog_notice && ezc_dialog_notice.length) $("head").prepend($("<link>", {rel:"stylesheet", "href":"/help/ckeditor.custom.help.css"}));
 		$.each(ezc_dialog_notice, function(rowid, val){

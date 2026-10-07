@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-944 이지케어 역공학 2-4h · ★★★ **주야간 모달 가격이 카드와 다름** · ★★ **도입 수 상승 · 일정확정 취소는 급여를 삭제** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: [price](https://ezcare.easyms.co.kr/index.html?PG=price) HTTP 200 · `9ebcb65c`. [홈](https://ezcare.easyms.co.kr/) `8d8fd308` · 53.9 / 9514 / 4901 / 2353 / 1820. [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) 9,619. [Channel 81ecba1b](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95-%ED%99%95%EC%A0%95-%EC%8B%9C%EC%A0%90-81ecba1b) · [a27fc9bd](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%99%95%EC%A0%95-%EC%B7%A8%EC%86%8C%EB%B0%A9%EB%B2%95-a27fc9bd). 데모 로그인 code=0000 · nav `95286775` BYTE-IDENTICAL. git FE `29c2304` · BE develop `d73aec11` · BE local test `4aad7cc2`.
+
+### 결정
+
+1. **★★★ 이지케어 주야간 가격은 카드와 모달을 같이 적는다 (확인)** — 베이직 카드는 월 30,000원부터이고 모달은 2028년까지 0원이다. 스탠다드 카드는 월 100,000원부터이고 모달은 월 70,000원 고정이다. Channel 과금 글은 방문요양 10,000원+500원과 문자 20P/50P만 있다. **planner: 이 숫자 중 하나를 경쟁 정가로 쓰지 않는다. ogada 이용료·수가 시드는 유지.**
+
+2. **★★ 셋팅비 마감은 2026-10-31, 금액은 33,000원 (확인)** — 기준가 55,000원의 40% 할인이 7월 31일에서 10월 31일로 늘었다. charge 페이지와 price 카드가 같다. **planner: 프로모션 종료일만 고친다.**
+
+3. **★★ 도입 기관 수는 표면마다 다르다 (확인)** — 홈 이용기관 9,514 · 점유율 53.9% · 회계대행 4,901. fnc 헤더 9,619. 청구 2,353억과 급여 1,820억은 그대로다. **planner: 9,514와 9,619를 한 수치로 합치지 않는다.**
+
+4. **★★ 일정확정 취소의 급여 삭제·원천세 잠금은 갭이 아니다 (확인)** — 데모 `schedule-fix`와 FAQ 21167·21657, Channel a27fc9bd가 같다. 확정 전에는 공단 청구명세서 비교 체크가 있고, 취소하면 급여·퇴직금 자료가 지워지며, 원천세 신고가 끝나면 취소가 막힌다. **planner: ogada 일괄 확정취소에 급여 삭제를 넣지 않는다. id=7은 1.0.**
+
+5. **★ 이중 일정 탭과 RFID 필터는 기존 판단 유지 (확인)** — `schedule-p100`은 수급자/요양보호사 탭이다. RFID `detail`은 미태그·시간차·계획없음 등 8값이다. 엑셀 제목 변경은 0(rowid 233, max 21781). 주야간 송영 화면은 이번 재가 데모에 없다. **id=2는 0.85. 신규 진성갭 0.**
+
+**가정 1**(행 편집 필드 미포함은 삭제 아님) · **미확인 2**(실제 결제 금액 · 주야간 송영 필드) · 신규 snapshot **13**(html 12 + txt 1) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-943 케어포 역공학 0-2h · ★★★ **「109」폐기 · 시설 데모 LIVE에 이동서비스 없음** · ★★ **본인부담 7-1~7-10 화면 번호 1:1** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: [func.php](https://www.carefor.co.kr/daycare/func.php) HTTP 200 · `0f1858cd` = BNK-942 BYTE-IDENTICAL · 화면 leaf 105 · 주석 106. [demo-work](https://demo-work.carefor.co.kr/) HTTP 200 · `007911c9` · openMenu 11 · 2번 요양 · 이동서비스 0. [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) HTTP 200 · `96f7d45e` · 2018 목차 12모듈. git FE `29c2304` · BE `d73aec11` · @Test 2474 · HTTP 447.
