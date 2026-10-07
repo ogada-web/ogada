@@ -2396,6 +2396,14 @@
 
 ### 문서 작성 질문
 
+### [TWR] 월별 청구 한 건·자동 배차 주소 (2026-10-07T22:15:00Z)
+
+- **실측**: BE develop `d73aec11` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다.
+- **청구**: `GenerateClaimRequest` 는 `branchId`·`yearMonth` 만 받는다. `BillingService.generateClaim` 은 조직·지점·월이 이미 있으면 그 청구를 반환하고 줄을 다시 만들지 않는다. 청구 줄 엔티티는 이용일수·등급·일 수가·본인부담이며, 줄 수정 컨트롤러는 없다. 청구서 발행일 필드는 없다. 발송일 수정은 우편 채널만이다.
+- **문서**: CHANGELOG 카드 · FAQ **Q962** · Q257의 「재생성」 문구 정정 · 사용자 매뉴얼 §4-6·§5-8·§5-10-0 · 관리 가이드 §1-4·§10 · 배포 가이드 §1-4.
+- **주소**: `/transport/auto-dispatch` 는 `Navigate` 로 `/transport` 에 보낸다. 별도 페이지가 아니다.
+- **미문서 잔여**: 프로그램 카탈로그(`/programs/catalog`)·의견수렴(`/programs/feedback`)·월간 계획(`/programs/plans`) 화면과 API는 아직 코드에 없다.
+
 ### [TWR] 이동서비스 일지 서식 번호 (2026-10-07T21:00:00Z)
 
 - **실측**: BE develop `d73aec11` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. 화면 `TransportServiceLogPanel`·`TransportServiceLogRunsPanel`·`transportServiceFee.js` `SERVICE_LOG` 문구는 **「별지 제22호」**.

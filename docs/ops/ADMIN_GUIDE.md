@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T21:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T22:15:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 이동서비스 일지 서식 번호는 화면 라벨)  
+> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 월별 청구는 지점·달마다 한 건)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **월별 청구 생성은 지점·달 1건** ✅ (**Q962**, US-M03): **`POST /billing/claims/generate`** 본문 `branchId`·`yearMonth` · 기존 청구가 있으면 **재계산 없이 그 청구 반환** · 줄 수정 API 없음 · 발행일 칸 없음 · 발송일 수정은 **우편만**
 > - **프로그램 수급자 그룹 등록·배정** ✅ (**Q959**, US-P01): **`GET/POST /programs/groups`** · **`PATCH …/{groupId}`** · **`GET/POST …/{groupId}/members`** · 활성 지점 · 이름 120자 · 활성 이름 중복·기간 겹침 거부 · **행 삭제 없음** · **화면 `/programs/groups` 없음** · 집계는 **5-9** `group-history` · Flyway 추가 없음(V179) (`d73aec1`)
 > - **청구 명세·국세청 CSV 엑셀 수식 실행 위험 차단** ✅ (**Q946**, SEC-D33): `=`·`+`·`-`·`@` 시작 글자 칸에 `'` prefix · 금액 숫자(음수 포함)는 유지 (`57523b5`, CWE-1236) — FAQ Q534·Q535
 > - **안전·선임·외출 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-204): 안전 점검 **저장 시각** · 선임 **전자서명 시각** · 외출 **실제 출발/복귀 시각** — 화면 표시 무변경 (`95b6c52`, WCAG 1.3.1)
@@ -2862,7 +2863,7 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 | GET | `/billing/claims/monthly-cap-guard` | 월한도 초과 **경고**(non-blocking, `?branchId=`, `?yearMonth=`, Q226) |
 | GET | `/billing/fee-surcharge-rates` | **G11 가산율 catalog** — MOHW 2026 참조표 (Q229) |
 | POST | `/billing/fee-surcharge-preview` | **G11 가산 미리보기** — `{ baseAmount, surchargeCode }` (Q229) |
-| POST | `/billing/claims/generate` | 월별 청구서 생성 — **`claimGenerationBasis`**·전월 가드 적용 (Q224·Q225) |
+| POST | `/billing/claims/generate` | 월별 청구 **한 건** — 본문 `branchId`·`yearMonth` · 같은 지점·같은 달이 있으면 **재계산 없이 기존 청구 반환** (Q962·Q224·Q225) |
 | GET | `/billing/imports/bank-deposits/formats` | 은행 입금 **8종 형식 catalog** (G-BANK-EXCEL-8, Q572) |
 | POST | `/billing/imports/bank-deposits/preview` | 은행 입금 엑셀 **dry-run 미리보기** (`multipart`, Q572) |
 | POST | `/billing/imports/bank-deposits` | 은행 입금 엑셀 **일괄 수납** (`multipart`, 케어포 7-2, Q227) |
@@ -4023,6 +4024,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q962 신설** — §1-4·§10 **월별 청구는 지점·달 1건** · 재호출은 재계산 없음 · `/transport/auto-dispatch` 는 `/transport` 로 이동 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q961 신설** — §10-10 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q960 신설** — §10-10 **이동서비스비 거리 구간 수가**(830·2,630·5,230·8,630원) · 특장차량 월 가산 시드 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q959 신설** — §1-4·§10-11-2·§10-11-2a **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
