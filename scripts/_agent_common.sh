@@ -79,7 +79,13 @@ agent_show_processes() {
       agent_count=$((agent_count + 1))
     fi
   done < <(
-    ps -ef 2>/dev/null | grep -E "run_agent\.py|agent_pipeline\.sh|cursor-sdk-bridge" | grep -v grep || true
+    # bridge 명령 인자에는 인증 토큰이 포함될 수 있으므로 인자는 출력하지 않는다.
+    ps -eo pid,ppid,etime,args 2>/dev/null | awk '
+      $4 ~ /awk$/ { next }
+      /cursor-sdk-bridge/ { print $1, $2, $3, "cursor-sdk-bridge"; next }
+      /run_agent[.]py/ { print $1, $2, $3, "run_agent.py"; next }
+      /agent_pipeline[.]sh/ { print $1, $2, $3, "agent_pipeline.sh" }
+    ' || true
   )
   if [[ "$found" -eq 0 ]]; then
     echo "  none"
