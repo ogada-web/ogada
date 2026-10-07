@@ -1390,6 +1390,14 @@ def call_agent(prompt: str, cwd: Path, role: str | None = None):
             "AGENT_AUTO_PUSH=0: 이 호출은 로컬 커밋 모드다. Git 원격 push는 수행하지 말고 "
             "필요한 커밋과 검증만 완료한다. 원격 인증을 요청하거나 우회하지 않는다.\n"
         )
+    if os.environ.get("AGENT_SKIP_LIVE_E2E", "").strip().lower() in ("1", "true", "yes"):
+        prompt += (
+            "\n## 로컬 개발 검증 범위\n"
+            "실백엔드 E2E는 별도 operation BLOCK 게이트로 남겨 둔다. "
+            "현재 호출은 빌드·단위 테스트와 로컬 이관을 검증한다. 서버 미기동과 원격 인증 "
+            "부재를 로컬 코드 실패와 구분하고, 이를 해결하려고 운영 설정을 바꾸지 않는다. "
+            "실제 빌드·단위 테스트 실패는 반드시 로컬 BLOCK으로 기록한다.\n"
+        )
     chain = resolve_model_chain(role)
     label = ROLE_LABELS.get(role or "", role or "에이전트")
 
