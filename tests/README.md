@@ -22,6 +22,16 @@
 - **미구축** — submodule worktree 단위 테스트·빌드가 1차 회귀 기준
 - 후속: merge 후 cross-stream smoke 스크립트 검토
 
+## 에이전트 루프 회귀 테스트 (2026-10-07)
+
+```bash
+.venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
+```
+
+`test_agent_runner.py`는 실행 실패의 종료 코드, push/merge 차단, live E2E 실패 전파, 명시적인 모델 고정과 키를 노출하지 않는 선택 모델 진단을 검증한다.
+
+`test_agent_shell.py`는 임시 작업 공간과 가짜 실행 도구로 한 사이클의 순서, 실패 시 후속 단계·반복 차단, 사전 점검 실패, 팀 전체 일회 실행, SIGTERM 종료를 검증한다. 실제 API 호출·에이전트 기동·Git push는 수행하지 않는다.
+
 ## 후속 (coder develop)
 
 1. Backend: **B02 recurrence** — `RoleBasedControllerAccessTest` guardian RBAC WIP commit or revert

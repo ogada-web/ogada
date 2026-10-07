@@ -201,3 +201,12 @@ agent_require_tmux() {
     exit 1
   fi
 }
+
+agent_require_runtime() {
+  _agent_common_init
+  if [[ ! -x "$_AGENT_PYTHON" ]]; then
+    echo "[fatal] .venv 없음: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt" >&2
+    return 2
+  fi
+  PATH="$_AGENT_ROOT/.venv/bin:$PATH" "$_AGENT_PYTHON" "$_AGENT_ROOT/scripts/run_agent.py" preflight --runtime-only
+}

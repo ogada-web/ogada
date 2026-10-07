@@ -24,6 +24,7 @@ import fcntl
 import hashlib
 import json
 import os
+import shutil
 import signal
 import subprocess
 import sys
@@ -734,7 +735,7 @@ def push_submodule_develop(role: str, stream: str) -> None:
     repo = submodule_dir_for_stream(stream)
     if not _git_repo_ready(repo):
         print(f"[push-skip] submodule git 없음: {repo}", file=sys.stderr)
-        return
+        raise SystemExit(1)
 
     branch = branch_for_stream(stream, "develop")
     current = _git_current_branch(repo)
@@ -744,7 +745,7 @@ def push_submodule_develop(role: str, stream: str) -> None:
             f"(expected {branch}) — push 생략",
             file=sys.stderr,
         )
-        return
+        raise SystemExit(1)
 
     if _git_status_porcelain(repo).strip():
         print(
@@ -752,7 +753,7 @@ def push_submodule_develop(role: str, stream: str) -> None:
             "커밋 후 push 필요 (run_agent build 종료 시 자동 push)",
             file=sys.stderr,
         )
-        return
+        raise SystemExit(1)
 
     ahead = _git_commits_ahead(repo, branch)
     if ahead <= 0:
@@ -775,6 +776,7 @@ def push_submodule_develop(role: str, stream: str) -> None:
             f"[push-fail] {repo.name} git push origin {branch} 실패: {detail}",
             file=sys.stderr,
         )
+        raise SystemExit(1) from err
 
 
 def stream_config(stream: str) -> dict:
@@ -1219,7 +1221,7 @@ def resolve_model_chain(role: str | None = None) -> list[str]:
 
     1) agents[<role>].model -> agents[<role>].fallback_models[*] -> models.default
        -> DEFAULT_MODEL_FALLBACK
-    2) 환경변수 AGENT_MODEL 이 있으면 체인 **맨 앞**에 끼워 넣는다 (폴백 유지).
+    2) 환경변수 AGENT_MODEL 이 있으면 그 모델만 사용한다 (폴백 없음).
     """
 
     data = _load_agents_yaml() or {}
@@ -1259,7 +1261,7 @@ def resolve_model_chain(role: str | None = None) -> list[str]:
     if ENV_MODEL:
         override = ENV_MODEL.strip()
         if override:
-            out = [override] + [m for m in out if m != override]
+            return [override]
 
     return out
 
@@ -1353,7 +1355,7 @@ def load_agents_context() -> str:
 
 
 def require_api_key() -> str:
-    key = os.environ.get("CURSOR_API_KEY")
+    key = os.environ.get("CURSOR_API_KEY", "").strip()
     if not key:
         print("[fatal] CURSOR_API_KEY 미설정. .env 확인 필요.", file=sys.stderr)
         sys.exit(2)
@@ -1379,6 +1381,7 @@ def _build_agent_prompt(
     api_key: str,
     model_id: str,
     cwd: Path,
+    tools: list[str] | None = None,
 ) -> object:
     """build 모드용 Agent.prompt — 프로세스별 bridge 재사용 + 기본 client 오염 방지."""
 
@@ -1389,6 +1392,7 @@ def _build_agent_prompt(
             api_key=api_key,
             model=model_id,
             local=LocalAgentOptions(cwd=str(cwd)),
+            tools=tools,
         ),
         client=client,
     )
@@ -3478,7 +3482,6 @@ def cmd_doctor(args: argparse.Namespace) -> None:
 
     ok_only = getattr(args, "ok_only", False)
     api_key = require_api_key()
-    masked = api_key[:6] + "..." + api_key[-4:]
     candidates = [
         # 서버가 "Available models" 로 공개한 풀 (2026-06). 계정 권한에
         # 따라 일부는 거절될 수 있다. 거절되면 서버가
@@ -3520,7 +3523,19 @@ def cmd_doctor(args: argparse.Namespace) -> None:
         "grok-build-0.1",
         "grok-4.3",
     ]
-    print(f"[doctor] API key={masked} (len={len(api_key)})")
+    if getattr(args, "list_models", False):
+        try:
+            for model in _ensure_build_client().models.list(api_key=api_key):
+                print(model.id)
+        finally:
+            _release_bridge_resources()
+        return
+    selected = getattr(args, "model", None)
+    if selected:
+        candidates = list(dict.fromkeys(selected))
+    elif ENV_MODEL and ENV_MODEL.strip():
+        candidates = [ENV_MODEL.strip()]
+    print("[doctor] API key configured (value hidden)")
     print("[doctor] 최소 프롬프트로 모델 가용성 점검")
     results: list[tuple[str, str, object, object, str]] = []
     # (model, kind, status, code, message)
@@ -3535,6 +3550,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
                     api_key=api_key,
                     model_id=m,
                     cwd=WORKSPACE_ROOT,
+                    tools=[],
                 )
                 dt = time.time() - t0
                 status = str(result.status or "?")
@@ -3653,6 +3669,9 @@ def cmd_doctor(args: argparse.Namespace) -> None:
             "  최소 우회: 일단 IDE 의 채팅에서 동일 계정으로 동작하는지 먼저 확인."
         )
 
+    if len(ok_models) != len(candidates):
+        raise SystemExit(1)
+
 
 def cmd_prune_bridges(args: argparse.Namespace) -> None:
     """ogada workspace orphan cursor-sdk-bridge 프로세스 정리."""
@@ -3696,6 +3715,7 @@ def cmd_status(_: argparse.Namespace) -> None:
     print(f"reqs file : {'OK' if REQUIREMENTS_FILE.exists() else 'MISSING'}")
     print(f"approved  : {'YES' if approval_present() else 'NO (build 차단됨)'}")
     print(f"env model : {ENV_MODEL or '(unset)'}")
+    print(f"api key   : {'CONFIGURED' if os.environ.get('CURSOR_API_KEY', '').strip() else 'MISSING'}")
     print(f"planner              : {resolve_model_chain('planner')}")
     print(f"tester               : {resolve_model_chain('tester')}")
     print(f"benchmark_researcher : {resolve_model_chain('benchmark_researcher')}")
@@ -3740,6 +3760,37 @@ def cmd_status(_: argparse.Namespace) -> None:
         "branch policy: .agents/branches.yaml "
         "(develop=주 경로, test=worktree 분리)"
     )
+
+
+def cmd_preflight(args: argparse.Namespace) -> None:
+    """API 호출이나 파일 변경 없이 팀 루프 실행 조건을 확인한다."""
+    failures: list[str] = []
+
+    def check(label: str, ready: bool) -> None:
+        print(f"[preflight] {'OK' if ready else 'MISSING'}: {label}")
+        if not ready:
+            failures.append(label)
+
+    if not getattr(args, "offline", False):
+        check("CURSOR_API_KEY (.env)", bool(os.environ.get("CURSOR_API_KEY", "").strip()))
+    for command in ("git", "tmux", "node", "npm", "java", "javac", "mvn"):
+        check(command, shutil.which(command) is not None)
+    check("REQUIREMENTS 승인", approval_present())
+
+    if not getattr(args, "runtime_only", False):
+        for stream in ("backend", "frontend"):
+            primary = submodule_dir_for_stream(stream)
+            wt = worktree_dir_for_stream(stream, "test")
+            check(f"src/{stream} @ develop", _git_current_branch(primary) == branch_for_stream(stream, "develop"))
+            check(f"src/{stream} clean", _git_repo_ready(primary) and not _git_status_porcelain(primary).strip())
+            check(f"src/{stream}-test @ test", _worktree_registered(primary, wt) and _git_current_branch(wt) == branch_for_stream(stream, "test"))
+            check(f"src/{stream}-test clean", _git_repo_ready(wt) and not _git_status_porcelain(wt).strip())
+        for path in (submodule_dir_for_stream("frontend"), worktree_dir_for_stream("frontend", "test")):
+            check(f"{path.relative_to(WORKSPACE_ROOT)} npm dependencies", (path / "node_modules/.bin/vite").is_file())
+
+    if failures:
+        raise SystemExit(2)
+    print("[preflight] ready (실제 API/DB 검증은 별도)")
 
 
 def cmd_plan(args: argparse.Namespace) -> None:
@@ -3976,6 +4027,9 @@ def cmd_build(args: argparse.Namespace) -> None:
         )
         sys.exit(3)
 
+    # 키 누락 시 checkout/worktree 생성 전에 중단한다.
+    require_api_key()
+
     target = (WORKSPACE_ROOT / args.target).resolve()
     stream = resolve_stream(args, target)
 
@@ -4017,6 +4071,9 @@ def cmd_build(args: argparse.Namespace) -> None:
     interval = getattr(args, "interval", None)
     if interval is None:
         interval = _role_default_interval(role)
+    if interval <= 0:
+        print("[fatal] --interval 은 양수여야 합니다.", file=sys.stderr)
+        raise SystemExit(2)
     label = ROLE_LABELS.get(role, role)
     question_marker = ROLE_QUESTION_MARKERS.get(role, "질문")
 
@@ -4048,6 +4105,10 @@ def cmd_build(args: argparse.Namespace) -> None:
                 print(f"[info] {role} 가 텍스트 요약을 반환하지 않았습니다.")
 
             render_build_changes(changes, before)
+
+            if result is None or getattr(result, "status", None) != "finished":
+                print(f"[build-failed] role={role} — 후속 push/merge 중단", file=sys.stderr)
+                raise SystemExit(1)
 
             plan_notes_after = (
                 PLAN_NOTES_FILE.read_text(encoding="utf-8")
@@ -4089,6 +4150,7 @@ def cmd_build(args: argparse.Namespace) -> None:
                             f"[warn] post-merge live E2E exit={rc} — docs/qa/QA_FEEDBACK.md 확인",
                             file=sys.stderr,
                         )
+                        raise SystemExit(1)
             elif role == "db_architect":
                 print("  - docs/technical/ERD.md · db/migration SQL 확인")
             elif role == "benchmark_researcher":
@@ -4230,6 +4292,8 @@ def main() -> None:
         action="store_true",
         help="RUN-OK 모델만 자세히 표시 (RUN-ERR 목록 생략)",
     )
+    p_doctor.add_argument("--model", action="append", help="이 모델만 진단 (여러 번 지정 가능)")
+    p_doctor.add_argument("--list-models", action="store_true", help="계정에서 제공하는 실제 모델 ID만 조회")
     p_doctor.set_defaults(func=cmd_doctor)
 
     p_cleanup = sub.add_parser(
@@ -4295,6 +4359,11 @@ def main() -> None:
 
     p_status = sub.add_parser("status", help="현재 상태 확인")
     p_status.set_defaults(func=cmd_status)
+
+    p_preflight = sub.add_parser("preflight", help="루프 실행 조건 확인 (API 호출·파일 변경 없음)")
+    p_preflight.add_argument("--offline", action="store_true", help="API 키 확인 생략")
+    p_preflight.add_argument("--runtime-only", action="store_true", help="worktree·npm 설치 상태 확인 생략")
+    p_preflight.set_defaults(func=cmd_preflight)
 
     args = parser.parse_args()
     args.func(args)

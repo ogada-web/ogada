@@ -40,6 +40,71 @@ ogada/
 
 ## 2. 초기 설정 (한 번만)
 
+### Grok 루프 준비와 실행 (2026-10-07)
+
+현재 실행기는 **Cursor SDK를 통해 Grok을 호출**한다. `CURSOR_API_KEY`가 필요하며 xAI 직접 API 키는 이 경로에 사용하지 않는다.
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+source .venv/bin/activate
+
+# .env가 이미 있다면 복사하지 않고 기존 파일에 설정을 추가한다.
+cp -n .env.example .env
+chmod 600 .env
+```
+
+Git, tmux, Node/npm, **JDK 17 이상(java·javac)**, Maven이 필요하다. 이 작업 공간에는 Maven 3.9.16과 [Amazon Corretto JDK 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)을 공식 배포 체크섬 확인 후 `.venv/tools/`에 설치했다. Maven과 Java 도구는 `.venv/bin/`에서 사용할 수 있다. 다른 환경에서는 [Maven 설치 안내](https://maven.apache.org/install.html)를 따른다.
+
+이 작업 공간의 `.venv/bin/mvn` 래퍼는 의존성 캐시를 `.venv/m2/`에 보관한다. 에이전트 tmux 세션은 가상환경을 활성화하므로 동일한 JDK·Maven·캐시를 사용한다. 반복 간격과 전체 사이클 주기는 양의 정수만 허용한다.
+
+`.env`에 Cursor API 키를 입력한 뒤 현재 계정의 모델 ID를 조회한다. 키를 채팅·커밋·로그에 남기지 않는다.
+
+```bash
+.venv/bin/python scripts/run_agent.py doctor --list-models
+```
+
+조회 결과의 Grok ID를 `.env`의 `AGENT_MODEL`에 설정한다. 과거 문서의 `grok-build-0.1` 또는 `grok-4.3`이 현재 계정에서 제공된다고 가정하지 않는다. 모델 목록 조회 방식은 [Cursor Python SDK 문서](https://cursor.com/docs/sdk/python)에 따른다.
+
+`AGENT_MODEL`을 지정하면 모든 역할은 그 모델만 사용한다. 실패 시 다른 제공자의 모델로 전환하지 않는다. 미지정이면 기존 역할별 모델 체인을 유지한다.
+
+```bash
+# 새 설치에서만: develop/test 브랜치와 test worktree를 준비한다.
+# 기존 로컬 develop 커밋이 있다면 자동 동기화 스크립트 실행 전 브랜치를 확인한다.
+./scripts/git_branch_setup.sh
+npm ci --prefix src/frontend
+npm ci --prefix src/frontend-test
+
+# API 호출 없이 도구·브랜치·worktree·의존성 상태를 확인한다.
+.venv/bin/python scripts/run_agent.py preflight --offline
+# 키까지 확인한다. 실제 인증이나 DB 연결 검증은 포함하지 않는다.
+.venv/bin/python scripts/run_agent.py preflight
+
+# 선택한 Grok의 연결 진단 성공 후 모든 역할을 한 번씩 실행한다.
+./scripts/agent_grok_start.sh --no-loop
+# 한 사이클의 결과를 확인한 뒤 반복 실행한다.
+./scripts/agent_grok_start.sh
+
+./scripts/agent_status.sh
+./scripts/agent_stop.sh
+```
+
+`doctor --model MODEL_ID`는 지정 모델에만 최소 프롬프트를 보낸다. 진단 에이전트의 기본 도구는 비활성화되어 프로젝트 파일을 변경하지 않는다. 진단 실패 시 종료 코드 1을 반환한다. API 키나 실행 도구 누락은 팀 기동 전에 차단한다.
+
+에이전트가 `finished`로 끝나지 않으면 실행기는 종료 코드 1을 반환하고 해당 작업의 자동 push·merge를 수행하지 않는다. 파이프라인은 실패한 단계에서 중단하며 다음 역할·스트림·사이클을 실행하지 않는다. 실제 실패 전에 생성된 파일은 남을 수 있으므로 로그와 Git 상태를 확인한 뒤 재시작한다. 자동 push 실패, 커밋되지 않은 변경, post-merge live E2E 실패도 실패로 전파한다.
+
+`agent_team_start.sh --no-loop`와 Grok 시작 명령의 `--no-loop`는 파이프라인뿐 아니라 보안·벤치마크·문서 역할에도 적용된다. 팀 실행은 기존 정책에 따라 애플리케이션 코드·문서를 수정하고 develop을 자동 push할 수 있으며, 완료 버전은 tester가 test로 이관한다.
+
+루프 제어 회귀 테스트는 API 호출·실제 Git push·실제 에이전트 실행 없이 수행한다.
+
+```bash
+.venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
+```
+
+2026-10-07 로컬 검증: 위 회귀 테스트 21개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 로컬 `.env`에 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
+
+### 기존 공통 설정
+
 ```bash
 # 가상환경 활성화
 source .venv/bin/activate

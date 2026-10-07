@@ -22,12 +22,22 @@ WRITER_INTERVAL="${AGENT_WRITER_INTERVAL_SECONDS:-3600}"
 SECURITY_INTERVAL="${AGENT_SECURITY_INTERVAL_SECONDS:-86400}"
 BENCHMARK_INTERVAL="${AGENT_BENCHMARK_INTERVAL_SECONDS:-1800}"
 
+for value in "$INTERVAL" "$FULL_EVERY" "$WRITER_INTERVAL" "$SECURITY_INTERVAL" "$BENCHMARK_INTERVAL"; do
+  if [[ ! "$value" =~ ^[1-9][0-9]*$ ]]; then
+    echo "[fatal] 에이전트 반복 간격과 전체 사이클 주기는 양의 정수여야 합니다." >&2
+    exit 2
+  fi
+done
+
 PIPELINE_LOOP=()
+SUPPORT_LOOP=(--loop)
 if [[ "${1:-}" == "--no-loop" ]]; then
   PIPELINE_LOOP=(--once)
+  SUPPORT_LOOP=()
 fi
 
 agent_require_tmux
+agent_require_runtime
 
 if [[ ! -d "$_AGENT_ROOT/src/frontend" ]] || [[ ! -d "$_AGENT_ROOT/src/backend-test" ]]; then
   echo "[preflight] submodule/worktree 준비 중..."
@@ -39,19 +49,19 @@ if ! "$_AGENT_PYTHON" "$_AGENT_ROOT/scripts/run_agent.py" status 2>/dev/null | g
   echo "[warn] REQUIREMENTS 승인 마커가 없으면 build 가 차단됩니다." >&2
 fi
 
-chmod +x "$_AGENT_ROOT/scripts/agent_pipeline.sh"
+PATH="$_AGENT_ROOT/.venv/bin:$PATH" "$_AGENT_PYTHON" "$_AGENT_ROOT/scripts/run_agent.py" preflight
 
 agent_start_tmux_session "$_AGENT_PIPELINE_SESSION" \
   "AGENT_INTERVAL_SECONDS=$INTERVAL AGENT_PIPELINE_FULL_EVERY=$FULL_EVERY ./scripts/agent_pipeline.sh ${PIPELINE_LOOP[*]:-}"
 
 agent_start_tmux_session "$_AGENT_SECURITY_SESSION" \
-  "python scripts/run_agent.py build --role security_auditor --interval $SECURITY_INTERVAL --loop"
+  "python scripts/run_agent.py build --role security_auditor --interval $SECURITY_INTERVAL ${SUPPORT_LOOP[*]:-}"
 
 agent_start_tmux_session "$_AGENT_BENCHMARK_SESSION" \
-  "python scripts/run_agent.py build --role benchmark_researcher --interval $BENCHMARK_INTERVAL --loop"
+  "python scripts/run_agent.py build --role benchmark_researcher --interval $BENCHMARK_INTERVAL ${SUPPORT_LOOP[*]:-}"
 
 agent_start_tmux_session "$_AGENT_WRITER_SESSION" \
-  "python scripts/run_agent.py build --role tech_writer --interval $WRITER_INTERVAL --loop"
+  "python scripts/run_agent.py build --role tech_writer --interval $WRITER_INTERVAL ${SUPPORT_LOOP[*]:-}"
 
 echo ""
 echo "[ok] 팀 에이전트 tmux 세션"

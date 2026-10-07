@@ -19,7 +19,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PYTHON="$ROOT/.venv/bin/python"
-RUN="$PYTHON $ROOT/scripts/run_agent.py"
+export PATH="$ROOT/.venv/bin:$PATH"
 
 INTERVAL="${AGENT_INTERVAL_SECONDS:-180}"
 FULL_EVERY="${AGENT_PIPELINE_FULL_EVERY:-6}"
@@ -41,10 +41,17 @@ pipeline_release_bridge_resources() {
   pipeline_release_resources
 }
 
-trap pipeline_release_resources EXIT INT TERM
+trap pipeline_release_resources EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 if [[ "${1:-}" == "--once" ]]; then
   ONCE=1
+fi
+
+if [[ ! "$INTERVAL" =~ ^[1-9][0-9]*$ || ! "$FULL_EVERY" =~ ^[1-9][0-9]*$ ]]; then
+  echo "[fatal] AGENT_INTERVAL_SECONDS·AGENT_PIPELINE_FULL_EVERY는 양의 정수여야 합니다." >&2
+  exit 2
 fi
 
 preflight() {
@@ -93,7 +100,7 @@ run_step() {
   echo "[pipeline] $(date -Is) role=$role $*"
   echo "========================================"
   local rc=0
-  if $RUN build --role "$role" "$@"; then
+  if "$PYTHON" "$ROOT/scripts/run_agent.py" build --role "$role" "$@"; then
     rc=0
   else
     rc=$?
@@ -108,8 +115,8 @@ stream_cycle() {
   local stream=$1
   echo ""
   echo "---------- stream: $stream ----------"
-  run_step coder --stream "$stream" --target "src/$stream" || true
-  run_step tester --stream "$stream" || true
+  run_step coder --stream "$stream" --target "src/$stream" || return "$?"
+  run_step tester --stream "$stream"
 }
 
 next_cycle_number() {
@@ -134,15 +141,15 @@ cycle() {
 
   if (( run_full == 1 )); then
     echo "[pipeline] cycle=$cycle_no mode=full (planner·db·ux 포함)"
-    run_step planner || true
-    run_step db_architect || true
-    run_step ux_designer || true
+    run_step planner || return "$?"
+    run_step db_architect || return "$?"
+    run_step ux_designer || return "$?"
   else
     echo "[pipeline] cycle=$cycle_no mode=implement (coder→tester만 — 기획 스킵)"
   fi
 
   for stream in "${STREAMS[@]}"; do
-    stream_cycle "$stream"
+    stream_cycle "$stream" || return "$?"
   done
 
   if [[ ${#PIPELINE_FAILURES[@]} -gt 0 ]]; then
@@ -156,16 +163,23 @@ cycle() {
 echo "[pipeline] streams=${STREAMS[*]} interval=${INTERVAL}s full_every=${FULL_EVERY}"
 echo "[pipeline] order: [full] planner → db_architect → ux_designer → coder → tester (×2 streams)"
 
+if [[ ! -x "$PYTHON" ]] || ! "$PYTHON" "$ROOT/scripts/run_agent.py" preflight --runtime-only; then
+  echo "[preflight] fatal: .venv·의존성·API 키·빌드 도구 확인 필요" >&2
+  exit 2
+fi
+
 if ! preflight; then
+  exit 2
+fi
+
+if ! "$PYTHON" "$ROOT/scripts/run_agent.py" preflight; then
   exit 2
 fi
 
 while true; do
   if ! cycle; then
-    echo "[pipeline] 사이클 실패 — 다음 주기까지 대기하거나 로그를 확인하세요." >&2
-    if [[ "$ONCE" -eq 1 ]]; then
-      exit 1
-    fi
+    echo "[pipeline] 사이클 실패 — 후속 작업과 반복 실행을 중단합니다. 로그 확인 후 재시작하세요." >&2
+    exit 1
   elif [[ "$ONCE" -eq 1 ]]; then
     echo "[pipeline] --once 완료"
     break
