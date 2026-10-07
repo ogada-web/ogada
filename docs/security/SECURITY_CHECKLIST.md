@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T16:45:00Z -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T17:40:00Z -->
 # 보안 체크리스트 (security/SECURITY_CHECKLIST.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **용도**: develop 구현·test 이관·프로덕션 배포 전 게이트  
 > **연계**: `SECURITY_AUDIT.md`, `THREAT_MODEL.md`, `QA_FEEDBACK.md` `[SEC]` 항목
 
-> **2026-10-07 34차 재점검**: develop = local test = origin/test = origin/develop. backend **`1e8857b`** · frontend **`5cf667b`** · 양 스트림 **WT CLEAN**(SEC-D35 Fixed) · origin/test push gap **해소**(SEC-D18 Fixed·SEC-D14 P0 포함). **Mitigated**: SEC-D33 `CsvFormulaEscaper` · SEC-D37/D45 payload redact · SEC-D41 Safety 30일/366일/200건 · SEC-D44 6-digit · SEC-D46 첨부 URL 구조 가드+선택 allowlist. **신규 Open**: SEC-D47 prod `react-router@6.30.4` moderate 2(CVE-2026-53669·패치 ≥7.18.0) · SEC-D48 dev high 4. **BLOCK Open 0** · QA Open [SEC] 0. carry: SEC-D4 poi 5.3.0 · A06-1 Boot 3.3.1 · SEC-D25 · SEC-D42.
+> **2026-10-07 35차 재점검**: local develop = local test. backend **`4aad7cc2`** · frontend **`29c2304`** · 양 스트림 **WT CLEAN**(SEC-D35 Fixed). origin/develop = origin/test = **`1e8857b`/`5cf667b`**(**+1** · SEC-D18 **Monitor 재개** · P0는 origin에 유지). **Mitigated 강화**: SEC-D46 단일 라벨·`.home.arpa`·`.svc` fail-closed(로컬 test 포함). **Open 유지**: SEC-D47 prod `react-router@6.30.4` moderate 2(패치 ≥7.18.0) · SEC-D48 dev high 4(TSR QA-B689, non-BLOCK) · SEC-D4 poi 5.3.0 · A06-1 Boot 3.3.1. **BLOCK Open 0** · QA Open [SEC] 0.
 
 ---
 
@@ -85,7 +85,7 @@
 | B-17 | Accounting BPO SSO — HQ/BRANCH only · per-actor rate limit · portal URL host+**path** allowlist · (장기) org-scoped credential | Medium | ◑ **SEC-D43 Mitigated 강화**(`bf96c29`+`bfe6b3f`) — HQ/BRANCH only ☑ · actor/org rate limit ☑ · sujifine https host ☑ · **path `/carefor_login`+query/fragment 거부** ☑(`bfe6b3f`) · org-scoped credential ☐(잔여 Low) |
 | B-18 | US-V06 batch-unconfirm challenge entropy ≥6 digit(or alphanumeric) + fail throttle | Low | ◑ SEC-D44 **Mitigated**(34차 `48e70207`) — 6-digit SecureRandom `100000..999999`·actor-scope·TTL 10분·1회 소모 ☑ · fail throttle ☐ |
 | B-19 | kind22 payroll `notifications.payload_json` 급여액 redact/TTL purge | Low | ☑ SEC-D45 **Mitigated**(34차) — `NotificationPayloadRedactor`가 netPay/paymentTotal/deductionTotal 중첩 필드 redact. 잔여: PENDING 구간·parse fail-open(SEC-D37과 동일) |
-| B-20 | facility notice `attachment_url` host allowlist 또는 내부 스토리지 첨부 | Low | ◑ SEC-D46 **Mitigated**(34차) — http(s)·기본 포트·userInfo 거부·IP/localhost/난독화/hosts alias 거부·FE 불안전 href 차단 ☑ · `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 미설정 시 공개 DNS 호스트 허용 ☐ |
+| B-20 | facility notice `attachment_url` host allowlist 또는 내부 스토리지 첨부 | Low | ◑ SEC-D46 **Mitigated 강화**(35차 `4aad7cc2`/`29c2304`) — http(s)·기본 포트·userInfo·IP/localhost/난독화/hosts alias·**단일 라벨·`.home.arpa`·`.svc`** 거부·FE 불안전 href 차단 ☑ · `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 미설정 시 공개 DNS·예약 접미사 밖 짧은 복수 라벨 허용 ☐ |
 
 ---
 
@@ -126,10 +126,10 @@
 | E-1 | Spring Boot 최신 패치 (3.3.1 CVE 해소) | BLOCK | ☐ develop **3.3.1**(A06-1) — 패치 라인 업그레이드 검토 |
 | E-2 | poi-ooxml ≥ **5.4.0** | High | ☐ (5.3.0 — **NHIS·은행입금·RFID(G21)·요양보호사 4 파서**, SEC-D4 20차 확대) |
 | E-3 | CI OWASP dependency-check (CVSS≥7 fail) | High | ☐ |
-| E-4 | CI `npm audit` (prod dep, moderate 이상 알림) | Medium | ☐ SEC-008 **회귀**(34차) — prod **2 moderate** `react-router@6.30.4`(SEC-D47·패치 ≥7.18.0) |
+| E-4 | CI `npm audit` (prod dep, moderate 이상 알림) | Medium | ☐ SEC-008 **회귀 유지**(35차 재실측) — prod **2 moderate** `react-router@6.30.4`(SEC-D47·패치 ≥7.18.0 · 범위 6.0.0–7.17.0) |
 | E-5 | Dependabot/Renovate 활성화 | Medium | ☐ |
 | E-6 | frontend dev `form-data` HIGH 해소 | Medium(dev) | ☑ **Fixed 유지** — form-data GHSA는 34차 audit에 없음(SEC-D26) |
-| E-7 | frontend dev 빌드체인 HIGH (browserslist·nanoid·postcss·source-map-js) | High(dev) | ☐ SEC-D48 — `npm audit` dev 포함 4 high + 3 moderate. 런타임 번들 아님 |
+| E-7 | frontend dev 빌드체인 HIGH (browserslist·nanoid·postcss·source-map-js) | High(dev) | ☐ SEC-D48 — 35차 `npm audit` **4 high + 5 moderate**(합계 9). prod high 0. TSR QA-B689 Open(non-BLOCK). 런타임 번들 아님 |
 
 ---
 
@@ -162,21 +162,21 @@
 
 | # | 항목 | BLOCK 조건 |
 |---|------|------------|
-| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`1e8857b`/`5cf667b` == develop (SEC-D14 Fixed · **SEC-D18 Fixed** 34차) |
+| H-0 | **develop P0 패치 `origin/test` 반영** | ◑ — P0는 origin `1e8857b`/`5cf667b`에 있음(SEC-D14 Fixed). develop/local test `4aad7cc2`/`29c2304`는 origin보다 **+1**(SEC-D46 검색경로 · **SEC-D18 Monitor** 35차) |
 | H-1 | 위 **BLOCK** 항목 0건 (develop baseline) | **충족** — develop ☑ · `origin/test` P0 ☑ |
-| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — 34차 **QA Open [SEC] 0**(BLOCK 없음). SEC-D33·D37·D41·D44·D45·D46 **Mitigated** · SEC-D18 **Fixed** · SEC-D47·D48·D4·A06-1·D25·D42 audit Open(**BLOCK 아님**) |
+| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — 35차 **QA Open [SEC] 0**(BLOCK 없음). SEC-D46 **Mitigated 강화** · SEC-D18 **Monitor**(push) · SEC-D47·D48·D4·A06-1 audit Open(**BLOCK 아님**). TSR QA-B689는 `[SEC]` 아님 |
 | H-3 | TSR 크로스테넌트·권한 거부 테스트 통과 | 필수 · `RoleBasedControllerAccessTest`(account-request·G-STAFF-NHIS·G-7-1 export·**G-SMS staff-access-key**)·live-e2e pilot E2E 회귀 |
 | H-4 | `.env`·키 파일 Git 미포함 | ◑ — **SEC-D22**: WT `.gitignore` `*.env` 무시 ☑ · parent repo HEAD 커밋 선행 권고 |
 | H-5 | 파일럿 센터 개인정보 처리방침·동의 UI | PLN 확인 |
 | H-6 | J01 `SecurityConfig` 코드 리뷰 | ☑ develop lineage (SEC-D8 Fixed) · 필터 순서(SEC-D24 Fixed) |
-| H-7 | workspace baseline = git 실측 HEAD | ☑ `1e8857b`/`5cf667b` (34차 실측·양 스트림 **CLEAN**·origin/develop·origin/test SYNCED) |
-| H-8 | develop→test merge·origin push | ☑ — develop == local test == origin/test (`1e8857b`/`5cf667b`·SEC-D18 Fixed) |
+| H-7 | workspace baseline = git 실측 HEAD | ☑ `4aad7cc2`/`29c2304` (35차 실측·양 스트림 **CLEAN**·local test SYNCED·origin은 +1) |
+| H-8 | develop→test merge·origin push | ◑ — develop == local test (`4aad7cc2`/`29c2304`). origin/develop·origin/test는 **+1**(SEC-D18 Monitor) |
 | H-9 | live-e2e bootstrap credential fail-fast | ☑ SEC-D29 — blank credential fail-fast·trim 정규화(`7848b0f`)·password 필드 0 · 24차 HealthControllerTest G21 seed detail lock으로 readiness 회귀 가드 추가 |
 | H-10 | 외부 SMS/Alimtalk dispatchReady fail-closed(credential 부재) | ☑ 24차 — `NotificationChannelReadinessService` 채널-credential 게이트(`fed6f1f`)·`isLiveConfigured` 마커 거부(stub/placeholder/change-me)·SEC-D15 deepen |
 | H-11 | staff manual SMS quiet-hours guard(KST 22:00~08:00) | ☑ 24차 — `NotificationService.dispatchManualStaffSms`가 `NotificationQuietHoursPolicy.isActiveNow` 시 `BusinessRuleException` 즉시 거부(v2/J03 lineage 정합) |
 | H-12 | Accounting BPO SSO least-privilege·throttle·portal host+path allowlist | ☑ SEC-D43 **Mitigated 강화**(`bf96c29`+`bfe6b3f`) — 잔여 org-scoped credential만 장기 |
 | H-13 | US-V06 batch-unconfirm challenge entropy | ◑ SEC-D44 **Mitigated** — 6-digit ☑ · fail throttle ☐ |
-| H-14 | FacilityNotice attachment host allowlist / kind22 payroll payload redact | ◑ SEC-D46·D45 **Mitigated** — 구조 가드·payroll redact ☑ · prod allowlist env ☐ |
+| H-14 | FacilityNotice attachment host allowlist / kind22 payroll payload redact | ◑ SEC-D46 **Mitigated 강화**(35차 단일 라벨·`.home.arpa`·`.svc`) · SEC-D45 redact ☑ · prod allowlist env ☐ |
 | H-15 | J03 dispatch-reference-unit-rates HQ/BRANCH only · 정적 catalog · secret 0 | ☑ 30차 — `NotificationChannelStatusController` `@PreAuthorize(HQ/BRANCH)` · `NotificationDispatchUnitRatesCatalog.REFERENCE` |
 | H-16 | prod `react-router` ≥7.18.0 (CVE-2026-53669) | ☐ SEC-D47 — lock `6.30.4` · 로그인 `navigate(pathname)` 싱크 |
 
@@ -194,4 +194,4 @@
 
 ---
 
-*마지막 점검: 2026-07-19 (33차) | develop HEAD `6d3c766`/`6a9e85e`(양 스트림 **CLEAN** · SEC-D35 Fixed) · **SEC-D34 excel amount 정규화 Pass**(row-level graceful-degrade·구조 fail-closed 불변·회귀無) · **FE a11y `<time>` 래핑 Pass**(신규 fetch/XSS 0) · local test==develop `6d3c766`(SEC-D34 FF-merged) · SEC-D26 Fixed(prod·dev 0건) · SEC-D4/A06-1/D41/D42/D25/D33/D40/D44~D46 carry · origin BE **774**/FE **37** unpushed(SEC-D18/QA-B116)*
+*마지막 점검: 2026-10-07 (35차) | develop HEAD `4aad7cc2`/`29c2304`(양 스트림 **CLEAN** · local test SYNCED · SEC-D35 Fixed) · **SEC-D46 검색경로·`.home.arpa`·`.svc` Mitigated 강화** · origin **+1**(SEC-D18 Monitor) · SEC-D47 prod moderate 2 · SEC-D48 dev high 4(QA-B689) · SEC-D4/A06-1 carry · **QA Open [SEC] 0***

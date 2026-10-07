@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T16:45:00Z -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T17:40:00Z -->
 # 위협 모델 (security/THREAT_MODEL.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **방법**: STRIDE + 데이터 흐름 기반  
 > **시스템**: ogada — 주간보호센터 B2B SaaS (멀티테넌트)  
 > **스택**: React SPA ↔ Spring Boot API ↔ PostgreSQL  
-> **2026-10-07 34차 갱신**: develop = local test = origin/test **`1e8857b`/`5cf667b`**(양 스트림 **CLEAN** · SEC-D18 **Fixed** · SEC-D14 P0 포함). **Mitigated**: SEC-D33 CSV `'` prefix · SEC-D37/D45 dispatch 후 payload redact · SEC-D41 Safety 조회 창(기본 30일·최대 366일·200건) · SEC-D44 6-digit challenge · SEC-D46 첨부 URL 구조 가드(IP/localhost/난독화/hosts alias 거부, allowlist는 env). **신규**: SEC-D47 prod `react-router@6.30.4` 오픈 리다이렉트(CVE-2026-53669, 로그인 복귀 `navigate(pathname)`) · SEC-D48 dev 빌드체인 high 4. **34차 신규 BLOCK 0**. 상세 `SECURITY_AUDIT.md` §1.36.
+> **2026-10-07 35차 갱신**: local develop = local test **`4aad7cc2`/`29c2304`**(양 스트림 **CLEAN**). origin/develop = origin/test **`1e8857b`/`5cf667b`**(**+1** · SEC-D18 **Monitor** · SEC-D14 P0는 origin에 유지). **Mitigated 강화**: SEC-D46 첨부 URL이 단일 라벨·`.home.arpa`·`.svc`를 fail-closed(서버는 URL을 fetch하지 않음). **Open 유지**: SEC-D47 prod `react-router@6.30.4` · SEC-D48 dev high 4. **35차 신규 BLOCK 0**. 상세 `SECURITY_AUDIT.md` §1.37.
 
 ---
 
@@ -437,7 +437,7 @@ flowchart TB
 ```
 [HQ/BRANCH/사회복지사] --Bearer JWT--> [FacilityNoticeController]
     CRUD /api/v1/notifications/facility-notices
-        --> page max100 · attachment_url http(s)+기본 포트+IP/localhost 거부 · 선택 호스트 allowlist · V193 DB CHECK
+        --> page max100 · attachment_url http(s)+기본 포트+IP/localhost+단일 라벨+.home.arpa+.svc 거부 · 선택 호스트 allowlist · V193 DB CHECK
         --> DRAFT 수정/삭제 · PUBLISHED 본문 불변
 
 [HQ/BRANCH/사회복지사] --Bearer JWT--> [ClientLinkageRecordController|/report]
@@ -455,7 +455,7 @@ flowchart TB
 ```
 
 **위협**:
-- attachment `javascript:`/`ftp:`/IP/localhost — app 구조 가드 + FE href 차단 · **SEC-D46 Mitigated**: allowlist 미설정 시 공개 호스트 피싱 잔여
+- attachment `javascript:`/`ftp:`/IP/localhost/단일 라벨/`.home.arpa`/`.svc` — app 구조 가드 + FE href 차단 · **SEC-D46 Mitigated 강화**(35차): 서버는 URL을 fetch하지 않음. 잔여: allowlist 미설정 시 공개 호스트·예약 접미사 밖 짧은 복수 라벨
 - linkage summary PII — RBAC+tenant · length 상한
 - **batch-unconfirm 4-digit brute** — JWT+branch+TTL+consume · **SEC-D44** entropy 권고
 - RFID/SMS flood · payroll 금액 at-rest — quiet-hours·scope · **SEC-D45** redact/purge
@@ -590,7 +590,7 @@ flowchart TB
 | T-E5 | live-e2e bootstrap 무인증 hq_admin | `LIVE_E2E_BOOTSTRAP_ENABLED=true` 노출 환경 | `@ConditionalOnProperty` 기본 off · `ProductionSecretValidator` prod 거부 · password 필드 0 · blank credential fail-fast · probe default cred 허용(QA-B95) · 24차 HealthControllerTest G21 seed detail lock 추가 | **Low** — SEC-D29 **Mitigated** |
 | T-E6 | staff access key brute force | 직원 휴대전화 미보유 공격자가 `/auth/password/reset`에 6-digit 키 시도 | `AuthRateLimitService` ip 20/min·token 8/min · `PasswordResetTokenEntity` 단일활성(invalidateActiveTokensForUser) · 60분 TTL · SHA-256 hash 비교 · 키스페이스 10^6 | **Low** — SEC-D36 Monitor(키 길이/charset 확장 검토·현행 rate limit으로 P(match)≈0.05%/60분/토큰) |
 | T-E7 | Accounting BPO SSO 과다 권한·공유 credential | SOCIAL_WORKER·타 org이 동일 시설 SSO mint | **HQ/BRANCH only** · portal **host+path** allowlist · rate limit · JWT·password 미저장·env fail-closed | **Low** — SEC-D43 **Mitigated 강화**(잔여: process-wide env · org-scope 장기) |
-| T-E8 | FacilityNotice 첨부 URL 피싱 | 권한 직원이 공개 호스트 URL 게시 → 클릭 유도 | http(s)·기본 포트·IP/localhost/난독화 거부 · FE 불안전 href 차단 · RBAC | **Low** — SEC-D46 **Mitigated** · 잔여: allowlist env 미설정 |
+| T-E8 | FacilityNotice 첨부 URL 피싱·로컬 해석 | 권한 직원이 공개 호스트 또는 검색경로 이름(`metadata`, `*.svc`)을 게시 → 다른 직원 브라우저가 클릭 | http(s)·기본 포트·IP/localhost/난독화·**단일 라벨·`.home.arpa`·`.svc`** 거부 · FE href 차단 · RBAC · 서버 fetch 없음 | **Low** — SEC-D46 **Mitigated 강화**(35차 `4aad7cc2`/`29c2304`) · 잔여: allowlist env 미설정(공개 호스트·`ndots`로 붙는 짧은 복수 라벨). origin에는 이 커밋 없음 |
 | T-E9 | 로그인 후 외부 이동 | 인증 전 경로가 `navigate(pathname)`으로 전달되고 react-router가 외부로 해석 | `react-router@6.30.4` · `ProtectedRoute` state.from · `LoginPage.redirectTo` | **Moderate** — SEC-D47 CVE-2026-53669 · 패치 ≥7.18.0 · SSR 생성자 주입(GHSA-337j-9hxr-rhxg)은 Vite SPA에서 해당 낮음 |
 
 ---
@@ -651,7 +651,7 @@ flowchart TB
 | 운영 시크릿은 시크릿 매니저 | **부분 충족** (develop prod: `ProductionSecretValidator` / test stale) | test merge + 시크릿 매니저 |
 | 파일럿 사용자 기기 무악성 | 낮음 | 보호자 모바일 고려 |
 | Spring Boot 단일 JVM 또는 키 공유 | **부분 충족** (develop prod 키 필수; test stale) | test merge |
-| 검증 코드 = 배포 산출물 | **충족** — `origin/test`=`598d108`/`ab4de83` P0 포함 · v2/v1.2.1/v1.3 feature merge 잔여(606+286·SEC-D18 더 악화 +14/+20 vs 26차) | SEC-D18 develop→test TSR merge + origin push |
+| 검증 코드 = 배포 산출물 | **부분** — local test == develop `4aad7cc2`/`29c2304` · origin/test·origin/develop는 `1e8857b`/`5cf667b`(**+1**, SEC-D46 검색경로 미포함) | SEC-D18 Monitor · push는 별도 호출 |
 
 ---
 
@@ -683,13 +683,13 @@ flowchart TB
 | 13 | SEC-D36 | 2 | staff access key 키 길이/charset 확장 검토(현행 rate limit 의존·24차 carry) |
 | 14 | SEC-D38 | 2 | **(NEW 25차)** prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시·운영 가이드 문서화 |
 | 15 | SEC-D39 | 2 | **(NEW 25차)** CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토 |
-| 16 | SEC-D18 | — | **Fixed**(34차) — origin/test == develop `1e8857b`/`5cf667b` |
+| 16 | SEC-D18 | 2 | **Monitor 재개**(35차) — origin/develop·origin/test가 develop보다 **+1** (`1e8857b`/`5cf667b` vs `4aad7cc2`/`29c2304`) |
 | 17 | **SEC-D41** | — | **Mitigated** — 기본 30일·최대 366일·200건 |
 | 18 | **SEC-D42** | 2 | safety `payload_json` PII 평문 — P3 UUID/암호화 |
 | 19 | SEC-D43 residual | 2 | **Mitigated 강화** — path allowlist 착지 · 잔여 org-scoped BPO credential 장기 |
 | 20 | **SEC-D44** | — | **Mitigated** — 6-digit · 잔여 fail throttle |
 | 21 | **SEC-D45** | — | **Mitigated** — payroll 필드 redact · PENDING 구간 잔여 |
-| 22 | **SEC-D46** | 2 | 구조 가드 착지 · 잔여: prod `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` |
+| 22 | **SEC-D46** | 2 | 단일 라벨·`.home.arpa`·`.svc` 착지(로컬) · 잔여: prod allowlist · origin +1 미반영 |
 | ✅ | SEC-D35 WT CLEAN · program photo Pass · SEC-D43 path · QA-B95 decode · SEC-D17·D19·D14·D23·D24 | ↓ | develop `a742788`/`592a483` Pass/Mitigated/Fixed |
 
 ---
@@ -715,4 +715,4 @@ flowchart TB
 3. 파일럿 배포 시 MFA 요구 여부
 
 ---
-*다음 갱신: react-router 7.18.0+(SEC-D47)·dev audit high(SEC-D48)·poi-ooxml 5.4.0+(SEC-D4)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·prod attachment allowlist(SEC-D46 잔여)·safety payload_json PII(SEC-D42)·org-scoped BPO credential(SEC-D43 residual) 또는 신규 src 변경 후*
+*다음 갱신: origin에 `4aad7cc2`/`29c2304` 반영(SEC-D18)·react-router 7.18.0+(SEC-D47)·dev audit high(SEC-D48)·poi-ooxml 5.4.0+(SEC-D4)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·prod attachment allowlist(SEC-D46 잔여)·safety payload_json PII(SEC-D42)·org-scoped BPO credential(SEC-D43 residual) 또는 신규 src 변경 후*
