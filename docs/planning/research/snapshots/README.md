@@ -193,6 +193,11 @@
 <!-- BNK-731 live-refresh(2026-07-14T18:58Z): rotation=이지케어 역공학 2–4h. ★★★ FAQ rowid 5건 재실측 — 21298 공단일정 자동/엑셀 계획·청구 2-track import(`56f80ab6` 16,644B), 21474 일정확정 post-claim 본인부담 reconciliation(`e7a6fa1c`), 21589 RFID태그내역↔공단계획 비교 후 급여제공내역 문자(`a5e2e48c`), 21844/21845 공단 엑셀 마스킹→정상화 pair(`d0aa760c`/`5b78c947`) = 신규 엑셀 포맷 변경 0. ★★ 가격·도입 재실측 — home 53.2%/9,298/4,668/2,353억/1,820억 `ba5f7ca9`; price Core 10,000원부터·Total 55,000원부터·셋팅비 33,000원·문자 20~50원 `3bcb947c`; fnc 공단 엑셀·RFID·일정중복 `64e4fa90`; demo auth shell `54750808`. ★ ogada @4d1b01c/@bf96c29 WT CLEAN·Route132·Page105·FEtest518·BEtest289·@Test2161·V192·coverage93.62·merge gate641. 주력 `ezcare_faq_price_remeasure_bnk731.txt`. 가정 번복 0·신규 core 갭 0·v2+ RFID/SMS template carry. -->
 | 파일 | 원본/내용 | md5 | 크기 | 비고 |
 |---|---|---|---|---|
+| `carefor_tri_source_menu_bnk943.txt` | 케어포 0-2h — 화면 105 · 주석 106 · 데모 loadPage 112 · M7 11 · 5-3-1 noready | `c84bc051` | 6,405B | **BNK-943 주력 ★★★** |
+| `carefor_demo_work_live_bnk943.html` | [demo-work](https://demo-work.carefor.co.kr/) LIVE HTTP 200 · 시설 셸 · 이동서비스 0 · Wayback `ebee4d47` DRIFT | `007911c9` | 73,296B | **BNK-943 신규 증거 URL ★★★** |
+| `carefor_manual_pdf_toc_bnk943.txt` | [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) p1–4·p83–92 · 원본 `96f7d45e` 9,992,772B | `f3d0b19d` | 38,524B | **BNK-943 PDF 목차 ★★** |
+| `ogada_git_baseline_bnk943.txt` | ogada git — FE `@29c2304` / BE `@d73aec11` · HTTP 447 · @Test 2474 · merge gate 3 | `116ea11e` | 1,430B | **BNK-943 git ★★** |
+| `carefor_func_live_bnk943.php` | [daycare/func.php](https://www.carefor.co.kr/daycare/func.php) 재실측 = bnk942 `0f1858cd` BYTE-IDENTICAL | `0f1858cd` | 98,268B | **BNK-943 IDENTICAL ★** |
 | `ogada_git_baseline_bnk942.txt` | ogada git 실측 6-8h — FE `@29c2304` / BE `@4aad7cc2` · SEC-D46 · Route 133 · Page 106 · @Test 2459 · 모듈 97.41% | `410df08b` | 5,049B | **BNK-942 주력 ★★★** |
 | `carefor_func_live_bnk942.php` | [daycare/func.php](https://www.carefor.co.kr/daycare/func.php) LIVE HTTP 200 · 주석 leaf 106 · disk `6226e6eb` 대비 DRIFT | `0f1858cd` | 98,268B | **BNK-942 재실측 ★★★** |
 | `owasp_ssrf_prevention_cheat_sheet_bnk942.html` | [OWASP SSRF](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) metadata·169.254.169.254·DNS rebinding | `c56be3c2` | 115,663B | **BNK-942 신규 증거 URL ★★** |

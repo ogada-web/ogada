@@ -1,0 +1,38 @@
+# BNK-943 ogada git 실측 — 2026-10-07T18:15:00Z
+# rotation: 케어포 역공학 0-2h
+
+frontend develop = 29c2304d479f317acff6344d114f7fb88115c3a9
+  short 29c2304
+  local develop = test
+  origin/develop = origin/test = 5cf667b
+  ahead 1
+  WT CLEAN
+  HEAD fix(v1.2.1/SEC-D46): reject search-path and reserved attachment hosts (BE lockstep)
+  BNK-942 와 동일 SHA
+
+backend develop = d73aec1180669399e61fbfe362fd13ff3dd2bf83
+  short d73aec11
+  local develop = test
+  origin/develop = origin/test = 1e8857b4
+  ahead 2 (4aad7cc2 SEC-D46 + d73aec11 US-P01)
+  WT CLEAN
+  HEAD feat(v3.1/US-P01): add program client group assignment API
+  14 files +949
+  BNK-942 BE 4aad7cc2 → +1
+
+merge gate 3 (FE 1 + BE 2, origin 미push)
+Route 133 (<Route 132 + <Routes> 1)
+path depth max 4
+Page *Page.jsx 106
+src/pages/*.jsx non-test 107 (RootRedirect 포함)
+FE test file 546 (230 .test.js + 316 .test.jsx)
+BE *Test.java 303 + *Tests.java 1 = 304
+@Test strict 2474 (BNK-942 2459 + 15: Access 3 + Routing 2 + Service 10)
+@RestController 82 (81+1 ProgramClientGroupController)
+@Entity 92
+GET 233 / POST 146 / PATCH 45 / PUT 13 / DELETE 10 = HTTP 447
+  BNK-942 442 → +5 (GET+2 POST+2 PATCH+1) · DELETE 0
+Flyway V1–V196 (신규 마이그레이션 0 · V179 program_client_groups 재사용)
+/programs/groups FE route 0
+모듈 97.41% (28.25/29) · id=5 1.0 유지
+전체 npm test / mvn test 미실행 (문서 사이클 · 카운트는 git grep)

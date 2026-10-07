@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-943 케어포 역공학 0-2h · ★★★ **「109」폐기 · 시설 데모 LIVE에 이동서비스 없음** · ★★ **본인부담 7-1~7-10 화면 번호 1:1** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: [func.php](https://www.carefor.co.kr/daycare/func.php) HTTP 200 · `0f1858cd` = BNK-942 BYTE-IDENTICAL · 화면 leaf 105 · 주석 106. [demo-work](https://demo-work.carefor.co.kr/) HTTP 200 · `007911c9` · openMenu 11 · 2번 요양 · 이동서비스 0. [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) HTTP 200 · `96f7d45e` · 2018 목차 12모듈. git FE `29c2304` · BE `d73aec11` · @Test 2474 · HTTP 447.
+
+### 결정
+
+1. **★★★ 케어포 메뉴 개수 정본을 LIVE 화면으로 둔다 (확인)** — 「109」는 func.php·시설 데모·PDF 목차 어디에도 없다. 주야간 마케팅 화면 **105**, 주석 **106**, disk 주석 **107**, 시설 loadPage **112**. **planner: 요구사항·카피에 109를 쓰지 않는다. 주야간과 시설 메뉴를 한 표로 합치지 않는다.**
+
+2. **★★★ 이동서비스 정본은 func.php M2다 (확인)** — 시설 데모 2번은 「요양급여제공」이고 이동서비스·배차·송영·RFID 문자열이 없다. **planner: 데모 셸만으로 Transport 갭을 열거나 닫지 않는다.**
+
+3. **★★ 본인부담 번호는 화면 제목을 따른다 (확인)** — 주야간과 시설 데모의 7-1~7-10이 같다. HTML 주석과 2018 PDF(7-5 청구대장, 7-8 의료비공제, 5-5 그룹관리)는 이전 번호다. ogada `/billing` 17경로는 그 11줄과 맞고, statistics·수가·본인부담률·공단 import가 더 있다. **id=7 커버는 1.0 유지.**
+
+4. **★★ 5-3-1은 경쟁 화면에서 내려갔고 ogada BE API는 올라왔다 (확인)** — 마케팅 5-3-1은 빈 줄, 데모 `view.program_group`은 noready 주석이다. BE `@d73aec11` `/api/v1/programs/groups` 는 삭제 없이 그룹과 배정을 연다. FE `/programs/groups`는 없다. **planner: 새 갭으로 올리지 않는다. id=5는 1.0. FE wire는 US-P01 잔여.**
+
+5. **★ baseline (확인)** — FE `@29c2304` · BE `@d73aec11` · merge gate **3** · HTTP **447** · @Test **2474**. 재무회계 데모는 알림으로 막혀 있고 ERP GET은 405다. 로그인 폼은 미확인. id=12는 0.7 유지.
+
+**가정 1**(cachebuster `v_20260911_2`) · **신규 진성갭 0** · **미확인 2**(주야간 로그인 메뉴의 5-3-1 · ERP POST 폼) · 신규 snapshot 5 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-942 ogada git 실측 6-8h · ★★★ **SEC-D46 search-path·예약 접미사 첨부 호스트 FE/BE lockstep** · ★★ **케어포 func.php LIVE 200 · 주석 leaf 107→106** · ogada `@29c2304`/`@4aad7cc2` · merge gate **2**
 
 **근거**: FE `29c2304` · BE `4aad7cc2` · 로컬 develop=test · origin `@5cf667b`/`@1e8857b4` · WT CLEAN. Route 133 · Page 106 · FE test 546 · @Test 2459 · HTTP 442 · 모듈 97.41%. locked vitest 77/77 · targeted mvn 33/33. [func.php](https://www.carefor.co.kr/daycare/func.php) HTTP 200 · `0f1858cd`. [OWASP SSRF](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) `c56be3c2`. [RFC 8375](https://www.rfc-editor.org/rfc/rfc8375.html) `7abd3736`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 641차.

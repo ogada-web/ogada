@@ -1,5 +1,21 @@
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T15:41:05Z -->
 
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:15:00Z -->
+
+### [BNK] BNK-943 인사이트 (2026-10-07) — ★★★ **케어포 「109」 폐기 · 시설 데모에 이동서비스 없음** · ★★ **7-1~7-10 화면 번호 = ogada billing** · ★ **5-3-1은 잔여 FE wire**
+
+| 항목 | 내용 | 반영 |
+|---|---|---|
+| **메뉴 개수** | 주야간 화면 **105** · 주석 **106** · 시설 loadPage **112**. 「109」 없음 | 카피·REQUIREMENTS 인용 금지 |
+| **이동서비스** | [demo-work](https://demo-work.carefor.co.kr/) 2번=요양. 이동/배차/송영/RFID **0**. 정본은 [func.php](https://www.carefor.co.kr/daycare/func.php) M2 | Transport 갭을 데모로 판단하지 않음 |
+| **본인부담** | 두 셸의 화면 7-1~7-10 = `/billing` 11경로. 주석·2018 PDF 번호는 이전 세대 | id=7 **1.0** 유지 |
+| **프로그램 그룹** | 5-3-1 마케팅 공백 · 데모 noready. BE `@d73aec11` API 착지 · FE `/programs/groups` 없음 | 신규 갭 아님 · US-P01 FE 잔여 · id=5 **1.0** |
+| **git** | FE `@29c2304` · BE `@d73aec11` · HTTP **447** · @Test **2474** · merge gate **3** | baseline 실측 우선 |
+
+1. **109 금지**: 문서에 케어포 항목 수를 109로 적지 않는다.
+2. **번호 출처**: 본인부담·프로그램 id는 LIVE 화면 제목. PDF p83·주석 번호로 라우트를 다시 붙이지 않는다.
+3. **FE 그룹 화면**: `/programs/groups`가 생기기 전에는 id=5 커버를 바꾸지 않는다.
+
 <!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T16:50:00Z -->
 
 ### [BNK] BNK-941 인사이트 (2026-10-07) — ★★★ **현행 고시 제2026-189호(시행 2026-10-01)** · ★★ **제34조 금액표 미확인** · ★ **lcms IP V6 · merge gate 0**

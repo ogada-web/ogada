@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T17:35:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:15:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,18 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-942 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@4aad7cc2` · **local develop = test** · origin은 `@5cf667b`/`@1e8857b4` · ahead **1+1** · WT CLEAN · merge gate **2** · Route **133** · Page **106** · FE test **546** · BE @Test **2459** · HTTP **442** IDENTICAL · 모듈 **97.41%**). ★★★ **SEC-D46 search-path·`.home.arpa`·`.svc` 첨부 호스트 거부** · 케어포 func.php LIVE **200**(`0f1858cd` · 주석 leaf 107→106) · NHIS #44 **641차** · filtered npm **77/77** · targeted mvn **33/33** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-943 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · **local develop = test** · origin `@5cf667b`/`@1e8857b4` · ahead **1+2** · WT CLEAN · merge gate **3** · Route **133** · Page **106** · FE test **546** · BE @Test **2474** · HTTP **447** · 모듈 **97.41%**). ★★★ **「109」폐기(화면 105·주석 106·데모 loadPage 112)** · demo-work LIVE **200** 시설 셸 이동서비스 **0** · M7 7-1~7-10 → `/billing` **11/11** · 5-3-1 noready · PDF `96f7d45e` IDENTICAL · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-943 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 메뉴 전수 · 「109」 폐기 (BNK-943 #1 · 메뉴/필드/워크플로 · 확인)** | ⚪ 개수를 갭으로 쓰지 않음 · 깊이 최대 **4** > 케어포 id **3** | ✅ [func.php](https://www.carefor.co.kr/daycare/func.php) `0f1858cd` 화면 **105** · 주석 **106** · disk 주석 **107** · 모듈 **11** · 「리포트」 21/105=**20.0%** | ⚪ | ⚪ | ⚪ | `carefor_tri_source_menu_bnk943.txt` · §943-1 |
+| **★★★ 시설 셸 LIVE · 이동서비스 없음 (BNK-943 #2 · 신규 증거 URL · 확인)** | ✅ 이동서비스 비교는 func.php M2만 사용 | ✅ [demo-work](https://demo-work.carefor.co.kr/) `007911c9`/73,296B · openMenu 11 · 2번=**요양급여제공** · 이동서비스/배차/송영/RFID **0** · loadPage **112** · 「리포트」 26/112=**23.2%** | ⚪ | ⚪ | ⚪ | `carefor_demo_work_live_bnk943.html` · §943-2 · Wayback `ebee4d47` 과 DRIFT |
+| **★★ M7 7-1~7-10 → ogada billing (BNK-943 #3 · 워크플로 · 확인)** | ✅ `/billing` **17** · 표 11줄 대응 + statistics·fee-schedules·copay-rates·nhis import · id=7 **1.0** | ✅ 주야간 화면 11 = 시설 `left_sub7` 11 · 7-10 view `cost_calculator` 활성 · HTML 주석은 이전 번호 | ⚪ | ⚪ | ⚪ | §943-4 |
+| **★★ 5-3-1 그룹관리 비활성 · BE 그룹 API (BNK-943 #4 · 확인)** | ✅ BE `/api/v1/programs/groups` GET/POST/PATCH + members · DELETE **0** · FE `/programs/groups` **없음** · id=5 **1.0 유지** | ✅ 마케팅 5-3-1 화면 공백 · 데모 `view.program_group` 은 `submp_noready` 주석 · 5-3은 `view.program_plan` | ⚪ | ⚪ | ⚪ | §943-2 · US-P01 FE 잔여 · 신규 갭 아님 |
+| **★★ 매뉴얼 PDF LIVE · 2018 번호 (BNK-943 #5 · 기존 URL 재실측)** | ⚪ PDF 번호를 현재 메뉴 id로 쓰지 않음 | ✅ [Dov8rzFqBv.pdf](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) `96f7d45e`/9,992,772B · p2 모듈 **12**(수입지출 포함) · 본인부담 p83 번호는 화면보다 이전 | ⚪ | ⚪ | ⚪ | `carefor_manual_pdf_toc_bnk943.txt` · §943-3 |
+| **★ git @HEAD · HTTP 447 (BNK-943 #6)** | ✅ FE `@29c2304` · BE `@d73aec11` · Route 133 · Page 106 · @Test **2474** · GET233/POST146/PATCH45/PUT13/DELETE10=**447** · merge gate **3** | ✅ func.php `0f1858cd` IDENTICAL(942 대비) | ⚪ | ⚪ | ⚪ | `ogada_git_baseline_bnk943.txt` · §943-0 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-942 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@4aad7cc2` · **local develop = test** · origin은 `@5cf667b`/`@1e8857b4` · ahead **1+1** · WT CLEAN · merge gate **2** · Route **133** · Page **106** · FE test **546** · BE @Test **2459** · HTTP **442** IDENTICAL · 모듈 **97.41%**). ★★★ **SEC-D46 search-path·`.home.arpa`·`.svc` 첨부 호스트 거부** · 케어포 func.php LIVE **200**(`0f1858cd` · 주석 leaf 107→106) · NHIS #44 **641차** · filtered npm **77/77** · targeted mvn **33/33** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-942 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@4aad7cc2` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

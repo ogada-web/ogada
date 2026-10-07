@@ -1,9 +1,91 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T17:35:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:15:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §943 BNK-943 — 케어포 역공학 0-2h · ★★★ **「109」폐기 — 주야간 화면 leaf 105 · 주석 106 · 시설 데모 loadPage 112** · ★★★ **demo-work LIVE HTTP 200 복귀(시설 셸, 이동서비스 모듈 0)** · ★★ **M7 7-1~7-10 화면 번호가 두 셸에서 같고 ogada `/billing` 11/11** · ★★ **5-3-1 그룹관리는 마케팅 공백·데모 noready** · ★ **PDF LIVE `96f7d45e` 동일 · 2018 번호는 현재 메뉴 id가 아님** · ★ **BE `@4aad7cc2` → `@d73aec11` US-P01 그룹 API · HTTP 442→447** — FE `@29c2304` · Route **133** · Page **106** · FE test **546** · @Test **2474** · 모듈 **97.41%** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T18:15:00Z -->
+
+**조사일**: 2026-10-07T18:15:00Z | **rotation**: 케어포 역공학 0-2h. BNK-942(2026-10-07T17:35:00Z) 이후 약 40분. 초점: (1) `func.php` 전수와 「109」 (§943-1) · (2) `demo-work` loadPage/view · 시설 셸에 이동서비스 없음 (§943-2) · (3) 매뉴얼 PDF 목차 번호 (§943-3) · (4) 본인부담 7-x · 메뉴 깊이 · 리포트 밀도와 ogada Route (§943-4).
+
+### §943-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-942와 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (**local develop = test** · origin = `1e8857b4` · **ahead 2** · WT CLEAN · BNK-942 `@4aad7cc2` → +1 · `feat(v3.1/US-P01): add program client group assignment API` · 14 files +949)
+- merge gate **3** (FE 1 + BE 2). `AGENT_AUTO_PUSH=0` 이라 origin push는 하지 않는다.
+- Route **133** · path 깊이 최대 **4** · Page **106** · FE test **546**(230+316) · BE test file **304**(303+1) · `@Test` **2474**(2459+15) · `@RestController` **82** · `@Entity` **92** · GET **233** / POST **146** / PATCH **45** / PUT **13** / DELETE **10** = HTTP **447** · Flyway V1–V196 · 신규 마이그레이션 0
+- HTTP **447**은 그룹 API 5매핑(GET 2 · POST 2 · PATCH 1)이다. DELETE는 없다. 은퇴는 PATCH.
+- 모듈 **97.41%**. id=5는 **1.0**. FE `App.jsx`에 `/programs/groups`는 없다. `/programs/reports/group-history`만 있다.
+- 전체 `npm test` · 전체 `mvn test`는 이번 문서 사이클에서 **미실행**. 카운트는 `git grep` / `git ls-files`.
+
+### §943-1 · ★★★ 주야간 `func.php` 전수 — 「109」는 이 본문에 없다
+
+| 소스 | 결과 |
+|---|---|
+| https://www.carefor.co.kr/daycare/func.php | HTTP **200** · 98,268B · `0f1858cd` = BNK-942 **BYTE-IDENTICAL** |
+| disk `carefor_func.php` | `6226e6eb` · 98,328B · 주석 **107** (역사 정본 유지) |
+
+**확인**: `.c2` 주석 leaf **106**. 화면 글자가 있는 leaf **105**. 화면이 비고 주석만 있는 항목은 `5-3-1.프로그램 그룹 관리` 하나. id 깊이는 최대 **3**(`1-1-1`). 화면 라벨에 「리포트」 **21**건(21/105=**20.0%**). 모듈 헤더는 `pc - 1`부터 `pc - 11`까지 **11개**. `pc - 12` 수입지출은 없다.
+
+disk 주석에만 있는 id는 `8-11` 질향상노력. 화면 직원 현황은 **8-11**, 연차 대장은 **8-12**다. 주석 번호와 섞지 않는다. 5-3 화면 문구는 「**수급자별** 프로그램 그룹 설정(필요시)」이다.
+
+**가정**: `v_20260911_2`는 날짜 토큰이다. 배포일 확정은 아니다.
+
+### §943-2 · ★★★ 시설 데모 LIVE — 이동서비스 메뉴 없음
+
+https://demo-work.carefor.co.kr/ HTTP **200** · 73,296B · `007911c9` · `carefor_demo_work_live_bnk943.html`. BNK-915까지 이 URL은 HTTP 000이었다. Wayback `ebee4d47`(71,742B)과 md5가 다르다.
+
+**확인(openMenu 11개, 인용)**: 1.수급자관리 · 2.요양급여제공 · 3.간호급여제공 · 4.물리(작업)치료 급여제공 · 5.프로그램 급여제공 · 6.식단/위생/점검 관리 · 7.본인부담금관리 · 8.직원관리 · 9.기초설정 및 운영관리 · 10.부가서비스 · 11.직원 급여관리.
+
+`loadPage` li **112**. 「리포트」 제목 **26**(26/112=**23.2%**). id 깊이 최대 3. `이동서비스` · `배차` · `송영` · `RFID` 는 **0**. `차량` 3회는 모두 `9-5.운영관리 (CCTV/차량/비품/고충/특별침실)`. 시설의 2번은 요양이다. 주야간 func.php의 2번은 이동서비스다. 데모만 보고 이동서비스가 없다고 주야간 제품을 판단하지 않는다. 주야간 이동서비스 정본은 func.php다.
+
+**확인(5-3-1)**: 데모 `5-3`은 `L05_M03` · view `/share/program/view.program_plan` · 제목 「수급자별 프로그램 그룹 설정」. `5-3-1`은 `loadPage`가 아니다. `L05_M05` · view `/share/program/view.program_group` · class `submp_noready` · title 빈 문자열로 주석 처리되어 있다. Wayback에는 이 항목이 활성 loadPage였다.
+
+**확인(재무회계)**: 왼쪽 메뉴 leaf는 Wayback의 `재무회계` 항목이 빠져 있다. `open_sujifine()`은 `if('1'=='1')`에서 「체험하기에서는 케어포 재무회계 접근이 불가능합니다.」를 띄우고 return 한다. 폼은 `POST https://erp.carefor.co.kr/carefor_login` (hidden `ctmmgno` · `stmmgno` · `otp` · `usmusid`). 그 POST로 가는 ajax는 데모 분기에서 실행되지 않는다. 같은 URL을 GET하면 HTTP **405**, 허용 메서드는 POST, 본문은 프레임워크 디버그 화면이다. 로그인 폼은 **미확인**. 디버그 HTML은 저장하지 않았다. ogada `/accounting`을 이 외부 SSO의 갭으로 내리지 않는다. id=12는 **0.7** 유지.
+
+### §943-3 · ★★ 매뉴얼 PDF — LIVE 복귀, 번호는 2018
+
+https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf HTTP **200** · 9,992,772B · `96f7d45e` · 132쪽 · 표지 「케어포 주야간보호 사용메뉴얼」 2018.05. 기존 디스크 해시와 **BYTE-IDENTICAL**. 본 PDF는 저장하지 않고 목차·본인부담 장 텍스트만 `carefor_manual_pdf_toc_bnk943.txt`에 두었다.
+
+**확인**: 2쪽 모듈은 **12개**이고 2번이 이동서비스, 12번이 수입지출이다. 현재 func.php 마케팅은 11모듈이다. 본인부담 장은 83쪽. PDF 본문 메뉴위치는 「7-5.연간 청구대장 · 7-6.입금대장 · 7-7.수납대장 · 7-8.의료비 공제」다. 지금 화면 번호는 7-6 · 7-7 · 7-8 · 7-2-1이다. 프로그램 그룹 절차의 메뉴위치는 「5-5.프로그램 그룹관리」로, 현재 화면 5-3과 다르다. PDF 쪽수는 절차 설명에 쓰고, 메뉴 id는 LIVE 화면 번호를 쓴다.
+
+### §943-4 · 7-x · 깊이 · 리포트 · planner
+
+시설 `left_sub7` 활성 11줄과 주야간 화면 11줄의 **번호가 같다**. HTML 주석은 한 칸 이전 번호다(7-4 주석이 「7-5」).
+
+| 화면 | demo view | ogada `@29c2304` |
+|---|---|---|
+| 7-1 청구관리 | `/share/cost/view.cost_master` | `/billing` · `/billing/claims/:claimId` |
+| 7-2 입금관리 | `/share/cost/view.cost_receipt` | `/billing/payments` |
+| 7-2-1 의료비공제 | `/share/cost/view.cost_master_statistic` | `/billing/cash-receipts` |
+| 7-3 미납관리 | `/share/cost/view.cost_nopay` | `/billing/overdue` |
+| 7-4 CMS | `/share/cost/view.cms_manage` | `/billing/cms` |
+| 7-5 간편결제 | `/share/cost/view.npay_manage` | `/billing/easy-pay` |
+| 7-6 청구대장 | `/share/cost/view.cost_master_report` | `/billing/reports/charges` |
+| 7-7 입금대장 | `/share/cost/view.cost_deposit_report` | `/billing/reports/deposits` |
+| 7-8 수납대장 | `/share/cost/view.cost_receipt_report` | `/billing/reports/receipts` |
+| 7-9 수납·환불 | `/share/cost/view.cost_receipt_apply_yearly` | `/billing/reports/refunds` |
+| 7-10 간편계산기 | `/cost/view.cost_calculator` | `/billing/calculator` |
+
+ogada `/billing` 경로는 **17**개다. 위 11개에 더해 `/billing/reports/statistics` · `/billing/fee-schedules` · `/billing/copay-rates` · `/billing/imports/nhis` 가 있다. id=7 커버는 그대로 1.0이다. 7-10 계산기는 이번 LIVE 데모에서 활성 loadPage다. Wayback 활성 목록에는 같은 튜플이 없었다.
+
+경로 깊이: ogada 최대 **4** > 케어포 id 최대 **3**. path에 `report`가 있는 Route **29**/132=**22.0%**. 주야간 화면 리포트 라벨은 **20.0%**. 시설 셸 리포트 제목은 **23.2%**라서, 시설 셸보다 리포트가 더 촘촘하다고 쓰지 않는다.
+
+**planner가 읽을 항목**:
+
+1. 메뉴 개수는 「109」가 아니다. 주야간 마케팅 화면 **105**, 주석 **106**, disk 주석 **107**, 시설 데모 loadPage **112**. 제품을 섞지 않는다.
+2. 이동서비스 비교는 func.php M2를 쓴다. 시설 데모 2번은 요양이고 이동서비스 문자열이 없다.
+3. 본인부담 번호는 두 LIVE 셸의 **화면 제목**을 쓴다. HTML 주석과 2018 PDF 번호는 이전 세대다.
+4. 5-3-1 그룹 관리 화면은 마케팅에서 비어 있고 데모에서는 noready 주석이다. ogada BE `@d73aec11`이 `/api/v1/programs/groups` 를 열었다. 행 삭제는 없다. FE `/programs/groups`는 아직 없다. id=5를 내리거나 새 갭으로 올리지 않는다. FE wire는 US-P01 잔여다.
+5. 기준 SHA는 FE `@29c2304` · BE `@d73aec11`. HTTP **447**. merge gate **3**. `workspace_baseline.yaml`의 ahead 750은 이 실측과 다르다.
+6. 신규 진성갭 **0**. P0 재오픈 **0**. 수가 시드 변경 **0**.
+
+주력 `carefor_tri_source_menu_bnk943.txt` + `carefor_demo_work_live_bnk943.html` + `carefor_manual_pdf_toc_bnk943.txt` + `ogada_git_baseline_bnk943.txt`. func.php 재실측은 `0f1858cd` IDENTICAL. 가정 1(cachebuster). 미확인 2(주야간 로그인 뒤 5-3-1 실메뉴 · ERP POST 로그인 폼). per-cycle minimum 4종 충족.
+
+---
 
 ## §942 BNK-942 — ogada git 실측 6-8h · ★★★ **FE `@5cf667b` → `@29c2304` +1 · BE `@1e8857b4` → `@4aad7cc2` +1 — SEC-D46 단일 라벨 search-path·예약 접미사 첨부 호스트 거부(FE/BE lockstep)** · 케어포 `func.php` LIVE **HTTP 200 복귀**(disk `6226e6eb` 대비 메뉴 DRIFT) · NHIS #44 **641차** BYTE-IDENTICAL · HTTP **442** count-exact IDENTICAL · 모듈 **97.41%** · 신규 진성갭 0** — Route **133** · Page **106** · FE test file **546** · BE @Test **2459**(+3) · filtered npm **77/77** · targeted mvn **33/33** · merge gate **2**(origin 미push)
 

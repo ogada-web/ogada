@@ -1,0 +1,113 @@
+# BNK-943 케어포 tri-source 메뉴 전수 — 2026-10-07T18:15:00Z
+# daycare func.php LIVE + demo-work loadPage + 매뉴얼 PDF
+# 「109」는 세 소스 어디에도 없다.
+
+## 1. daycare/func.php (주야간 마케팅 정본)
+URL https://www.carefor.co.kr/daycare/func.php
+HTTP 200 · 98,268B · md5 0f1858cd = carefor_func_live_bnk942.php BYTE-IDENTICAL
+disk carefor_func.php md5 6226e6eb · 98,328B · 주석 107 (역사 정본, 폐기 안 함)
+cachebuster v_20260911_2 (날짜 토큰 「가정」)
+
+주석 leaf 106 · 화면 비어 있지 않은 leaf 105 · 화면 공백 1 (5-3-1)
+id 깊이: 2세그먼트 87 · 3세그먼트 18(화면) / 주석 기준 3세그먼트 19
+화면 라벨에 「리포트」 21 / 105 = 20.0%
+주석에서 빠진 id: 8-11 질향상노력 (disk에만 있음)
+화면 번호가 주석과 다른 직원 리포트: 화면 8-11 직원 현황 · 화면 8-12 연차,유급휴일
+5-3 화면 「수급자별 프로그램 그룹 설정(필요시)」 · 주석 「프로그램 수급자 그룹 설정(필요시)」
+5-3-1 화면 공백 · 주석만 「프로그램 그룹 관리」
+
+모듈 헤더 11개 (pc - 1..11). pc - 12 수입지출 없음.
+
+## 2. demo-work.carefor.co.kr (시설 셸, LIVE)
+URL https://demo-work.carefor.co.kr/
+HTTP 200 · 73,296B · md5 007911c9
+Wayback bnk915 ebee4d47 / 71,742B 와 불일치 (라벨·leaf DRIFT)
+css date=v_20260911_2 (func.php 와 같은 토큰)
+loadPage <li> 112 · 제목 112 · id 깊이 최대 3 · 「리포트」 제목 26/112 = 23.2%
+
+openMenu 11개 — 이동서비스 모듈 없음:
+1.수급자관리
+2.요양급여제공
+3.간호급여제공
+4.물리(작업)치료 급여제공
+5.프로그램 급여제공
+6.식단/위생/점검 관리
+7.본인부담금관리
+8.직원관리
+9.기초설정 및 운영관리
+10.부가서비스
+11.직원 급여관리
+
+이동서비스|배차|송영|RFID = 0
+차량 3회는 전부 9-5.운영관리 (CCTV/차량/비품/고충/특별침실)
+시설 L02 = 요양. 주야간 func.php M2 = 이동서비스. 번호 충돌 재확인.
+
+5-3 L05_M03 title 「5-3.수급자별 프로그램 그룹 설정」
+    view /share/program/view.program_plan
+5-3-1 는 loadPage 가 아님. 주석 처리된 noready:
+    pamcode L05_M05 view /share/program/view.program_group
+    class submp_noready · title 빈 문자열
+Wayback 에는 5-3-1 이 살아 있는 loadPage 였다. LIVE 에서 내림.
+
+7-x left_sub7 활성 11 (화면 번호 = 주야간 func.php 와 같음):
+7-1  L07_M01 /share/cost/view.cost_master
+7-2  L07_M02 /share/cost/view.cost_receipt
+7-2-1 L07_M09 /share/cost/view.cost_master_statistic
+7-3  L07_M03 /share/cost/view.cost_nopay
+7-4  L07_M11 /share/cost/view.cms_manage          주석 잔존 「7-5」
+7-5  L07_M12 /share/cost/view.npay_manage         주석 잔존 「7-6」
+7-6  L07_M05 /share/cost/view.cost_master_report  주석 잔존 「7-7.연간」
+7-7  L07_M06 /share/cost/view.cost_deposit_report 주석 잔존 「7-8」
+7-8  L07_M07 /share/cost/view.cost_receipt_report 주석 잔존 「7-9」
+7-9  L07_M10 /share/cost/view.cost_receipt_apply_yearly 주석 잔존 「7-10.수납내역」
+7-10 L07_M13 /cost/view.cost_calculator          class=rpt · Wayback 활성 목록에 없었음
+죽은 주석: view.cost_master_patient_yearly (연간 청구대장 구 leaf)
+
+재무회계: left nav leaf 는 Wayback 대비 없음.
+open_sujifine() 은 if('1'=='1') 에서 alert 「체험하기에서는 케어포 재무회계 접근이 불가능합니다.」 후 return.
+form#openSujifineForm POST https://erp.carefor.co.kr/carefor_login
+hidden: ctmmgno, stmmgno, otp, usmusid
+ajax POST /share/exe/sujifine/get.sujifine_id.exe.php 는 데모 분기에서 도달하지 않음.
+GET https://erp.carefor.co.kr/carefor_login → HTTP 405 · POST only · Laravel 디버그 화면.
+로그인 폼 필드 「미확인」(POST 시도 안 함). 디버그 HTML 은 저장하지 않음.
+
+## 3. 매뉴얼 PDF
+URL https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+HTTP 200 · 9,992,772B · md5 96f7d45e BYTE-IDENTICAL (기존 디스크 정본)
+제목 「케어포 주야간보호 사용메뉴얼」 · 2018.05 · 132쪽 · 생성 2022-06-28
+p2 모듈 12개: 1수급자 2이동서비스 3요양 4간호/물리 5프로그램 6위생.안전
+  7본인부담 8직원 9기초설정 10부가 11직원급여 12수입지출
+현재 func.php 는 11모듈. PDF 12.수입지출 은 2018 목차.
+본인부담 장 시작 p83. PDF 본문 번호는 현재 화면보다 한 세대 이전:
+  메뉴위치 7-5.연간 청구대장 / 7-6.입금대장 / 7-7.수납대장 / 7-8.의료비 공제
+  현재 화면은 7-6 / 7-7 / 7-8 / 7-2-1.
+프로그램 그룹 p70 근처 메뉴위치 「5-5.프로그램 그룹관리」 — 현재 화면 5-3 과 다름.
+인용 시 PDF 쪽번호는 절차 설명, 메뉴 id 는 LIVE 화면 번호를 쓴다.
+
+## 4. ogada Route 1:1 (FE @29c2304 · BE @d73aec11)
+경로 깊이 최대 4 (d0=1 d1=24 d2=73 d3=30 d4=4) > 케어포 id 깊이 3
+path 에 report 가 있는 Route 29 / 132 = 22.0%
+주야간 화면 「리포트」 21/105 = 20.0% · 시설 셸 26/112 = 23.2%
+시설 셸 리포트 비율이 ogada path 비율보다 높다. 밀도 우위를 시설 셸에 대해 주장하지 않는다.
+
+M7 화면 번호 → demo view → ogada
+7-1  cost_master            /billing · /billing/claims/:claimId
+7-2  cost_receipt           /billing/payments
+7-2-1 cost_master_statistic /billing/cash-receipts
+7-3  cost_nopay             /billing/overdue
+7-4  cms_manage             /billing/cms
+7-5  npay_manage            /billing/easy-pay
+7-6  cost_master_report     /billing/reports/charges
+7-7  cost_deposit_report    /billing/reports/deposits
+7-8  cost_receipt_report    /billing/reports/receipts
+7-9  cost_receipt_apply_yearly /billing/reports/refunds
+7-10 cost_calculator        /billing/calculator
+ogada 추가: /billing/reports/statistics · /billing/fee-schedules · /billing/copay-rates · /billing/imports/nhis
+= 11/11 대응 + 청구 외 경로. id=7-x 커버 변경 없음.
+
+5-3/5-3-1:
+BE ProgramClientGroupController /api/v1/programs/groups
+  GET · POST · PATCH /{groupId} · GET/POST /{groupId}/members
+  DELETE 없음 (은퇴는 PATCH). @RestController 82. HTTP +5 → 447.
+FE App.jsx 에 /programs/groups 없음. /programs/reports/group-history 만 있음 (5-9 이력).
+id=5 coverage 1.0 유지. FE 화면 wire 는 기존 US-P01 잔여. 신규 갭으로 내리지 않는다.
