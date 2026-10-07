@@ -155,6 +155,18 @@ class ModelTests(unittest.TestCase):
         prompt.assert_not_called()
         self.assertEqual(output.getvalue(), "grok-test\n")
 
+    def test_local_commit_policy_is_passed_to_the_agent(self):
+        result = SimpleNamespace(status="finished", result="done", id="test-run", duration_ms=1)
+        with patch.dict(os.environ, {"AGENT_AUTO_PUSH": "0"}), \
+             patch.object(runner, "require_api_key", return_value="test-only"), \
+             patch.object(runner, "ENV_MODEL", "grok-test"), \
+             patch.object(runner, "_RICH", False), \
+             patch.object(runner, "_build_agent_prompt", return_value=result) as prompt, \
+             contextlib.redirect_stdout(io.StringIO()):
+            self.assertIs(runner.call_agent("task", ROOT, role="coder"), result)
+        self.assertIn("AGENT_AUTO_PUSH=0", prompt.call_args.args[0])
+        self.assertIn("원격 push는 수행하지 말고", prompt.call_args.args[0])
+
 
 if __name__ == "__main__":
     unittest.main()

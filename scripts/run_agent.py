@@ -1397,6 +1397,12 @@ def call_agent(prompt: str, cwd: Path, role: str | None = None):
     """모델 체인을 따라 순차 시도. 성공 시 `RunResult` 를 반환, 실패 시 None."""
 
     api_key = require_api_key()
+    if os.environ.get("AGENT_AUTO_PUSH", "1").strip().lower() in ("0", "false", "no"):
+        prompt += (
+            "\n## 현재 실행 설정 (위의 일반 push 지침보다 우선)\n"
+            "AGENT_AUTO_PUSH=0: 이 호출은 로컬 커밋 모드다. Git 원격 push는 수행하지 말고 "
+            "필요한 커밋과 검증만 완료한다. 원격 인증을 요청하거나 우회하지 않는다.\n"
+        )
     chain = resolve_model_chain(role)
     label = ROLE_LABELS.get(role or "", role or "에이전트")
 
@@ -1629,7 +1635,8 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
         "- agents.yaml 에 Python/FastAPI 가 적혀 있어도 REQUIREMENTS §1-1 이 우선.\n\n"
         "## 2. 자율 실행 (필수 — 위반 시 실패)\n"
         "- 사용자에게 \"무엇부터 할까요?\" \"어떤 작업부터?\" 같은 **질문 금지**.\n"
-        "- 이번 호출에서 **반드시 파일을 생성·수정**한다. 텍스트만 돌려주면 실패.\n"
+        "- 승인된 미완료 작업이 있으면 해당 파일을 생성·수정한다. 모두 완료된 경우에는 "
+        "코드를 억지로 변경하지 말고 확인한 완료 상태를 반환한다.\n"
         "- 불확실하면 `docs/planning/PLAN_NOTES.md` 의 `### 코더 질문` 에 기록 후 중단.\n"
         "- 비밀값 하드코딩 금지 (.agents/rules.md §3).\n\n"
         "## 2-1. 구현 품질 — 신중하게 (CRITICAL)\n"
@@ -1645,7 +1652,8 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
         "- **사용자 체감**: 저장 실패·모달 오동작·빈 목록이 '정상'처럼 보이게 만들지 말 것 — "
         "오류 메시지·필수 필드·권한 분기를 명확히.\n\n"
         "## 2-2. 파이프라인 속도 — 사용자 피드백과 동일 (CRITICAL)\n"
-        "- **느긋한 문서 작업 금지**: TEST_REPORT·ROADMAP·PLAN_NOTES만 손대고 `src/` 를 안 고치면 **실패**.\n"
+        "- 미완료 구현 대신 문서만 반복 갱신하지 않는다. 승인된 구현이 모두 완료되었다면 "
+        "불필요한 변경 없이 정상 종료한다.\n"
         "- **우선순위**: (1) `memory/decisions.md` 최근 사용자 확정·버그 (2) `docs/qa/QA_FEEDBACK.md` "
         "Open BLOCK/HIGH (3) ROADMAP `in_progress` 완료 기준 미충족 항목.\n"
         "- **한 사이클 목표**: 사용자가 채팅으로 지적한 유형의 버그 1건 이상을 **end-to-end**로 "

@@ -103,7 +103,7 @@ npm ci --prefix src/frontend-test
 .venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
 ```
 
-2026-10-07 로컬 검증: 위 회귀 테스트 23개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
+2026-10-07 로컬 검증: 위 회귀 테스트 24개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
 
 ### 기존 공통 설정
 
