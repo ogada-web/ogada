@@ -93,9 +93,11 @@ npm ci --prefix src/frontend-test
 
 `doctor --model MODEL_ID`는 지정 모델에만 최소 프롬프트를 보낸다. 진단 에이전트의 기본 도구는 비활성화되어 프로젝트 파일을 변경하지 않는다. 진단 실패 시 종료 코드 1을 반환한다. API 키나 실행 도구 누락은 팀 기동 전에 차단한다.
 
-에이전트가 `finished`로 끝나지 않으면 실행기는 종료 코드 1을 반환하고 해당 작업의 자동 push·merge를 수행하지 않는다. 파이프라인은 실패한 단계에서 중단하며 다음 역할·스트림·사이클을 실행하지 않는다. 실제 실패 전에 생성된 파일은 남을 수 있으므로 로그와 Git 상태를 확인한 뒤 재시작한다. 자동 push 실패, 커밋되지 않은 변경, post-merge live E2E 실패도 실패로 전파한다.
+에이전트가 `finished`로 끝나지 않으면 실행기는 종료 코드 1을 반환하고 후속 자동 push·merge를 수행하지 않는다. 파이프라인은 실패한 단계에서 중단하며 다음 역할·스트림·사이클을 실행하지 않는다. 실제 실패 전에 생성된 파일은 남을 수 있으므로 로그와 Git 상태를 확인한 뒤 재시작한다. 자동 push 실패, 커밋되지 않은 변경, post-merge live E2E 실패도 실패로 전파한다.
 
 tester는 `merge_status: ready`인 develop을 **검증 시작 전에** test worktree로 이관한다. 따라서 새 변경을 포함한 HEAD에서 테스트하며, 이관 실패 시 에이전트를 호출하지 않는다. 검증과 필요한 live E2E가 성공한 뒤에만 ROADMAP에 `merge_status: merged`를 기록한다. tester 자체가 실패하면 준비된 test worktree는 남지만 버전은 완료로 기록하지 않는다.
+
+SDK가 `finished`를 반환해도 QA가 `BLOCK`이면 파이프라인을 중단한다. `transfer/<stream>/manifests/latest.yaml`의 **최상단 최신 레코드**에는 `stream`, `verdict: PASS|BLOCK`, `test_sha`, `develop_sha`가 있어야 한다. 실행기는 PASS와 실제 두 HEAD의 일치를 확인하며, 파일 뒤의 과거 PASS 기록을 현재 판정으로 사용하지 않는다.
 
 `agent_team_start.sh --no-loop`와 Grok 시작 명령의 `--no-loop`는 파이프라인뿐 아니라 보안·벤치마크·문서 역할에도 적용된다. 팀 실행은 기존 정책에 따라 애플리케이션 코드·문서를 수정하고 develop을 자동 push할 수 있으며, 완료 버전은 tester가 test로 이관한다.
 
@@ -105,7 +107,7 @@ tester는 `merge_status: ready`인 develop을 **검증 시작 전에** test work
 .venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
 ```
 
-2026-10-07 로컬 검증: 위 회귀 테스트 27개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
+2026-10-07 로컬 검증: 위 회귀 테스트 31개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 외부 API/DB 연결은 별도 검증 대상이다.
 
 ### 기존 공통 설정
 

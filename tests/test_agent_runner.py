@@ -6,6 +6,7 @@ import io
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 import unittest
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
@@ -38,6 +39,7 @@ class BuildTests(unittest.TestCase):
             "render_build_changes": MagicMock(),
             "render_agent_output": MagicMock(),
             "_release_bridge_resources": MagicMock(),
+            "require_tester_pass": MagicMock(),
         }
         mocks.update(extra)
         with patch.multiple(runner, **mocks), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
@@ -199,6 +201,35 @@ class ModelTests(unittest.TestCase):
             self.assertIs(runner.call_agent("task", ROOT, role="coder"), result)
         self.assertIn("AGENT_AUTO_PUSH=0", prompt.call_args.args[0])
         self.assertIn("원격 push는 수행하지 말고", prompt.call_args.args[0])
+
+
+class TesterVerdictTests(unittest.TestCase):
+    def validate(self, verdict="PASS", sha="1234567", history="", present=True):
+        with tempfile.TemporaryDirectory(prefix="ogada-manifest-test-") as folder:
+            root = Path(folder)
+            (root / "manifests").mkdir()
+            if present:
+                (root / "manifests/latest.yaml").write_text(
+                    f"<!-- latest -->\nstream: backend\nverdict: {verdict}\ntest_sha: {sha}\ndevelop_sha: {sha}\n{history}")
+            with patch.object(runner, "transfer_dir_for_stream", return_value=root), \
+                 patch.object(runner, "_git_short_rev", return_value="12345678"), \
+                 contextlib.redirect_stderr(io.StringIO()):
+                runner.require_tester_pass("backend")
+
+    def test_current_pass_manifest_is_accepted(self):
+        self.validate()
+
+    def test_current_block_cannot_be_overridden_by_historical_pass(self):
+        with self.assertRaises(SystemExit):
+            self.validate(verdict="BLOCK", history="\n<!-- history -->\nverdict: PASS\n")
+
+    def test_pass_on_old_head_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            self.validate(sha="abcdef01")
+
+    def test_missing_manifest_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            self.validate(present=False)
 
 
 if __name__ == "__main__":

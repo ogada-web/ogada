@@ -24,6 +24,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 import shutil
 import signal
 import subprocess
@@ -2248,6 +2249,10 @@ def _build_tester_prompt(stream: str = "backend", task: str | None = None) -> st
         "- develop → test 이관 체크리스트·매니페스트·검증 리포트 갱신.\n"
         f"- `{'Maven' if stream == 'backend' else 'npm'}` 테스트는 `{test_rel}` 에서 실행·결과 기록.\n"
         "- BLOCK 이슈 있으면 transfer/ 체크리스트에 PASS 금지 명시.\n"
+        f"- `transfer/{stream}/manifests/latest.yaml` 최상단 최신 레코드에 "
+        "`stream`, `verdict: PASS|BLOCK`, `test_sha`, `develop_sha`를 기록한다. "
+        "SHA는 실제 검사한 현재 HEAD를 사용한다. 로컬 이관 verdict와 운영(operation) "
+        "승격 판정을 구분한다. 실행기는 PASS와 HEAD 일치를 확인한 뒤 진행한다.\n"
         "- 불확실하면 `docs/planning/PLAN_NOTES.md` `### QA 이관 질문` 에 기록 후 중단.\n\n"
         "## 1-1. 파이프라인 속도 (CRITICAL)\n"
         "- **문서만 갱신하는 긴 사이클 금지** — develop WT가 DIRTY·Open QA가 남았는데 "
@@ -3764,6 +3769,29 @@ def cmd_status(_: argparse.Namespace) -> None:
     )
 
 
+def require_tester_pass(stream: str) -> None:
+    """SDK finished와 QA PASS를 구분하고 검사한 HEAD를 실제 worktree와 대조한다."""
+    manifest = transfer_dir_for_stream(stream) / "manifests/latest.yaml"
+    text = manifest.read_text(encoding="utf-8") if manifest.exists() else ""
+    # 기존 파일은 최신 레코드 뒤에 HTML 메타가 붙은 과거 이력을 누적한다.
+    latest = text.split("\n<!--", 1)[0]
+
+    def field(name: str) -> str:
+        match = re.search(rf"^{name}:\s*([^\n#]+)", latest, re.M)
+        return match.group(1).strip().strip('\"\'') if match else ""
+
+    if field("verdict") != "PASS":
+        print(f"[qa-blocked] {stream} 최신 이관 verdict가 PASS가 아님", file=sys.stderr)
+        raise SystemExit(1)
+    for name, repo in (("test_sha", worktree_dir_for_stream(stream, "test")),
+                       ("develop_sha", submodule_dir_for_stream(stream))):
+        actual = _git_short_rev(repo) or ""
+        declared = field(name)
+        if len(declared) < 7 or not actual or not (actual.startswith(declared) or declared.startswith(actual)):
+            print(f"[qa-blocked] {stream} {name}가 실제 HEAD와 불일치", file=sys.stderr)
+            raise SystemExit(1)
+
+
 def cmd_preflight(args: argparse.Namespace) -> None:
     """API 호출이나 파일 변경 없이 팀 루프 실행 조건을 확인한다."""
     failures: list[str] = []
@@ -4118,6 +4146,9 @@ def cmd_build(args: argparse.Namespace) -> None:
             if result is None or getattr(result, "status", None) != "finished":
                 print(f"[build-failed] role={role} — 후속 push/merge 중단", file=sys.stderr)
                 raise SystemExit(1)
+
+            if role == "tester":
+                require_tester_pass(stream)
 
             plan_notes_after = (
                 PLAN_NOTES_FILE.read_text(encoding="utf-8")
