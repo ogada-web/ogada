@@ -1022,11 +1022,9 @@ def maybe_merge_version_to_test(stream: str) -> bool:
     version_id = _roadmap_merge_ready(stream)
     if not version_id:
         return False
-    if merge_develop_to_test(stream, version_id):
-        _roadmap_mark_merged(version_id)
-        print(f"[merge] ROADMAP {version_id} → merge_status=merged")
-        return True
-    return False
+    if not merge_develop_to_test(stream, version_id):
+        raise SystemExit(1)
+    return True
 
 
 def run_live_e2e_post_merge(stream: str, version_id: str | None = None) -> int:
@@ -4082,6 +4080,13 @@ def cmd_build(args: argparse.Namespace) -> None:
     question_marker = ROLE_QUESTION_MARKERS.get(role, "질문")
 
     def one_iteration() -> None:
+        version_id = None
+        merged = False
+        if role == "tester":
+            version_id = _roadmap_merge_ready(stream)
+            if version_id:
+                # 검증 전에 test worktree를 갱신해야 이전 HEAD를 검사하지 않는다.
+                merged = maybe_merge_version_to_test(stream)
         task = getattr(args, "task", None)
         prompt = _build_role_prompt(role, target, task=task, stream=stream)
 
@@ -4145,8 +4150,6 @@ def cmd_build(args: argparse.Namespace) -> None:
                 print(f"  - {wt.relative_to(WORKSPACE_ROOT)} (test worktree) · transfer/{stream}/ 확인")
                 print("  - docs/qa/TEST_REPORT.md · docs/qa/QA_FEEDBACK.md 확인")
                 print("  - planner 자동 반영: agent_pipeline.sh")
-                version_id = _roadmap_merge_ready(stream)
-                merged = maybe_merge_version_to_test(stream)
                 if merged:
                     rc = run_live_e2e_post_merge(stream, version_id=version_id)
                     if rc != 0:
@@ -4155,6 +4158,9 @@ def cmd_build(args: argparse.Namespace) -> None:
                             file=sys.stderr,
                         )
                         raise SystemExit(1)
+                    if version_id:
+                        _roadmap_mark_merged(version_id)
+                        print(f"[merge] ROADMAP {version_id} → merge_status=merged")
             elif role == "db_architect":
                 print("  - docs/technical/ERD.md · db/migration SQL 확인")
             elif role == "benchmark_researcher":

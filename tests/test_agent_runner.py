@@ -33,6 +33,7 @@ class BuildTests(unittest.TestCase):
             "push_submodule_develop": MagicMock(),
             "maybe_merge_version_to_test": MagicMock(return_value=False),
             "_roadmap_merge_ready": MagicMock(return_value=None),
+            "_roadmap_mark_merged": MagicMock(),
             "run_live_e2e_post_merge": MagicMock(return_value=0),
             "render_build_changes": MagicMock(),
             "render_agent_output": MagicMock(),
@@ -76,10 +77,42 @@ class BuildTests(unittest.TestCase):
         mocks["call_agent"].assert_not_called()
 
     def test_live_e2e_failure_is_nonzero(self):
-        code, _ = self.invoke(SimpleNamespace(status="finished", result="done"), "tester",
+        code, mocks = self.invoke(SimpleNamespace(status="finished", result="done"), "tester",
+                              _roadmap_merge_ready=MagicMock(return_value="v3"),
                               maybe_merge_version_to_test=MagicMock(return_value=True),
                               run_live_e2e_post_merge=MagicMock(return_value=1))
         self.assertEqual(code, 1)
+        mocks["_roadmap_mark_merged"].assert_not_called()
+
+    def test_successful_merge_is_recorded_after_live_check(self):
+        code, mocks = self.invoke(SimpleNamespace(status="finished", result="done"), "tester",
+                              _roadmap_merge_ready=MagicMock(return_value="v3"),
+                              maybe_merge_version_to_test=MagicMock(return_value=True))
+        self.assertEqual(code, 0)
+        mocks["_roadmap_mark_merged"].assert_called_once_with("v3")
+
+    def test_tester_receives_the_merged_head(self):
+        merge = MagicMock(return_value=True)
+        result = SimpleNamespace(status="finished", result="done")
+
+        def call(*args, **kwargs):
+            merge.assert_called_once_with("backend")
+            return result
+
+        code, _ = self.invoke(result, "tester",
+                             _roadmap_merge_ready=MagicMock(return_value="v3"),
+                             maybe_merge_version_to_test=merge,
+                             call_agent=MagicMock(side_effect=call))
+        self.assertEqual(code, 0)
+
+    def test_merge_failure_is_nonzero_and_never_marked_complete(self):
+        with patch.object(runner, "_roadmap_merge_ready", return_value="v3"), \
+             patch.object(runner, "merge_develop_to_test", return_value=False), \
+             patch.object(runner, "_roadmap_mark_merged") as mark:
+            with self.assertRaises(SystemExit) as caught:
+                runner.maybe_merge_version_to_test("backend")
+        self.assertEqual(caught.exception.code, 1)
+        mark.assert_not_called()
 
     def test_push_failure_propagates(self):
         with patch.multiple(runner, _git_repo_ready=MagicMock(return_value=True),

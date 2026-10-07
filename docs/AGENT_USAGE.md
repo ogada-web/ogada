@@ -95,6 +95,8 @@ npm ci --prefix src/frontend-test
 
 에이전트가 `finished`로 끝나지 않으면 실행기는 종료 코드 1을 반환하고 해당 작업의 자동 push·merge를 수행하지 않는다. 파이프라인은 실패한 단계에서 중단하며 다음 역할·스트림·사이클을 실행하지 않는다. 실제 실패 전에 생성된 파일은 남을 수 있으므로 로그와 Git 상태를 확인한 뒤 재시작한다. 자동 push 실패, 커밋되지 않은 변경, post-merge live E2E 실패도 실패로 전파한다.
 
+tester는 `merge_status: ready`인 develop을 **검증 시작 전에** test worktree로 이관한다. 따라서 새 변경을 포함한 HEAD에서 테스트하며, 이관 실패 시 에이전트를 호출하지 않는다. 검증과 필요한 live E2E가 성공한 뒤에만 ROADMAP에 `merge_status: merged`를 기록한다. tester 자체가 실패하면 준비된 test worktree는 남지만 버전은 완료로 기록하지 않는다.
+
 `agent_team_start.sh --no-loop`와 Grok 시작 명령의 `--no-loop`는 파이프라인뿐 아니라 보안·벤치마크·문서 역할에도 적용된다. 팀 실행은 기존 정책에 따라 애플리케이션 코드·문서를 수정하고 develop을 자동 push할 수 있으며, 완료 버전은 tester가 test로 이관한다.
 
 실행 중 출력은 Git에서 제외된 `.agents/logs/<tmux-session>.log`에 보존한다. 루프 제어 회귀 테스트는 API 호출·실제 Git push·실제 에이전트 실행 없이 수행한다.
@@ -103,7 +105,7 @@ npm ci --prefix src/frontend-test
 .venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
 ```
 
-2026-10-07 로컬 검증: 위 회귀 테스트 24개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
+2026-10-07 로컬 검증: 위 회귀 테스트 27개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
 
 ### 기존 공통 설정
 
