@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:33:10Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T22:27:19Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-948 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **공단 엑셀 가이드 = 파일 5종 · 열 이름 미확인** · ★★ **사회복지사 RFID 실시간/제출이력 · 시간차 적색** · 가격·도입 수 BNK-944와 동일 · 홈 후기 20건 교체 · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-07 (**BNK-949 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · 부모 gitlink BE `@4aad7cc2` · merge gate **3** · Route **133** · Page **106** · FE test 파일 **546**(실행 **493** · e2e 53 제외) · npm **2865/2865** · strict @Test **2473** · surefire **2493** · HTTP **447** · `@RestController` **81** · 모듈 **97.41%**). ★★★ **@Test 2474 폐기(서비스 테스트 9)** · ★★★ **컨트롤러 82 는 Advice 부분문자열** · ★★ **yaml develop `4aad7cc2` 는 test 브랜치** · ★ **프로그램 그룹 관리 화면 0 · 이력 4열 LIVE** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-949 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ `@Test` 2473 · surefire 2493 (BNK-949 #1 · git 실측 · 확인)** | ✅ strict `@Test` **2473**. 매개변수 3메서드=실행 20행(역할 7·알림 5·은행 8). `mvn -q test` **2493/0/0/0**. yaml `2479` 는 둘 다 아님 | ⚪ | ⚪ | ⚪ | ⚪ | `ogada_git_baseline_bnk949.txt` · §949-1 · BNK-943 Service 10 → **9** |
+| **★★★ 컨트롤러 81 (BNK-949 #2 · 확인)** | ✅ `@RestController` 단어 경계 **81**. 부분문자열 82 = `@RestControllerAdvice` 1건. 그룹 DELETE **0** | ⚪ | ⚪ | ⚪ | ⚪ | §949-1 · BNK-943 「82」 폐기 |
+| **★★ 프로그램 그룹 필드 (BNK-949 #3 · 메뉴/필드/워크플로 · 확인)** | ✅ `POST /programs/groups` `name`≤120 · `PATCH` `name`/`active` · 멤버 `clientId`·`effectiveFrom`·`effectiveTo` · 이력 `/programs/reports/group-history` 4열. 관리 Route **0**. id=5 **1.0** | ✅ 5-3 보이는 제목 · 5-3-1 은 주석·`submp_noready` · input name **미확인** · func.php HTTP **000** | ⚪ | ✅ [Provided](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do) `f18e1c7a` IDENTICAL · 모바일 「케어그룹 이력관리」 라벨만 · [짧은 경로](https://www.silverangel.kr/newSilverangel/daycare/daycareProgram.do) HTTP **404** | ⚪ | §949-2 · P0 재오픈 0 |
+| **★★ 모듈 97.41% · prefix (BNK-949 #4 · 확인)** | ✅ 29엔트리 · 28.25/29 · 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. billing 17 · nursing 16 · care 16 · programs 8 · d4=**6** | ⚪ 화면 105 · loadPage 112 유지(타임아웃) | ⚪ | ⚪ | ⚪ | §949-1 · coverage 0 = 0 |
+| **★ HEAD · npm 2865 · NHIS 644차 (BNK-949 #5)** | ✅ SHA BNK-948과 같음 · npm **493파일/2865** PASS · HTTP **447** · merge gate **3**. yaml·gitlink `4aad7cc2` 를 develop 으로 쓰지 않음 | ⚠ func.php HTTP **000** | ⚪ | ⚪ | ✅ [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **644차** · 「별지」 0 | §949-0 · §949-3 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-948 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · FE test **546** · strict @Test **2473** · HTTP **447** · 모듈 **97.41%**). ★★★ **공단 엑셀 가이드 = 파일 5종 · 열 이름 미확인** · ★★ **사회복지사 RFID 실시간/제출이력 · 시간차 적색** · 가격·도입 수 BNK-944와 동일 · 홈 후기 20건 교체 · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-948 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

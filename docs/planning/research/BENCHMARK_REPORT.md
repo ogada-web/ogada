@@ -1,9 +1,72 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T21:33:10Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T22:27:19Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §949 BNK-949 — ogada git 실측 6-8h · ★★★ **`@Test` 2474는 서비스 테스트 9개를 10으로 센 것이다** · ★★★ **컨트롤러 82는 `@RestControllerAdvice` 부분문자열이다** · ★★ **yaml 의 backend develop 은 로컬 test `4aad7cc2` 이고 develop HEAD 는 `@d73aec11`** · ★ **프로그램 그룹 관리 화면은 없고 이력 4열은 있다** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · surefire **2493** · npm **2865** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T22:27:19Z -->
+
+**조사일**: 2026-10-07T22:27:19Z | **rotation**: ogada git 실측 6-8h. BNK-948(2026-10-07T21:33:10Z) 이후 약 54분. 초점: (1) develop HEAD·Route·Page·모듈 % 재산정 (§949-0·§949-1) · (2) `@Test`·컨트롤러 계수 정정 (§949-1) · (3) US-P01 프로그램 그룹 필드와 케어포 5-3·엔젤 케어그룹 (§949-2) · (4) planner 액션 (§949-3).
+
+### §949-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-948과 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (origin = `1e8857b4` · **ahead 2** · local `test` = `4aad7cc2` · WT CLEAN · BNK-948과 동일 SHA)
+- 부모 저장소 gitlink `src/backend` = `4aad7cc2`. 작업 트리는 develop `@d73aec11` 이라 부모에 `M src/backend` 가 보인다. 이 사이클은 gitlink 를 옮기지 않는다.
+- `.agents/workspace_baseline.yaml` 의 `backend.develop` 도 `4aad7cc2` 다. 주석의 「test 동일 HEAD」는 지금 develop 과 맞지 않는다. `ahead_of_test: 750` 과 `2479/2479` 도 이번 집계와 다르다. **git develop `@d73aec11` 이 우선**이다. FE yaml `29c2304` 는 실측과 같다.
+- merge gate **3**. Route **133** · Page **106** · 깊이 최대 **4** · d4 경로 **6** · FE test 파일 **546**(230+316, 그중 e2e **53**) · BE test 파일 **304**(303+1) · strict `@Test` **2473** · HTTP **447** · 모듈 **97.41%**.
+
+### §949-1 · ★★★ 같은 SHA에서 주석 개수와 실행 개수를 나눈다
+
+`competitorModuleCoverage.js` 엔트리는 **29**개다. 1.0 이 25개, 0.85 가 id=2·8·10 세 개, 0.7 이 id=12 하나다. 합은 **28.25**. 28.25/29 = **97.4138%** 라 표기는 **97.41%** 다. coverage 0 은 없다. id=5 는 **1.0** 이다.
+
+Route prefix (path 132): billing **17** · nursing **16** · care **16** · staff **13** · clients **11** · transport **9** · programs **8** · attendance **7** · safety **5** · payroll **5**. path 에 `report` 가 있는 줄은 **29/132 = 22.0%**. 깊이 버킷은 d0=1 · d1=20 · d2=72 · d3=33 · d4=**6**. BNK-947 의 d4=6 을 유지한다.
+
+| 계수 | 값 | 비고 |
+|---|---|---|
+| `@Test` 줄 시작 | **2473** | BNK-943 의 2474 는 `ProgramClientGroupServiceTest` 를 10으로 적은 것. 파일에는 `@Test` 가 **9**개다. Access 3 + Routing 2 + Service 9 = 14. 2459+14 = 2473 |
+| `@ParameterizedTest` | 3메서드 · 실행 **20**행 | 역할 7 · 알림 이벤트 5 · 은행 8 |
+| surefire | **2493** / 실패 0 / 오류 0 / 건너뜀 0 | 2473+20. `mvn -q test` exit 0 |
+| `@RestController` 단어 경계 | **81** | `ProgramClientGroupController` 포함 |
+| `@RestController` 부분문자열 | 82 | `GlobalExceptionHandler` 의 `@RestControllerAdvice` 1건. BNK-943 「82」는 이 값 |
+| npm test | 파일 **493** · 테스트 **2865** PASS · 781s | `src/e2e/**` 53파일은 `vite.config.js` 가 뺀다. 디스크 546과 실행 493은 둘 다 맞다 |
+
+yaml 의 `2479/2479` 는 2473 도 2493 도 아니다. **가정**: 예전 실행 합계가 문서에 남은 것이다. 이번 실행 결과로 바꾸지 않는다.
+
+### §949-2 · ★ 프로그램 그룹 — 관리는 API, 화면은 이력 4열
+
+**신규 증거**: [daycareProgram.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgram.do) HTTP **404** · 1,028B · `3c93af54`. 본문 스크립트는 「정상적인 접속경로가 아닙니다.」 짧은 경로는 메뉴가 아니다.
+
+[daycareProgramProvided.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do) HTTP **200** · 67,987B · `f18e1c7a` = BNK-843 **BYTE-IDENTICAL**. 「프로그램 그룹」은 **0**. 「그룹」은 모바일 앱 목록의 **케어그룹 이력관리** 한 줄이다. 부모 제목은 「수급자 관리」. 입력 칸은 **미확인**.
+
+[func.php](https://www.carefor.co.kr/daycare/func.php) 는 `25s` 에 HTTP **000**. 디스크 `carefor_func_live_bnk943.php` 는 덮지 않았다. 보이는 줄은 「5-3.수급자별 프로그램 그룹 설정(필요시)」이고, 「5-3-1.프로그램 그룹 관리」는 HTML 주석만이다. [demo-work 스냅샷](docs/planning/research/snapshots/carefor_demo_work_live_bnk943.html) 에서 5-3 은 `view.program_plan` · `L05_M03` 이고, 5-3-1 `view.program_group` 은 `submp_noready` 로 주석 처리되어 있다.
+
+[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200** · 7,572B · `c886ff1f` = BNK-946 **BYTE-IDENTICAL** · **644차**. 「별지」「제22호」 **0**. 러-1 **1** · 이동서비스 **13**.
+
+| 단계 | 케어포 | 엔젤 | ogada `@d73aec11` / `@29c2304` |
+|---|---|---|---|
+| 그룹 만들기 | 5-3-1 은 주석·`noready`. 입력 name **미확인** | 공개 페이지에 「프로그램 그룹」 0 | `POST /api/v1/programs/groups` · `name` ≤120 · 활성으로 생성 |
+| 이름·사용 여부 | 미확인 | 미확인 | `PATCH /{groupId}` · `name` · `active`. 둘 다 비면 「변경할 그룹 정보가 없습니다.」 비활성은 행을 지우지 않음. DELETE **0** |
+| 이용자 배정 | 5-3 제목은 수급자별 그룹 설정. 화면 필드는 로그인 **미확인** | 케어그룹 이력관리 라벨만 | `POST /{groupId}/members` · `clientId` · `effectiveFrom` · `effectiveTo`(null 이면 열린 구간). 종료가 시작보다 앞이면 거부. 같은 날은 허용. 겹치면 「같은 기간에 이미 배정된 이용자입니다.」 |
+| 이력 | 5-9 리포트 | 모바일 목록의 이력관리 | FE `/programs/reports/group-history` · 열 **그룹명 · 적용 시작 · 적용 종료 · 수급자 수**. `/programs/groups` 는 **0** |
+
+### §949-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=5 는 **1.0**. id=2·8·10 은 **0.85**. id=12 는 **0.7**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@d73aec11` 이다. yaml 과 부모 gitlink 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. `@Test` 정본은 **2473** 이다. 실행 합계는 surefire **2493**(매개변수 20행)이다. 컨트롤러는 **81** 이다. 82 와 2474 를 다시 쓰지 않는다.
+3. 프로그램 그룹 관리 화면이 없는 것은 이번 사이클의 새 갭이 아니다. 이력 4열과 배정 API 는 이미 있다. `/programs/groups` 를 P0 로 열지 않는다. id=5 를 내리지 않는다.
+4. 엔젤 「케어그룹 이력관리」의 입력 칸과 케어포 5-3 `view.program_plan` 의 input name 은 미확인이다. 그 미확인을 기능 없음으로 적지 않는다.
+5. npm test **2865/2865** · mvn surefire **2493/0** 이다. e2e 53파일과 실서버 E2E 는 이 숫자에 넣지 않는다. 서버가 꺼져 있다는 하네스 로그는 단위 테스트 실패가 아니다.
+6. HTTP **447** · 모듈 **97.41%** · merge gate **3** 은 BNK-948 과 같다. 수가 시드는 유지한다.
+
+주력 `ogada_git_baseline_bnk949.txt` + `silverangel_daycareProgram_live_bnk949.html` + `nhis_jo44_live_bnk949.html`. 신규 증거 URL 1(엔젤 `daycareProgram.do` 404). 기존 URL 재실측 2(NHIS #44 644차 IDENTICAL · func.php HTTP 000 · Provided `f18e1c7a` IDENTICAL). 가정 1(yaml 2479 는 예전 합계). 미확인 2(엔젤 케어그룹 입력 칸 · 케어포 5-3 input name). per-cycle minimum 4종 충족.
+
+---
 
 ## §948 BNK-948 — 이지케어 역공학 2-4h · ★★★ **공단 엑셀 가이드는 파일 5종이지 열 이름이 아니다** · ★★ **사회복지사 RFID는 실시간과 제출이력 두 갈래 · 시간차는 적색** · ★★ **가격·도입 수는 BNK-944와 같고 홈 후기만 교체** · ★ **검은/빨간 청구 반영 문장은 유지** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
 

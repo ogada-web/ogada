@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-949 ogada git 실측 6-8h · ★★★ **@Test 2473 · surefire 2493** · ★★★ **컨트롤러 81 · Advice 를 세지 않음** · ★★ **yaml `4aad7cc2` 는 develop 이 아님** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · npm **2865** · merge gate **3**
+
+**근거**: git FE `29c2304` · BE `d73aec11` · local test `4aad7cc2` · 부모 gitlink `4aad7cc2`. `npm test` 493파일/2865 PASS. `mvn -q test` surefire 2493/0/0/0. [daycareProgram.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgram.do) HTTP 404 · `3c93af54`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 644차.
+
+### 결정
+
+1. **★★★ `@Test` 정본은 2473이고 실행 합계는 2493이다 (확인)** — BNK-943 의 서비스 테스트 10은 9개다. 매개변수 3메서드는 20행(7+5+8)이라 surefire 는 2473+20 이다. **planner: 2474 와 yaml 2479 를 현재 수로 쓰지 않는다.**
+
+2. **★★★ 컨트롤러는 81개다 (확인)** — `@RestControllerAdvice` 가 부분문자열로 82번째처럼 보인다. 그룹 API 에 DELETE 는 없다. **planner: 82 를 다시 쓰지 않는다.**
+
+3. **★★ develop HEAD 는 `@d73aec11` 이다 (확인)** — yaml `backend.develop` 와 부모 gitlink 는 로컬 test `4aad7cc2` 다. FE `@29c2304` 는 yaml 과 같다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. git 실측이 우선이다.**
+
+4. **★★ 프로그램 그룹 관리 화면 부재는 새 갭이 아니다 (확인)** — 배정 API 와 이력 4열(`/programs/reports/group-history`)이 있다. 케어포 5-3-1 은 주석·`noready` 다. 엔젤은 「케어그룹 이력관리」 라벨만 있고 짧은 URL 은 404 다. **planner: id=5 는 1.0. `/programs/groups` 를 P0 로 열지 않는다.**
+
+5. **★ 모듈 97.41% 와 HTTP 447 은 유지한다 (확인)** — 28.25/29. 비-1.0 은 id=2·8·10 이 0.85, id=12 가 0.7. npm 2865 는 e2e 53파일을 뺀 단위 테스트다. **planner: 수가 시드를 유지한다. 서버 미기동 로그를 단위 테스트 실패로 적지 않는다.**
+
+**가정 1**(yaml 2479 는 예전 합계) · **미확인 2**(엔젤 케어그룹 입력 칸 · 케어포 5-3 input name) · 신규 snapshot **4**(txt 1 · html 3) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-948 이지케어 역공학 2-4h · ★★★ **공단 엑셀은 파일 5종 · 열 이름 미확인** · ★★ **사회복지사 RFID는 실시간/제출이력 · 시간차 적색** · ★★ **가격·도입 수 유지 · 홈 후기만 교체** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: [ltm_excel_guide.png](https://ezcare.easyms.co.kr/img/ltm_excel_guide.png) HTTP 200 · `7e769b67`. [FAQ 21647](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21647&type=web) `6ec9e3cb`. [FAQ 21172](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21172&type=web) `406d7ad5`. [Channel bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) 문장 유지. 데모 로그인 code=0000 · nav `95286775`. git FE `29c2304` · BE `d73aec11`.
