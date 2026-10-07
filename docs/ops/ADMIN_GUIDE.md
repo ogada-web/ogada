@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T17:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T18:45:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 갱신 BE `4aad7cc` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-10-07 (기선 갱신 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **프로그램 수급자 그룹 등록·배정** ✅ (**Q959**, US-P01): **`GET/POST /programs/groups`** · **`PATCH …/{groupId}`** · **`GET/POST …/{groupId}/members`** · 활성 지점 · 이름 120자 · 활성 이름 중복·기간 겹침 거부 · **행 삭제 없음** · **화면 `/programs/groups` 없음** · 집계는 **5-9** `group-history` · Flyway 추가 없음(V179) (`d73aec1`)
 > - **청구 명세·국세청 CSV 엑셀 수식 실행 위험 차단** ✅ (**Q946**, SEC-D33): `=`·`+`·`-`·`@` 시작 글자 칸에 `'` prefix · 금액 숫자(음수 포함)는 유지 (`57523b5`, CWE-1236) — FAQ Q534·Q535
 > - **안전·선임·외출 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-204): 안전 점검 **저장 시각** · 선임 **전자서명 시각** · 외출 **실제 출발/복귀 시각** — 화면 표시 무변경 (`95b6c52`, WCAG 1.3.1)
 > - **보호자 포털·QR 체크인 출석 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-203): 일일 요약 **입소·귀가 시각** · QR 셀프 체크인 **처리 완료 시각** — 화면 표시 무변경 (`2715090`, WCAG 1.3.1, Must US-E04)
@@ -3136,13 +3137,39 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 | 날짜 기본값 | `fromDate`/`toDate` 생략 → **당월 1일~오늘(KST)** |
 | 날짜 검증 | `toDate < fromDate` → **`422`**「종료일은 시작일 이후여야 합니다.」 |
 | 스코프 | **`branchId` 생략** → JWT active branch · **지정 시** `validateBranchReadScope` (`49fe2e7`) · `clientId` 필터 시 이용자 branch 검증 |
-| **5-9 read path** | **V179** `program_client_groups`·`program_client_group_members` — **`aggregateHistoryWindows`** · **그룹 CRUD UI P3** (G-PROGRAM-GROUP-CONFIG) |
+| **5-9 read path** | **V179** `program_client_groups`·`program_client_group_members` — **`aggregateHistoryWindows`** · **그룹 등록·배정 API ✅**(§10-11-2a, **Q959**) · **그룹 화면 없음** |
 | **branchId UI** | FE **`programReportServices`** — **`branchId` 미전달(P2)** — API·Swagger only |
 | RBAC | **`caregiver`·`guardian` → 403** |
 | FE UI | **`ProgramReportsPage`** · **`ProgramReportNav`** · **`ProgramReportPanel`** · **`RecordsContextNav`** link · **`programReportServices`** (`apiFetch`) · **`ProgramReportsPage.test`**·**`ProgramReportPanel.test`** |
 | 테스트 | **`ProgramReportControllerRoutingTest`** · **`ProgramReportServiceTest`** · FE **`programReportServices.test`** |
 
-> 현장: USER_MANUAL §5-9 · FAQ Q714·Q715 · DEPLOYMENT §1-4
+> 현장: USER_MANUAL §5-9 · FAQ Q714·Q715·Q959 · DEPLOYMENT §1-4
+
+#### 10-11-2a. 프로그램 수급자 그룹 API (US-P01, v3.1 Must)
+
+활성 지점의 프로그램 수급자 그룹과 이용자 배정입니다. **화면 `/programs/groups` 와 프론트 클라이언트는 없습니다.** Swagger로 넣은 배정은 §10-11-2 **5-9** `GET /programs/reports/group-history` 에 집계됩니다. **삭제 API는 없습니다.** `active=false` 는 새 배정만 막고 행과 지난 배정은 남깁니다. 스키마는 **V179** 를 재사용하며 이번 변경에 Flyway 추가는 없습니다 (FAQ **Q959**).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/programs/groups` | 활성 지점 그룹(비활성 포함, 이름순). `items[]`: `id`·`name`·`active` | `hq_admin`·`branch_admin`·`social_worker` |
+| POST | `/programs/groups` | 생성. body `name`(trim, 120자). 생성 시 활성 | 동일 |
+| PATCH | `/programs/groups/{groupId}` | `name` 또는 `active` **중 하나 이상** | 동일 |
+| GET | `/programs/groups/{groupId}/members` | 배정 이력. `id`·`groupId`·`clientId`·`clientName`·`effectiveFrom`·`effectiveTo`(진행 중이면 null). 시작일 최신순 | 동일 |
+| POST | `/programs/groups/{groupId}/members` | body `clientId`·`effectiveFrom`·`effectiveTo`(null=진행 중) | 동일 |
+
+| 규칙 | 내용 |
+|------|------|
+| 지점 | 목록은 **JWT 활성 지점**. 활성 지점 없음 → **403** 「활성 지점이 선택되지 않았습니다.」 |
+| 이름 | 활성 그룹끼리 지점 내 **대소문자 무시** 중복 → **422** 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 비활성 이름은 재사용 가능 |
+| 빈·초과 이름 | 생성 빈 값·120자 초과 → **400** 입력 검증. 수정에 빈 `name` → **422** 「그룹 이름을 입력해야 합니다.」 |
+| 빈 수정 | `name`·`active` 둘 다 없음 → **422** 「변경할 그룹 정보가 없습니다.」 |
+| 없는 그룹 | 다른 기관 식별자 → **404** 「프로그램 그룹을 찾을 수 없습니다.」 |
+| 배정 | 비활성 그룹 → **422** 「비활성 프로그램 그룹에는 이용자를 배정할 수 없습니다.」 · 종료일 < 시작일 → **422** 「배정 종료일은 시작일 이후여야 합니다.」 · 퇴소·비활성 이용자 → **404** 「이용자 정보를 찾을 수 없습니다.」 · 지점 불일치 → **422** 「이용자와 프로그램 그룹의 지점이 일치하지 않습니다.」 |
+| 기간 겹침 | 같은 그룹·같은 이용자만. 끝날이 맞닿아도 겹침. 종료일 null 은 진행 중(열린 구간). **422** 「같은 기간에 이미 배정된 이용자입니다.」 다른 그룹과 같은 기간은 허용 |
+| RBAC | **`caregiver`·`guardian` → 403** |
+| 테스트 | **`ProgramClientGroupServiceTest`** · **`ProgramClientGroupControllerRoutingTest`** · **`ProgramClientGroupControllerAccessTest`** |
+
+> 현장: USER_MANUAL §5-9 · FAQ **Q959** · **Q714** · DEPLOYMENT §1-4
 
 #### 10-11-1. 기능회복 훈련 API (G17, US-T06, `73e169a`·`0821ce8`·`0048105`·`e820b28`, V72) — **FE UI Fixed**
 
@@ -3996,6 +4023,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-07 | **Q959 신설** — §1-4·§10-11-2·§10-11-2a **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q958 신설** — §1-4·§6-2-24h **기관 공지 첨부 점 없는 짧은 주소·`.home.arpa`·`.svc` 거부** · baseline **`4aad7cc`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q956·Q957·Q955 갱신 · baseline 동기화** — §1-4 **기관 공지 첨부 HTTP/HTTPS 대소문자 허용** · **상세 차단 경고 알림** · **위생·안전 조회 기간 30일/366일 도움말** · baseline **`1e8857b`/`5cf667b`** · Flyway **V1–V196** |
 | 2026-07-20 | **Q955·Q953 갱신 · baseline 동기화** — §1-4·§6-2-24h **기관 공지 상세 첨부 차단 사유 구체 표시** · **hosts-file resolver 잔여 별칭 BE 서비스 계층 회귀 테스트 고정** · baseline **`a0a6643`/`554a319`** · Flyway **V1–V196** |
