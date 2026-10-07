@@ -1,0 +1,49 @@
+BNK-941 엔젤·롱텀·규제 4-6h 교차검증
+조사일: 2026-10-07T16:50:00Z
+ogada FE develop=test=origin/develop=origin/test 5cf667b3b349e62aacb1ee8153ad91a790084a51 WT 0
+ogada BE develop=test=origin/develop=origin/test 1e8857b495938718b6cb9b2c74760da96800b307 WT 0
+merge gate 0 (BNK-918 FE ahead 45 / BE ahead 779 대비 FULLY SYNCED)
+workspace_baseline.yaml test=598d108·ahead_of_test=750 은 stale — git 실측 우선
+
+=== 신규 증거 URL (현행 고시) ===
+https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000285470
+HTTP 200 · 78,450B · md5 72ce5c4e
+확인: 보건복지부고시 제2026-189호 · 시행 2026.10.1 · 공포 2026.10.1 · nwYn=Y · prmlYd=20261001 · efYd=20261001 · admRulId=36934
+파일: law_mohw_20261001_admRulInfoP_live_bnk941.html
+
+=== 2025-247 연혁 전환 (기존 URL 재실측 · 실체 변동) ===
+https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,150B · raw md5 1593572d
+BNK-916 대비: h2 「행정규칙」→「행정규칙(연혁)」·nwYn Y→N · 관련법령 버튼 제거
+제목 문구는 여전히 [시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]
+파일: law_mohw_2025_247_admRulInfoP_live_bnk941.html
+
+=== 제34조 러-1~4 규칙 문언 (2차 미러 + 공단 이력) ===
+2차: https://govbrief.kr/scan/2100000285470/34/ HTTP 200 · 32,918B · md5 69bea46f
+확인(articleBody): ② 1일 1회 · 편도 시 ‘러-1’부터 ‘러-4’까지 비용의 50% · ③ 수급자가 부담하지 아니한다 · ④ 이동서비스 일지 작성·보관 · ⑤ 세부사항은 공단 이사장
+① 금액표는 <img id="169768531"> — 원 단위 텍스트 0. 2026-189 금액 재확인 = 미확인
+공단 이력(고정 URL): nhis joHistory SEQ_CONTENTS=3281769 HTTP 200 · 7,572B · md5 c886ff1f = bnk918 BYTE-IDENTICAL
+저장 스냅샷 계수 639차(BNK-918) → 이번 640차. PLAN_NOTES의 659차 인용은 §본문·스냅샷이 없어 합산하지 않음.
+구 lawImg https://www.nhis.or.kr/lm/lmxsrv/law/lawImg.do?SEQ_HISTORY=611677&ID=153966057
+HTTP 200 · 10,438B · md5 05030599 = bnk775 IDENTICAL · GIF 460×74
+이미지 판독(구 이력 표): 러-1 5km미만 830 · 러-2 5km이상~10km미만 2,630 · 러-3 10km이상~20km미만 5,230 · 러-4 20km이상 8,630
+이 GIF는 2026-189 본문 이미지가 아님. 시드 830/2630/5230/8630 을 현행 고시 금액으로 승격하지 않음.
+
+=== 엔젤 ===
+system_feature HTTP 200 · 45,601B · c9507190 = bnk918 BYTE-IDENTICAL · 이동서비스|배차|GPS|RFID|차량|송영 0-hit
+extraService HTTP 200 · 81,637B · f9c5d877 = bnk916 BYTE-IDENTICAL
+CMS verbatim: 월 이용료 30,000원(효성CMS) · 자동이체 250원/1건 · 가상계좌 300원/1건 · 카드결제 별도문의 · 계좌분리/다계좌 정산 별도문의 · 제공서비스 라벨 5종(자동이체·가상계좌·카드결제·다계좌 정산·현금영수증)
+daycareEssential HTTP 200 · 131,664B · c79c1be3 BYTE-IDENTICAL
+dual-numbering: 주야간보호 27 기능회복훈련 ≠ 일련 27 가족과의 소통
+
+=== lcms 로그인 워크플로 DRIFT ===
+https://www.lcms.or.kr/ HTTP 200 · 50,170B · md5 b76e658c (bnk916 c0c66076/50,740B)
+제거: KMCNOK / openKmcNokLayerPop / /cmm/selectSmsNumberMngLoginPop.do (TEMP SMS_SENDER_AUTH)
+추가: openIpAccessDeniedLayerPop · 주석 「IPERR 안내 레이어 (접속허용관리 V6 지침)」 · POST/load /cmm/selectIpAccessDeniedLoginPop.do?viewMode=login
+IPERR 분기: alert 문자열 → 레이어. 외부 접속 차단 / 내부 IP 변경 시 관리자 IP 등록.
+로그인 이후 ERP 메뉴는 미확인. 주야간 배차 갭으로 승격하지 않음.
+
+=== 롱텀 shell ===
+502 HTTP 200 · 89,162B · 56185735 LEAN (s16 0) · strip(s16) == bnk916 FULL a71379de
+610 HTTP 200 · 88,399B · fad1ce61 LEAN (s16 0) · strip(s16) == bnk916 FULL 6b10f426
+이번 shell에 단기보호 74,060·통합재가 월 10만원 숫자 없음 → 심층 수가 미확인 carry

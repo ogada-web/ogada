@@ -1,9 +1,106 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-20T01:20:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T16:50:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §941 BNK-941 — 엔젤·롱텀·규제 역공학 4-6h · ★★★ **현행 고시가 제2026-189호(시행 2026-10-01·`admRulSeq=2100000285470`)로 전환 — 제2025-247호는 연혁(nwYn Y→N)** · 제34조 ②~⑤(1일 1회·러-1~4의 50%·수급자 부담 없음·이동서비스 일지)는 현행 미러와 공단 이력에서 확인 · **① 금액표는 이미지라 2026-189 원 단위는 미확인**(구 lawImg 830/2,630/5,230/8,630 재실측은 구 이력 표) · lcms 로그인 **접속허용관리 V6**(IPERR 레이어·SMS 발신 팝업 제거) · 엔젤 배차 0-hit·CMS 라벨 5종 단가 3종 LOCK · 롱텀 502/610 s16 LEAN flip(본문 strip IDENTICAL) · git develop=test **FULLY SYNCED** · 신규 진성갭 0** — FE `@5cf667b` / BE `@1e8857b4` · Route **133** · Page **106** · FE test **546** · BE @Test **2456** · HTTP **442** count-exact IDENTICAL · NHIS #44 저장계수 **640차** · 모듈 **97.41%** · merge gate **0**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T16:50:00Z -->
+
+**조사일**: 2026-10-07T16:50:00Z | **rotation**: 엔젤·롱텀·규제 4-6h. 보고서 본문 최신은 §918(2026-07-20)이고 PLAN_NOTES는 BNK-919~940을 인용만 한다. 그 §본문·스냅샷이 없어 번호를 재사용하지 않고 **BNK-941**로 기록한다. 초점: (1) law.go.kr 현행 고시와 제34조 러-1~4 (§941-1) · (2) 엔젤 CMS 부가·배차·지표 27 (§941-2) · (3) lcms 로그인 IP 허용·롱텀 shell (§941-3) · (4) ogada git 실측과 planner 액션 (§941-4).
+
+### §941-0 · Baseline — git 실측 우선
+
+- ogada backend develop = `1e8857b495938718b6cb9b2c74760da96800b307` (**develop = test = origin/develop = origin/test** · WT CLEAN · BNK-918 `@b863930` 이후 **+18 commit** · HEAD `test(v3/SEC-D46): lock case-insensitive attachment schemes at service layer`)
+- ogada frontend develop = `5cf667b3b349e62aacb1ee8153ad91a790084a51` (**develop = test = origin/develop = origin/test** · WT CLEAN · BNK-918 `@6f1e620` 이후 **+23 commit** · HEAD `fix(v1.2.1/L02_M01): avoid 상태변화 label collision with FAQ21817 SLA Alert (QA-B685)`)
+- merge gate **0** (BNK-918 FE ahead 45 + BE ahead 779 → 양쪽 origin/test와 동일 SHA). `.agents/workspace_baseline.yaml`의 `test: 598d108` · `ahead_of_test: 750`은 **stale**. 이 문서의 git 실측이 우선한다.
+- Route **133**(`<Route\b` 132 + `<Routes>` 1) · Page **106** · FE test **546**(230 `.test.js` + 316 `.test.jsx`) · BE Test file **301**(300+1) · `@Test` strict **2456**(BNK-918 2434 → +22) · `@RestController` **81** · `@Entity` **92** · GET **231** / POST **144** / PATCH **44** / PUT **13** / DELETE **10** = HTTP **442** · Flyway V1–V196
+- HTTP 442는 BNK-918 저장 실측과 **count-exact IDENTICAL**(endpoint 신설 0). 78차·100차 같은 누적 차수는 중간 스냅샷이 없어 이번 문서에서 올리지 않는다.
+- 모듈 **97.41%** 재계산(29 entry · 비-1.0은 id=2/8/10=0.85 · id=12=0.7 · 합 28.25). closed band 6경로(`care-plan-form`·`/dashboard/hq`·`/transport/service-fees`·`/billing/cms`·`linkage-records`·`home-newsletter`) App.jsx **존재**.
+- `npm test` / `mvn test`는 이번 사이클 **미실행**(docs only · rules §5).
+
+### §941-1 · ★★★ 제2026-189호 현행 · 제34조 러-1~4 규칙 확인 · 금액은 미확인
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| **현행 고시 (신규)** | https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000285470 | HTTP 200 · 78,450B · `72ce5c4e` · **제2026-189호** · 시행 **2026. 10. 1.** · 공포 2026. 10. 1. · `nwYn=Y` · `prmlYd=20261001` · `efYd=20261001` · `admRulId=36934` |
+| 제2025-247호 (재실측) | https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110 | HTTP 200 · 78,150B · raw `1593572d` · 제목은 시행 2026. 1. 1. 유지 · **h2가 「행정규칙(연혁)」·`nwYn` Y→N** · 관련법령 버튼 제거 |
+| 제34조 미러 (2차) | https://govbrief.kr/scan/2100000285470/34/ | HTTP 200 · 32,918B · `69bea46f` · 법령 ID `2100000285470` · 시행 2026-10-01 |
+| 공단 조문 이력 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | HTTP 200 · 7,572B · `c886ff1f` = bnk918 **BYTE-IDENTICAL** · 저장 스냅샷 계수 **640차**(639차+1) |
+| 구 금액 GIF | https://www.nhis.or.kr/lm/lmxsrv/law/lawImg.do?SEQ_HISTORY=611677&ID=153966057 | HTTP 200 · 10,438B · `05030599` = bnk775 **IDENTICAL** · GIF 460×74 |
+
+**확인(제34조 ②~⑤, govbrief `articleBody` · 공단 이력과 동일 문언)**:
+
+1. ② 이용 횟수와 관계없이 **1일 1회**. 편도만 이용한 경우 ‘러-1’부터 ‘러-4’까지 비용의 **50%**.
+2. ③ 제공기관 신청으로 산정하고, **수급자가 부담하지 아니한다**.
+3. ④ 이동서비스를 제공하면 **이동서비스 일지**를 작성·보관. 이번 HTML에 「별지 제22호」 문자열은 **0**. 서식 번호 연결은 과거 carry이며 이번 원문에서 재확인하지 않음.
+4. ⑤ 신청·중단·일지 세부는 **공단 이사장**이 정한다. 그 세부 지침 본문은 이번 사이클 **미확인**.
+
+**미확인(금액)**: ①항 표는 `<img id="169768531">`뿐이고 원 단위 텍스트가 없다. 구 lawImg를 읽으면 러-1 **830**(5km 미만) · 러-2 **2,630**(5km 이상~10km 미만) · 러-3 **5,230**(10km 이상~20km 미만) · 러-4 **8,630**(20km 이상)이다. 이 GIF는 `SEQ_HISTORY=611677` 이력 표이지 제2026-189호 본문 이미지가 아니다. ogada 시드(V103: 830/2,630/5,230/8,630)를 현행 고시 금액과 일치한다고 **승격하지 않는다**. `ONE_WAY_RATIO=0.5`와 `RU_1`~`RU_4` 구간 코드는 ②항 문언과 맞다. 원 단위 상수 재조정은 보류.
+
+**가정(경계, 격상 아님)**: 구 GIF는 10km·20km를 「미만/이상」으로 가른다. ogada `TransportDistanceBand.resolveFromKm`은 `<= maxDistanceKm`라 정확히 10.000km가 RU_2로 떨어질 수 있다. 현행 고시 이미지를 읽기 전에는 버그로 단정하지 않는다.
+
+### §941-2 · ★★ 엔젤 CMS 라벨 5종 · 배차 0-hit · 지표 27
+
+| 소스 | URL | 결과 |
+|---|---|---|
+| system_feature | http://www.silverangel.kr/silverangel/angelsystem/system_feature.do | HTTP 200 · 45,601B · `c9507190` = bnk918 **BYTE-IDENTICAL** · `이동서비스\|배차\|GPS\|RFID\|차량\|송영` **0** |
+| extraService | https://www.silverangel.kr/newSilverangel/service/extraService.do | HTTP 200 · 81,637B · `f9c5d877` = bnk916 **BYTE-IDENTICAL** |
+| daycareEssential | https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | HTTP 200 · 131,664B · `c79c1be3` **BYTE-IDENTICAL** · 「주야간보호 27 기능회복훈련」과 일련 「27 가족과의 소통」이 같은 페이지에 공존 |
+
+**CMS 부가 워크플로(확인, extraService 본문)**:
+
+| 라벨 | 공개 단가 | ogada `CmsPaymentMethodCatalog` |
+|---|---|---|
+| 자동이체 | 250원/1건 | `AUTO_DEBIT_CMS` · `250원/1건` · `/billing/cms` |
+| 가상계좌 | 300원/1건 | `VIRTUAL_ACCOUNT` · `300원/1건` |
+| 카드결제 | 별도문의 | `CARD` · feeLabel null · `/billing/easy-pay` |
+| 다계좌 정산(계좌분리) | 효성CMS 별도문의 | `MULTI_ACCOUNT_SETTLEMENT` |
+| 현금영수증 | 건별 단가 문구 없음 | `CASH_RECEIPT` · `/billing/cash-receipts` |
+| 월 이용료 | **30,000원**, 효성CMS 납부 · 연동정보 필수 · 가입 1600-6859 | ogada는 효성 월 대행료·벤더 lock-in 없음 |
+
+단가가 숫자로 적힌 수단은 3개(월 30,000·자동이체 250·가상계좌 300)이고, 화면 라벨은 5개다. ogada 카탈로그 5코드와 라벨이 맞다. 배차·GPS·RFID는 공개 ERP 소개에 없다. Transport(구간 코드+편도 50%+일지+배차)는 공개 페이지 기준으로 엔젤에 없는 축이다. 로그인 뒤 화면은 **미확인**.
+
+### §941-3 · ★★ lcms 접속허용 V6 · 롱텀 shell 오실레이션
+
+**lcms** https://www.lcms.or.kr/ HTTP 200 · 50,170B · `b76e658c` (bnk916 `c0c66076` / 50,740B **DRIFT**).
+
+로그인 스크립트 diff(확인):
+
+- 제거: `KMCNOK` 분기, `openKmcNokLayerPop`, `/cmm/selectSmsNumberMngLoginPop.do` (`[TEMP:SMS_SENDER_AUTH]`).
+- 추가: `openIpAccessDeniedLayerPop(viewMode)` · 주석 「IPERR 안내 레이어 (접속허용관리 V6 지침)」 · `$("#…").load('/cmm/selectIpAccessDeniedLoginPop.do', {viewMode:'login'})`.
+- `data == "IPERR"`는 alert 후 종료에서 레이어를 연 뒤 return으로 바뀌었다. fallback 문구는 외부 접속 차단, 내부라면 공유기 전원 유지 후 관리자에게 IP 등록.
+
+주야간 배차 기능 갭이 아니다. ogada는 클라우드 RBAC이지 기관 고정 IP 허용목록 제품이 아니다. 로그인 이후 메뉴는 **미확인**.
+
+**롱텀**:
+
+| 화면 | 결과 |
+|---|---|
+| [502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500) | HTTP 200 · 89,162B · `56185735` · `var s16;` **0** · s16를 뺀 본문은 bnk916 FULL(`a71379de`)과 **동일** · 「월 한도」 1 |
+| [610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) | HTTP 200 · 88,399B · `fad1ce61` · `var s16;` **0** · strip = bnk916 FULL · 「통합재가」 1 |
+
+이번 shell에 단기보호 1등급 74,060원·통합재가 가산 월 10만원이 없다. 심층 수가는 **미확인 carry**. s16 한 줄은 문서 위생이며 기능 갭이 아니다.
+
+### §941-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. 금액 시드 변경 **0**(미확인을 확인으로 올리지 않음). id=2 커버 **0.85** 유지.
+
+**planner가 읽을 항목**:
+
+1. 규제 앵커를 **제2026-189호 · `admRulSeq=2100000285470` · 시행 2026-10-01**로 바꾼다. 제2025-247호는 연혁이다. ②~⑤ 문언이 같아 `ONE_WAY_RATIO`·1일 1회·일지·수급자 부담 없음은 재작성하지 않는다.
+2. 러-1~4 **원 단위**는 현행 고시 이미지를 읽기 전에 시드를 고치지 않는다. 구 GIF 830/2,630/5,230/8,630은 이력 표 재실측이다.
+3. 엔젤 공개 페이지 배차 0-hit과 CMS 라벨 5종(단가 3종·월 30,000원 효성)은 유지. ogada 카탈로그와 라벨이 맞고 벤더 월 대행료는 없다.
+4. 지표 27(기능회복훈련)과 필수업무 일련 27(가족과의 소통) 라벨을 섞지 않는다.
+5. lcms IP 허용 V6는 경쟁사 로그인 운영 변화다. 제품 갭으로 올리지 않는다.
+6. git은 FE `@5cf667b` · BE `@1e8857b4` · develop=test · merge gate **0**. `workspace_baseline.yaml`의 ahead 750은 다음 build가 실측으로 덮어써야 한다.
+7. HTTP 442 count-exact IDENTICAL · 모듈 97.41% · 신규 진성갭 0.
+
+주력 `angel_longterm_regulatory_crossverify_bnk941.txt` + `law_mohw_20261001_admRulInfoP_live_bnk941.html` + `govbrief_jo34_2100000285470_bnk941.html` + `lcms_home_live_bnk941.html` + `nhis_jo44_live_bnk941.html` + `nhis_jo44_lawImg_live_bnk941.gif`. 신규 snapshot 13(html 11 · gif 1 · txt 1). 가정 1(10km 경계). 미확인 2(현행 금액표·공단 이사장 세부 지침). per-cycle minimum 4종 충족.
+
+---
 
 ## §918 BNK-918 — 교차검증·갭 우선순위 8h+ · ★★★ **FE `@03c0a2f` → `@6f1e620` +1 ADVANCE(욕창 L03_M15 date-range stale-error 자동 해제·in-place +39 / 2 files)·BE `@db1ff72` → `@b863930` +1 ADVANCE(SEC-D37 nested notification secrets 재귀 리덕터·in-place +53/-7 / 2 files)·HTTP 442 **78차** IDENTICAL·NHIS #44 **639차** byte-IDENTICAL·silverangel `c9507190` byte-IDENTICAL 다중 사이클·이지케어 Home `53.2/9298/4675/2353/1820` ZERO DRIFT·이지케어 FAQ DRIFT hit-only(rowid 233·엑셀 포맷 변경 signal 0)·FE test **546** 소급 정정(가정 번복 1)·closed band 재오픈 0·P0~P3 번복 0·미확인 승격 0·신규 진성갭 0** — Route **133**·Page **106**·FE test **546**(230+316)·BE @Test **2434**(+1)·모듈 **97.41%** CARRY · merge gate **824**
 

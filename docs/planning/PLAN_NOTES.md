@@ -1,4 +1,40 @@
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T15:41:05Z -->
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T16:50:00Z -->
+
+### [BNK] BNK-941 인사이트 (2026-10-07) — ★★★ **현행 고시 제2026-189호(시행 2026-10-01)** · ★★ **제34조 금액표 미확인** · ★ **lcms IP V6 · merge gate 0**
+
+| 항목 | 내용 | 반영 |
+|---|---|---|
+| **규제 앵커** | [admRulSeq=2100000285470](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000285470) **보건복지부고시 제2026-189호** · 시행 2026-10-01 · `nwYn=Y`. 제2025-247호는 연혁(`nwYn=N`) | REQUIREMENTS 고시 인용 · ROADMAP |
+| **제34조 규칙** | ② 1일 1회 · 러-1~4의 50% · ③ 수급자 부담 없음 · ④ 이동서비스 일지. ① 금액은 이미지(**미확인**). 구 lawImg 830/2,630/5,230/8,630은 이력 표 | 시드 변경 보류 |
+| **lcms** | 로그인 IPERR → `selectIpAccessDeniedLoginPop.do` (접속허용관리 V6). SMS 발신 팝업 제거. 갭 아님 | 기록만 |
+| **git** | FE `@5cf667b` · BE `@1e8857b4` · develop=test=origin · WT CLEAN · merge gate **0** · HTTP 442 IDENTICAL · 모듈 97.41% | baseline 실측 우선 |
+
+1. **고시 번호 교체**: 문서의 「제2025-247호 · 시행 2026-01-01」현행 서술을 **제2026-189호 · 시행 2026-10-01**로 바꿀지? → **인용만 교체. 러-1~4 규칙 상수 재작성 불요.**
+2. **금액 시드**: V103 830/2,630/5,230/8,630을 현행으로 단정하지 않는다. 제2026-189호 별표 이미지를 읽기 전에는 수정하지 않는다.
+3. 보고서 §919~§940 본문은 `BENCHMARK_REPORT.md`에 없다. 이번 차수는 **BNK-941**.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T17:02:00Z -->
+<!-- coder-sync: COD 2026-10-07T17:02:00Z (frontend) — v1.2.1 completion reconfirm · SEC-D46 search-path / .home.arpa / .svc FE↔BE lockstep (BE @4aad7cc2) · related npm 77/77 PASS · merge_status: ready 유지 · residual QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-10-07 — v1.2.1 완료 기준 재확인 · SEC-D46 검색경로·home.arpa·svc)
+
+- **v1.2.1 완료 기준**: merge-blocking P0 **`[x]`** · `merge_status: ready` **유지**. G7 실파일·live E2E run 은 결정 73 비차단.
+- **이번 커밋**: develop **`@5cf667b`** → **`@29c2304`**(+1). `homeNewsletter.js` `isSingleLabelFacilityNoticeAttachmentHost` + `.home.arpa`/`.svc` 접미. 작성 폼은 저장하지 않고, 상세의 기존 링크는 경고 Alert로 막는다. `metadata.example.com` 등 공개 도메인은 통과. endpoint 신설 0.
+- **검증**: `npm test -- src/utils/homeNewsletter.test.js src/pages/HomeNewsletterLaunchPage.test.jsx` **77/77 PASS**.
+- Open(FE product) **0** · residual **QA-B116**·**QA-B95** · BE `@4aad7cc2` transfer(`QA-B687`)는 tester FF.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T16:53:00Z -->
+<!-- coder-sync: COD 2026-10-07T16:53:00Z (backend) — v3 completion reconfirm · SEC-D46 single-label search-path + .home.arpa + .svc fail-closed · related mvn 33/33 PASS · merge_status: ready 유지 · residual QA-B116+QA-B95 · FE lockstep 후속 -->
+
+### [COD] 코더 메모 (2026-10-07 — v3 완료 기준 재확인 · SEC-D46 검색경로·home.arpa·svc)
+
+- **v3 완료 기준**: merge-blocking 전부 `[x]` · develop **`@1e8857b4`** → **`@4aad7cc2`**(+1) · `merge_status: ready` **유지**. G4/G20 이월 유지.
+- **이번 커밋**: `FacilityNoticeSupport` 가 점 없는 단일 라벨 호스트(`metadata`, `gateway` — DNS search path / hosts file)와 RFC 8375 `.home.arpa`, Kubernetes `.svc` 짧은 이름을 fail-closed. 메시지 verbatim「첨부 링크 형식이 올바르지 않습니다.」. allowlist에 있어도 구조 검사는 우선. `metadata.example.com`·`svc.example.com` 공개 도메인은 유지. endpoint 신설 0.
+- **검증**: `mvn -o -B test -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest` **33/33 PASS**.
+- Open(BE product) **0** · residual **QA-B116**·**QA-B95** · FE `homeNewsletter.js` lockstep 후속.
+
 <!-- coder-sync: COD 2026-07-20T16:10:00Z (frontend) — v1.2.1 completion reconfirm · SEC-D46 RFC case-insensitive http(s) schemes FE↔BE lockstep (BE @e6394d9) · merge_status: ready 유지 · residual QA-B116+QA-B95 -->
 
 ### [COD] 코더 메모 (2026-07-20 — v1.2.1 완료 기준 재확인 · SEC-D46 scheme case-insensitive lockstep)

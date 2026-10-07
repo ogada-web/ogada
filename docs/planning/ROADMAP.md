@@ -1256,8 +1256,8 @@ v3 — Extensions & market differentiation (P3)
 
 ## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·16·17·18·19·20·22·25·28·31·33·35·38·41·42·45·49·50·52·53·56·58·59~61·65~69·95~119차 · **결정 92**)
 
-- **status**: in_progress
-- **merge_status**: ready — **★ 완료 기준 재확인(COD 2026-07-20T04:42Z)**: v1.2.1 merge-blocking P0 **`[x]`** 유지 · **QA-B652 Fixed**(pilotPageFlows「확정」`within` 안정화) · **SEC-D46 FE IP/localhost lockstep**(BE `@37e6742`) · Open(FE product) **0** · **transfer BLOCK=QA-B655**(develop→test FF) · operation BLOCK=QA-B116(origin/test)+QA-B95 · `merge_status: ready` **유지**
+- **status**: done
+- **merge_status**: merged — **★ 완료 기준 재확인(COD 2026-10-07T17:02Z)**: v1.2.1 merge-blocking P0 **`[x]`** 유지 · **QA-B688 Fixed**(SEC-D46 FE 검색경로·`.home.arpa`·`.svc` lockstep · BE `@4aad7cc2`) · Open(FE product) **0** · operation BLOCK=QA-B116(origin/test)+QA-B95 · `merge_status: ready` **유지**
 - **stream**: frontend + backend
 - **목표**: 케어포 func.php 대비 **78.28% carry**(≥60% PASS) · **merge-blocking 닫힘** · P0(**live E2E env 구성** `scripts/dev-live-e2e.env` · **tester merge(612)**) · P1(**live E2E run** G-NURSING·G14·G19·G30 harness `41d8de5`/`8cb8789`/`73df04d`/`73094f9`·**G19 provider discovery FE wire P1**·**G41b `LIVE_E2E` manual verify P2**·G34/G34b/G42 **live API E2E run**·**8-12 print layout P2**·**J03 Solapi live P2**·**7-5 live PG P2**·G7 실파일·SMTP+FCMS·US-L01 live·**US-R03 P2**·v1.3 live E2E) · P2(**L02 v3.1 Must 5건**·**G39 guardian dispatch**·**G30 ±2개월 evidence window**·**monitoring 12지표**·21815 변경사유·G21 확정 lock·RFID split-view) · P3(**G-FAMILY-LEAVE evidence ✅**·**G18-SHORT-PILOT 연장**·G-LIVECHAT·G-CIST·**G-STAFF-MEETING**·K008~K014·G-HOMEPAGE·G-STAFF-WELFARE)
 - **선행**: v1.2 `merge_status: merged` · QA-B12·SEC-D14 Fixed(75차)
@@ -1649,8 +1649,8 @@ v3 — Extensions & market differentiation (P3)
 
 ## v3 — 확장 모듈 · **재무회계** · **시설급여** (결정 90)
 
-- **status**: in_progress
-- **merge_status**: ready — **★ 완료 기준 재확인(COD 2026-07-20T04:35Z)**: v3 in-scope merge-blocking **전부 `[x]`** · develop **`@37e6742`**(SEC-D46 IP/localhost fail-closed · ahead test 1 · WT CLEAN) · **SEC-D46 BE 8-축**(scheme·malformed·userinfo·host allowlist·canonicalize·health·non-default port·**IP/localhost**) · SEC-D44/D37/D33/D34/D41/D25 carry · `merge_status: ready` **유지** · operation BLOCK=QA-B116(origin/test)+QA-B95 · cross-stream FE **QA-B652** 선행
+- **status**: done
+- **merge_status**: merged — **★ 완료 기준 재확인(COD 2026-07-20T04:35Z)**: v3 in-scope merge-blocking **전부 `[x]`** · develop **`@37e6742`**(SEC-D46 IP/localhost fail-closed · ahead test 1 · WT CLEAN) · **SEC-D46 BE 8-축**(scheme·malformed·userinfo·host allowlist·canonicalize·health·non-default port·**IP/localhost**) · SEC-D44/D37/D33/D34/D41/D25 carry · `merge_status: ready` **유지** · operation BLOCK=QA-B116(origin/test)+QA-B95 · cross-stream FE **QA-B652** 선행
 - **stream**: backend + frontend + DBA
 - **목표**: 식사·프로그램·직원 + ~~**재무회계(G4)** + **시설급여(G20)**~~ — **W5~8 (7/7~8/9)** · **★ 235차 스코프 재조정**: G4 재무회계·G20 시설급여를 **v3.1/v3+「가정」으로 공식 이월**(아래 완료 기준 참조) → v3 in-scope(식사·프로그램·직원·사진·SEC-D25/SEC-D34)만으로 완료 기준 충족.
 - **완성 목표**: **2026-08-09** (결정 91)

@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-10-07 — benchmark_researcher(BNK): BNK-941 엔젤·롱텀·규제 4-6h · ★★★ **현행 고시 제2026-189호(시행 2026-10-01) · 제2025-247호는 연혁** · ★★ **제34조 ②~⑤ 확인 · 현행 금액표 미확인** · ★★ **lcms 접속허용 V6** · ogada `@5cf667b`/`@1e8857b4` develop=test · merge gate **0**
+
+**근거**: [제2026-189호](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000285470) HTTP 200 · `72ce5c4e` · `nwYn=Y` · `efYd=20261001`. [제2025-247호](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)는 `nwYn` Y→N · 「행정규칙(연혁)」. [제34조 미러](https://govbrief.kr/scan/2100000285470/34/) ② 1일 1회·러-1~4의 50% · ③ 수급자 부담 없음 · ④ 이동서비스 일지. ①은 `<img id="169768531">`. 구 [lawImg](https://www.nhis.or.kr/lm/lmxsrv/law/lawImg.do?SEQ_HISTORY=611677&ID=153966057) `05030599` IDENTICAL(830/2,630/5,230/8,630)은 이력 표. [lcms](https://www.lcms.or.kr/) `b76e658c` IPERR 레이어. 엔젤 system_feature `c9507190`·extraService `f9c5d877`·daycareEssential `c79c1be3` BYTE-IDENTICAL. git FE `5cf667b` · BE `1e8857b4` · 양쪽 develop=test=origin · WT CLEAN.
+
+### 결정
+
+1. **★★★ 규제 앵커를 제2026-189호로 교체 (확인)** — 시행 2026-10-01 · `admRulSeq=2100000285470`이 현행이다. 제2025-247호(`2100000271110`)는 연혁이다. 제34조 ②~⑤ 문언이 공단 이력과 같다. **planner: REQUIREMENTS·ROADMAP의 고시 인용을 제2026-189호로 갱신. `ONE_WAY_RATIO`·1일 1회·일지·수급자 부담 없음 문구는 유지.**
+
+2. **★★ 현행 금액표는 미확인 — 시드 재조정 보류 (미확인)** — 2026-189 ①항 표는 이미지라 원 단위를 읽지 못했다. 구 GIF 830/2,630/5,230/8,630을 현행 수가로 확인 처리하지 않는다. **planner/coder: 현행 별표 이미지를 확보하기 전에 V103 시드를 바꾸지 않는다.**
+
+3. **★★ lcms 접속허용관리 V6는 갭이 아님 (확인)** — SMS 발신번호 팝업(`KMCNOK`)이 빠지고 IP 거부 시 `/cmm/selectIpAccessDeniedLoginPop.do` 레이어가 열린다. ogada 클라우드 RBAC과 다른 운영 모델이다. **제품 백로그에 넣지 않는다.**
+
+4. **★ CMS 라벨 5종·배차 0-hit·baseline sync (확인)** — extraService 단가 공개는 월 30,000·자동이체 250·가상계좌 300이고 라벨은 5개로 `CmsPaymentMethodCatalog`와 맞다. system_feature 배차 6용어 0. develop=test 이므로 merge gate **0**. `workspace_baseline.yaml`의 ahead 750은 stale.
+
+**가정 1**(정확히 10km의 구간 경계 · 격상 아님) · **신규 진성갭 0** · **미확인 2**(현행 금액표 · 공단 이사장 세부 지침) · 신규 snapshot 13 · per-cycle minimum 충족.
+
+---
+
+
 ## 2026-06-23 — benchmark_researcher(BNK): 560차 벤치마크 (BNK-560 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 340차 zero drift ↔ ogada `TransportServiceFeeService` full-stack ✅ parity/우위(PLAN_NOTES #44)** · ★★★ **longterm 502 canonical 본문 live 직접 수신(var s16 oscillation·단기보호 74,060 verbatim)** · ★★ **longterm 610 통합재가 가산 월 10만원 재실측** · ogada `@170ce56`/`@01edba7` WT CLEAN·HEAD zero advance·merge gate **732** carry)
 
 **근거**: live HTTP 200 = on-disk md5 대조 — [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f`(7,572B·340차 IDENTICAL)·[silverangel essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3`·[extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) `f9c5d877`·main `bcf6df41`·fee `eab352a8`·[lcms](https://www.lcms.or.kr/) `c0c66076`(type1)·[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `72148cfe`(105,561B)·[longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) `8d53dcc1`(91,430B)·[law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) `4339da94`·[MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) `3f2fc5ac`. ogada: FE `170ce56`·BE `01edba7` 양쪽 WT CLEAN·HEAD zero advance(=BNK-559).

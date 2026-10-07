@@ -1,15 +1,92 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-19T17:30:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T16:45:00Z -->
 # 보안 감사 보고서 (security/SECURITY_AUDIT.md)
 
 > **작성**: security_auditor (`SEC`)  
-> **감사일**: 2026-07-19 (33차 일일 재점검)  
-> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `6d3c766`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `6a9e85e`**, **WT CLEAN**), PostgreSQL  
-> **baseline**: workspace **git 실측** — backend develop **`6d3c766`**(+774 vs origin/test · 32차 `6329323` → 33차 **`6d3c766`** +10 commit·SEC-D34 excel amount normalize) · origin/test **`598d108`**(**774 unpushed**·불변) · frontend develop **`6a9e85e`**(+37 vs origin/test · 32차 `9f12482` → 33차 **`6a9e85e`** +18 commit·a11y `<time>`+date-range 폼검증) · origin/test **`b23711f`**(불변)  
-> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `b23711f`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **774+37 ahead**(SEC-D18 **비대칭**: BE +10 / FE +18 재적층·QA-B116 origin/test push carry)  
-> **local test**: backend **`6d3c766`**(develop==test·**SEC-D34 excel-amount normalize FF-merged**·TSR1884) — 검증 코드=develop 정합·origin push만 대기  
+> **감사일**: 2026-10-07 (34차 일일 재점검)  
+> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `1e8857b`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `5cf667b`**, **WT CLEAN**), PostgreSQL  
+> **baseline**: workspace **git 실측** — backend develop **`1e8857b`**(33차 `6d3c766` → **+23** · SEC-D33/D37/D41/D44/D46) · frontend develop **`5cf667b`**(33차 `6a9e85e` → **+31** · 동일 이슈 FE lockstep + a11y)  
+> **원격 test**: backend **`origin/test` `1e8857b`** · frontend **`origin/test` `5cf667b`** — develop·local test·origin/develop와 **동일**(SEC-D18 **Fixed** · 33차 774+37 unpushed 해소) · P0 포함 유지(SEC-D14)  
+> **local test**: backend **`1e8857b`** · frontend **`5cf667b`** — develop == local test == origin/test  
 > **워킹트리**: backend **CLEAN** · frontend **CLEAN**(SEC-D35 **Fixed 유지**)  
 > **기준**: OWASP Top 10 (2021), 개인정보보호법(PIPA), `docs/ops/DATA_RETENTION_POLICY.md`, `docs/technical/API_SPEC.md`  
 > **코드 변경**: 없음 (읽기 전용 점검)
+
+---
+
+## 1.36 일일 재점검 델타 (2026-10-07 34차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `1e8857b` · `git -C src/frontend rev-parse HEAD` → `5cf667b` · `git log 6d3c766..HEAD`(+23) / `git log 6a9e85e..HEAD`(+31) · `git status`(양 스트림 **WT CLEAN** · origin/develop·origin/test·local test **SYNCED**) · `npm audit --omit=dev`(**2 moderate**) · `npm audit`(**4 high + 5 moderate**) · `pom.xml`(poi **5.3.0** · Boot **3.3.1** 불변) · `FacilityNoticeSupport.attachmentUrlViolation` · `CsvFormulaEscaper` · `NotificationPayloadRedactor` · `SafetyCheckRecordService.resolveDateWindow` · `VisitBatchUnconfirmChallengeStore` · FE `LoginPage.redirectTo` / `ProtectedRoute`)를 33차 `6d3c766`/`6a9e85e` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 33차 develop | 34차 develop HEAD | origin/test | local test | WT |
+|--------|--------------|-------------------|--------------|------------|----|
+| backend | `6d3c766` | **`1e8857b`**(+23 · SEC-D33 CSV neutralize · SEC-D37/D45 payload redact · SEC-D41 date window · SEC-D44 6-digit · SEC-D46 attachment host guards) | **`1e8857b`**(★ SYNCED · 33차 `598d108` 774 unpushed **해소**) | **`1e8857b`** | **CLEAN** |
+| frontend | `6a9e85e` | **`5cf667b`**(+31 · SEC-D46 URL lockstep · SEC-D41/D44 폼 · a11y UXD-202~209) | **`5cf667b`**(★ SYNCED · 33차 `b23711f` 37 unpushed **해소**) | **`5cf667b`** | **CLEAN** |
+
+→ **판정**: `origin/test`가 develop과 일치(SEC-D14 P0 + 이후 하드닝 전부 원격 test에 포함). **SEC-D18 Fixed**. 델타 커밋의 JWT/`permitAll` 변경 없음(`@PreAuthorize` 기존 유지). FE 델타에 `dangerouslySetInnerHTML`/`eval`/`fetch(`/`localStorage` **0 hit**. **34차 신규 BLOCK급 0** · **QA Open [SEC] 0**. **신규 Open**: prod `react-router@6.30.4` moderate 2건(SEC-D47) · dev-only high 4건(SEC-D48).
+
+### (B) 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **SEC-D33 CSV formula neutralize** (`57523b5c`·`1ae9c501`) | **Mitigated** | `CsvFormulaEscaper`가 `=`/`@`/tab/CR 및 비숫자 `+`/`-`에 `'` prefix 후 CSV quote. 명세·NTS 의료비공제·직원현황 export 3표면 공통. 순수 숫자 금액(`-90000.00`)은 숫자 열 유지. **잔여**: 선행 공백·LF는 prefix 판정 전에 trim하지 않음(Low) |
+| **SEC-D37·D45 payload redact** (`db1ff724`·`b863930c`) | **Mitigated** | dispatch `finalizeNotification`에서 `accessKey`·`netPay`/`paymentTotal`/`deductionTotal`를 중첩 객체 포함 `***`로 치환 후 저장. **잔여**: PENDING 저장~finalize 사이 평문 · JSON 파싱 실패 시 fail-open(원문 유지) · 템플릿 코드가 아니면 미적용 |
+| **SEC-D41 Safety GET window** (`39b7c54d`·FE `1841144`) | **Mitigated** | 기간 생략 시 최근 30일 · 역전 거부 · 최대 366일 · `PageRequest` size **200**. 무제한 목록 해소. SEC-D42(payload PII 평문)는 별개 carry |
+| **SEC-D44 6-digit challenge** (`48e70207`·FE `3aaccd7`) | **Mitigated** | `SecureRandom` `100000..999999` · actor+org+branch+yearMonth · TTL 10분 · 1회 소모. **잔여**: 오답 시 무효화/throttle 없음 · 프로세스 메모리(다중 인스턴스 미공유) |
+| **SEC-D46 attachment URL** (`5cb8bf0f`~`1e8857b`·FE lockstep) | **Mitigated** | http(s) 대소문자 허용 · 기본 포트만 · userInfo 거부 · IP/localhost/난독화 IP/hosts alias/특수 suffix 거부 · `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 비어 있으면 공개 DNS 호스트는 허용(health blocker id만). FE는 불안전 URL을 `<a href>`로 열지 않고 `rel="noopener noreferrer"`. **잔여**: allowlist 미설정 시 공개 호스트 피싱(Monitor) |
+| **FE a11y UXD-202~209** | **Pass** | 날짜 `<time>`·필드 오류 라우팅. 신규 outbound fetch/XSS/storage 없음 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **34차 신규 BLOCK급 audit Open 0건** | — | — | 하드닝은 Mitigated · **QA Open [SEC] 0** |
+| **SEC-D47** | `react-router@6.30.4` (lock) prod moderate | **Moderate** | **Open** | `npm audit --omit=dev` **2 moderate**. (1) **CVE-2026-53669** / GHSA-wrjc-x8rr-h8h6 — `Link`/`useNavigate` 경로의 외부 이동. 패치 **≥7.18.0**(6.x 백포트 없음). 앱 싱크: `ProtectedRoute`가 `state.from`에 location을 넣고 `LoginPage.redirectTo`가 `pathname`을 `navigate`에 전달. (2) GHSA-337j-9hxr-rhxg — SSR `deserializeErrors` 생성자 주입. Vite SPA라 런타임 해당 낮음. 동일 패키지 업그레이드로 둘 다 해소 |
+| **SEC-D48** | npm audit dev-only | **High(dev)** | **Open** | dev 포함 **4 high + 3 moderate**(prod 2 moderate 제외): browserslist(GHSA-c83g-rgw3-j3cx·GHSA-73wf-gq98-2v4g) · nanoid(GHSA-28wg-ghj8-5hjv·GHSA-2v37-7h3g-55p8) · postcss(GHSA-fxqj-rqcc-2cmp·GHSA-r28c-9q8g-f849) · source-map-js(GHSA-68fv-2mgg-jv7q) · vitest/@vitest/mocker · baseline-browser-mapping. 빌드 체인. 런타임 번들 아님 |
+| SEC-D33 | CSV formula | Low | **Mitigated** | `CsvFormulaEscaper` 3표면. 잔여: 선행 공백/LF |
+| SEC-D37 | access key payload at-rest | Low | **Mitigated** | finalize redact. 잔여: PENDING 구간·parse fail-open |
+| SEC-D45 | payroll payload 평문 | Low | **Mitigated** | 동일 redactor. SEC-D37 잔여와 동일 |
+| SEC-D41 | Safety GET 무제한 | Low~Medium | **Mitigated** | 30일 기본·366일·200건 |
+| SEC-D44 | batch-unconfirm 4-digit | Low | **Mitigated** | 6-digit 착지. 잔여: fail throttle 없음 |
+| SEC-D46 | attachment host allowlist | Low | **Mitigated** | 구조 가드+선택 allowlist. 잔여: env 미설정 시 공개 호스트 |
+| SEC-D18 | origin/test push | Low | **Fixed** | 양 스트림 0 ahead |
+| SEC-D4 | poi-ooxml 5.3.0 | **Medium** | **Open** | CVE-2025-31672 · pom `<version>5.3.0</version>` 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | pom `<version>3.3.1</version>` 불변 |
+| SEC-D26 | form-data dev | High(dev) | **Fixed 유지** | 해당 GHSA는 audit에 없음. 신규 dev 고위험은 SEC-D48 |
+| SEC-008 | npm audit prod 0 | — | **회귀** | 33차 prod 0 → 34차 prod **2 moderate**(SEC-D47) |
+| SEC-D25·D42·D32·D40·D43 | carry | Low~Medium | **Open(Monitor)/Mitigated** | 이번 델타에서 코드 변화 없음 |
+
+### (D) 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 34차 재확인 |
+|------|-------------|
+| SEC-D14 origin/test P0 | **Fixed 유지** — origin/test == develop `1e8857b`/`5cf667b` |
+| SEC-D17 raw fetch | **Fixed 유지** — FE 델타 raw `fetch` 0 |
+| SEC-D19 error handler | **Fixed 유지** — 첨부 URL 거부는 고정 한국어 카피 |
+| SEC-D24 SecurityConfig | **Fixed 유지** — 델타에 `permitAll` 추가 없음 |
+| SEC-D34 excel import | **Mitigated 유지** — 이번 델타에서 파서 가드 변경 없음 |
+| SEC-D35 WT | **Fixed 유지** — 양 스트림 CLEAN |
+| JWT/RBAC | **회귀 없음** — 공지·방문 배치·안전점검 기존 `@PreAuthorize` 유지 |
+
+### (E) 우선순위 (34차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 엑셀 파서 잔여 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | SEC-D47 | prod react-router 6.30.4 → **7.18.0+**(메이저). 로그인 복귀 `navigate(pathname)` 싱크 |
+| 4 | SEC-D48 | dev high 4건 — CI `npm audit fix`는 빌드 도구 한정. 런타임 차단 아님 |
+| 5 | SEC-D46 잔여 | prod에 `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 설정(미설정은 health blocker만) |
+| 6 | SEC-D25 | 첨부 image decode·AV·zip-bomb |
+| — | SEC-D18 | **Fixed** — 우선순위 제거 |
+| — | SEC-D33·D37·D41·D44·D45 | **Mitigated** — 잔여만 Monitor |
+
+### coder / planner 조치
+
+- **COD**: poi-ooxml **5.4.0+**, Spring Boot 패치 라인, `react-router`/`react-router-dom` **7.18.0+** 업그레이드 계획(6.x에는 CVE-2026-53669 수정 없음). prod env `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 설정. dev 의존성은 `npm audit fix`로 빌드 체인만 갱신.
+- **PLN**: SEC-D47은 Moderate·사용자 클릭/로그인 필요 — QA Open BLOCK으로 올리지 않음. 배포 게이트 E-4는 prod moderate 알림으로 되돌림.
+- **TSR**: 업그레이드 후 로그인 복귀 경로·공지 첨부 링크·CSV 금액 열(음수 유지) 회귀.
 
 ---
 

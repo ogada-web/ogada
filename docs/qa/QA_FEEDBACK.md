@@ -16021,6 +16021,17 @@ _(TSR 529차 2026-06-13T07:25 UTC — frontend Open **0건**. QA-B68 Fixed @ `db
 
 ## Planned
 
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-10-07T17:21:35Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 2
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] created /home/ubuntu/ogada/scripts/dev-live-e2e.env from example [setup-dev-live-e2e-env] edit LIVE_E2E_* values as needed (file is gitignored) [live-e2e] fatal: API가 응답하지 않습니다 — http://127.0.0.1:8080 [live-e2e] hint: backend 기동 후 다시 실행 (docs/ops/DEPLOYMENT_GUIDE.md §3-4)`
+- **scope**: operation
+- **status**: Planned / operation BLOCK — 서버 미기동 확인. 사용자가 선택한 로컬 개발 루프는 AGENT_SKIP_LIVE_E2E=1로 분리하며, API·DB 기동 뒤 재검증해야 한다. 로컬 QA는 backend 2479/2479, frontend 2865/2865 PASS.
+
+
 _(**PLN 232차 sync** — Open **0**(QA-B612 → Planned) · Planned residual **QA-B612**(BE develop→test FF 이관·pending 1·HIGH/BLOCK·COD/tester FF·제품 무변경 `UNREADABLE_EXCEL_MESSAGE` 상수화 refactor·기능 갭 아님) + **QA-B116**(origin/test push **756 BE**) + **QA-B95**(operation 승격·B604~B611 Fixed carry) · baseline BE develop `@2ad9b05`(refactor UNREADABLE 상수·5-parser+4-service)/test `@913b9d2`(2391/2391 PASS·pending 1·tester FF 대기)·FE develop `@0d37788`(MAX_TRANSPORT_ROUTE_STOPS)/test `@f72af3f`(pending 1·tester FF 대기) · BNK-858~864 기획 반영 · **★★★ SEC-D34 계보 축 「o」 = FE↔BE 2-layer UNREADABLE/MISSING 상수화 DRY 완결** · **★★★ 이지케어 FAQ 엑셀 rowid 7종 verbatim = 브라우저 troubleshooting+워크플로만·파일 무결성 verbatim 0**(BNK-864) · **★★ id=2 이동서비스 회차/정차 상한 FE 검증+상수화**(BNK-863/864·BE lockstep) · **★★ NHIS #44 590차** · **★★ audit-first HTTP 442 25차 byte-exact** · git 실측: BE develop `2ad9b05`·FE develop `0d37788` · cross-stream **BLOCK**(BE pending 1 + FE pending 1) · 최종 갱신: PLN 232차 2026-07-18T10:23:00Z)_
 
 ### [PLN] v3/SEC-D34 BE develop 미이관(test..develop) — unreadable-excel copy 상수화 후속 (`2ad9b05`, QA-20260718-B612)

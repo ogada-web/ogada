@@ -109,7 +109,7 @@ SDK가 `finished`를 반환해도 QA가 `BLOCK`이면 파이프라인을 중단�
 .venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
 ```
 
-2026-10-07 로컬 검증: 위 회귀 테스트 33개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 Grok 코더가 backend `4aad7cc2`·frontend `29c2304` 로컬 커밋을 생성했으며, 두 test worktree에 이관했다. 새 backend HEAD 전체 테스트 **2,479/2,479 PASS**(412 suites), 로컬 QA PASS를 확인했다. 계정 모델 목록과 도구 없는 실제 진단에서 `grok-4.7`의 `status=finished`를 확인했다. 외부 API/DB 연결과 operation 승격은 별도 BLOCK 게이트다.
+2026-10-07 로컬 검증: 위 회귀 테스트 33개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 Grok 코더가 backend `4aad7cc2`·frontend `29c2304` 로컬 커밋을 생성했으며, 두 test worktree에 이관했다. 새 backend HEAD 전체 테스트 **2,479/2,479 PASS**(412 suites), frontend **2,865/2,865 PASS**(493 files, 843초)와 빌드 성공을 확인했다. 양쪽 최신 매니페스트의 로컬 QA PASS·실제 HEAD 일치를 대조했다. 계정 모델 목록과 도구 없는 실제 진단에서 `grok-4.7`의 `status=finished`를 확인했다. 초기 전체 프로파일의 live E2E는 API 미기동으로 exit 2를 반환했고 파이프라인은 정상 중단했다. 이후 선택된 로컬 프로파일로 완료 상태를 확인했다. 외부 API/DB 연결과 operation 승격은 별도 BLOCK 게이트다.
 
 ### 기존 공통 설정
 
