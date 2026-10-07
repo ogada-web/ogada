@@ -12,6 +12,7 @@ _agent_common_init() {
   _AGENT_ROOT="$(cd "$_AGENT_SCRIPT_DIR/.." && pwd)"
   _AGENT_VENV="$_AGENT_ROOT/.venv/bin/activate"
   _AGENT_PYTHON="$_AGENT_ROOT/.venv/bin/python"
+  export GIT_TERMINAL_PROMPT=0
 
   _AGENT_SESSION="${AGENT_TMUX_SESSION:-ogada-agent}"
   _AGENT_PIPELINE_SESSION="${AGENT_PIPELINE_SESSION:-ogada-pipeline}"
@@ -191,8 +192,11 @@ agent_start_tmux_session() {
     return 0
   fi
   local cmd=". '$_AGENT_VENV' && cd '$_AGENT_ROOT' && $*"
+  local log_dir="$_AGENT_ROOT/.agents/logs"
+  mkdir -p "$log_dir"
   echo "[start] $name → $*"
   tmux new-session -d -s "$name" "$cmd"
+  tmux pipe-pane -o -t "$name" "cat >> '$log_dir/$name.log'"
 }
 
 agent_require_tmux() {

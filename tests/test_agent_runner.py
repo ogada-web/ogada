@@ -92,8 +92,26 @@ class BuildTests(unittest.TestCase):
                 runner.push_submodule_develop("coder", "backend")
         self.assertEqual(caught.exception.code, 1)
 
+    def test_local_commit_mode_does_not_contact_git_remote(self):
+        with patch.dict(os.environ, {"AGENT_AUTO_PUSH": "0"}), \
+             patch.multiple(runner, _git_repo_ready=MagicMock(return_value=True),
+                            _git_current_branch=MagicMock(return_value="develop"),
+                            _git_status_porcelain=MagicMock(return_value="")), \
+             patch.object(runner, "_git_commits_ahead") as ahead, \
+             patch.object(runner.subprocess, "run") as git, contextlib.redirect_stdout(io.StringIO()):
+            runner.push_submodule_develop("coder", "backend")
+        ahead.assert_not_called()
+        git.assert_not_called()
+
 
 class ModelTests(unittest.TestCase):
+    def test_baseline_ahead_does_not_fetch_or_request_credentials(self):
+        with patch.object(runner, "_git_repo_ready", return_value=True), \
+             patch.object(runner.subprocess, "run", return_value=SimpleNamespace(stdout="0")) as git:
+            self.assertEqual(runner._git_commits_ahead(ROOT / "src/backend", "develop"), 0)
+        self.assertEqual(git.call_count, 1)
+        self.assertEqual(git.call_args.args[0][:3], ["git", "rev-list", "--count"])
+
     def test_explicit_model_has_no_other_provider_fallback(self):
         with patch.object(runner, "ENV_MODEL", " grok-test "):
             for role in runner.ALL_BUILD_ROLES:

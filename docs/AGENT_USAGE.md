@@ -68,6 +68,8 @@ Git, tmux, Node/npm, **JDK 17 이상(java·javac)**, Maven이 필요하다. 이 
 
 `AGENT_MODEL`을 지정하면 모든 역할은 그 모델만 사용한다. 실패 시 다른 제공자의 모델로 전환하지 않는다. 미지정이면 기존 역할별 모델 체인을 유지한다.
 
+`AGENT_AUTO_PUSH=0`이면 정상 종료 후 develop의 로컬 커밋만 보존한다. 기본값 `1`은 기존 원격 push 정책이다. 이 작업 공간은 GitHub 인증이 없어 `0`으로 설정했다. 원격 push를 사용하려면 GitHub 인증을 준비하고 `1`로 변경한다. baseline 조회는 로컬 origin ref를 사용하며 인증 입력을 요구하지 않는다. 실제 push의 인증 실패는 대기 없이 오류로 처리한다.
+
 ```bash
 # 새 설치에서만: develop/test 브랜치와 test worktree를 준비한다.
 # 기존 로컬 develop 커밋이 있다면 자동 동기화 스크립트 실행 전 브랜치를 확인한다.
@@ -95,13 +97,13 @@ npm ci --prefix src/frontend-test
 
 `agent_team_start.sh --no-loop`와 Grok 시작 명령의 `--no-loop`는 파이프라인뿐 아니라 보안·벤치마크·문서 역할에도 적용된다. 팀 실행은 기존 정책에 따라 애플리케이션 코드·문서를 수정하고 develop을 자동 push할 수 있으며, 완료 버전은 tester가 test로 이관한다.
 
-루프 제어 회귀 테스트는 API 호출·실제 Git push·실제 에이전트 실행 없이 수행한다.
+실행 중 출력은 Git에서 제외된 `.agents/logs/<tmux-session>.log`에 보존한다. 루프 제어 회귀 테스트는 API 호출·실제 Git push·실제 에이전트 실행 없이 수행한다.
 
 ```bash
 .venv/bin/python -m unittest discover -s tests -p 'test_agent_*.py' -v
 ```
 
-2026-10-07 로컬 검증: 위 회귀 테스트 21개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 로컬 `.env`에 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
+2026-10-07 로컬 검증: 위 회귀 테스트 23개 통과, 키를 포함한 preflight 통과, SDK 브리지 기동·종료 확인, 프론트·백엔드 package 빌드 성공. 실제 프론트 API 테스트 12개와 백엔드 FacilityNoticeSupport 테스트 11개 통과. 계정 모델 목록에서 `grok-4.7`을 확인하고 도구 없는 실제 진단에서 `status=finished`를 확인했다. `.env`에 Grok 4.7을 설정했다. 전체 애플리케이션 테스트와 외부 API/DB 연결은 별도 검증 대상이다.
 
 ### 기존 공통 설정
 

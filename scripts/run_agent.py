@@ -549,19 +549,9 @@ def _git_status_porcelain(cwd: Path) -> str:
 
 
 def _git_commits_ahead(cwd: Path, branch: str, remote: str = "origin") -> int:
-    """로컬 branch 가 remote/{branch} 보다 앞선 커밋 수."""
+    """로컬 origin ref 기준 커밋 수. baseline 조회 중 네트워크 인증을 요구하지 않는다."""
     if not _git_repo_ready(cwd):
         return 0
-    try:
-        subprocess.run(
-            ["git", "fetch", remote, branch],
-            cwd=cwd,
-            capture_output=True,
-            text=True,
-            timeout=120,
-        )
-    except Exception:
-        pass
     try:
         r = subprocess.run(
             ["git", "rev-list", "--count", f"{remote}/{branch}..{branch}"],
@@ -755,9 +745,13 @@ def push_submodule_develop(role: str, stream: str) -> None:
         )
         raise SystemExit(1)
 
+    if os.environ.get("AGENT_AUTO_PUSH", "1").strip().lower() in ("0", "false", "no"):
+        print(f"[push-disabled] {repo.name}@{branch} 로컬 커밋만 보존")
+        return
+
     ahead = _git_commits_ahead(repo, branch)
     if ahead <= 0:
-        print(f"[push-ok] {repo.name}@{branch} origin 과 동기화됨 (push 불필요)")
+        print(f"[push-ok] {repo.name}@{branch} 로컬 origin ref보다 앞선 커밋 없음 (push 생략)")
         return
 
     try:
@@ -768,6 +762,7 @@ def push_submodule_develop(role: str, stream: str) -> None:
             capture_output=True,
             text=True,
             timeout=180,
+            env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
         )
         print(f"[push-ok] {repo.name} → origin/{branch} ({ahead} commit(s))")
     except subprocess.CalledProcessError as err:
@@ -3716,6 +3711,7 @@ def cmd_status(_: argparse.Namespace) -> None:
     print(f"approved  : {'YES' if approval_present() else 'NO (build 차단됨)'}")
     print(f"env model : {ENV_MODEL or '(unset)'}")
     print(f"api key   : {'CONFIGURED' if os.environ.get('CURSOR_API_KEY', '').strip() else 'MISSING'}")
+    print(f"auto push : {os.environ.get('AGENT_AUTO_PUSH', '1')}")
     print(f"planner              : {resolve_model_chain('planner')}")
     print(f"tester               : {resolve_model_chain('tester')}")
     print(f"benchmark_researcher : {resolve_model_chain('benchmark_researcher')}")
@@ -4135,7 +4131,7 @@ def cmd_build(args: argparse.Namespace) -> None:
             print(f"[다음 단계] role={role}")
             if role == "coder":
                 sub = submodule_dir_for_stream(stream)
-                print(f"  - git -C {sub} status · develop 커밋 후 push (자동 push 시도 완료)")
+                print(f"  - git -C {sub} status · develop 커밋 확인 (push는 AGENT_AUTO_PUSH 설정에 따름)")
             elif role == "tester":
                 wt = worktree_dir_for_stream(stream, "test")
                 print(f"  - {wt.relative_to(WORKSPACE_ROOT)} (test worktree) · transfer/{stream}/ 확인")

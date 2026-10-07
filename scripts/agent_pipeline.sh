@@ -20,6 +20,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PYTHON="$ROOT/.venv/bin/python"
 export PATH="$ROOT/.venv/bin:$PATH"
+export GIT_TERMINAL_PROMPT=0
 
 INTERVAL="${AGENT_INTERVAL_SECONDS:-180}"
 FULL_EVERY="${AGENT_PIPELINE_FULL_EVERY:-6}"
