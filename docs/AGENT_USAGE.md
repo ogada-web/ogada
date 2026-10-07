@@ -70,6 +70,8 @@ Git, tmux, Node/npm, **JDK 17 이상(java·javac)**, Maven이 필요하다. 이 
 
 `AGENT_AUTO_PUSH=0`이면 정상 종료 후 develop의 로컬 커밋만 보존한다. 기본값 `1`은 기존 원격 push 정책이다. 이 작업 공간은 GitHub 인증이 없어 `0`으로 설정했다. 원격 push를 사용하려면 GitHub 인증을 준비하고 `1`로 변경한다. baseline 조회는 로컬 origin ref를 사용하며 인증 입력을 요구하지 않는다. 실제 push의 인증 실패는 대기 없이 오류로 처리한다.
 
+이 작업 공간은 API·DB 서버가 기동되어 있지 않아 로컬 개발 루프에 `AGENT_SKIP_LIVE_E2E=1`을 설정했다. 빌드·단위 테스트·현재 HEAD의 QA PASS를 검증하며, 실백엔드 E2E와 operation 승격은 별도 BLOCK 게이트로 남긴다. API·DB가 준비되면 `0`으로 변경하고 `./scripts/run-live-e2e.sh`를 통과해야 한다. 로컬 루프 성공을 운영 배포 준비 완료로 해석하지 않는다.
+
 ```bash
 # 새 설치에서만: develop/test 브랜치와 test worktree를 준비한다.
 # 기존 로컬 develop 커밋이 있다면 자동 동기화 스크립트 실행 전 브랜치를 확인한다.
