@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T09:33:06Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T10:40:17Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -151,6 +151,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 공단 2026 수가 시드 (Q967, G9) | `GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=2026` (`hq_admin`, 그 해 수가 행이 없을 때) · UI `/billing/fee-schedules` 보기 연도 2026 | **30건** · 1등급 `H3_6` **`dailyRate` 41820** · 인지지원(`ltcGrade` 0) `H10_13`·`H13_PLUS` **56360** · 5등급 `H10_13` **62460** · `effectiveFrom` **2026-01-01** · 이미 있는 칸은 목록에서 빠짐 · `year=2027` **422** · `branch_admin` **403** · 화면 버튼 건수는 **빈 칸 수** · 30칸이 차면 버튼 **숨김** · 응답에 단기보호 **74060** 행 **없음** · 직원은 **13시간 정각을 `H10_13`** 으로 둠 |
 | 급여계획서 저장 (Q970, G14) | `PUT /api/v1/clients/{clientId}/care-plan-forms` body 에 `clientNameSnapshot` 생략 · `notifiedAt` 포함 후 같은 연도로 다시 `PUT` (`branch_admin`/`social_worker`) · UI `/clients/:clientId/care-plan-form` | **200** · 이름 생략 시 응답 이름은 **이용자 이름** · 두 번째 `PUT` 도 **200** 이고 같은 연도 행을 **덮어씀** · `hq_admin`·`caregiver` 의 PUT 은 **403** · 지점 `/dashboard` 에 **급여 5개월 경과·급여 11개월 경과·이용계획서 재발급 미반영** · `/dashboard/hq` 카드 13개에는 이 셋 **없음** |
 | CMS 건당 수수료 (Q971, G2b) | `GET /api/v1/billing/cms/payment-method-catalog` (`hq_admin`/`branch_admin`) · UI `/billing/cms` | **200** · `totalCount` **5** · `collectionImplementedCount` **5** · `AUTO_DEBIT_CMS` `feeLabel` **250원/1건** · `VIRTUAL_ACCOUNT` **300원/1건** · `CARD`·`MULTI_ACCOUNT_SETTLEMENT`·`CASH_RECEIPT` 의 `feeLabel` **null** · 응답에 **30000**·월사용료 **없음** · `social_worker` **403** |
+| 인지지원 단기보호·제38조 (Q972, G9) | `GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=2026` (`hq_admin`) · UI `/billing/fee-schedules` | **30건**은 주야간 1일만 · 응답에 **74060**·**100000**·**50000** 단기보호 행 **없음** · 일반 단기보호는 1~5등급 · 인지지원은 **가족휴가 60000** 만 · 12시간 50%·91일 감산 시드 **없음** |
+| 급여대장 시급 칸 (Q973, M11) | `POST /api/v1/staff/payroll/ledger-preview` body `userId`·`yearMonth`·`basePay`·`allowances`·`deductions` (`hq_admin`/`branch_admin`/`social_worker`) · UI `/payroll/ledger` · `/billing/fee-schedules` 접힌 차이 목록 | **200** 미리보기 · 본문에 포괄시급·가족 시급 필드 **없음** · 저장 API **없음** · 「가족케어 90%」는 화면 문장 · 청구 `generate` 가 90%를 곱하지 **않음** |
 | 이동서비스비 거리 정각 (Q969, G16) | 초안 `POST /api/v1/transport/service-fees/generate` body 기간만 · 작성중 행에 `PATCH /api/v1/transport/service-fees/{recordId}` body `{"distanceKm":5}` (구간 생략) · 이어서 `{"distanceKm":5,"distanceBand":"RU_2"}` · UI `/transport/service-fees` | 생성 초안 **`distanceBand=RU_1`** · 킬로미터만 **5** 이면 **`RU_1`** · **10** 이면 **`RU_2`** · **20** 이면 **`RU_3`** · 구간을 같이 보내면 **`RU_2`가 우선** · 화면 생성 본문에는 킬로미터 **없음** · 직원이 고시대로 고르면 5.0은 **RU_2** |
 | 통합 간호 리포트 번호 (Q968, L02_M14) | `GET /api/v1/care/reports/nursing-service?fromDate=2026-10-01&toDate=2026-10-08` (`hq_admin`/`branch_admin`/`social_worker`) · UI `/care/reports/nursing-service` | **200** · 사이드 메뉴 라벨에 **2-11 없음** · 집계 카드 제목만 **「2-11.통합 간호제공 리포트」** · 병의원 카드 **2-12** · 투약 카드 **2-13** · `/nursing/service/reports/total` 제목은 **L03_M07**(2-11 없음) · `caregiver` **403** |
 | 이동서비스비 거리 구간 (Q960, G16) | `GET /api/v1/transport/service-fee-rates` (직원 JWT) | **200** · `items[]` 에 **RU_1 830 · RU_2 2630 · RU_3 5230 · RU_4 8630** · 화면 `/transport/service-fees` 와 동일 · **V103** 적용 후 러-3 4,430·러-4 6,230이 남아 있으면 마이그레이션 미적용 · 특장차량 월 170,000 행은 **없음** |
@@ -2290,6 +2292,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q972·Q973 신설** — §1-4 스모크 **인지지원 단기보호는 가족휴가 60,000원** · 시드 응답에 74060·100000 없음 · **급여대장 미리보기는 기본급** · 가족케어 90%는 청구 계산이 아님 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q970·Q971 신설** — §1-4 스모크 **급여계획서는 통보 뒤에도 같은 해를 덮어씀** · 이름 생략 시 이용자 이름 · **CMS 카탈로그는 건당 250·300원** · 월 3만 원 행 없음 · 수납 5/5 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q969 신설 · Q967 보강** — §1-4 스모크 **이동서비스비 5·10·20km 정각**은 화면에서 위 구간 · 킬로미터만 보내면 한 단계 아래 · **13시간 정각은 `H10_13`** · 단기보호 74,060은 시드 응답에 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q968 신설** — §1-4 스모크 **통합 간호 리포트의 2-11은 화면 카드 문구** · 시설 요양 메뉴는 2-10까지 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
