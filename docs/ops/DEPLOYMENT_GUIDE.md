@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T07:20:11Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T08:24:59Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구)
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -148,7 +148,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 5-9 그룹 이력 집계 (Q963, US-P01) | `GET /api/v1/programs/reports/group-history?fromDate=2026-10-01&toDate=2026-10-08` (직원 JWT, 활성 지점) · UI `/programs/reports/group-history` | **200** · 배정 시작 ≤ `toDate` 이고 종료가 없거나 종료 ≥ `fromDate` 인 행만 · 같은 그룹·같은 시작·같은 종료는 **한 줄** `clientCount` · 응답에 이용자 이름 **없음** · 화면 열 **그룹명·적용 시작·적용 종료·수급자 수** · 기간이 다른 같은 그룹은 API 행이 나뉘어도 화면 행 키는 `groupId` · 이름은 `GET …/programs/groups/{groupId}/members` · `caregiver` **403** |
 | 프로그램 리포트 5-8·5-10 (Q965, US-P02) | `GET /api/v1/programs/reports/provision-records?fromDate=2026-10-01&toDate=2026-10-08` · `GET …/schedules?fromDate=2026-10-01&toDate=2026-10-08` (직원 JWT, 활성 지점) · UI `/programs/reports/provision-records` · `/programs/reports/schedules` | **200** · 5-8 `items[]` 는 **참여가 있는** 프로그램·날짜만 · 5-10 `items[]` 는 **기간 내 일정**이고 참여가 없어도 `attendedCount=0` · 카탈로그 `POST /programs/catalog` 만으로는 두 목록이 **늘지 않음** · 5-7만 이용자 이름 · `caregiver` **403** |
 | 방문 일정 서비스 시간 (Q966, G21) | `POST /api/v1/visits` body `serviceMinutes: 300` (`branch_admin`/`social_worker`, 방문요양 지점) · UI `/visits` 「서비스 시간(분)」 | **200** · 저장 분은 **300** (240으로 줄거나 일정이 둘로 나뉘지 않음) · JSON **481** 은 **400** 요청 검증 · 화면은 저장 전 「서비스 시간은 1~480분 사이여야 합니다.」 · 공단 import 범위 밖 행은 **건너뜀** 「서비스 제공 시간은 1분 이상 480분 이하여야 합니다.」 · 확정 행에 범위 안 분을 `PATCH` 하면 **422** 「확정된 방문일정은 수정할 수 없습니다.」 · 목록에 **수정 버튼 없음** · `hq_admin`·`caregiver` 의 POST/PATCH 는 **403** |
-| 공단 2026 수가 시드 (Q967, G9) | `GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=2026` (`hq_admin`, 그 해 수가 행이 없을 때) · UI `/billing/fee-schedules` 보기 연도 2026 | **30건** · 1등급 `H3_6` **`dailyRate` 41820** · 인지지원(`ltcGrade` 0) `H10_13`·`H13_PLUS` **56360** · 5등급 `H10_13` **62460** · `effectiveFrom` **2026-01-01** · 이미 있는 칸은 목록에서 빠짐 · `year=2027` **422** · `branch_admin` **403** · 화면 버튼 건수는 **빈 칸 수** · 30칸이 차면 버튼 **숨김** |
+| 공단 2026 수가 시드 (Q967, G9) | `GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=2026` (`hq_admin`, 그 해 수가 행이 없을 때) · UI `/billing/fee-schedules` 보기 연도 2026 | **30건** · 1등급 `H3_6` **`dailyRate` 41820** · 인지지원(`ltcGrade` 0) `H10_13`·`H13_PLUS` **56360** · 5등급 `H10_13` **62460** · `effectiveFrom` **2026-01-01** · 이미 있는 칸은 목록에서 빠짐 · `year=2027` **422** · `branch_admin` **403** · 화면 버튼 건수는 **빈 칸 수** · 30칸이 차면 버튼 **숨김** · 응답에 단기보호 **74060** 행 **없음** · 직원은 **13시간 정각을 `H10_13`** 으로 둠 |
+| 이동서비스비 거리 정각 (Q969, G16) | 초안 `POST /api/v1/transport/service-fees/generate` body 기간만 · 작성중 행에 `PATCH /api/v1/transport/service-fees/{recordId}` body `{"distanceKm":5}` (구간 생략) · 이어서 `{"distanceKm":5,"distanceBand":"RU_2"}` · UI `/transport/service-fees` | 생성 초안 **`distanceBand=RU_1`** · 킬로미터만 **5** 이면 **`RU_1`** · **10** 이면 **`RU_2`** · **20** 이면 **`RU_3`** · 구간을 같이 보내면 **`RU_2`가 우선** · 화면 생성 본문에는 킬로미터 **없음** · 직원이 고시대로 고르면 5.0은 **RU_2** |
 | 통합 간호 리포트 번호 (Q968, L02_M14) | `GET /api/v1/care/reports/nursing-service?fromDate=2026-10-01&toDate=2026-10-08` (`hq_admin`/`branch_admin`/`social_worker`) · UI `/care/reports/nursing-service` | **200** · 사이드 메뉴 라벨에 **2-11 없음** · 집계 카드 제목만 **「2-11.통합 간호제공 리포트」** · 병의원 카드 **2-12** · 투약 카드 **2-13** · `/nursing/service/reports/total` 제목은 **L03_M07**(2-11 없음) · `caregiver` **403** |
 | 이동서비스비 거리 구간 (Q960, G16) | `GET /api/v1/transport/service-fee-rates` (직원 JWT) | **200** · `items[]` 에 **RU_1 830 · RU_2 2630 · RU_3 5230 · RU_4 8630** · 화면 `/transport/service-fees` 와 동일 · **V103** 적용 후 러-3 4,430·러-4 6,230이 남아 있으면 마이그레이션 미적용 · 특장차량 월 170,000 행은 **없음** |
 | 이동서비스 일지 서식 번호 (Q961, G15) | UI `/transport/compliance` · `/transport/runs/:runId` · `GET /api/v1/transport/service-fee-parity-rules` 의 `SERVICE_LOG` | 화면·규칙 문구는 **「별지 제22호」** · 조문 ④는 **이동서비스 일지 작성·보관** · 같은 본문에 「별지」·제18·19·20·22호 **없음** · 저장은 `PUT /api/v1/transport/runs/{runId}/service-log` · 코드 변경 없음 |
@@ -2287,6 +2288,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q969 신설 · Q967 보강** — §1-4 스모크 **이동서비스비 5·10·20km 정각**은 화면에서 위 구간 · 킬로미터만 보내면 한 단계 아래 · **13시간 정각은 `H10_13`** · 단기보호 74,060은 시드 응답에 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q968 신설** — §1-4 스모크 **통합 간호 리포트의 2-11은 화면 카드 문구** · 시설 요양 메뉴는 2-10까지 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q967 신설** — §1-4 스모크 **공단 2026 수가 시드 30칸**(1등급 3~6시간 41,820원 · 인지지원 10~13시간·13시간 이상 56,360원 · 빈 칸만) · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q966 신설** — §1-4 스모크 **방문 일정 서비스 시간은 1~480분 그대로** · 확정 후 목록에서 수정 불가 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
