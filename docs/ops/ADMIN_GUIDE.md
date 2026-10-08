@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T06:30:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T07:20:11Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **통합 간호 리포트의 2-11** ✅ (**Q968**, L02_M14): 사이드 메뉴·페이지 제목에는 번호 없음 · 조회 안내·집계 카드·인쇄만 **2-11~2-13** · 시설 요양 메뉴는 **2-10까지** · 간호 모듈 `/nursing/service/reports/total` 제목은 **L03_M07** · `caregiver` 는 메뉴가 보여도 `GET /care/reports/nursing-*` **403**
 > - **공단 2026 주야간 1일 수가 시드** ✅ (**Q967**, G9): **빈 칸만** · 최대 **30칸**(1~5등급 25 + 인지지원 5) · 인지지원은 **8시간부터 56,360원** · 5등급 10~13시간은 **62,460원** · **`hq_admin`만** · `year=2027` **422** · 단기보호·치매전담실·목욕 주 1회 3,000원은 **이 시드에 없음** · 출석 시각으로 밴드를 고르는 계산 **없음**(비우면 `H10_13`)
 > - **방문 일정 서비스 시간·확정 후 수정** ✅ (**Q966**, G21): **`serviceMinutes` 1~480 그대로** · **270분→2회·240분 환산 없음** · 화면 목록 **수정 버튼 없음** · **`PATCH /visits/{id}` 는 `DRAFT` + `branch_admin`/`social_worker`만** · 그 외 「확정된 방문일정은 수정할 수 없습니다.」 · RFID 인정시간 차 **30분 이상**은 표시만
 > - **월별 청구 생성은 지점·달 1건** ✅ (**Q962**, US-M03): **`POST /billing/claims/generate`** 본문 `branchId`·`yearMonth` · 기존 청구가 있으면 **재계산 없이 그 청구 반환** · 줄 수정 API 없음 · 발행일 칸 없음 · 발송일 수정은 **우편만**
@@ -2167,7 +2168,7 @@ US-O03 **욕창 위험평가·체위변경 케어** 기록을 기간별 집계�
 
 ### 6-2-26. L02 care-scoped 간호 리포트 (L02_M14/M09/M10, BNK-273, BE·FE Fixed)
 
-L03 간호 집계 API를 **`/api/v1/care/reports/*`** proxy로 노출 — SideNav **기록** 그룹과 L02 RBAC 일관성.
+L03 간호 집계 API를 **`/api/v1/care/reports/*`** proxy로 노출 — SideNav **기록** 그룹과 L02 RBAC 일관성. 사이드 메뉴 라벨에는 **2-11이 없고**, 화면 카드 제목만 **「2-11.통합 간호제공 리포트」**입니다. 시설 요양 메뉴는 **2-10**에서 끝납니다 (FAQ **Q968**).
 
 | 항목 | 내용 |
 |------|------|
@@ -2179,7 +2180,7 @@ L03 간호 집계 API를 **`/api/v1/care/reports/*`** proxy로 노출 — SideNa
 | 레거시 | **`/nursing/service/reports/*`** · **`NursingServiceReportsPage`** — 간호 모듈 컨텍스트 유지 (Q350) · parity panel에서 상호 링크 |
 | 테스트 | **`CareReportServiceTest`** · **`CareReportLiveApiRoutingE2eTest`** · **`CareNursingReportsPilotServiceFlowE2eTest`** (`2ba2761`) · **`careNursingReportsLiveApi.e2e.test.js`** (`5533ef5`) · **`RoleBasedControllerAccessTest$CareReportAccess`** · FE **`CareNursingServiceReportPage.test`** · **`CareNursingParityPanel.test`** · **`careReportServices.test`** · **`pilotPageFlows.test`** (`6b34d31`) |
 
-> 현장: USER_MANUAL §5-36 · FAQ Q386·Q389~Q392·Q412 · REQUIREMENTS L02/L03 parity
+> 현장: USER_MANUAL §5-36 · FAQ **Q968**·Q386·Q389~Q392·Q412 · REQUIREMENTS L02/L03 parity
 
 ### 6-2-5. US-R03 직원 HR 파일함 (FAQ21806·FAQ21825, BNK-139, BE·FE Fixed)
 
@@ -4061,6 +4062,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q968 신설** — §1-4·§6-2-26 **통합 간호 리포트의 2-11은 화면 카드 문구** · 시설 요양 메뉴는 2-10까지 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q967 신설** — §1-4·§6-3-1 **공단 2026 수가 시드 30칸 금액** · 빈 칸만 · 인지지원 8시간부터 56,360원 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q966 신설** — §1-4·§10-12 **방문 일정 서비스 시간은 1~480분 그대로** · 270분 분할 없음 · 작성중만 PATCH · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q965 신설** — §1-4·§10-11-2 **프로그램 리포트 5-8은 참여가 있는 날만, 5-10은 일정만 있어도 표시** · 마스터 미사용 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |

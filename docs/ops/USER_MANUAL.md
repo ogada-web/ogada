@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T06:30:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T07:20:11Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · Flyway **V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · Flyway **V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -63,6 +63,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **프로그램 마스터 (v3.1 Must, Q964)** | 화면 없음 | `GET/POST /api/v1/programs/catalog` · `PATCH …/{catalogId}` | **활성 지점** · 이름 **120자** · 목표 **500자** · 유형 3종(비우면 `GENERAL`) · **행 삭제 없음** · **당일 일정과 별도** · **요양보호사 불가** |
 | **프로그램 수급자 그룹 (v3.1 Must, Q959·Q963)** | 화면 없음 · 결과만 **`/programs/reports/group-history`** | `GET/POST /api/v1/programs/groups` · `PATCH …/{groupId}` · `GET/POST …/{groupId}/members` · `GET …/reports/group-history` | **활성 지점** · 이름 **120자** · 5-9는 **겹치는 기간만** · 같은 시작·종료는 **한 줄·인원** · **이름 없음** · 기간이 여러 개면 표 한 줄만 믿지 말 것 · **요양보호사 불가** |
 | **프로그램 리포트 5-7·5-8·5-10 (v3.1 Must, Q965)** | `/programs/reports/participations` · `/provision-records` · `/schedules` | `GET /api/v1/programs/reports/participations` · `…/provision-records` · `…/schedules` | **5-7** 참여 한 건당 한 줄·이름 있음 · **5-8** 참여가 있는 프로그램·날짜만 · **5-10** 일정이 있으면 참여 0이어도 표시 · **마스터(Q964)는 읽지 않음** · **요양보호사 불가** |
+| **통합 간호 리포트 번호 (v3.1 Must, Q968)** | `/care/reports/nursing-service` · `/hospital-visits` · `/medication-delivery` | `GET /api/v1/care/reports/nursing-service` · `…/hospital-visits` · `…/medication-delivery` | 사이드 메뉴에 **2-11 없음** · 카드만 **2-11~2-13** · 시설 요양 메뉴는 **2-10까지** · 간호 모듈 `/nursing/service/reports/total` 은 **L03_M07** · **요양보호사 403** |
 | **프로그램 일정 활동 사진 (v3 Must, Q917·Q920·Q921·Q924·Q930·Q933)** | `/programs` 일정 표 **「활동 사진」** | `POST /api/v1/programs/schedule/{programId}/photo` · `GET …/schedule?date=` (`photoStorageKey`) | **JPEG/PNG/WEBP ≤5MB** · **Content-Type 파라미터 strip** · **magic-byte 서명 일치** · **오류 ARIA** · **성공 `role="status"` 안내** · **`ds-stack--tight` 간격** · **hq/branch/social/caregiver** · **등록됨/미등록** |
 | **이용자 프로필·서류함·공단 엑셀 업로드 (Must, Q926~Q931·Q933)** | `/clients/:id` 사진·급여계약·등급 이력 · `/staff` HR·보수교육·요양보호사 · `/visits`·`/billing/imports/nhis` NHIS | `POST …/clients/{id}/photo` · attachments · `POST …/imports/nhis*` · `POST …/staff/imports/nhis-caregivers*` | **사진 JPEG/PNG/WEBP**(성공 `role="status"` 안내) · **PDF/이미지 서류** · **엑셀 OOXML/OLE 서명(SEC-D34)·null fail-closed** · MIME 위장 거부 |
 | **이용자 등록 동의·라벨 a11y (Must, Q906)** | `/clients/new` · `/clients/:id/edit` · `/guardian/checkin` · `/transport` | *(CSS `components.css` — API 변경 없음)* | **`ds-consent-box`** 주민번호 동의 · **`ds-field-label`** · **`ds-page-breadcrumb`** · **`ds-submit-block`** · **`ds-transport-map__refresh-hint`** (`0438a17`, UXD-187) |
@@ -237,6 +238,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 > | **통합 간호제공 리포트 (L02_M14)** | L02_M14 | **`/care/reports/nursing-service`** | **집계 리포트** — care-scoped API (`58ee122`) |
 > | **병의원 진료내역 리포트 (L02·L03_M09)** | L03_M09 | **`/care/reports/hospital-visits`** | `medicalVisit=true` 필터 리포트 |
 > | **투약제공 리포트 (L02·L03_M10)** | L03_M10 | **`/care/reports/medication-delivery`** | `medicationProvided=true` 필터 리포트 |
+>
+> 화면 안 「2-11」~「2-13」은 사이드 메뉴 번호가 아닙니다. 시설 요양 메뉴는 **2-10**까지입니다 (FAQ **Q968**).
 >
 > 기존 **`/nursing/service/reports/*`** 경로도 유지됩니다 (FAQ Q350). 케어포 **2-8.건강상태 평가 리포트(삭제예정)**(L02_M09)는 ogada v1.2.1 **Won't** — **`/health` 건강 기록**으로 대체합니다.
 
@@ -4040,7 +4043,7 @@ silverangel **「욕창위험도 연 1회+」**·**「14일 6대 수칙」**·�
 
 L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `2a05271`, `NursingServiceReportsPage`).
 
-> **care-scoped 리포트 (권장, Q386)**: SideNav **기록** 그룹의 **`/care/reports/nursing-service`**·**`/hospital-visits`**·**`/medication-delivery`** 가 동일 집계를 **L02 RBAC**(`hq_admin`·`branch_admin`·`social_worker`)으로 제공합니다 — §5-36 참고. 아래 **`/nursing/service/reports/*`** 경로는 **간호 모듈 컨텍스트**에서도 계속 사용할 수 있습니다.
+> **care-scoped 리포트 (권장, Q386)**: SideNav **기록** 그룹의 **`/care/reports/nursing-service`**·**`/hospital-visits`**·**`/medication-delivery`** 가 동일 집계를 **L02 RBAC**(`hq_admin`·`branch_admin`·`social_worker`)으로 제공합니다 — §5-36 참고. 아래 **`/nursing/service/reports/*`** 경로는 **간호 모듈 컨텍스트**에서도 계속 사용할 수 있습니다. 이 경로의 제목은 **「통합 간호제공 리포트 (L03_M07)」**이고 **2-11을 붙이지 않습니다**. 2-11은 §5-36 기록 화면의 집계 카드에만 있습니다 (FAQ **Q968**).
 
 #### 화면·탭
 
@@ -4679,7 +4682,9 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 ### 5-36. L02 care-scoped 간호 리포트 (L02_M14/M09/M10, `/care/reports/nursing-*`)
 
-케어포 **2-11~2-13** 간호 리포트를 **기록** 메뉴에서 **L02 RBAC**으로 조회하는 화면입니다 (BE `002e3eb` + FE `58ee122`, Q386). L03 간호 모듈 API를 **care proxy**로 노출하여 SideNav **기록** 그룹과 일관된 경로·권한을 제공합니다.
+기록 메뉴에서 간호 제공을 기간으로 묶어 보는 화면입니다. 사이드 메뉴 이름에는 번호가 없습니다. 조회 안내·집계 카드·인쇄 머리글만 「2-11」「2-12」「2-13」을 붙입니다. 이 번호는 이 화면의 표시 문구입니다. 시설 요양 메뉴는 **2-10**(급여제공 서비스 집계)에서 끝나고, 그 매뉴얼에서 2-11을 찾지 않습니다. 같은 집계를 번호 없이 보려면 §5-22 간호 모듈 리포트(`/nursing/service/reports/total`, 제목 **L03_M07**)를 엽니다.
+
+요양보호사에게는 사이드 메뉴 항목이 보여도 조회 API가 거부됩니다 (`hq_admin`·`branch_admin`·`social_worker`만).
 
 #### 화면·탭
 
@@ -4723,7 +4728,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 > **입력 vs 리포트**: **L02_M14 제공기록 입력**은 **`/nursing/service`** (§5-20) · **집계 리포트**는 본 절 **`/care/reports/*`** 입니다.  
 > **L02↔L03 연계 (Q412)**: **`CareNursingParityPanel`** — care-scoped ↔ L03 리포트·제공기록 **상호 링크** · **`careNursingReportsLiveApi.e2e.test.js`** live harness (`5533ef5`).  
 > **검증 (BNK-280, Q389)**: BE **`CareNursingReportsPilotServiceFlowE2eTest`** (`2ba2761`) — 3 endpoint delegation chain·aggregate field contracts · FE **`pilotPageFlows.test`** (`6b34d31`).  
-> 관련: FAQ **Q386·Q389·Q390·Q412** · ADMIN_GUIDE §6-2-26 · §5-22(간호 모듈 경로) · REQUIREMENTS L02/L03 parity
+> 관련: FAQ **Q968·Q386·Q389·Q390·Q412** · ADMIN_GUIDE §6-2-26 · §5-22(간호 모듈 경로) · REQUIREMENTS L02/L03 parity
 
 ---
 
@@ -5066,6 +5071,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 | 공단 청구는 ogada에서 하나요? | **아니요.** 공단 급여 청구는 장기요양정보시스템(롱텀)에서 합니다. ogada는 내부 계산·명세서·엑셀 대조를 지원합니다. |
 | 방문 270분이 두 일정으로 나뉘나요? | **아니요.** `/visits` **서비스 시간(분)** 은 **1~480** 입력값 그대로입니다. 확정 뒤에는 목록에서 고치지 못합니다 (FAQ **Q966**). |
 | 공단 2026 수가 시드 금액은요? | **빈 칸만**, 최대 **30칸**입니다. 인지지원은 8시간부터 **56,360원**입니다 (FAQ **Q967**). |
+| 통합 간호 리포트 「2-11」은 어디 메뉴인가요? | 사이드 메뉴 번호가 아닙니다. **기록 → 통합 간호제공 리포트**로 들어가고, 2-11은 화면 안 카드에만 있습니다 (FAQ **Q968**). |
 | 대시보드 숫자가 실제와 달라요 | 위젯·건강 알림 API(Q85). 출석률 `%` 과소 표기 가능(Q118) |
 | 건강 추이 기간이 안 바뀌어요 | `/health/:clientId` — **차트+표 Fixed**(Q119). **FilterChips `?days=` 갭**(Q165) |
 | 건강·투약·사고 저장이 실패해요 | **Q154 Fixed** — 필수 항목·세션 확인. 비정상 수치 **노란 경고는 저장 차단 아님**(Q155). **자유 메모(notes)** 는 Swagger |
@@ -5109,6 +5115,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q968 신설** — §1-5·§3-1·§5-22·§5-36 **통합 간호 리포트의 2-11은 화면 카드 문구** · 사이드 메뉴와 시설 요양 메뉴 번호가 아님 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q967 신설** — §1-3·§1-5·§5-4 **공단 2026 수가 시드 30칸 금액** · 빈 칸만 · 인지지원은 8시간부터 56,360원 · 단기보호·치매전담실·목욕 3,000원은 이 시드에 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q966 신설** — §1-3·§1-5·§5-11 **방문 일정 서비스 시간은 1~480분 그대로** · 270분 분할 없음 · 당일 목록에 수정 버튼 없음 · 작성중만 PATCH · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q965 신설** — §1-3·§1-5·§5-9 **프로그램 리포트 5-8은 참여가 있는 날만, 5-10은 일정만 있어도 표시** · 마스터는 이 리포트를 채우지 않음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |

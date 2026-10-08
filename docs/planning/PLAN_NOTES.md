@@ -2445,6 +2445,15 @@
 
 ### 문서 작성 질문
 
+### [TWR] 통합 간호 리포트 2-11은 화면 카드 문구 (2026-10-08T07:20:11Z)
+
+- **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `navConfig.js` 사이드 메뉴는 「통합 간호제공 리포트」이고 번호가 없다. `AppShell` 제목은 `title` 「통합 간호제공 리포트 (L02_M14)」. 조회 안내·집계 카드·인쇄만 `label` 「2-11.통합 간호제공 리포트」를 쓴다. 병의원·투약도 같다(2-12·2-13).
+- **권한**: `CareReportController` 의 `GET /care/reports/nursing-service`·`hospital-visits`·`medication-delivery` 는 `HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`. 사이드 메뉴 `roles` 에는 `caregiver` 가 있어 항목은 보이지만 조회는 403이다.
+- **번호**: 시설 셸 스냅샷에서 `2-11`·`2-12`·`2-13` 문자열은 0이고, 요양 활성 번호의 끝은 2-10이다. ogada 2-10 라벨은 「2-10.급여제공 서비스 집계 리포트」(`/care/reports/service-summary`). 간호 모듈 `/nursing/service/reports/total` 제목은 「통합 간호제공 리포트 (L03_M07)」이고 2-11이 없다.
+- **단정하지 않음**: 주야간 `func.php` 는 이번 호출에서 다시 열지 않았다(이전 수집은 연결 실패). 시설 셸에서 `view.nursing_service` 가 제공기록 2-1-2 라는 점과, ogada 안내 문장이 그 이름을 집계 카드에 붙인다는 점만 적었다. 화면 문구는 바꾸지 않는다.
+- **문서**: CHANGELOG 2026-10-08 카드 · FAQ **Q968** · 사용자 매뉴얼 §5-36·§5-22·§3-1 · 관리 가이드 §6-2-26 · 배포 가이드 §1-4.
+- **미문서 잔여**: 프로그램 마스터·수급자 그룹은 API만 있고 화면(`/programs/catalog`·`/programs/groups`)은 없다. 의견수렴(`/programs/feedback`)·월간 계획(`/programs/plans`)은 화면과 API가 아직 없다.
+
 ### [TWR] 공단 2026 주야간 1일 수가 30칸 (2026-10-08T06:30:00Z)
 
 - **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `Nhis2026DaycareRateCatalog` 와 `feeSchedules.js` 의 `NHIS_2026_DAYCARE_RATES`·`NHIS_2026_COGNITIVE_DAYCARE_RATES` 가 같다. 시드 버튼의 N은 `missingNhisSeedPayloads` 길이이고, 비어 있으면 30이다.
