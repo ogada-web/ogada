@@ -1,9 +1,73 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T02:29:01Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:18:30Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §952 BNK-952 — ogada git 실측 6-8h · ★★★ **surefire 2505 = `@Test` 2485 + 매개변수 20** · ★★★ **컨트롤러 단어 경계 82 · 엔티티 93** · ★★ **5-4 마스터와 당일 일정 폼은 다른 표** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · npm **2865** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:18:30Z -->
+
+**조사일**: 2026-10-08T03:18:30Z | **rotation**: ogada git 실측 6-8h. BNK-951(2026-10-08T02:29:01Z) 이후 약 49분. 초점: (1) develop HEAD·Route·Page·모듈 % 재산정 (§952-0·§952-1) · (2) `npm test`·`mvn test` 실행 (§952-1) · (3) 케어포 5-4 `view.program_item` 과 카탈로그·일정 폼 (§952-2) · (4) planner 액션 (§952-3).
+
+### §952-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-951과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-951과 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · 깊이 최대 **4** · d4=**6** · path `report` **29/132=22.0%**. prefix 는 billing 17 · nursing 16 · care 16 · staff 13 · clients 11 · transport 9 · programs **8**. `/programs/catalog` 는 **0**. `/programs/groups` 는 **0**.
+- 모듈은 엔트리 **29** · 합 **28.25** · **97.41%**. 비-1.0 은 id=2·8·10 이 **0.85**, id=12 가 **0.7**. id=5 는 **1.0**. coverage 파일은 FE SHA 와 같이 바뀌지 않았다.
+
+### §952-1 · ★★★ 주석 개수와 실행 개수를 다시 센다
+
+| 계수 | 값 | 비고 |
+|---|---|---|
+| `@Test` 줄 시작 | **2485** | 카탈로그 Access **3** + Routing **1** + Service **8** = **12**. 2473+12 |
+| `@ParameterizedTest` | 3메서드 · 실행 **20**행 | 역할 7 · 알림 이벤트 5 · 은행 8 |
+| surefire | **2505** / 실패 0 / 오류 0 / 건너뜀 0 | 2485+20. `mvn -q test` exit 0. 보고서 418개 · 03:04:47–03:06:32Z |
+| npm test | 파일 **493** · 테스트 **2865** PASS · 830.76s | exit 0. e2e 53파일은 제외. 디스크 테스트 파일 **546** |
+| `@RestController` 단어 경계 | **82** | `ProgramCatalogController` 포함. BNK-949 의 81 은 그 이전 |
+| `@RestController` 부분문자열 | 83 | `@RestControllerAdvice` 1건. 컨트롤러 수로 쓰지 않음 |
+| `@Entity` | **93** | BNK-949 92 + `program_catalog` |
+| HTTP | **450** | GET **234** / POST **147** / PATCH **46** / PUT **13** / DELETE **10**. 카탈로그 DELETE **0** |
+| Flyway | V1–**V197** | 결번 0 |
+
+yaml `2479/2479` 는 2485 도 2505 도 아니다. BNK-949 의 「가정」을 유지한다. 이번 실행 숫자로 yaml 을 고치지 않는다. BE 테스트 파일은 **307**(306+1)이다. BNK-949 의 304 에 카탈로그 파일 3개가 더해진 것이다.
+
+### §952-2 · ★★ 5-4 정보관리 · 카탈로그 API · 당일 일정 폼
+
+케어포 주야간 화면 줄은 「5-4.프로그램 정보관리」다. 시설 셸 `carefor_demo_work_live_bnk943.html` 의 같은 제목은 `L05_M04` · view `/share/program/view.program_item` 이다. 이번 사이클에 [func.php](https://www.carefor.co.kr/daycare/func.php) 와 [demo-work](https://demo-work.carefor.co.kr/) 는 12초 안에 연결되지 않았다. HTTP **000**. 디스크 스냅샷은 덮지 않았다.
+
+[CDX view.program_item](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/program/view.program_item&output=json&fl=timestamp,statuscode,length,digest&limit=8) 은 30초에 0바이트 · HTTP **000**. `share/program/*` 도 40초 · HTTP **000**. [available API](https://archive.org/wayback/available?url=https://demo-work.carefor.co.kr/share/program/view.program_item) 는 HTTP **429**. 빈 배열로 닫지 않는다. input name 은 **미확인**.
+
+**신규 증거**: [daycareProgramInfo.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramInfo.do) HTTP **404** · 1,028B · `3c93af54`. [Manage](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramManage.do) · [List](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramList.do) 도 같은 바이트다. BNK-949 `daycareProgram.do` 와 **BYTE-IDENTICAL**. 스크립트는 「정상적인 접속경로가 아닙니다.」 짧은 경로는 메뉴가 아니다.
+
+| 단계 | 케어포 5-4 | ogada 카탈로그 `@92466cfb` | ogada 당일 일정 `@29c2304` |
+|---|---|---|---|
+| 화면 | `view.program_item` · `L05_M04`. 칸 이름 **미확인** | FE 경로 **0**. `services.js` 호출 **0** | `/programs` · `ProgramScheduleForm` |
+| 이름 | 미확인 | `name` ≤120 · 공백 거부 · trim | 필수. 「프로그램명을 입력하세요.」 |
+| 유형 | 미확인 | `GENERAL` / `FUNCTIONAL_RECOVERY` / `COGNITIVE`. 빈 값은 `GENERAL` | 폼이 보내지 않음. 서버 `normalize(null)` = `GENERAL` |
+| 목표 | 미확인 | `goal` ≤500 · 공백 거부 | 칸 없음 |
+| 은퇴 | 미확인 | `active=false` 는 행을 남김. DELETE **0**. 목록은 은퇴 행을 포함 | 해당 없음 |
+| 이름 중복 | 미확인 | 같은 지점의 활성 이름은 trim 후 대소문자 무시로 유일. 「같은 이름의 활성 프로그램이 이미 있습니다.」 | 일정 행끼리의 그 검사는 이 표의 대상이 아님 |
+| 일정과 연결 | 미확인 | `activity_programs` 에 `catalog_id` **없음**. 서비스 주석은 일정을 이 행으로 다시 쓰지 않는다고 적음 | 저장 필드는 `scheduleDate` · `name` · `startTime` · `facilitator` · `capacity` |
+| 역할 | 미확인 | `HQ_ADMIN` · `BRANCH_ADMIN` · `SOCIAL_WORKER` | 폼은 `hq_admin` · `branch_admin` |
+
+### §952-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=5 는 **1.0**. id=2·8·10 은 **0.85**. id=12 는 **0.7**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 과 부모 gitlink 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. develop 은 그 test 보다 그룹 API·카탈로그 API 두 커밋 앞이다.
+2. `@Test` 정본은 **2485** 다. 실행 합계는 surefire **2505** 이다. npm 은 **2865/2865** 이다. 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다.
+3. 컨트롤러는 **82** 다. 83 은 Advice 부분문자열이다. 엔티티는 **93** 이다.
+4. 카탈로그 화면이 없는 것은 이번 사이클의 새 갭이 아니다. 일정 폼을 카탈로그에 묶는 작업은 `view.program_item` 칸 이름이 확인된 뒤에 판단한다. id=5 를 내리지 않는다.
+5. 엔젤 404 세 경로는 프로그램 마스터 부재의 증거가 아니다. 같은 오류 셸이다.
+6. HTTP **450** · 모듈 **97.41%** · merge gate **4** 는 BNK-951 과 같다. 수가 시드는 유지한다. 서버 미기동은 이 단위 테스트 결과에 없다.
+
+주력 `ogada_git_baseline_bnk952.txt` + `silverangel_daycareProgramInfo_live_bnk952.html`. 신규 증거 URL 1(엔젤 `daycareProgramInfo.do` 404 · Manage·List 동일 셸). 기존 URL 재실측 1(func.php·demo-work HTTP 000). 아카이브는 타임아웃·429 라 빈 캡처로 적지 않음. 가정 0. 미확인 1(`view.program_item` input name). per-cycle minimum 4종 충족.
+
+---
 
 ## §951 BNK-951 — 이지케어 역공학 2-4h · ★★★ **재무회계 대행 4,901→4,902 · 집계일은 2026.09.30** · ★★★ **도움말 RFID 3줄 · 화면 검출은 7줄(60분 초과 · 30분 이상)** · ★★ **청구 불일치는 진한 숫자 · 확정 중 업로드는 무효 · 10원은 일정 2개 대 1개** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

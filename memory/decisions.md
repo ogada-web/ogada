@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-952 ogada git 실측 6-8h · ★★★ **surefire 2505 · `@Test` 2485 · npm 2865** · ★★★ **컨트롤러 단어 경계 82 · 엔티티 93** · ★★ **5-4 마스터와 일정 폼은 다른 표** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 830.76s. `mvn -q test` surefire **2505/0/0/0**. [daycareProgramInfo.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramInfo.do) HTTP **404** · `3c93af54`. func.php·demo-work·CDX `view.program_item` HTTP **000**.
+
+### 결정
+
+1. **★★★ 실행 합계는 2505이고 주석 `@Test` 는 2485다 (확인)** — 매개변수 3메서드는 20행(7+5+8)이다. 카탈로그 테스트는 Access 3 · Routing 1 · Service 8 이다. BNK-949 surefire 2493 에 이 12를 더하면 2505다. **planner: 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다.**
+
+2. **★★★ 컨트롤러는 82개이고 엔티티는 93개다 (확인)** — `@RestController` 단어 경계 82. 부분문자열 83 은 `@RestControllerAdvice` 1건이다. BNK-949 의 81·92 는 카탈로그 컨트롤러·`ProgramCatalogEntity` 이전이다. **planner: 81 이나 83 을 다시 쓰지 않는다.**
+
+3. **★★ 프로그램 마스터와 당일 일정은 연결되지 않는다 (확인)** — `program_catalog` 는 `name`≤120 · 유형 3종 · `goal`≤500 · `active` 은퇴 · DELETE 없음이다. `activity_programs` 에 `catalog_id` 는 없다. 일정 폼은 이름·시작 시간·담당·정원만 보내고, 유형을 비우면 서버가 `GENERAL` 로 둔다. FE `/programs/catalog` 는 0 이다. **planner: 이 분리를 새 P0 로 열지 않는다. id=5 는 1.0. `view.program_item` 칸 이름이 확인되기 전에는 일정 폼을 카탈로그에 묶지 않는다.**
+
+4. **★★ 엔젤 짧은 프로그램 경로는 메뉴가 아니다 (확인)** — `daycareProgramInfo.do` · `daycareProgramManage.do` · `daycareProgramList.do` 는 HTTP 404 · 1,028B · `3c93af54` 로 BNK-949 `daycareProgram.do` 와 같다. 문구는 「정상적인 접속경로가 아닙니다.」 **planner: 404 를 프로그램 마스터 부재로 적지 않는다.**
+
+5. **★ HEAD 와 모듈 % 는 BNK-951 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · Route 133 · Page 106 · HTTP **450** · 모듈 **97.41%**(28.25/29) · merge gate **4**. yaml·부모 gitlink `4aad7cc2` 는 로컬 test 다. develop 은 그보다 2커밋 앞이다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. 수가 시드는 유지한다.**
+
+**가정 0** · **미확인 1**(케어포 `view.program_item` input name · CDX·오리진 HTTP 000 · available API 429) · 신규 snapshot 은 `_bnk952` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-951 이지케어 역공학 2-4h · ★★★ **재무회계 대행 4,902** · ★★★ **RFID 화면 7줄 · 도움말 3줄** · ★★ **10원 = 공단 일정 2개** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [홈](https://ezcare.easyms.co.kr/) HTTP 200 · `7a4ff019` · data-count3 **4902**. [Channel 556858d9](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%ED%83%9C%EA%B7%B8-%EC%A0%84%EC%86%A1-%EB%82%B4%EC%97%AD-%ED%99%95%EC%9D%B8%EB%B0%A9%EB%B2%95-556858d9) HTTP 200 · `1a26396b`. [Channel 6558b127](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EA%B3%B5%EB%8B%A8%EA%B3%BC-%EB%B6%88%EC%9D%BC%EC%B9%98--%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%ED%99%95%EC%9D%B8-6558b127) HTTP 200 · `97f059ae`. 데모 로그인 code=0000 · `schedule-rfid` 범례 IDENTICAL. git FE `29c2304` · BE `92466cfb`.

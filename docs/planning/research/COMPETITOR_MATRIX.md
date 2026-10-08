@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T02:29:01Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:18:30Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-951 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · HTTP **450** · 모듈 **97.41%**). ★★★ **재무회계 대행 4,902** · ★★★ **RFID 도움말 3줄 / 화면 7줄(60분 초과·30분 이상)** · ★★ **청구 불일치 = 진한 숫자 · 확정 잠금 · 10원=일정 2개** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-08 (**BNK-952 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · `@RestController` **82** · `@Entity` **93** · 모듈 **97.41%**). ★★★ **surefire 2505 = 2485+20** · ★★★ **컨트롤러 82 · 엔티티 93** · ★★ **5-4 마스터 ≠ 일정 폼** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-952 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ surefire 2505 · npm 2865 (BNK-952 #1 · git 실측 · 확인)** | ✅ strict `@Test` **2485**. 매개변수 20행. `mvn -q test` **2505/0/0/0**. `npm test` **493파일/2865** PASS · 830.76s. yaml `2479` 는 둘 다 아님 | ⚪ | ⚪ | ⚪ | ⚪ | `ogada_git_baseline_bnk952.txt` · §952-1 · 카탈로그 @Test **12**(3+1+8) |
+| **★★★ 컨트롤러 82 · 엔티티 93 (BNK-952 #2 · 확인)** | ✅ `@RestController` 단어 경계 **82**. 부분문자열 83 = Advice 1건. `@Entity` **93**. HTTP **450**. DELETE 카탈로그 **0** | ⚪ | ⚪ | ⚪ | ⚪ | §952-1 · BNK-949 의 81·92 는 카탈로그 이전 |
+| **★★ 5-4 마스터와 일정 폼 (BNK-952 #3 · 메뉴/필드/워크플로 · 확인)** | ✅ `program_catalog` `name`≤120 · 유형 3종 · `goal`≤500 · `active` 은퇴. `catalog_id` 없음. 일정 폼은 이름·시간·담당·정원. 유형 생략 시 `GENERAL`. FE 경로 **0**. id=5 **1.0** | ✅ 화면 5-4 · view `view.program_item` · `L05_M04`. input name **미확인**. func.php·demo-work·CDX HTTP **000** | ⚪ 재가 데모에 프로그램 마스터 없음 | ✅ [Info](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramInfo.do) · Manage · List HTTP **404** · `3c93af54` · 「정상적인 접속경로가 아닙니다.」 | ⚪ | §952-2 · P0 재오픈 0 |
+| **★ 모듈 97.41% · prefix (BNK-952 #4 · 확인)** | ✅ 29엔트리 · 28.25/29 · 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. programs 경로 **8** · d4=**6** · report **29/132=22.0%** | ⚪ 화면 105 · loadPage 112 유지(타임아웃) | ⚪ | ⚪ | ⚪ | §952-0 · coverage 파일 무변경 |
+| **★ HEAD · merge gate 4 (BNK-952 #5)** | ✅ SHA BNK-951과 같음 · FE ahead **1** · BE ahead **3** · local test `@4aad7cc2` 는 develop 이 아님 · Flyway **V197** | ⚠ func.php·demo-work HTTP **000** | ⚪ | ⚪ | ⚪ | §952-0 · §952-3 |
+
+> **직전 갱신**: 2026-10-08 (**BNK-951 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · HTTP **450** · 모듈 **97.41%**). ★★★ **재무회계 대행 4,902** · ★★★ **RFID 도움말 3줄 / 화면 7줄(60분 초과·30분 이상)** · ★★ **청구 불일치 = 진한 숫자 · 확정 잠금 · 10원=일정 2개** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-951 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
