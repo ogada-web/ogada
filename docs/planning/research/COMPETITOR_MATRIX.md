@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:46:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T10:19:16Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,16 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-961 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **가족 시급=수급자 급여계획 · 일반 시급=직원 포괄시급** · ★★★ **일괄배정 09:00–18:00 · `worker_memo_UPDATE2`** · ★★ **대행 4,904 · 헤더 9,623** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-959 실행값).
+> **최종 갱신**: 2026-10-08 (**BNK-962 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **인지지원 단기보호 = 가족휴가 마-5 · 일반 표 행 0** · ★★ **제38조 12시간 50% · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 배차·단가 0 · CMS 250/300/30,000 IDENTICAL** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-959 실행값).
+
+| 기능 / 서비스 항목 (BNK-962 delta·엔젤·롱텀·규제 4-6h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 인지지원 단기보호 (BNK-962 #1 · 확인)** | ⚪ 마-5 **60,000** 시드 없음. 주야간 30칸에 넣지 않음. id=7 **1.0** | ⚪ | ⚪ | ⚪ | ✅ [본문](https://www.law.go.kr/LSW/admRulLsInfoR.do) `c5e5bc59` 제2조 ③ = 제36조의2 만. 제37조·[502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `0571d9bb` 단기보호 표는 1~5등급. 인지지원 행 **0**. 가족휴가는 제36조의3 마-5 | §962-1 · BNK-958 미확인 해소 · P0 재오픈 0 |
+| **★★ 제38조 입퇴소·지원금 (BNK-962 #2 · 메뉴/필드/워크플로 · 확인)** | ⚪ 12시간 50% · 91일 감산 · 월 100,000원 시드 **0** | ⚪ | ⚪ | ⚪ | ✅ 같은 본문. 당일 12시간 이상 100% · 미만 50%. 시행규칙 제11조제2항 기관은 91~150일 -5% · 151~210일 -15%. 제38조의2 는 제36조 · 월 **100,000원** · 4일 이하 **50,000원** · 36개월 | §962-2 · 기관 범위 **미확인** · 가족휴가 일수에 지원금 문장 없음 |
+| **★★ 엔젤 보안 · CMS (BNK-962 #3 · 신규 URL · 확인)** | ✅ 건당 250원 · 300원. 월 30,000원 행 **0**. 배차 자체 | ⚪ | ⚪ | ✅ [security.do](https://www.silverangel.kr/silverangel/angelsystem/security.do) `066238cb` · `f_code`/`user_id`/`user_password` · SSL · 배차 **0** · 단가 **0**. [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) `f9c5d877` IDENTICAL · 월 30,000 · 250 · 300. [효성](https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS) `438f9ced`. 필수업무 `c79c1be3` · 27=기능회복훈련 · 일련 27=가족과의 소통 | ✅ #44 `c886ff1f` **649차** · 별지 **0**. GIF `31064a16` IDENTICAL | §962-3 · 월 이용료와 건당을 한 표로 적지 않음 · 평가 PDF **미확인** |
+| **★ HEAD · merge gate 4 (BNK-962 #4)** | ✅ SHA BNK-961과 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · Route **133** · Page **106** · `@Test` **2485** · 모듈 **97.41%** · 테스트 미실행 | ⚪ | ⚪ | ⚪ lcms `7775b5b4` type3 IDENTICAL · 배차 **0** | ⚪ | §962-0 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-961 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **가족 시급=수급자 급여계획 · 일반 시급=직원 포괄시급** · ★★★ **일괄배정 09:00–18:00 · `worker_memo_UPDATE2`** · ★★ **대행 4,904 · 헤더 9,623** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-959 실행값).
 
 | 기능 / 서비스 항목 (BNK-961 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

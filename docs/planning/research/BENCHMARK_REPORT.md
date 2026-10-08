@@ -1,9 +1,93 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:46:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T10:19:16Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §962 BNK-962 — 엔젤·롱텀·규제 4-6h · ★★★ **인지지원 단기보호는 가족휴가 마-5뿐** · ★★ **제38조 입·퇴소 12시간 · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 페이지에 배차·단가 없음** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T10:19:16Z -->
+
+**조사일**: 2026-10-08T10:19:16Z | **rotation**: 엔젤·롱텀·규제 4-6h. BNK-961(2026-10-08T09:46:00Z) 이후 약 33분. 초점: (1) 일반 단기보호 인지지원 (§962-1) · (2) 제38조 산정·한시적 지원금 (§962-2) · (3) 엔젤 보안·CMS·지표 27·러-1~4 (§962-3) · (4) planner 액션 (§962-4).
+
+### §962-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-961과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-961과 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). 이번 사이클에 `App.jsx` `<Route` **132** + `<Routes>` **1** = Route **133**, `*Page.jsx` **106** 을 다시 세었다. HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-959 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+
+### §962-1 · ★★★ 인지지원등급의 단기보호는 제36조의2 뿐이다
+
+**재실측**: [고시 본문](https://www.law.go.kr/LSW/admRulLsInfoR.do) POST `admRulSeq=2100000285470` HTTP **200** · 371,871B · `c5e5bc59` = BNK-955 **BYTE-IDENTICAL**. 파일은 복제하지 않았다.
+
+**확인(제2조 ③)**: 인지지원등급 수급자는 주ㆍ야간보호급여(치매전담실 포함), **제36조의2제1항**의 단기보호급여와 종일 방문요양급여, 기타재가급여만 이용할 수 있다. 일반 **제36조** 단기보호는 이 항에 없다.
+
+**확인(제2조 ④)**: 통합재가서비스 제공기관은 **1등급부터 5등급**에게 급여를 제공한다. 인지지원등급은 이 항에 없다.
+
+**재실측**: [502 menuId=2742](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) HTTP **200** · 105,555B · `0571d9bb` = BNK-955 **BYTE-IDENTICAL**. 「단기보호 급여비용(1일당)」표의 인지지원 행은 **0**이다.
+
+| 등급 | 502 단기보호 1일 | 제37조 GIF |
+|---|---:|---:|
+| 1등급 · 마-1 | 74,060 | 74,060 |
+| 2등급 · 마-2 | 68,580 | 68,580 |
+| 3등급 · 마-3 | 63,350 | 63,350 |
+| 4등급 · 마-4 | 61,680 | 61,680 |
+| 5등급 · 마-5 | 60,000 | 60,000 |
+| 인지지원 | 행 없음 | 행 없음 |
+
+제36조의3 ①은 가족휴가제 단기보호의 인지지원등급을 **마-5**로 산정한다. BNK-958 이 열어 둔 「일반 단기보호 인지지원」은 이 두 문장으로 닫는다. 일반 표에 여섯 번째 칸을 만들지 않는다. 60,000원을 주야간 30칸 시드에 넣지 않는다.
+
+### §962-2 · ★★ 제38조 입·퇴소 시간과 한시적 지원금
+
+같은 본문의 제38조·제38조의2. 이번 차수에서 표로 처음 적는다.
+
+| 규칙 | 본문 | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 1일 | 0시~24시 | 단기보호 1일 수가 시드 **0** |
+| 입·퇴소 당일 | 12시간 이상 **100%** · 12시간 미만 **50%** | 그 비율 시드 **0** |
+| 같은 달 병설 | 단기보호와 시설급여를 같은 수급자에게 주면 **한 종류**만 | 시설급여 청구 경로 **0** |
+| 장기 이용 | **시행규칙 제11조제2항** 기관만. 91~150일 **-5%** · 151~210일 **-15%**. 재입소는 이전 이용일을 합산. 연간은 1월 1일~12월 31일 | 감산 시드 **0**. 그 기관의 범위는 이 고시에 풀이가 없다 (**미확인**) |
+| 제38조의2 | **제36조** 제공 시 1인당 월 **100,000원**. 월 4일 이하는 **50,000원**. 최초 산정 월부터 **36개월** · 월 1회 · 수급자 부담 없음. 이용일은 급여비용을 산정한 날. 미제공 월은 산정하지 않음 | 지원금 시드 **0** |
+
+제38조의2 는 제36조를 인용한다. 제36조의2 가족휴가 일수에 이 지원금을 붙이는 문장은 없다. 주야간 청구 시드에 월 10만 원을 넣지 않는다. P0 로 열지 않는다.
+
+### §962-3 · ★★ 엔젤 보안 · CMS · 지표 27 · 러-1~4
+
+**신규 증거**: [정보보호·시스템보안](https://www.silverangel.kr/silverangel/angelsystem/security.do) HTTP **200** · 21,108B · `066238cb`.
+
+| 칸 | `security.do` |
+|---|---|
+| 로그인 | `login_form` POST `/silverangel/login/login.do`. name `f_code` · `user_id` · `user_password` |
+| 네트워크 | IDC · 트윈서버 · Network Traffic 분석 · **SSL** |
+| 사용자 수칙 | 윈도우 패치 · 백신 · 로그인 암호 · 신뢰 사이트만 설치 · 금융정보 비공개 · 문서 암호·백업 · 로그아웃 · 프로그램별 권한 |
+| 시스템 | OS 보안 · ID/PASSWORD · 파일시스템 · 관리자/사용자/테이블 접근 분리 · Sign-On(조직자·책임자) · 프로그램별 사용권한 |
+| 배차·단가 | 이동·배차·GPS·RFID·차량·송영 **0**. 금액 「원」 **0**. CMS 상품 문장 **0**(머리말의 LCMS 만) |
+
+**재실측**: [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) `f9c5d877` **BYTE-IDENTICAL**. 월 **30,000원** · 자동이체 **250원/1건** · 가상계좌 **300원/1건**. [효성 ANGELSYS](https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS) `438f9ced` **BYTE-IDENTICAL**. `request_path=ANGELSYS`. 필드 `board_cust_nm` · `board_tel` · `board_nm` · `consult_time` · `board_comment`. ogada 는 건당 250원·300원이고 월 30,000원 행은 없다.
+
+**재실측**: [daycareEssential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3` **BYTE-IDENTICAL**. 문장은 「주야간보호 **27** 기능회복훈련」과 「**27** 가족과의 소통」(보호자 회의 반기 1회)이다. 평가 매뉴얼 PDF 는 이번 사이클 **미수신**.
+
+**재실측**: [제34조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16` **BYTE-IDENTICAL**. 러-1 은 5km 미만 830원, 러-2 는 5km 이상~10km 미만 2,630원, 러-3 은 10km 이상~20km 미만 5,230원, 러-4 는 20km 이상 8,630원. 본문 ②는 1일 1회·편도 50%, ③은 수급자 부담 없음, ④는 이동서비스 일지, ⑤는 세부사항을 공단 이사장이 정한다. 제34조 구간에 「별지」 **0**. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **649차**. 「별지」 **0** · 「제22호」 **0**. 동일 바이트 파일은 복제하지 않았다.
+
+[lcms](https://www.lcms.or.kr/) `7775b5b4` = BNK-958 **BYTE-IDENTICAL**(type3 · CJ프레시웨이 MOU). 배너 회전 없음. 배차 **0**. `openIpAccessDeniedLayerPop` **3** · `KMCNOK` **0**.
+
+### §962-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=2 **0.85** · id=7 **1.0** · 모듈 **97.41%** 유지. 수가 시드 변경 **0**.
+
+1. 인지지원등급의 단기보호 금액은 가족휴가 마-5(60,000원)이다. 일반 제37조·502 표에 인지지원 칸을 만들지 않는다. 주야간 30칸 시드에 넣지 않는다.
+2. 제38조 12시간 50%·91일 감산·월 10만 원 지원금은 단기보호 청구 규칙이다. 주야간 수가에 넣지 않는다. 시행규칙 제11조제2항 기관의 범위는 **미확인**이다. P0 로 열지 않는다.
+3. 통합재가 월 100,000원은 1~5등급 문장이다. 인지지원등급을 그 가산에 넣지 않는다. 「건강관리」를 요건에 넣지 않는다.
+4. 러-1~4 금액과 거리 문구는 BNK-958 과 같다. `resolveFromKm` 을 이 사이클에서 고치지 않는다. 일지 서식 번호는 제34조와 #44 **649차**에 없다.
+5. 엔젤 보안 페이지의 SSL·권한 문장을 배차 갭으로 세지 않는다. CMS 월 30,000원과 ogada 건당 250원·300원을 한 표로 적지 않는다.
+6. 평가 지표 27(기능회복훈련)과 필수업무 일련 27(가족과의 소통)을 한 번호로 쓰지 않는다. 평가 PDF 는 **미확인**이다.
+7. git 은 BNK-961 과 같다. FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+주력 `angel_longterm_regulatory_bnk962.txt` + `silverangel_security_bnk962.html`. 신규 증거 URL 1(보안). 재실측 8(고시 본문 · 502 · GIF · #44 · extraService · 효성 · 필수업무 · lcms). 미확인 해소 1(일반 단기보호 인지지원). 미확인 3(시행규칙 제11조제2항 기관 범위 · 일지 서식 번호 · 평가 PDF). per-cycle minimum 4종 충족.
+
+---
 
 ## §961 BNK-961 — 이지케어 역공학 2-4h · ★★★ **가족요양 시급은 수급자 급여계획 · 일반요양 시급은 직원 포괄시급** · ★★★ **일괄배정은 09:00–18:00 · 날짜별 `worker_memo_UPDATE2`** · ★★ **재무회계 대행 4,904 · 헤더 9,623** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

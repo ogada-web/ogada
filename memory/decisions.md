@@ -4,6 +4,28 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-962 엔젤·롱텀·규제 4-6h · ★★★ **인지지원 단기보호는 가족휴가 마-5** · ★★ **제38조 당일 12시간 · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 페이지는 배차·단가 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [고시 본문](https://www.law.go.kr/LSW/admRulLsInfoR.do) HTTP 200 · `c5e5bc59`. [502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `0571d9bb`. [보안](https://www.silverangel.kr/silverangel/angelsystem/security.do) HTTP 200 · `066238cb`. [GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16`. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 일반 단기보호 표에 인지지원 칸은 없다 (확인)** — 제2조 ③은 인지지원등급의 단기보호를 **제36조의2**로 한정한다. 제37조 GIF 와 공단 502 단기보호 표는 1~5등급이고 인지지원 행은 0이다. 가족휴가 금액은 제36조의3 의 **마-5 = 60,000원**이다. **planner: 일반 단기보호에 여섯 번째 행을 만들지 않는다. 60,000원을 주야간 30칸에 넣지 않는다. P0 로 열지 않는다.**
+
+2. **★★ 제38조는 단기보호 산정 규칙이다 (확인)** — 1일은 0시~24시. 입·퇴소 당일 12시간 이상은 100%, 미만은 50%. 시행규칙 제11조제2항 기관은 91~150일 -5%, 151~210일 -15%. 제38조의2 는 제36조 제공 시 월 100,000원, 4일 이하는 50,000원, 36개월, 수급자 부담 없음. 가족휴가 일수에 이 지원금을 붙이는 문장은 없다. 그 기관의 범위는 **미확인**. **planner: 이 비율을 주야간 이동서비스비나 주야간 수가에 넣지 않는다. P0 로 열지 않는다.**
+
+3. **★★ 통합재가 가산은 1~5등급 문장이다 (확인)** — 제2조 ④는 통합재가를 1등급부터 5등급으로 적는다. 제55조의2 월 100,000원 요건에 「건강관리」는 없다. **planner: 인지지원등급을 통합재가 가산에 넣지 않는다.**
+
+4. **★★ 엔젤 보안 화면은 단가표가 아니다 (확인)** — `security.do` 로그인 필드는 `f_code` · `user_id` · `user_password`. SSL·트윈서버·프로그램별 권한은 있다. 배차 6종과 금액은 0이다. extraService `f9c5d877` 와 효성 `438f9ced` 는 BNK-955 와 같다. 월 30,000원 · 250원 · 300원. **planner: 보안 문장을 배차 갭으로 세지 않는다. 월 이용료와 건당 요금을 한 표로 적지 않는다.**
+
+5. **★ 러-1~4 와 지표 27 은 유지한다 (확인)** — GIF `31064a16`. 거리 문구와 금액은 BNK-958 과 같다. #44 `c886ff1f` **649차**. 별지 0. 필수업무 `c79c1be3` 의 27 은 기능회복훈련이고, 같은 표의 다른 27 은 가족과의 소통이다. 평가 PDF 는 **미확인**. lcms 는 type3 `7775b5b4`. **planner: `resolveFromKm` 을 이 사이클에서 고치지 않는다. 두 27 을 한 번호로 쓰지 않는다.**
+
+6. **★ HEAD 는 BNK-961 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · Route **133** · Page **106** · 모듈 **97.41%** · merge gate **4**. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**미확인 해소 1**(일반 단기보호 인지지원 칸 없음) · **미확인 3**(시행규칙 제11조제2항 기관 범위 · 일지 서식 번호 · 평가 PDF) · 신규 snapshot 은 `silverangel_security_bnk962.html` · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-961 이지케어 역공학 2-4h · ★★★ **가족 시급은 수급자 급여계획 · 일반 시급은 직원 포괄시급** · ★★★ **일괄배정 기본 09:00–18:00 · 날짜별 `worker_memo_UPDATE2`** · ★★ **재무회계 대행 4,904 · 헤더 9,623** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [Channel 5b5717bb](https://docs.channel.io/ezcare/ko/articles/%EA%B0%80%EC%A1%B1%EC%9A%94%EC%96%91-%EC%9D%BC%EB%B0%98%EC%9A%94%EC%96%91-%EB%8F%99%EC%8B%9C-%EC%A0%9C%EA%B3%B5-%EC%8B%9C-%0A%EC%8B%9C%EA%B8%89-%EC%84%A4%EC%A0%95%EB%B2%95-5b5717bb) HTTP 200 · `6b2a8579`. [FAQ 21135](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21135&type=web) HTTP 200 · `0a53425d`. 데모 `worker-timesheet3` `6333c35a` · login **0000** · nav `95286775` IDENTICAL. 홈 `961ac4df` **4904**. fnc·charge 헤더 **9,623**. git FE `29c2304` · BE `92466cfb`.
