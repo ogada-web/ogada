@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T02:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T03:55:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 프로그램 마스터는 API만 · 5-9 그룹 이력은 겹치는 배정만 인원으로 묶음)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -56,7 +56,8 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > 
 > **기능 클로저**: 
 > - **월별 청구 생성은 지점·달 1건** ✅ (**Q962**, US-M03): **`POST /billing/claims/generate`** 본문 `branchId`·`yearMonth` · 기존 청구가 있으면 **재계산 없이 그 청구 반환** · 줄 수정 API 없음 · 발행일 칸 없음 · 발송일 수정은 **우편만**
-> - **프로그램 마스터(이름·유형·목표)** ✅ (**Q964**, US-P01): **`GET/POST /programs/catalog`** · **`PATCH …/{catalogId}`** · 활성 지점 · 이름 120자 · 목표 500자 · 유형 `GENERAL`·`FUNCTIONAL_RECOVERY`·`COGNITIVE` · 활성 이름 중복 거부 · **행 삭제 없음** · **화면 `/programs/catalog` 없음** · **당일 일정과 별도** · Flyway **V197** (`92466cf`)
+> - **프로그램 리포트 5-7·5-8·5-10 원본 분리** ✅ (**Q965**, US-P02): **5-7** 참여 한 건당 한 줄 · **5-8** 참여가 있는 프로그램·날짜만 · **5-10** 등록 일정이면 참여 0이어도 표시 · **`program_catalog` 미사용**
+> - **프로그램 마스터(이름·유형·목표)** ✅ (**Q964**, US-P01): **`GET/POST /programs/catalog`** · **`PATCH …/{catalogId}`** · 활성 지점 · 이름 120자 · 목표 500자 · 유형 `GENERAL`·`FUNCTIONAL_RECOVERY`·`COGNITIVE` · 활성 이름 중복 거부 · **행 삭제 없음** · **화면 `/programs/catalog` 없음** · **당일 일정·5-7~5-10 리포트와 별도** · Flyway **V197** (`92466cf`)
 > - **프로그램 수급자 그룹 등록·배정** ✅ (**Q959**, US-P01): **`GET/POST /programs/groups`** · **`PATCH …/{groupId}`** · **`GET/POST …/{groupId}/members`** · 활성 지점 · 이름 120자 · 활성 이름 중복·기간 겹침 거부 · **행 삭제 없음** · **화면 `/programs/groups` 없음** · 집계는 **5-9** `group-history` · Flyway 추가 없음(V179) (`d73aec1`)
 > - **청구 명세·국세청 CSV 엑셀 수식 실행 위험 차단** ✅ (**Q946**, SEC-D33): `=`·`+`·`-`·`@` 시작 글자 칸에 `'` prefix · 금액 숫자(음수 포함)는 유지 (`57523b5`, CWE-1236) — FAQ Q534·Q535
 > - **안전·선임·외출 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-204): 안전 점검 **저장 시각** · 선임 **전자서명 시각** · 외출 **실제 출발/복귀 시각** — 화면 표시 무변경 (`95b6c52`, WCAG 1.3.1)
@@ -3129,9 +3130,9 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
-| GET | `/programs/reports/participations?fromDate=&toDate=&clientId=&branchId=` | **5-7** 수급자 참여 집계 — `items[]`·`summary{totalCount,attendedCount,absentCount}` · **`skipReasonLabel`** | `hq_admin`·`branch_admin`·`social_worker` |
-| GET | `/programs/reports/provision-records?fromDate=&toDate=&branchId=` | **5-8** 제공기록(운영) 집계 — 프로그램·일자별 참석·평균 만족도 | 동일 3역할 |
-| GET | `/programs/reports/schedules?fromDate=&toDate=&branchId=` | **5-10** 일정 리포트 — 일정별 `attendedCount`·`absentCount` | 동일 3역할 |
+| GET | `/programs/reports/participations?fromDate=&toDate=&clientId=&branchId=` | **5-7** 참여 **한 건당 한 줄** — `summary{totalCount,attendedCount,absentCount}` · **`skipReasonLabel`**(인력부족·시설장애·수급자거부·기타) | `hq_admin`·`branch_admin`·`social_worker` |
+| GET | `/programs/reports/provision-records?fromDate=&toDate=&branchId=` | **5-8** 제공기록 — **참여가 있는** 프로그램·날짜만 한 줄 · 평균 만족도는 참여 점수만 | 동일 3역할 |
+| GET | `/programs/reports/schedules?fromDate=&toDate=&branchId=` | **5-10** 일정 — **등록된 일정**이면 참여 0이어도 한 줄 · 같은 프로그램·같은 날 참여 수를 붙임 | 동일 3역할 |
 | GET | `/programs/reports/group-history?fromDate=&toDate=&branchId=` | **5-9** 그룹 이력 — **`groupConfigAvailable=true`** · **`items[]`** `groupName`·`effectiveFrom`·`effectiveTo`·`clientCount` (`337453d`, V179) | 동일 3역할 |
 
 | 규칙 | 내용 |
@@ -3139,13 +3140,17 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 | 날짜 기본값 | `fromDate`/`toDate` 생략 → **당월 1일~오늘(KST)** |
 | 날짜 검증 | `toDate < fromDate` → **`422`**「종료일은 시작일 이후여야 합니다.」 |
 | 스코프 | **`branchId` 생략** → JWT active branch · **지정 시** `validateBranchReadScope` (`49fe2e7`) · `clientId` 필터 시 이용자 branch 검증 |
+| **5-7 원본** | `program_participations` 한 행 = 화면 한 줄. 정렬은 기록일 내림차순. 불참·사유 없음 → 화면 **미기록**. 참여 → 사유 **—** |
+| **5-8 원본** | 참여를 `programId`+`recordDate` 로 묶음. **일정만 있는 날은 제외**. 평균은 `ATTENDED` 이면서 `satisfaction` 이 있는 값. 없으면 null → 화면 **—**. 일정 엔티티가 없으면 유형 `GENERAL`·시작·담당 null |
+| **참여 저장일** | `createParticipation` 은 기록일을 **프로그램 `scheduleDate`** 로 고정. 다른 날을 보내면 **422** 「기록일이 프로그램 일정과 일치하지 않습니다.」 |
+| **5-10 원본** | `activity_programs` 의 기간 내 일정. 참여가 없어도 행 유지, 건수 0. 일정 행이 없는 참여는 제외. 건수 키는 `programId`+일정일. **`program_catalog` 미조회** (FAQ **Q965**) |
 | **5-9 read path** | **V179** `program_client_groups`·`program_client_group_members` — **`aggregateHistoryWindows`** · **그룹 등록·배정 API ✅**(§10-11-2a, **Q959**) · **그룹 화면 없음** |
 | **branchId UI** | FE **`programReportServices`** — **`branchId` 미전달(P2)** — API·Swagger only |
 | RBAC | **`caregiver`·`guardian` → 403** |
 | FE UI | **`ProgramReportsPage`** · **`ProgramReportNav`** · **`ProgramReportPanel`** · **`RecordsContextNav`** link · **`programReportServices`** (`apiFetch`) · **`ProgramReportsPage.test`**·**`ProgramReportPanel.test`** |
 | 테스트 | **`ProgramReportControllerRoutingTest`** · **`ProgramReportServiceTest`** · FE **`programReportServices.test`** |
 
-> 현장: USER_MANUAL §5-9 · FAQ Q714·Q715·Q959 · DEPLOYMENT §1-4
+> 현장: USER_MANUAL §5-9 · FAQ Q714·Q715·**Q965**·Q959 · DEPLOYMENT §1-4
 
 #### 10-11-2a. 프로그램 수급자 그룹 API (US-P01, v3.1 Must)
 
@@ -4053,6 +4058,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q965 신설** — §1-4·§10-11-2 **프로그램 리포트 5-8은 참여가 있는 날만, 5-10은 일정만 있어도 표시** · 마스터 미사용 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q964 신설** — §1-4·§10-11-2b **프로그램 마스터 API**(이름·유형·목표, 화면 없음, 당일 일정과 별도, V197) · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q963 신설** — §10-11-2a **5-9 그룹 이력** 겹침 집계·인원만 표시·화면 행 키는 그룹 id · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q962 신설** — §1-4·§10 **월별 청구는 지점·달 1건** · 재호출은 재계산 없음 · `/transport/auto-dispatch` 는 `/transport` 로 이동 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
