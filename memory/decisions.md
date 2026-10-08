@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-953 교차검증·갭 우선순위 8h+ · ★★★ **대시보드 id 40 · 오늘·공단 7** · ★★ **FAQ 21862 전화 지연 · 엑셀 컬럼 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: `DashboardPage.jsx` id **40**. [FAQ 21862](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21862&type=web) HTTP 200 · `75887711`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 645차. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 대시보드 id 는 40이고 오늘·공단 묶음은 7이다 (확인)** — BNK-946 묶음 문장을 더하면 39다. 빠진 id 는 `health` 다. 통합 `/dashboard/hq` 는 13개이고 급여계획 3개는 지점에만 있다. **planner: 위젯을 새로 세지 않는다. 급여계획 3개를 통합 화면 P0 로 올리지 않는다.**
+
+2. **★★ G14 · v1.3-C · CMS 는 P0 로 다시 열지 않는다 (확인)** — care-plan-form 필수 9칸 · 급여종류 6종 · 작성일은 계획 연도와 같은 해. CMS 5코드는 `collectionImplemented=true` 이고 카드는 `/billing/easy-pay`, 현금영수증은 `/billing/cash-receipts` 다. 7-2-1 은 통계의 수납년도·청구년도다. #44 에 별지·제22호는 0이다. **planner: 화면 제목을 이 사이클에서 바꾸지 않는다. id=7 은 1.0. id=2 는 0.85.**
+
+3. **★★ FAQ 21862 는 전화 지연 안내이고 엑셀 양식 변경이 아니다 (확인)** — 제목은 260918. 홈 캐러셀은 21861·21859·21856 이다. 21863 이후는 제목 없는 13,327B 껍질이다. FAQ 목록은 233/21781 이고 엑셀 제목은 브라우저 다운로드 2건이다. 엔젤 221607 본문은 교육 94명·10월 일정은 추후 공지다. **planner: SEC-D34 를 열지 않는다. 21862 를 제품 갭으로 세지 않는다.**
+
+4. **★ HEAD 는 BNK-952 와 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · `@Test` **2485** · surefire **2505** · 모듈 **97.41%** · merge gate **4**. yaml·gitlink `4aad7cc2` 는 로컬 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 번복 1**(위젯 묶음 문장) · **미확인 유지**(서식 번호 · Channel Top 5 본문 · 교육 이미지 일정) · 신규 snapshot 은 `_bnk953` 계열 · per-cycle minimum 충족.
+
+---
+
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-952 ogada git 실측 6-8h · ★★★ **surefire 2505 · `@Test` 2485 · npm 2865** · ★★★ **컨트롤러 단어 경계 82 · 엔티티 93** · ★★ **5-4 마스터와 일정 폼은 다른 표** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 830.76s. `mvn -q test` surefire **2505/0/0/0**. [daycareProgramInfo.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramInfo.do) HTTP **404** · `3c93af54`. func.php·demo-work·CDX `view.program_item` HTTP **000**.

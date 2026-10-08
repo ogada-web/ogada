@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:18:30Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:58:03Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-952 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · `@RestController` **82** · `@Entity` **93** · 모듈 **97.41%**). ★★★ **surefire 2505 = 2485+20** · ★★★ **컨트롤러 82 · 엔티티 93** · ★★ **5-4 마스터 ≠ 일정 폼** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-08 (**BNK-953 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **대시보드 id 40 · 오늘·공단 7(health 포함) · HQ 13** · ★★ **FAQ 21862 전화 지연 · 엑셀 컬럼 0** · P0 재오픈 0.
+
+| 기능 / 서비스 항목 (BNK-953 delta·교차검증·갭 우선순위 8h+) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 대시보드 id 40 · HQ 13 (BNK-953 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ `/dashboard` id **40**. 오늘·공단 **7**(`health` 포함). `/dashboard/hq` 는 **13**. 급여계획 3개는 지점만. BNK-946 묶음 합 39 는 `health` 누락 | ⚪ | ⚪ 만료 7통 재대조 안 함 | ⚪ | ⚪ | §953-1 · §953-2 · P0 재오픈 0 |
+| **★★ G14 급여제공계획 필드 (BNK-953 #2 · 확인)** | ✅ `/clients/:clientId/care-plan-form`. `planYear` 2000–2100 · 급여종류 6종 · 필수 9칸(급여종류·작성일·작성자·세부목표·필요내용·세부제공내용·횟수·시간·종합의견). 작성일=계획 연도 | ⚪ input name **미확인** | ⚪ input name **미확인** | ⚪ | ⚪ | §953-2 · id=5 와 별개 · P0 재오픈 0 |
+| **★★ v1.3-C · CMS 5코드 경로 (BNK-953 #3 · 확인)** | ✅ `/transport/service-fees` LIVE. CMS `AUTO_DEBIT_CMS` 250원 · `VIRTUAL_ACCOUNT` 300원 · `MULTI_ACCOUNT_SETTLEMENT` → `/billing/cms`. `CARD` → `/billing/easy-pay`. `CASH_RECEIPT` → `/billing/cash-receipts`. 5코드 `collectionImplemented=true`. 7-2-1 은 통계 `PAID_YEAR`/`CLAIM_YEAR` | ⚪ | ⚪ | ⚪ 단가 재실측은 이번 사이클 없음 | ✅ [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **645차** · 별지 **0** · 제22호 **0** | §953-1 · §953-2 · 서식 번호 **미확인** |
+| **★★ FAQ 21862 · 엑셀 0 (BNK-953 #4 · 신규 URL · 확인)** | ⚪ 가져오기 컬럼 변경 0 · SEC-D34 유지 | ⚪ | ✅ [21862](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21862&type=web) `75887711` 전화 지연(260918) · 엑셀 0 · 홈 캐러셀은 21861/21859/21856 · 21863–21869 는 13,327B 껍질 · FAQ 233/21781 · 엑셀 제목은 21563·21534 · 홈 **53.9/9514/4902** `3c84585f` | ✅ [목록](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) `03fd9d9e` IDENTICAL · [본문 POST](https://www.silverangel.kr/silverangel/publicize/angel_news_view.do) idx **221607** · 94명 · 10월 교육은 추후 공지 · 문장에 엑셀·배차 0 | ⚪ | `ezcare_faq_rowid_21862_bnk953.html` · §953-3 |
+| **★ HEAD · merge gate 4 (BNK-953 #5)** | ✅ SHA BNK-952와 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · surefire **2505** · 모듈 **97.41%** · yaml `4aad7cc2` 는 test | ⚪ | ⚠ `/help/notice.ez` **404** `c8839f4e` IDENTICAL | ⚪ | ⚪ | §953-0 · §953-4 |
+
+> **직전 갱신**: 2026-10-08 (**BNK-952 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · `@RestController` **82** · `@Entity` **93** · 모듈 **97.41%**). ★★★ **surefire 2505 = 2485+20** · ★★★ **컨트롤러 82 · 엔티티 93** · ★★ **5-4 마스터 ≠ 일정 폼** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-952 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

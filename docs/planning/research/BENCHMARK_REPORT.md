@@ -1,9 +1,94 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:18:30Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:58:03Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §953 BNK-953 — 교차검증·갭 우선순위 8h+ · ★★★ **대시보드 id 40 · 오늘·공단 묶음은 7** · ★★ **FAQ 21862는 홈 캐러셀 밖의 전화 지연 안내** · 엑셀 컬럼 변경 0 · ★ **G14·v1.3-C·v2 CMS P0 재오픈 0** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:58:03Z -->
+
+**조사일**: 2026-10-08T03:58:03Z | **rotation**: 교차검증·갭 우선순위 8h+. BNK-952(2026-10-08T03:18:30Z) 이후 약 40분. 초점: (1) 이전 가정 번복 (§953-1) · (2) G14·대시보드·v1.3-C·v2 CMS 재정렬 (§953-2) · (3) 신규 공지·엑셀 포맷 스캔 (§953-3) · (4) planner 액션 (§953-4).
+
+### §953-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-952와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-952와 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106**. `/dashboard` · `/dashboard/hq` · `/clients/:clientId/care-plan-form` · `/transport/service-fees` · `/billing/cms` · `/clients/home-newsletter` · `/clients/linkage-records` 는 각 **1**. `/programs/catalog` · `/programs/groups` 는 **0**.
+- HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · `@RestController` **82** · `@Entity` **93** · Flyway **V197** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-952 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+
+### §953-1 · ★★★ 가정 번복 — 위젯 묶음 문장만 고친다
+
+`DashboardPage.jsx` `@29c2304` 의 `id:` 는 **40**개다. BNK-946 이 적은 묶음(출석 6 · 사례관리 4 · 기능회복 4 · 제공결과 8 · 급여계획 3 · 위험·욕구·등급 4 · 교육 1 · 근로계약 3 · 청구 5 · 카카오 1)을 더하면 **39**다. 빠진 id 는 `health`(오늘 건강)다. 오늘·공단을 **7**로 세면 40이 된다. 위젯이 늘어난 것은 아니다. 제목의 「위젯 id 40」은 유지하고, 묶음 문장만 고친다.
+
+| 묶음 | 개수 | id |
+|---|---|---|
+| 오늘·출석·건강·공단 | **7** | `attendance` · `absent` · `health` · `nhis` · `pending` · `nhisPendingReview` · `nhisComparisonGap` |
+| 사례관리 | 4 | `caseManagementReflection` · `Evaluation` · `AttendeeOpinion` · `EvaluationStatus` |
+| 기능회복 | 4 | `functionalRecovery` Provision/BenefitStart × Gap/Status |
+| 제공결과 | 8 | `provisionResult` 4주제 × Gap/Status |
+| 급여계획 (G14) | 3 | `carePlanFiveMonth` · `carePlanElevenMonth` · `carePlanReissue` |
+| 위험·욕구·등급 | 4 | `admissionRiskAssessmentGap` · `periodicRiskAssessmentGap` · `needsAssessmentGap` · `gradeChangeReassessmentDue` |
+| 교육 | 1 | `staffTrainingComplianceGap` |
+| 근로계약 | 3 | `employmentContractRenewalGap` · `RetentionExpiring` · `RetentionExpired` |
+| 청구 | 5 | `overdue` · `monthlyCap` · `cashReceiptPending` · `cashReceiptOverdue` · `claimGenerationGuard` |
+| 카카오 | 1 | `kakaoApiQuota` |
+
+`HQ_WIDGET_IDS` 는 **13**개다. `filterWidgetsForVariant(..., "hq")` 가 `/dashboard/hq` 에 쓴다. 급여계획 3개는 이 13개에 없다. 지점 `/dashboard` 에만 있다. 링크 대상은 기존과 같이 `/clients/care-plan-notifications` 이다.
+
+유지한 확인:
+
+1. 7-2-1 의료비공제는 `MEDICAL_EXPENSE_YEAR_BASIS` 의 `PAID_YEAR`(수납년도) · `CLAIM_YEAR`(청구년도)다. 화면은 `BillingStatisticsReportPage` → `/billing/reports/statistics`. BNK-950 정정은 그대로다.
+2. `/programs/catalog` 와 `/programs/groups` 는 0이다. 카탈로그 API 와 당일 일정 폼의 분리는 BNK-952 와 같다.
+3. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200** · 7,572B · `c886ff1f` = BNK-949 **BYTE-IDENTICAL** · 저장계수 **645차**. 「별지」 **0** · 「제22호」 **0**. BNK-946 의 인용 번복은 유지한다. 화면 제목의 「별지 제22호」는 이 URL 의 문장이 아니다.
+4. [법령 검색 `이동서비스일지`](https://www.law.go.kr/LSW/lsSc.do?menuId=1&query=%EC%9D%B4%EB%8F%99%EC%84%9C%EB%B9%84%EC%8A%A4%EC%9D%BC%EC%A7%80) HTTP **200** · 299,979B · `ae9b3590`. 정적 HTML 의 「검색결과」는 자음 입력용 스크립트와 저장 alert 뿐이다. 결과 행은 없다. 서식 번호는 **미확인**으로 남긴다. 결과 없는 셸은 스냅샷으로 덮어쓰지 않았다.
+
+### §953-2 · ★★ closed band — 필드와 우선순위
+
+| 축 | 경로 · 필드 | 이번 판정 | 우선순위 |
+|---|---|---|---|
+| G14 급여제공계획 | `/clients/:clientId/care-plan-form`. `planYear` 2000–2100 · `benefitServiceType` 6종(주야간보호·방문요양·방문목욕·방문간호·단기보호·통합재가) · 필수: 급여종류·작성일·작성자·세부목표·필요내용·세부제공내용·횟수·시간·종합의견. 작성일은 계획 연도와 같은 해. 수급자명·`notifiedAt` 은 선택 | ✅ LIVE. 경쟁사 input name **미확인** | P0 재오픈 0 |
+| 대시보드 | `/dashboard` id **40** · `/dashboard/hq` 는 그 중 **13**. 급여계획 3개는 지점만 | ✅ LIVE | P0 재오픈 0 · HQ 에 급여계획 위젯을 올리는 작업도 P0 아님 |
+| v1.3-C 이동서비스비 | `/transport/service-fees`. ④ 일지 보관은 #44 와 맞음. 화면 라벨은 「별지 제22호」. 서식 번호는 미확인 | ✅ LIVE | P0 재오픈 0 · 제목 개명도 P0 아님 |
+| v2 CMS | `AUTO_DEBIT_CMS` 250원/1건 · `VIRTUAL_ACCOUNT` 300원/1건 · `MULTI_ACCOUNT_SETTLEMENT` → `/billing/cms`. `CARD` → `/billing/easy-pay`. `CASH_RECEIPT` → `/billing/cash-receipts`. 5코드 `collectionImplemented=true` | ✅ LIVE | P0 재오픈 0 |
+
+id=5 는 **1.0**. id=7 은 **1.0**. id=2 는 **0.85**. id=12 는 **0.7**.
+
+### §953-3 · ★★ 공지·엑셀 — 21862는 급여 문의 폭주 안내
+
+**신규 증거**: [FAQ rowid=21862](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21862&type=web) HTTP **200** · 18,434B · `75887711`. 제목은 「고객센터 전화 연결 지연안내(260918)」. 본문은 직원 급여 문의가 늘어 전화와 콜백이 늦어진다는 안내이고, 번호는 **1644-0340** 이다. 「엑셀」 **0**.
+
+홈 캐러셀의 `noticeDetail` 은 **21861 · 21859 · 21856** 그대로다. FAQ 목록 앵커의 최대 rowid 는 **21781** 이라 21862 도 목록 233건 밖에 있다. 21863–21869 와 21870 · 21880 · 21900 은 HTTP 200 · **13,327B** 이고 질문 제목이 없는 껍질이다. 21862 다음에 제품 공지가 이어지지는 않는다.
+
+화면에 보이는 Top 5 문구는 명절수당 추가 지급 · 급여 화면의 「최저임금 확인」 · 요양보호사 시급 수정 · 장기근속장려금·중증수당 기관부담금 제외 · 급여 저장 후 수정이다. 같은 HTML 에서 `<a>` 의 href 가 문구와 어긋나 있다. 각 Channel 글의 본문은 **미확인**이다. 이 다섯 줄을 엑셀 열 변경으로 적지 않는다.
+
+[홈](https://ezcare.easyms.co.kr/) HTTP **200** · 73,184B · `3c84585f`. `data-count` **53.9 / 9,514 / 4,902 / 2,353 / 1,820**. 집계일 문구는 **2026.09** 다. BNK-951 `7a4ff019` 과의 차이는 CSS 쿼리 `1791426300` → `1791431662` 와 후기 슬롯이다. 도입 수는 같다.
+
+[FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) HTTP **200** · 80,058B · `4d39293b`. rowid **233** · 최대 **21781** · 추가 0 · 삭제 0. 조회수 13곳이 늘었다. 제목에 엑셀이 있는 항목은 [21563](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21563&type=web) 엣지 다운로드와 [21534](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21534&type=web) 크롬 다운로드뿐이다. **가져오기 컬럼 변경 0**.
+
+`/help/notice.ez` 는 HTTP **404** · 2,265B · `c8839f4e` = BNK-946 **BYTE-IDENTICAL**.
+
+엔젤 [목록](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) HTTP **200** · 55,011B · `03fd9d9e` = BNK-946 **BYTE-IDENTICAL**. 최신은 제140차 · idx **221607** · 2026-09-17 이다.
+
+**신규 증거(본문)**: `POST` [angel_news_view.do](https://www.silverangel.kr/silverangel/publicize/angel_news_view.do) `Tmp_idx=221607`. 25초에 **1,399,461B** 에서 끊겼고 `</html>` 은 없다. 이미지 앞 문장은 저장했다. 등록일 **2026-09-23**. 참석 **94명**. 10월 교육은 「추후 공지사항」이다. 그 문장에 엑셀 · 배차 · 이동서비스는 **0**이다. 일정 숫자와 커리큘럼 표는 이미지 쪽이라 **미확인**이다.
+
+### §953-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. P1 승격 **0**. 수가 시드 변경 **0**.
+
+1. G14 · `/dashboard` · `/transport/service-fees` · `/billing/cms` 는 LIVE 다. 우선순위를 다시 열지 않는다.
+2. 대시보드 id 는 **40**이다. 오늘·공단 묶음은 **7**이고 `health` 를 포함한다. 통합 대시보드에 보이는 것은 **13**개이고, 급여계획 3개는 지점에만 있다. 그 3개를 통합 화면으로 올리는 작업을 P0 로 열지 않는다.
+3. FAQ 21862 는 고객센터 전화 지연이다. 가져오기 양식 변경이 아니다. SEC-D34 와 엑셀 파서를 열지 않는다.
+4. 홈이 보여주는 색인 밖 공지는 21856 · 21859 · 21861 세 장이다. 21862 는 그 캐러셀에 없는 네 번째 글이다. 21863 이후 빈 껍질을 신규 기능 공지로 세지 않는다.
+5. 「별지 제22호」는 #44 와 검색 셸의 정적 HTML 에 없다. 일지 화면을 미완으로 되돌리거나 제목을 이 사이클에서 바꾸지 않는다.
+6. 7-2-1 은 통계 경로다. 현금영수증은 `/billing/cash-receipts` 다.
+7. git 은 BNK-952 와 같다. FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+주력 `cross_gap_priority_bnk953.txt` + `ezcare_faq_rowid_21862_bnk953.html` + `silverangel_angel_news_view_221607_bnk953.txt` + `ezcare_home_live_bnk953.html` + `nhis_jo44_live_bnk953.html`. 신규 증거 URL 2(FAQ 21862 · 엔젤 뉴스 본문 POST). 기존 URL 재실측 4(홈 · FAQ 목록 · NHIS #44 645차 · 엔젤 목록). 가정 번복 1(위젯 묶음 문장). 미확인 유지(서식 번호 · Channel Top 5 본문 · 교육 이미지의 일정). per-cycle minimum 4종 충족.
+
+---
 
 ## §952 BNK-952 — ogada git 실측 6-8h · ★★★ **surefire 2505 = `@Test` 2485 + 매개변수 20** · ★★★ **컨트롤러 단어 경계 82 · 엔티티 93** · ★★ **5-4 마스터와 당일 일정 폼은 다른 표** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · npm **2865** · 신규 진성갭 0 · merge gate **4**
 

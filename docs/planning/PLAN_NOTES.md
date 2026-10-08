@@ -1,5 +1,22 @@
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T15:41:05Z -->
 
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:58:03Z -->
+
+### [BNK] BNK-953 인사이트 (2026-10-08) — ★★★ **대시보드 id 40 · 오늘·공단 7** · ★★ **FAQ 21862 전화 지연** · ★ **closed band P0 재오픈 0**
+
+| 항목 | 내용 | 반영 |
+|---|---|---|
+| **대시보드** | id **40**. 오늘·공단 **7**(`health` 포함). HQ **13**. 급여계획 3개는 지점만. BNK-946 묶음 합은 39 | 문장 정정 · 위젯 추가 없음 · P0 아님 |
+| **G14** | `/clients/:clientId/care-plan-form` 필수 9칸 · 급여종류 6종 · 작성일=계획 연도 | P0 재오픈 0 · 경쟁사 input name 미확인 |
+| **v1.3-C · CMS** | service-fees LIVE. CMS 5코드. 카드=`/billing/easy-pay` · 현금영수증=`/billing/cash-receipts`. #44 `c886ff1f` **645차** · 별지 0 | 제목 유지 · P0 아님 |
+| **공지·엑셀** | [21862](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21862&type=web) 전화 지연(260918). 홈은 21861/21859/21856. 엑셀 제목은 브라우저 2건. 엔젤 221607 본문은 교육 94명 | 컬럼 변경 0 · SEC-D34 유지 |
+| **git** | FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4** | BNK-952와 동일 SHA |
+
+1. **우선순위**: G14 · 대시보드 · v1.3-C · v2 CMS 를 P0 로 다시 열지 않는다. 급여계획 위젯 3개를 통합 대시보드 P0 로 올리지 않는다.
+2. **위젯 문장**: 오늘·공단은 7이다. 합계 40은 유지한다.
+3. **엑셀**: 21862 와 FAQ 제목에 가져오기 컬럼 변경은 없다.
+4. **서식 번호**: #44 와 검색 셸 정적 HTML 에 「별지 제22호」가 없다. 일지 제목은 유지한다.
+
 <!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T20:25:00Z -->
 
 ### [BNK] BNK-946 인사이트 (2026-10-07) — ★★★ **NHIS #44에 별지 제22호 없음** · ★★ **공지 3건은 FAQ 색인 밖** · ★ **closed band P0 재오픈 0**
