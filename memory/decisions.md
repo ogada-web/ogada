@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-959 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **1.8과 1.9는 같은 화면 이름** · ★★ **달력 출퇴근부 ≠ 일일 로스터** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 837.86s. `mvn -q test` surefire **2505/0/0/0**. [출퇴근부](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EC%B6%9C%ED%87%B4%EA%B7%BC%EB%B6%80-%EC%9E%91%EC%84%B1%EB%B2%95-27df8d81) `5467e671`. [근무일지](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EA%B7%BC%EB%AC%B4%EC%9D%BC%EC%A7%80-%EC%9E%91%EC%84%B1%EB%B2%95-7537add3) `ab7e77c0`. [8-4 CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/staff/view.staff_work_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) `[]` · `58e0494c`.
+
+### 결정
+
+1. **★★★ 실행 합계는 다시 2505와 2865다 (확인)** — 같은 SHA를 이번 사이클에 다시 돌렸다. strict `@Test` **2485**. 매개변수 20행(7+5+8). surefire **2505/0/0/0** · 418보고서 · 08:11:09Z–08:12:49Z. npm **493파일/2865** PASS · 837.86s · exit 0. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · Flyway **V197** · 모듈 **97.41%**(28.25/29). **planner: 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다. 837.86s 는 개수 변화가 아니다.**
+
+2. **★★★ 1.8과 1.9는 화면 id가 아니다 (확인)** — 출퇴근부 글은 `[1.9 직원 출퇴근부/근무일지]`, 근무일지 글은 `[1.8 직원 출퇴근부 / 근무일지]`다. 디스크 nav 의 이름은 같고 url 은 `worker-timesheet3` 이며 숫자는 없다. **가정**: 두 번호는 같은 PGID 다. 어느 번호가 정본인지는 **미확인**. **planner: 1.8·1.9 로 Route 를 만들지 않는다. 이번 사이클은 데모에 다시 로그인하지 않았다.**
+
+3. **★★ 이지케어 출퇴근은 달력이고 ogada 8-4는 일일 로스터다 (확인)** — 도움말은 직원 선택, 날짜, 시간 저장, 「일괄배정」, 근무일지 아이콘, 결재라인·서명란·PDF 다. ogada 는 근무일, `MANUAL`/`MOBILE`/`NFC`, 표 7열, `GET` 과 `POST /check-in`·`/check-out` 이다. 근무내역·결재·PDF 경로는 0 이다. **planner: 일괄배정과 결재 출력을 P0 로 열지 않는다. 본문은 사회복지사·상근직 지도점검이고 주야간 문장이 아니다. id=8 은 0.85.**
+
+4. **★ 작성 완료를 색만으로 옮기지 않는다 (확인)** — 근무일지 글은 아이콘 색 변경으로 작성일을 본다. `CalendarDayMarker` 는 색과 패턴과 읽기 텍스트를 같이 두지만 `/staff/attendance` import 는 0 이다. 케어포 `view.staff_work_manage` CDX 는 `[]` 라 input name 은 **미확인**이다. **planner: 색 변경 문장을 완료 표시의 유일한 수단으로 가져오지 않는다. NFC 방식은 유지한다.**
+
+5. **★ HEAD 는 BNK-958 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml·gitlink `4aad7cc2` 는 로컬 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 1**(1.8=1.9=같은 PGID) · **미확인 3**(정본 번호 · 달력 input name · 케어포 8-4 input name) · 신규 snapshot 은 `_bnk959` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-958 엔젤·롱텀·규제 4-6h · ★★★ **5·10·20km 정각은 위 구간** · ★★★ **제37조 마-1~5 확인** · ★★ **13시간 정각은 라-4** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [제34조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16`. [제31조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768529) `536ffd93`. [제37조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768533) `b4530d05`. [판매유형](https://www.silverangel.kr/silverangel/angelsystem/sale.do) `99ff5cb4`. git FE `29c2304` · BE `92466cfb`.

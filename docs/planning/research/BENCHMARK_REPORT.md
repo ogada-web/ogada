@@ -1,9 +1,73 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T07:40:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T08:25:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §959 BNK-959 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **도움말 1.8과 1.9는 같은 화면 이름** · ★★ **이지케어는 달력·일괄배정·결재 출력, ogada는 일일 로스터** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T08:25:00Z -->
+
+**조사일**: 2026-10-08T08:25:00Z | **rotation**: ogada git 실측 6-8h. BNK-958(2026-10-08T07:40:00Z) 이후 약 45분. 초점: (1) develop HEAD·Route·Page·모듈 % 재산정 (§959-0) · (2) `npm test`·`mvn test` 재실행 (§959-1) · (3) 이지케어 출퇴근부·근무일지 워크플로 (§959-2) · (4) planner 액션 (§959-3).
+
+### §959-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-958과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-958과 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133**(`<Route` 132 + `<Routes>` 1) · path **132** · 깊이 최대 **4** · d4=**6** · path `report` **29/132=22.0%**. prefix 는 billing 17 · nursing 16 · care 16 · staff **13** · clients 11 · transport 9 · programs **8** · `/accounting` **1** · `/staff/attendance` **1**. `/programs/catalog` 는 **0**. `/programs/groups` 는 **0**. Page **106**.
+- 모듈은 엔트리 **29** · 합 **28.25** · **97.41%**. 비-1.0 은 id=2·8·10 이 **0.85**, id=12 가 **0.7**. id=5·id=7·id=11 은 **1.0**. coverage 파일은 FE SHA 와 같이 바뀌지 않았다. 과거 매트릭스 행의 SHA 는 그 차수 실측이다. 이번 차수 ogada 열은 `@29c2304`/`@92466cfb` 다.
+
+### §959-1 · ★★★ 주석 개수와 실행 개수를 다시 돌린다
+
+| 계수 | 값 | 비고 |
+|---|---|---|
+| `@Test` 줄 시작 | **2485** | BNK-956 과 같은 주석 수. 카탈로그 12 포함 |
+| `@ParameterizedTest` | 3메서드 · 실행 **20**행 | 역할 7 · 알림 이벤트 5 · 은행 8 |
+| surefire | **2505** / 실패 0 / 오류 0 / 건너뜀 0 | 2485+20. `mvn -q test` exit 0. 보고서 418개 · 08:11:09Z–08:12:49Z · 경과 112s |
+| npm test | 파일 **493** · 테스트 **2865** PASS · 837.86s | exit 0. 시작 08:10:59Z · 종료 08:24:57Z. e2e 53파일은 제외. 디스크 테스트 파일 **546**(230+316) |
+| `@RestController` 단어 경계 | **82** | 부분문자열 83 은 `@RestControllerAdvice` 1건 |
+| `@Entity` | **93** | |
+| HTTP | **450** | GET **234** / POST **147** / PATCH **46** / PUT **13** / DELETE **10** |
+| Flyway | V1–**V197** | 결번 0 |
+
+yaml `2479/2479` 는 2485 도 2505 도 아니다. BNK-952 는 830.76s, BNK-956 은 833.95s, 이번은 837.86s 다. 테스트 개수는 같다. 서버 미기동은 이 단위 테스트 결과에 없다.
+
+### §959-2 · ★★★ 메뉴 번호 1.8 ≠ 1.9 · ★★ 달력 출퇴근부와 일일 로스터
+
+**신규 증거**: [사회복지사 출퇴근부 작성법](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EC%B6%9C%ED%87%B4%EA%B7%BC%EB%B6%80-%EC%9E%91%EC%84%B1%EB%B2%95-27df8d81) HTTP **200** · 229,032B · `5467e671`. 제목과 설명은 「사회복지사 및 상근직의 출퇴근 기록」. 본문 경로는 `[1 직원] > [1.9 직원 출퇴근부/근무일지]`.
+
+**신규 증거**: [사회복지사 근무일지 작성법](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EA%B7%BC%EB%AC%B4%EC%9D%BC%EC%A7%80-%EC%9E%91%EC%84%B1%EB%B2%95-7537add3) HTTP **200** · 233,032B · `ab7e77c0`. 설명은 현지조사·모니터링 대응. 본문 경로는 `[1 직원] > [1.8 직원 출퇴근부 / 근무일지]`.
+
+| 단계 | 이지케어 도움말 | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 메뉴 | 두 글의 화면 이름은 같다. 번호만 **1.9** 와 **1.8** 이다. 디스크 nav `menuNo` 1 「직원」의 항목 이름은 「직원 출퇴근부/근무일지」이고 url 은 `worker-timesheet3` 다. JS 에 1.8·1.9 숫자는 없다 | `/staff/attendance` 제목 「직원 출퇴근 (8-4)」. 케어포 번호와 이지케어 번호를 한 칸에 적지 않음 |
+| 입력 | 좌측 직원 · 우측 달력 날짜 · 출퇴근 시간 저장 · 상단 「일괄배정」 | 근무일 · 출근 방식 `MANUAL`/`MOBILE`/`NFC` · 표 7열(직원·역할·상태·출근 시각·출근 방식·퇴근 시각·처리) · 요약 출근/퇴근/미출근 |
+| 근무일지 | 달력 「근무일지」 아이콘 · 일별 근무내역 · 작성일은 아이콘 색이 바뀜 | 근무내역 칸 0. `CalendarDayMarker` 는 색+패턴+읽기 텍스트인데 이 페이지 import 는 **0** |
+| 출력 | 출퇴근부: 결재라인·서명란. 근무일지: 기간 · PDF 또는 인쇄 · 결재라인 · 빈 서식 | 결재·PDF 경로 0 |
+| API | 달력 input name 은 이미지라 **미확인** | `GET /api/v1/staff/work-attendance` · `POST /check-in` · `POST /check-out`. 역할 `HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER` |
+
+참고 문장은 「사회복지사와 상근직은 출퇴근 기록을 반드시 남겨야 하며, 지도점검 대상 서류」이고 「월 단위로 정리 및 출력」을 권한다. 본문에 「주야간」은 없다. HTML 의 「주야간」 1건은 옆 보험료 글이다. NFC 단어는 본문 **0** 이다. 그림 안에 NFC 가 있는지는 **미확인**.
+
+**가정**: 1.8 과 1.9 는 같은 `worker-timesheet3` 를 가리킨다. 어느 번호가 지금 도움말 정본인지는 **미확인**. 이번 사이클은 데모에 다시 로그인하지 않았다.
+
+**신규 증거**: [view.staff_work_manage CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/staff/view.staff_work_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) HTTP **200** · 3B · `58e0494c` · 본문 `[]`. 빈 배열 해시는 BNK-957 체중 view CDX 와 같다. URL 은 이번이 처음이다. 케어포 8-4 의 input name 은 **미확인**.
+
+### §959-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=8 은 **0.85**. id=2·id=10 도 **0.85**. id=12 는 **0.7**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 과 부모 gitlink 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. `@Test` 정본은 **2485** 다. 이번 실행 합계는 surefire **2505**, npm **2865/2865** 다. 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다. 소요 837.86s 는 개수 변화가 아니다.
+3. 컨트롤러는 **82**, 엔티티는 **93**, HTTP 는 **450**, 모듈은 **97.41%**, merge gate 는 **4** 다.
+4. 1.8 과 1.9 를 Route id 로 쓰지 않는다. 화면 이름은 하나이고 번호만 두 글이 다르다. nav 정본 이름은 「직원 출퇴근부/근무일지」, PGID 는 `worker-timesheet3` 다.
+5. 달력 일괄배정·근무내역·결재라인 PDF 를 이번 사이클의 P0 로 열지 않는다. 그 문장은 재가 사회복지사·상근직 지도점검이고, 주야간 본문은 아니다. ogada 8-4 로스터와 NFC 방식은 유지한다. 색만으로 작성 완료를 보여 주는 문장을 가져오지 않는다.
+6. 수가 시드는 유지한다. 서버 미기동은 단위 테스트 실패가 아니다.
+
+주력 `ogada_git_baseline_bnk959.txt` + `channelio_27df8d81_bnk959.html` + `channelio_7537add3_bnk959.html` + `carefor_staff_work_manage_cdx_bnk959.json`. 신규 증거 URL 3(출퇴근부 · 근무일지 · 8-4 CDX). 가정 1(1.8=1.9=같은 PGID). 미확인 3(정본 번호 · 달력 input name · 케어포 8-4 input name). per-cycle minimum 4종 충족.
+
+---
 
 ## §958 BNK-958 — 엔젤·롱텀·규제 4-6h · ★★★ **러-1은 5km 미만 · 5km 정각은 러-2** · ★★★ **제37조 마-1~5 가 공단 HTML 과 같다** · ★★ **13시간 정각은 라-4** · ★★ **엔젤 판매유형 4종 · 금액 없음** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 
