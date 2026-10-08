@@ -5,7 +5,7 @@
 > **방법**: STRIDE + 데이터 흐름 기반  
 > **시스템**: ogada — 주간보호센터 B2B SaaS (멀티테넌트)  
 > **스택**: React SPA ↔ Spring Boot API ↔ PostgreSQL  
-> **2026-10-08 36차 갱신**: backend develop **`d73aec11`** · frontend **`29c2304`**(양 스트림 **CLEAN**). local test BE **`4aad7cc2`** · FE **`29c2304`**. origin **`1e8857b`/`5cf667b`**(BE **+2** · FE **+1** · SEC-D18 **Monitor** · SEC-D14 P0는 origin에 유지). **Pass**: US-P01 그룹 배정은 org·branch·역할 안(표시 이름만). **Open 유지**: SEC-D47 — CVE-2026-53668은 `react-router-dom@6.30.6`, 백슬래시 오픈 리다이렉트·SSR은 7.18.0+ · SEC-D48 dev high 4. **36차 신규 BLOCK 0**. 상세 `SECURITY_AUDIT.md` §1.38.
+> **2026-10-08 36차 갱신**: backend develop **`92466cfb`** · frontend **`29c2304`**(양 스트림 **CLEAN**). local test BE **`4aad7cc2`** · FE **`29c2304`**. origin **`1e8857b`/`5cf667b`**(BE **+3** · FE **+1** · SEC-D18 **Monitor** · SEC-D14 P0는 origin에 유지). **Pass**: US-P01 그룹 배정(표시 이름만)과 프로그램 마스터 V197(이용자 PII 없음). **Open 유지**: SEC-D47 — CVE-2026-53668은 `react-router-dom@6.30.6`, 백슬래시 오픈 리다이렉트·SSR은 7.18.0+ · SEC-D48 dev high 4. **36차 신규 BLOCK 0**. 상세 `SECURITY_AUDIT.md` §1.38.
 
 ---
 
@@ -652,7 +652,7 @@ flowchart TB
 | 운영 시크릿은 시크릿 매니저 | **부분 충족** (develop prod: `ProductionSecretValidator` / test stale) | test merge + 시크릿 매니저 |
 | 파일럿 사용자 기기 무악성 | 낮음 | 보호자 모바일 고려 |
 | Spring Boot 단일 JVM 또는 키 공유 | **부분 충족** (develop prod 키 필수; test stale) | test merge |
-| 검증 코드 = 배포 산출물 | **부분** — FE local test == develop `29c2304` · BE local test `4aad7cc2`는 develop `d73aec11`보다 1커밋 뒤(US-P01) · origin은 `1e8857b`/`5cf667b`(BE **+2**, FE **+1**) | SEC-D18 Monitor · 이관은 QA-B690 · push는 별도 호출 |
+| 검증 코드 = 배포 산출물 | **부분** — FE local test == develop `29c2304` · BE local test `4aad7cc2`는 develop `92466cfb`보다 2커밋 뒤(그룹·카탈로그) · origin은 `1e8857b`/`5cf667b`(BE **+3**, FE **+1**) | SEC-D18 Monitor · push는 별도 호출 |
 
 ---
 
@@ -684,14 +684,14 @@ flowchart TB
 | 13 | SEC-D36 | 2 | staff access key 키 길이/charset 확장 검토(현행 rate limit 의존·24차 carry) |
 | 14 | SEC-D38 | 2 | **(NEW 25차)** prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시·운영 가이드 문서화 |
 | 15 | SEC-D39 | 2 | **(NEW 25차)** CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토 |
-| 16 | SEC-D18 | 2 | **Monitor**(36차) — origin은 `1e8857b`/`5cf667b`, develop은 `d73aec11`/`29c2304`(BE **+2** · FE **+1**). local test BE 1 behind |
+| 16 | SEC-D18 | 2 | **Monitor**(36차) — origin은 `1e8857b`/`5cf667b`, develop은 `92466cfb`/`29c2304`(BE **+3** · FE **+1**). local test BE 2 behind |
 | 17 | **SEC-D41** | — | **Mitigated** — 기본 30일·최대 366일·200건 |
 | 18 | **SEC-D42** | 2 | safety `payload_json` PII 평문 — P3 UUID/암호화 |
 | 19 | SEC-D43 residual | 2 | **Mitigated 강화** — path allowlist 착지 · 잔여 org-scoped BPO credential 장기 |
 | 20 | **SEC-D44** | — | **Mitigated** — 6-digit · 잔여 fail throttle |
 | 21 | **SEC-D45** | — | **Mitigated** — payroll 필드 redact · PENDING 구간 잔여 |
 | 22 | **SEC-D46** | 2 | 단일 라벨·`.home.arpa`·`.svc` 착지(로컬 `4aad7cc2`/`29c2304`) · 잔여: prod allowlist · origin 미반영 |
-| 23 | T-I20 / US-P01 | 2 | **Pass** `@d73aec11` — 그룹 멤버는 표시 이름·테넌트 FK. 잔여: 페이지 상한·겹침은 앱 검사 |
+| 23 | T-I20 / US-P01 | 2 | **Pass** 그룹 `@d73aec11` · 카탈로그 `@92466cfb`(V197, 이용자 PII 없음). 잔여: 멤버 목록 페이지 상한·겹침은 앱 검사 |
 | ✅ | SEC-D35 WT CLEAN · program photo Pass · SEC-D43 path · QA-B95 decode · SEC-D17·D19·D14·D23·D24 | ↓ | develop `a742788`/`592a483` Pass/Mitigated/Fixed |
 
 ---
@@ -717,4 +717,4 @@ flowchart TB
 3. 파일럿 배포 시 MFA 요구 여부
 
 ---
-*다음 갱신: origin에 `d73aec11`/`29c2304` 반영(SEC-D18)·US-P01 test 이관(QA-B690)·react-router-dom 6.30.6 후 7.18.0+(SEC-D47)·dev audit high(SEC-D48)·poi-ooxml 5.4.0+(SEC-D4)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·prod attachment allowlist(SEC-D46 잔여)·safety payload_json PII(SEC-D42)·org-scoped BPO credential(SEC-D43 residual) 또는 신규 src 변경 후*
+*다음 갱신: origin에 `92466cfb`/`29c2304` 반영(SEC-D18)·US-P01 test 이관·react-router-dom 6.30.6 후 7.18.0+(SEC-D47)·dev audit high(SEC-D48)·poi-ooxml 5.4.0+(SEC-D4)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·prod attachment allowlist(SEC-D46 잔여)·safety payload_json PII(SEC-D42)·org-scoped BPO credential(SEC-D43 residual) 또는 신규 src 변경 후*
