@@ -4,6 +4,28 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-958 엔젤·롱텀·규제 4-6h · ★★★ **5·10·20km 정각은 위 구간** · ★★★ **제37조 마-1~5 확인** · ★★ **13시간 정각은 라-4** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [제34조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16`. [제31조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768529) `536ffd93`. [제37조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768533) `b4530d05`. [판매유형](https://www.silverangel.kr/silverangel/angelsystem/sale.do) `99ff5cb4`. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 거리 문구는 미만·이상이다 (확인)** — 러-1 은 5km 미만 830원, 러-2 는 5km 이상~10km 미만 2,630원, 러-3 은 10km 이상~20km 미만 5,230원, 러-4 는 20km 이상 8,630원. GIF 는 BNK-945 와 같다. `resolveFromKm` 의 `<=` 는 5·10·20km 정각만 한 단계 아래로 둔다. **planner: 금액 시드는 유지한다. 정각 세 점의 비교만 나중에 맞출지 판단한다. 이번 사이클에서 코드를 고치지 않는다. id=2 는 0.85.**
+
+2. **★★★ 제37조 마-1~5 는 공단 HTML 과 같다 (확인)** — 74,060 · 68,580 · 63,350 · 61,680 · 60,000. BNK-955 가 이미지 **미확인**으로 둔 칸이다. 표에 인지지원 행은 없다. 제36조의3 ①은 가족휴가제 단기보호의 인지지원을 마-5 로 산정한다. **planner: 일반 주야간 시드에 넣지 않는다. 가족휴가 문장을 일반 단기보호 전체로 넓히지 않는다. 일반 단기보호 인지지원은 미확인이다.**
+
+3. **★★ 13시간 정각은 라-4 다 (확인)** — 제31조 분류는 **라-1~5** 다. 이동의 **러**와 다른 번호다. 30칸은 `Nhis2026DaycareRateCatalog` 와 같다. 라-4 는 10시간 이상~13시간 이하, 라-5 는 13시간 초과다. **planner: 러와 라를 한 코드로 적지 않는다. 시간 해석 함수는 아직 없다. 금액은 유지한다. id=7 은 1.0.**
+
+4. **★★ 월 한도 6칸과 치매전담실 사-1~5 는 기록이다 (확인)** — 제13조 2,512,900 · 2,331,200 · 1,528,200 · 1,409,700 · 1,208,900 · 676,320 은 `MonthlyBenefitCapCatalog` 와 같다. 제74조는 1등급 열이 없고 사-1 의 3~6시간 2등급은 48,700원이다. 사-4 도 13시간 이하다. **planner: 한도액을 다시 쓰지 않는다. 사 표를 일반 30칸에 넣지 않는다.**
+
+5. **★ 판매유형 4종에는 단가가 없다 (확인)** — ASP · 자체서버 · 단독구축 · 전환형. 로그인 필드는 `f_code` · `user_id` · `user_password`. 「원」은 0 이고 배차는 0 이다. lcms 는 type3 `7775b5b4` 로 돌아왔다. #44 `c886ff1f` 647차. 별지 제22호는 0 이다. **planner: CMS 단가와 판매유형을 한 표로 적지 않는다. 식단 MOU 를 갭으로 세지 않는다.**
+
+6. **★ HEAD 는 BNK-957 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · merge gate **4**. yaml·gitlink `4aad7cc2` 는 로컬 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 해소 2**(km 정각 · 13시간 정각) · **미확인 2**(일반 단기보호 인지지원 · 판매유형 단가) · 신규 snapshot 은 `_bnk958` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-957 케어포 역공학 0-2h · ★★★ **시설 2-1-2 ≠ 주야간 3-1-2** · ★★★ **ogada 2-11·2-12·2-13 은 시설 메뉴에 없음** · ★★ **L07 rpt 5 · 제목 리포트 3** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: 디스크 `carefor_func_live_bnk943.php` `0f1858cd` · `carefor_demo_work_live_bnk943.html` `007911c9`. 오리진 HTTP **000**. [체중 view CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/nursing/view.nursing_weight_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) HTTP 200 · `[]` · `58e0494c`. git FE `29c2304` · BE `92466cfb`.

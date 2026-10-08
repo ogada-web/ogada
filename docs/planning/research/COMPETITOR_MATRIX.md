@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:56:47Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T07:40:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,18 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-957 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **시설 2-1-2 ≠ 주야간 3-1-2** · ★★★ **2-11·2-12·2-13 은 시설 메뉴에 없음** · ★★ **L07 rpt 5 · 제목 리포트 3** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+> **최종 갱신**: 2026-10-08 (**BNK-958 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **5·10·20km 정각은 위 구간** · ★★★ **제37조 마-1~5 = 74,060~60,000** · ★★ **13시간 정각 = 라-4** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+
+| 기능 / 서비스 항목 (BNK-958 delta·엔젤·롱텀·규제 4-6h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 러-1~4 거리 문구 (BNK-958 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ 금액 830 / 2,630 / 5,230 / 8,630. `resolveFromKm` 은 5·10·20 에 `<=`. 정각 3점은 고시보다 한 단계 아래. id=2 **0.85** | ⚪ | ⚪ | ⚪ | ✅ [GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16` · 러-1 **5km 미만** · 러-2 **5km 이상~10km 미만** · 러-3 **10km 이상~20km 미만** · 러-4 **20km 이상** · [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **647차** · 별지 **0** | §958-1 · 금액 시드 유지 · 코드 변경 없음 |
+| **★★★ 라-1~5 · 13시간 정각 (BNK-958 #2 · 확인)** | ✅ 30칸 시드와 동일. 시간 해석 함수 없음. 13시간 정각은 **라-4**. id=7 **1.0** | ⚪ | ⚪ | ⚪ | ✅ [제31조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768529) `536ffd93` · 라-4 **10시간 이상~13시간 이하** · 라-5 **13시간 초과** | §958-2 · 러와 라를 한 코드로 적지 않음 |
+| **★★ 제37조 마-1~5 · 제74조 사 (BNK-958 #3 · 신규 URL · 확인)** | ⚪ 74,060 · 사 표 시드 없음. 일반 주야간 시드에 넣지 않음 | ⚪ | ⚪ | ⚪ | ✅ [제37조](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768533) `b4530d05` 마-1 **74,060** ~ 마-5 **60,000**. 인지지원 행 없음. 가족휴가 제36조의3 은 마-5. [제74조](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768597) `6db26b7f` 사-1 2등급 **48,700** · 1등급 열 없음 | §958-2 · 일반 단기보호 인지지원 **미확인** |
+| **★★ 월 한도 6칸 (BNK-958 #4 · 확인)** | ✅ `MonthlyBenefitCapCatalog` 2,512,900 · 2,331,200 · 1,528,200 · 1,409,700 · 1,208,900 · 676,320 | ⚪ | ⚪ | ⚪ | ✅ [제13조 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768521) `a435de9f` | §958-2 · 한도 재작성 없음 |
+| **★★ 판매유형 4종 (BNK-958 #5 · 신규 URL · 확인)** | ⚪ 공개 단가 없음 · 배차 갭 아님 | ⚪ | ⚪ | ✅ [sale.do](https://www.silverangel.kr/silverangel/angelsystem/sale.do) `99ff5cb4` · ASP · C/S · 단독구축 · 전환형 · 「원」 **0** · 배차 **0** · 로그인 `f_code`/`user_id`/`user_password` | ✅ [lcms](https://www.lcms.or.kr/) `7775b5b4` type3 CJ MOU · BNK-955 type1 에서 **회전** | §958-3 · 단가 **미확인** |
+| **★ HEAD · merge gate 4 (BNK-958 #6)** | ✅ SHA BNK-957과 같음 · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** | ⚪ | ⚪ | ⚪ | ⚪ | §958-0 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-957 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **시설 2-1-2 ≠ 주야간 3-1-2** · ★★★ **2-11·2-12·2-13 은 시설 메뉴에 없음** · ★★ **L07 rpt 5 · 제목 리포트 3** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
 
 | 기능 / 서비스 항목 (BNK-957 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
