@@ -2480,6 +2480,16 @@
 
 ### 문서 작성 질문
 
+### [TWR] 프로그램 의견·월간 계획·외부강사 (2026-10-08T13:00:00Z)
+
+- **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `App.jsx` 에 `/programs/feedback`·`/programs/plans`·`/programs/instructors` Route 는 없다. 프로그램 컨트롤러는 일정·참여·사진·카탈로그·그룹·리포트·기능회복뿐이다.
+- **만족도**: `ProgramParticipationForm` 기본값은 `4`(만족). `ProgramService.resolveSatisfaction` 은 불참에 값이 있으면 「결석 기록에는 만족도를 입력할 수 없습니다.」 참여인데 비면 「참여 시 만족도를 입력해야 합니다.」 범위는 1~5.
+- **일정 유형**: `ProgramScheduleForm` 은 `programType` 을 보내지 않는다. `ProgramType.normalize(null)` 은 `GENERAL`. 화면 라벨 「담당」은 `facilitator` 자유 글이다. 일정 `POST` 는 `HQ_ADMIN`·`BRANCH_ADMIN` 만. 사회복지사·요양보호사 안내 문장은 「센터 관리자에게 프로그램 일정 등록을 요청하세요.」
+- **급여제공결과 평가**: `CreateProvisionResultEvaluationRequest` 는 `clientId`·`evaluationDate`·`overallSummary`·`evaluatorName`. 같은 기관·이용자·해면 「해당 연도의 급여제공결과 평가가 이미 등록되어 있습니다.」 화면은 목록과 `GET …/compliance` 를 `Promise.all` 로 부른다. 준수 현황은 요양보호사 **403** 이라 목록까지 실패할 수 있다. 등록·수정은 통합 관리자·센터장·사회복지사.
+- **다른 화면**: 기능회복 `plans` 는 이용자·연도 계획. 카탈로그 `goal` 은 목표 문장. 선임 업무수행일지와 보수교육 `instructorName` 은 프로그램 강사 명단이 아니다.
+- **문서**: CHANGELOG 2026-10-08 카드 · FAQ **Q975** · 사용자 매뉴얼 §1-5·§5-9 · 관리 가이드 §1-4·§10-11-2c · 배포 가이드 §1-4.
+- **미문서 잔여**: 프로그램 마스터·수급자 그룹은 API만 있고 화면(`/programs/catalog`·`/programs/groups`)은 없다.
+
 ### [TWR] 서명 그림·직인·결재라인 (2026-10-08T11:48:16Z)
 
 - **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `SettingsPage` 탭은 보안·카카오 API·로그인 이력·감사 로그·백업이다. `allowedRolesForPath("/settings")` 는 `sysadmin` 만이다. `App.jsx` 에 `/settings/profile` Route 는 없다.

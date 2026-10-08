@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T11:48:16Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T13:00:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 서명 그림·기관 직인·쉼표 결재라인은 없음 · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 프로그램 의견수렴·월간 계획·외부강사 명단은 없음 · 당일 만족도는 참여 한 줄 · 급여제공결과 평가는 연 1회 · 서명 그림·기관 직인·쉼표 결재라인은 없음 · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **프로그램 의견·월간 계획·외부강사** ✅ (**Q975**, US-P01): **`/programs/feedback`·`/programs/plans`·`/programs/instructors` 없음** · 만족도는 `POST /programs/participations` **1~5** · 화면 일정은 유형 미전송 → **`GENERAL`** · 담당은 `facilitator` 자유 글 · 급여제공결과 평가는 이용자·해 **1건** · 요양보호사는 준수 `GET …/compliance` **403** 으로 화면 목록이 같이 실패할 수 있음
 > - **서명 그림·직인·결재라인** ✅ (**Q974**, G34): `/settings` 는 **`sysadmin`** · 탭 **5**(보안·카카오 API·로그인 이력·감사·백업) · **서명 탭·`/settings/profile`·직인 jpg·쉼표 결재라인 없음** · 업무수행일지 `POST …/lead-caregiver-logs/{logId}/sign` 는 `signerUserId`·`signatureMethod`(`DIRECT`·`SMS_VERIFIED`) · **그림 없음** · 완료 후 수정 거부 · **화면** `/staff/lead-caregiver-log` 는 **`branch_admin`·`hq_admin`만** · 메뉴에 있는 `social_worker`·`caregiver` 는 **`/forbidden`** · API 는 네 역할 · 운전자 서명은 **성명+서명일**
 > - **인지지원 단기보호·제38조** ✅ (**Q972**, G9): 일반 단기보호 표는 **1~5등급** · 인지지원 행 **없음** · 인지지원등급의 단기보호는 **가족휴가 60,000원** · 12시간 미만 **50%** · 91~150일 **−5%** · 151~210일 **−15%** · 월 **100,000원**(4일 이하 **50,000원**, 36개월) · 모두 주야간 시드 **없음** · 장기 감산 기관 범위는 고시 본문에 풀이 **없음**
 > - **포괄시급·가족 시급** ✅ (**Q973**, M11): `ledger-preview` 는 **기본급·수당·공제** · 포괄시급·수급자 가족 시급·방문당 칸 **없음** · 근로계약 서식의 월급·시급은 **인쇄 문장** · 수가표 「가족케어 90%」는 **안내** · 청구 계산 **아님**
@@ -3219,6 +3220,29 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 
 > 현장: USER_MANUAL §5-9 · FAQ **Q964** · DEPLOYMENT §1-4
 
+#### 10-11-2c. 프로그램 의견·월간 계획·외부강사 (US-P01, v3.1 Must — 미구현)
+
+`/programs/feedback` · `/programs/plans` · `/programs/instructors` 와 대응 컨트롤러는 **없습니다.** 새 Flyway 테이블도 없습니다 (FAQ **Q975**).
+
+| 착각하기 쉬운 구현 | 실제 |
+|--------------------|------|
+| `POST /programs/participations` `satisfaction` | 당일 참여 **1~5**. 불참에 값이 있으면 **422** 「결석 기록에는 만족도를 입력할 수 없습니다.」 참여인데 비면 **422** 「참여 시 만족도를 입력해야 합니다.」 화면 기본은 **4(만족)** |
+| `POST /programs/schedule` | 화면 폼은 `programType` 을 보내지 않음 → `ProgramType.normalize` 가 **`GENERAL`**. `COGNITIVE`·`FUNCTIONAL_RECOVERY` 는 API로만. 그 외 **422** 「프로그램 유형은 GENERAL, FUNCTIONAL_RECOVERY, COGNITIVE 중 하나여야 합니다.」 `facilitator` 는 강사 마스터가 아닌 자유 글 |
+| `POST /provision-result-evaluations` | 지표 44 **연간** 총평. 같은 기관·이용자·해 재등록 **422** 「해당 연도의 급여제공결과 평가가 이미 등록되어 있습니다.」 본문 `clientId`·`evaluationDate`·`overallSummary`·`evaluatorName` |
+| `POST /programs/functional-recovery/plans` | 이용자별 **연간** 기능회복 계획. 월·분기 프로그램 계획표가 아님 |
+| `POST /programs/catalog` `goal` | 마스터 목표 문장. 월간 계획 행이 아님 |
+| `/staff/lead-caregiver-log` · `/staff/training-logs` | 선임 업무일지 · 보수교육 강사명. 프로그램 관리자 일지·외부강사 명단이 아님 |
+
+| 권한 | 내용 |
+|------|------|
+| 일정 `POST /programs/schedule` | `hq_admin`·`branch_admin` |
+| 참여 `POST /programs/participations` | 위 둘 + `social_worker`·`caregiver` |
+| 평가 목록 `GET /provision-result-evaluations` | 네 역할 |
+| 평가 등록·수정·`GET …/compliance` | `hq_admin`·`branch_admin`·`social_worker` |
+| 화면 | 급여제공결과 평가 페이지는 목록과 준수 현황을 **한 번에** 부름. 요양보호사는 준수 현황 **403** 으로 목록까지 실패할 수 있음 |
+
+> 현장: USER_MANUAL §5-9 · FAQ **Q975** · **Q276** · **Q964** · DEPLOYMENT §1-4
+
 #### 10-11-1. 기능회복 훈련 API (G17, US-T06, `73e169a`·`0821ce8`·`0048105`·`e820b28`, V72) — **FE UI Fixed**
 
 MOHW **평가 지표 25–27** 대응. **`FunctionalRecoveryPage`**(`/programs/functional-recovery`)에서 StatCard·계획 목록·등록 폼을 제공합니다. **`mapFunctionalRecoveryComplianceView`** 가 API count 필드를 UI StatCard에 매핑합니다 (`0821ce8`·`21b1855`·`7450161`). **`DashboardPage`** 에 지표27 gap·상태 위젯이 silverangel **row3 verbatim** 라벨로 연동됩니다 (`7450161`, Q271).
@@ -4072,6 +4096,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q975 신설** — §1-4·§10-11-2c **프로그램 의견수렴·월간 계획·외부강사 명단은 없음** · 당일 만족도 1~5 · 화면 일정은 `GENERAL` · 급여제공결과 평가는 연 1회 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q974 신설** — §1-4 **서명 그림·기관 직인·쉼표 결재라인 없음** · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q972·Q973 신설** — §1-4·§6-3-1 **인지지원 단기보호는 가족휴가 60,000원** · 제38조 금액은 시드 밖 · **포괄시급·가족 시급 칸 없음** · 가족케어 90%는 안내 문장 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q970·Q971 신설** — §1-4·§6-2-2a **급여계획서는 통보 뒤에도 같은 해를 덮어씀** · 필수 9칸 · **CMS 건당 250·300원** · 월 3만 원 행 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
