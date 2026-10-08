@@ -1,9 +1,79 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T13:23:40Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:04:11Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §967 BNK-967 — 교차검증·갭 우선순위 8h+ · ★★★ **이용료 자동이체는 9.8 · 본인부담 CMS와 다른 메뉴** · ★★★ **명세서 24는 한 장에 1건 · 24X는 한 장에 2건** · ★★ **엑셀 컬럼 변경 0 · 조회수 11** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:04:11Z -->
+
+**조사일**: 2026-10-08T14:04:11Z | **rotation**: 교차검증·갭 우선순위 8h+. BNK-966(2026-10-08T13:23:40Z) 이후 약 40분. 초점: (1) 공지·엑셀 포맷 스캔 (§967-1) · (2) 본인부담 청구와 이용료 자동이체 (§967-2) · (3) G14·대시보드·v1.3-C·v2 CMS 재정렬 (§967-3) · (4) planner 액션 (§967-4).
+
+### §967-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-966과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-966과 동일 SHA)
+- 부모 **커밋된** gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-966 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+
+### §967-1 · ★★ 공지·엑셀 스캔 · 컬럼 변경 0
+
+**재실측**: [홈](https://ezcare.easyms.co.kr/) HTTP **200** · 72,820B · `115f9338`. BNK-965 `ad74f098`(72,704B) 와 다르다. 정규화 차이는 후기 문장이다. `data-count` 는 **53.9 / 9,514 / 4,904 / 2,353 / 1,820**. `noticeDetail` 은 **21861 · 21859 · 21856**.
+
+**재실측**: [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) HTTP **200** · 80,058B · `969c7c73`. 제목 집합은 BNK-965 와 같다. rowid **233** · max **21781**. `faq-hit` **11/233** 이 1씩 늘었다. 엑셀 제목은 엣지 · 크롬 다운로드 2건이다. 열 헤더 변경은 **0**.
+
+**재실측**: [주요기능](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) `b011e358` · [이용요금](https://ezcare.easyms.co.kr/new/ezCare_charge.html) `4c809136` 는 CSS 쿼리만 다르다. 헤더는 **9,624**. [요금](https://ezcare.easyms.co.kr/index.html?PG=price) `4531ca30` 도 CSS 쿼리만 다르다. D1 은 **2028년까지** 0원, D2 는 월 **70,000원**, 셋팅은 **33,000원**, 마감은 **2026.10.31**.
+
+**재실측**: [Channel 색인](https://docs.channel.io/ezcare/ko) `71ca632d` / 218,877B · 글 **222** **BYTE-IDENTICAL**. [엔젤 소식](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) `03fd9d9e` **BYTE-IDENTICAL**. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` · 7,572B · **650차**. 「별지」 **0** · 「제22호」 **0**.
+
+### §967-2 · ★★★ 본인부담 5번과 이용료 9.8은 다른 돈이다
+
+**신규 증거**: [본인부담금 청구 및 수납 관리](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%B2%AD%EA%B5%AC-%EB%B0%8F-%EC%88%98%EB%82%A9-%EA%B4%80%EB%A6%AC-7f402f5a) HTTP **200** · 236,906B · `4e4ae879`. 화면은 `[5 본인부담 청구]` 다. 본문에 적힌 서비스 유형은 **방문요양 · 방문목욕 · 방문간호** 다. 「주야간」은 이 글 본문에 **0** 이다.
+
+| 칸 | 이지케어 `7f402f5a` · `95f96b21` | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 화면 | `[5 본인부담 청구]`. 개별은 `[2 수급자 관리]` 탭 `본인부담금` | `/billing/payments` · `/billing/reports/receipts` · `/billing/reports/charges` |
+| 서식 | 청구서 · 급여비용 명세서 **24** · **24X** · 명세서 발급대장 · 수납대장 · 영수증 | `BillingStatementPdfGenerator` 는 제목 「ogada 급여비용 명세서」 한 장. `24` · `24X` 문자열 **0** |
+| 24 | A4 1장에 **1건** | 한 장에 2건 레이아웃 **0** |
+| 24X | A4 1장에 **2건**. 왼쪽 기관용 · 오른쪽 수급자용 | 같은 자리 **0** |
+| 문자 | 급여비용명세서 **(24)만** 발송. 사용자문구 가능 | 문자 서식을 24로 제한하는 코드는 이 사이클 grep **0** |
+| 일괄 | [95f96b21](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%88%98%EB%82%A9%EC%B2%98%EB%A6%AC-%EB%B0%A9%EB%B2%95-95f96b21) `7712e8f6`. 월 선택 · 체크 · 「본인부담금 일괄 수납 처리」 · 수납 방법과 날짜 | `PaymentRecordModal` 방법은 **현금** · **계좌이체**. 「일괄 수납」은 이 모달에 **0** |
+| 정정 | 휴지통 아이콘 뒤 다시 수납등록 | 이 모달의 삭제 버튼은 **0** |
+| 수납 방법 목록 | 글은 「수납 방법」만 적고 선택지 이름은 그림. **미확인** | 현금 · 계좌이체 |
+
+수납이 되면 월간·연간 수납내역, 수납대장, 의료비 공제용 납부확인서가 생기고 PDF 로 남긴다. 근거 문장은 노인장기요양보험법 제35조 ③ 명세서 교부다.
+
+**신규 증거**: [이지케어 이용료 자동이체 신청방법](https://docs.channel.io/ezcare/ko/articles/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-%EC%9D%B4%EC%9A%A9%EB%A3%8C-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4-%EC%8B%A0%EC%B2%AD%EB%B0%A9%EB%B2%95-77715a35) HTTP **200** · 240,976B · `733dce5b`. 경로는 `[9 기관관리]` > `[9.8 자동이체 신청서]` 다. 결제일은 매월 **10일**, 잔고 부족이면 **20일** 이다. 개인 계좌는 생년월일 앞 **6자리**, 기관 계좌는 사업자등록번호 **10자리** 다. 신청서는 출력 뒤 팩스 **0505-877-0933** 이다. 이지케어 수수료는 없고, 은행 수수료는 있을 수 있다. 문자 포인트는 후불이다. 이 글 본문의 250원 · 300원 · 월 3만 원 · 본인부담 CMS 는 **0** 이다.
+
+BNK-960 의 본인부담 CMS 는 `[2 수급자관리]` 탭 `CMS 생성` 이고 월사용료 3만 원이다. 9.8 은 그 탭이 아니다.
+
+### §967-3 · G14 · 대시보드 · v1.3-C · CMS
+
+같은 SHA 를 다시 세었다. 대시보드 `id` **40**. `HQ_WIDGET_IDS` **13**. 오늘·공단 **7** 에는 `health` 가 들어 있다. 급여계획 3개는 지점 준수 묶음이다. `/clients/:clientId/care-plan-form` · `/dashboard` · `/dashboard/hq` · `/transport/service-fees` · `/billing/cms` 는 각 **1** 이다.
+
+G14 폼 `required: true` 는 **9** 다. `clientNameSnapshot` 은 `required: false` 다. 통보 후 `upsert` 가 덮어쓰는 사실은 BNK-960 과 같다. 이 글들은 그 칸을 바꾸지 않는다.
+
+v1.3-C `/transport/service-fees` 는 유지한다. #44 **650차** 본문에 별지는 없다. 화면 제목 「별지 제22호」를 이 조문으로 고치지 않는다.
+
+v2 CMS 건당 **250원** · **300원** 은 유지한다. 월 30,000원 행은 **0** 이다. 9.8 의 10일·20일 결제를 그 건당 칸에 넣지 않는다.
+
+### §967-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=2·8·10 은 **0.85**. id=12 는 **0.7**. id=7 은 **1.0**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. 9.8 이용료 자동이체와 `[2]` 본인부담 CMS 를 한 화면으로 적지 않는다. 팩스 신청서를 `/billing/cms` 에 넣지 않는다. 월 3만 원과 건당 250원·300원을 한 표로 적지 않는다.
+3. 서식 24 와 24X 를 주야간 P0 로 열지 않는다. 이 글의 유형 목록은 방문 3종이다. 주야간 칸이 다른 화면에 있는지는 **미확인** 이다.
+4. 일괄 수납과 휴지통 재등록을 지금 수납 모달에 붙이지 않는다. 수납 방법 선택지 이름은 **미확인** 이다.
+5. 대시보드 위젯을 다시 만들지 않는다. id **40** · HQ **13** 은 BNK-960 과 같다. G14 수급자명 필수 칸을 추가하지 않는다. 통보 후 잠금을 P0 로 열지 않는다.
+6. v1.3-C `/transport/service-fees` 를 유지한다. #44 **650차** 에 별지는 없다.
+7. 엑셀 가져오기 양식을 바꾸지 않는다. SEC-D34 를 열지 않는다. 9,514 와 9,624 와 4,904 를 한 칸에 적지 않는다.
+
+주력 `cross_gap_priority_bnk967.txt` + `channelio_7f402f5a_bnk967.html` + `channelio_77715a35_bnk967.html` + `channelio_95f96b21_bnk967.html` + `ezcare_faq_live_bnk967.html` + `ezcare_home_live_bnk967.html` + `nhis_jo44_live_bnk967.html`. 신규 증거 URL 3(청구·수납 · 이용료 자동이체 · 일괄 수납). 재실측 6(홈 · FAQ · fnc · charge · 색인 · #44). 경로 구분 1(9.8 ≠ 본인부담 CMS). 미확인 2(수납 방법 선택지 · 주야간 본인부담 화면). per-cycle minimum 4종 충족.
+
+---
 
 ## §966 BNK-966 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **방문 일지 서명은 사람 셋 · 문자는 생년월일 링크** · ★★ **「새 일지로 저장」은 전월 복제와 다른 버튼** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

@@ -1,5 +1,23 @@
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T15:41:05Z -->
 
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:04:11Z -->
+
+### [BNK] BNK-967 인사이트 (2026-10-08) — ★★★ **이용료 자동이체 = 9.8** · ★★★ **명세서 24 ≠ 24X** · ★ **closed band P0 재오픈 0**
+
+| 항목 | 내용 | 반영 |
+|---|---|---|
+| **이용료 9.8** | [77715a35](https://docs.channel.io/ezcare/ko/articles/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-%EC%9D%B4%EC%9A%A9%EB%A3%8C-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4-%EC%8B%A0%EC%B2%AD%EB%B0%A9%EB%B2%95-77715a35) `733dce5b` · 10일·2차 20일 · 팩스 · 수수료 0. 본인부담 CMS 는 `[2]` 탭 | `/billing/cms` 에 넣지 않음 · 건당 250·300 유지 |
+| **명세서 24/24X** | [7f402f5a](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%B2%AD%EA%B5%AC-%EB%B0%8F-%EC%88%98%EB%82%A9-%EA%B4%80%EB%A6%AC-7f402f5a) `4e4ae879` · 24=1장 1건 · 24X=1장 2건 · 문자는 24만 · 유형은 방문 3종 | 주야간 P0 아님 · 주야간 화면 **미확인** |
+| **일괄 수납** | [95f96b21](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%88%98%EB%82%A9%EC%B2%98%EB%A6%AC-%EB%B0%A9%EB%B2%95-95f96b21) `7712e8f6` · `[5]` 일괄 · `[2]` 개별 · 휴지통 후 재등록 | 지금 모달에 붙이지 않음 · 선택지 **미확인** |
+| **closed band** | 대시보드 id **40** · HQ **13** · G14 required **9** · `/transport/service-fees` · `/billing/cms` · #44 **650차** 별지 0 | P0 재오픈 0 |
+| **엑셀·도입** | FAQ 233 · 조회수 +1 **11** · 열 변경 0 · 홈 **53.9/9,514/4,904** · 헤더 **9,624** | SEC-D34 유지 |
+| **git** | FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4** | BNK-966과 동일 SHA · 테스트 미실행 |
+
+1. **CMS**: 9.8 은 프로그램 이용료다. 수급자 본인부담 CMS 와 한 화면으로 적지 않는다.
+2. **명세서**: 24 와 24X 를 주야간 출력 P0 로 올리지 않는다.
+3. **대시보드·G14**: 위젯 40 과 필수 9칸은 그대로다. 통보 후 잠금을 이번 사이클의 P0 로 열지 않는다.
+4. **이동서비스 일지**: #44 본문에 별지는 없다. 화면 제목을 이 조문으로 바꾸지 않는다.
+
 <!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T10:19:16Z -->
 
 ### [BNK] BNK-962 인사이트 (2026-10-08) — ★★★ **인지지원 단기보호 = 가족휴가 마-5** · ★★ **제38조 12시간 · 월 10만 원** · ★★ **엔젤 보안은 배차 0**
