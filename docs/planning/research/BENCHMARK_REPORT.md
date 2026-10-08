@@ -1,9 +1,69 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T12:29:27Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T13:23:40Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §966 BNK-966 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **방문 일지 서명은 사람 셋 · 문자는 생년월일 링크** · ★★ **「새 일지로 저장」은 전월 복제와 다른 버튼** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T13:23:40Z -->
+
+**조사일**: 2026-10-08T13:23:40Z | **rotation**: ogada git 실측 6-8h. BNK-965(2026-10-08T12:29:27Z) 이후 약 54분. 초점: (1) develop HEAD·Route·Page·모듈 % 재산정 (§966-0) · (2) `npm test`·`mvn test` 재실행 (§966-1) · (3) 업무수행일지 서명·저장 (§966-2) · (4) planner 액션 (§966-3).
+
+### §966-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-965와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-965와 동일 SHA)
+- 부모 **커밋된** gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 작업 트리는 develop 체크아웃이라 gitlink 가 더럽다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133**(`<Route` 132 + `<Routes>` 1) · path **132** · 깊이 d0=**1** d1=**20** d2=**72** d3=**33** d4=**6** · path `report` **29/132=22.0%**. prefix 는 billing 17 · nursing 16 · care 16 · staff **13** · clients 11 · transport 9 · programs **8** · `/accounting` **1** · `/staff/attendance` **1** · `/staff/lead-caregiver-log` **1** · `/settings` **1**. `/programs/catalog` 는 **0**. `/programs/groups` 는 **0**. `/settings/profile` 은 **0**. Page **106**.
+
+### §966-1 · ★★★ 주석 개수와 실행 개수를 다시 돌린다
+
+| 계수 | 값 | 비고 |
+|---|---|---|
+| `@Test` 줄 시작 | **2485** | BNK-963 과 같은 주석 수. 카탈로그 포함 |
+| `@ParameterizedTest` | 3메서드 · 실행 **20**행 | 역할 7 · 알림 이벤트 5 · 은행 8 |
+| surefire | **2505 / 0 / 0 / 0** | 418보고서 · 13:09:58Z–13:11:40Z · `mvn -q test` **114s** · exit 0 |
+| npm | **493파일 / 2865** PASS | flock · **832.27s** · 13:09:48–13:23:40Z · exit 0 |
+| HTTP | **450** | GET 234 · POST 147 · PATCH 46 · PUT 13 · DELETE 10 |
+| 컨트롤러 · 엔티티 · Flyway | **82** · **93** · **V197** | `@RestControllerAdvice` 1 은 82 밖. 결번 0 |
+| 모듈 | **97.41%** | 29엔트리 · 28.25/29. 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. 파일 `42e9a565` |
+
+yaml `2479` 는 2485 도 2505 도 아니다. 832.27s 는 BNK-963 의 836.94s 와 같은 2865 의 소요 차이다. 개수 변화가 아니다. `npm test` stderr 의 `127.0.0.1:8080` 시드 로그는 하네스 단위 테스트다. 스위트는 **2865/2865** 다. 서버 미기동을 로컬 BLOCK 으로 적지 않는다.
+
+### §966-2 · ★★★ 방문 일지의 서명과 주야간 8-1-2 는 화면이 다르다
+
+**신규 증거**: [업무수행일지 전자서명(디지털사인) 방법](https://docs.channel.io/ezcare/ko/articles/%EC%97%85%EB%AC%B4%EC%88%98%ED%96%89%EC%9D%BC%EC%A7%80-%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EB%94%94%EC%A7%80%ED%84%B8%EC%82%AC%EC%9D%B8-%EB%B0%A9%EB%B2%95-2974fadd) HTTP **200** · 230,090B · `bf71dbc2`. 경로는 `[ 2 수급자 관리]` 에서 수급자를 고르고 우측 탭 `업무수행일지` 다. 저장 뒤에 「담당자 및 사인」에서 **급여제공자 · 방문자 · 시설장** 을 검색한다.
+
+| 칸 | 이지케어 방문 일지 | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 화면 | 수급자 탭. 사회복지사 업무수행일지 | `/staff/lead-caregiver-log`. 제목은 선임 요양보호사. 케어포 8-1-2 |
+| 작성 | [작성·저장](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EC%97%85%EB%AC%B4%EC%88%98%ED%96%89%EC%9D%BC%EC%A7%80-%EC%9E%91%EC%84%B1-%EB%B0%8F-%EC%A0%80%EC%9E%A5-%EB%B0%A9%EB%B2%95-f4d08389) `a683724c`. 작성내역(불러오기) → 신규작성. 방문(상담)일자. 욕구사정. 「**새 일지로 저장**」은 기존 행을 두고 새 행 | 이용자 · 기록 일자 · 선임 요양보호사 · 업무 수행 내용 · 요양 특이사항. 「일지 저장」. 「욕구사정·계획 불러오기」와 「전월 일지 복제」는 초안 문장에 붙인다 |
+| 직접 서명 | 마우스 또는 손가락으로 화면에서 서명 | `DIRECT` 라벨 「직접 서명」. 이 모달의 canvas 는 **0**. `signerUserId` 는 로그인 사용자 **1**명 |
+| 문자 | 링크를 보내고, 수신자가 **생년월일**을 넣은 뒤 서명 | `SMS_VERIFIED` 라벨 「문자 인증」. 체크 문구는 「문자 인증 코드 확인을 완료했습니다」. API 필드는 `signerUserId` 와 `signatureMethod` 뿐. 생년월일 · 링크 발송은 이 패키지에 **0** |
+| 잠금 | 완료 후 수정하지 않는 것을 **권장**. 공단 담당자에 따라 디지털사인을 인정하지 않을 수 있음 | BE 문장 「전자서명이 완료된 업무수행일지는 수정할 수 없습니다.」 모달은 「서명 후에는 일지 내용을 수정할 수 없습니다.」 |
+| 출력 | 2025년 7월 이전은 다운로드(hwp). 이후는 출력 버튼 | 이 페이지의 hwp · 출력은 **0** |
+
+데모 화면의 input name 은 이 두 HTML 에 없다. **미확인**. BNK-963 의 `user-myInfo` 캔버스는 내 정보 탭이다. 이 일지 버튼과 한 칸으로 적지 않는다.
+
+### §966-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=8 은 **0.85**. id=2·id=10 도 **0.85**. id=12 는 **0.7**. 모듈 **97.41%**. 수가 시드 변경 **0**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 과 커밋된 gitlink 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. `@Test` 정본은 **2485** 다. 이번 실행 합계는 surefire **2505**, npm **2865/2865** 다. 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다. 832.27s 는 개수 변화가 아니다.
+3. 급여제공자 · 방문자 · 시설장 세 칸을 `/staff/lead-caregiver-log` 에 붙이지 않는다. 그 화면은 선임 요양보호사 한 명과 서명자 한 명이다.
+4. 문자 서명을 생년월일 링크로 바꾸지 않는다. 지금 SMS 는 확인 체크다. 링크 발송은 별도 이야기다. id=8 을 이 글로 올리지 않는다.
+5. 이지케어의 「권장」을 따라 ogada 잠금을 풀지 않는다. 서명 후 수정 거절은 유지한다.
+6. 「새 일지로 저장」과 「전월 일지 복제」를 한 버튼으로 적지 않는다. 전자는 기존 행을 남긴다. 후자는 초안 문장에 붙인다.
+7. hwp 와 출력 버튼은 방문 사회복지사 일지 문장이다. 주야간 8-1-2 의 P0 로 열지 않는다.
+8. 공단 담당자가 디지털사인을 거절할 수 있다는 문장은 이 도움말의 주의다. 주야간 별지 인정 여부는 **미확인**이다. 서명 기능을 끄지 않는다.
+9. `/programs/catalog` 는 **0** 이다. 카탈로그 API 커밋을 프론트 경로가 있는 것으로 세지 않는다.
+
+주력 `ogada_git_baseline_bnk966.txt` + `channelio_2974fadd_bnk966.html` + `channelio_f4d08389_bnk966.html`. 신규 증거 URL 2(전자서명 · 작성·저장). 미확인 1(데모 input name). 경로 구분 1(방문 일지 ≠ 8-1-2). per-cycle minimum 4종 충족.
+
+---
 
 ## §965 BNK-965 — 이지케어 역공학 2-4h · ★★★ **청구일정은 청구내역·청구내역상세를 같이 올린다** · ★★★ **확정 중에는 수정·삭제가 막히고, 원천세 마감이면 취소도 막힌다** · ★★ **RFID 팝업은 코드 8개·02 없음 · PGID `schedule-form` 은 NotFound** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

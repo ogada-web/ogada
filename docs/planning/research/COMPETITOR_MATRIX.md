@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T12:29:27Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T13:23:40Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-965 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **청구일정 = 청구내역+청구내역상세 동시** · ★★★ **확정 잠금 · 원천세 마감이면 취소 불가** · ★★ **RFID 01·03–09 · `schedule-form` NotFound** · 헤더 **9,624** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-963 실행값).
+> **최종 갱신**: 2026-10-08 (**BNK-966 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **방문 일지 서명 = 사람 3 · 문자 = 생년월일 링크** · ★★ **「새 일지로 저장」 ≠ 전월 복제** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+
+| 기능 / 서비스 항목 (BNK-966 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ surefire 2505 · npm 2865 재실행 (BNK-966 #1 · git 실측 · 확인)** | ✅ strict `@Test` **2485**. 매개변수 20행(7+5+8). `mvn -q test` **2505/0/0/0** · 418보고서 · 114s. `npm test` **493파일/2865** PASS · 832.27s. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · V197. yaml `2479` 는 둘 다 아님 | ⚪ | ⚪ | ⚪ | ⚪ | `ogada_git_baseline_bnk966.txt` · §966-1 · SHA 는 BNK-965 와 같음 |
+| **★★★ 모듈 97.41% · prefix (BNK-966 #2 · 재산정 · 확인)** | ✅ 29엔트리 · 28.25/29 · 파일 `42e9a565`. 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. path `report` **29/132=22.0%**. d4=**6**. programs **8**. `/programs/catalog` **0**. `/staff/lead-caregiver-log` **1** | ⚪ | ⚪ | ⚪ | ⚪ | §966-0 · coverage 파일 무변경 |
+| **★★★ 방문 일지 서명 3인 (BNK-966 #3 · 신규 URL · 메뉴/필드/워크플로 · 확인)** | ✅ `/staff/lead-caregiver-log` 는 8-1-2. 서명자 **1**. `DIRECT`/`SMS_VERIFIED`. SMS 는 확인 체크. canvas **0**. 서명 후 수정 거절. id=8 **0.85** | ⚪ | ✅ [2974fadd](https://docs.channel.io/ezcare/ko/articles/%EC%97%85%EB%AC%B4%EC%88%98%ED%96%89%EC%9D%BC%EC%A7%80-%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EB%94%94%EC%A7%80%ED%84%B8%EC%82%AC%EC%9D%B8-%EB%B0%A9%EB%B2%95-2974fadd) `bf71dbc2` 급여제공자·방문자·시설장. 직접=화면 서명. 문자=링크+생년월일. 수정은 권장 | ⚪ | ⚪ | §966-2 · 8-1-2 와 한 화면으로 적지 않음 · input name **미확인** |
+| **★★ 새 일지 · hwp (BNK-966 #4 · 신규 URL · 확인)** | ✅ 「전월 일지 복제」는 초안 문장. 「새 일지로 저장」 **0**. hwp · 출력 **0** | ⚪ | ✅ [f4d08389](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EC%97%85%EB%AC%B4%EC%88%98%ED%96%89%EC%9D%BC%EC%A7%80-%EC%9E%91%EC%84%B1-%EB%B0%8F-%EC%A0%80%EC%9E%A5-%EB%B0%A9%EB%B2%95-f4d08389) `a683724c` 기존 행 유지. 2025-07 이전 hwp · 이후 출력 | ⚪ | ⚪ | §966-2 · P0 재오픈 0 |
+| **★ HEAD · merge gate 4 (BNK-966 #5)** | ✅ SHA BNK-965와 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** | ⚪ | ⚪ 이번 사이클 데모 재로그인 없음 | ⚪ | ⚪ | §966-0 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-965 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **청구일정 = 청구내역+청구내역상세 동시** · ★★★ **확정 잠금 · 원천세 마감이면 취소 불가** · ★★ **RFID 01·03–09 · `schedule-form` NotFound** · 헤더 **9,624** · P0 재오픈 0. 그 차수 ogada 열은 그 시점 HEAD. `npm test` / `mvn test` 는 BNK-965 에서 미실행(BNK-963 실행값). BNK-966 이 같은 SHA 를 다시 실행했다.
 
 | 기능 / 서비스 항목 (BNK-965 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

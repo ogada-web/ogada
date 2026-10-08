@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-966 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **방문 일지 서명은 사람 셋 · 문자는 생년월일 링크** · ★★ **「새 일지로 저장」은 전월 복제와 다름** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 832.27s. `mvn -q test` surefire **2505/0/0/0** · 114s. [전자서명](https://docs.channel.io/ezcare/ko/articles/%EC%97%85%EB%AC%B4%EC%88%98%ED%96%89%EC%9D%BC%EC%A7%80-%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EB%94%94%EC%A7%80%ED%84%B8%EC%82%AC%EC%9D%B8-%EB%B0%A9%EB%B2%95-2974fadd) HTTP 200 · `bf71dbc2`. [작성·저장](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EC%97%85%EB%AC%B4%EC%88%98%ED%96%89%EC%9D%BC%EC%A7%80-%EC%9E%91%EC%84%B1-%EB%B0%8F-%EC%A0%80%EC%9E%A5-%EB%B0%A9%EB%B2%95-f4d08389) HTTP 200 · `a683724c`.
+
+### 결정
+
+1. **★★★ 실행 합계는 다시 2505와 2865다 (확인)** — 같은 SHA를 이번 사이클에 다시 돌렸다. strict `@Test` **2485**. 매개변수 20행(7+5+8). surefire **2505/0/0/0** · 418보고서 · 13:09:58Z–13:11:40Z. npm **493파일/2865** PASS · 832.27s · exit 0. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · Flyway **V197** · 모듈 **97.41%**(28.25/29 · `42e9a565`). `/programs/catalog` 는 **0**. `/staff/lead-caregiver-log` 는 **1**. **planner: 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다. 832.27s 는 개수 변화가 아니다. 카탈로그 API 커밋을 프론트 경로가 있는 것으로 세지 않는다.**
+
+2. **★★★ 방문 일지 서명과 8-1-2 는 다른 화면이다 (확인)** — 도움말 2974fadd 의 경로는 수급자 탭이다. 사인 칸은 급여제공자 · 방문자 · 시설장이다. 직접 서명은 화면에서 그리고, 문자는 링크 뒤에 생년월일이다. ogada `/staff/lead-caregiver-log` 는 선임 요양보호사 일지다. 서명자는 로그인 사용자 한 명이다. `DIRECT` 모달에는 캔버스가 없고, `SMS_VERIFIED` 는 확인 체크다. API 는 `signerUserId` 와 `signatureMethod` 만 받는다. **planner: 세 칸을 이 Route 에 붙이지 않는다. 문자 링크와 생년월일을 지금 체크박스에 넣지 않는다. BNK-963 내 정보 캔버스와 한 칸으로 적지 않는다. P0 로 열지 않는다. id=8 은 0.85.**
+
+3. **★★ 저장 버튼과 잠금 문장이 다르다 (확인)** — f4d08389 의 「새 일지로 저장」은 기존 행을 남긴다. 2025년 7월 이전은 hwp, 이후는 출력 버튼이다. ogada 「전월 일지 복제」는 초안 문장에 붙인다. 이 페이지의 hwp 와 출력은 0이다. 이지케어는 수정하지 말 것을 권하고, ogada 는 서명 후 수정을 거절한다. **planner: 두 저장을 한 버튼으로 적지 않는다. 권장 문장으로 잠금을 풀지 않는다. hwp 를 주야간 P0 로 열지 않는다.**
+
+4. **★ HEAD 는 BNK-965 와 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 는 test 다. 데모 input name 과 주야간 별지의 디지털사인 인정은 **미확인**. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. 서명 기능을 끄지 않는다.**
+
+**경로 구분 1**(방문 일지 ≠ 8-1-2) · **미확인 1**(데모 input name) · 신규 snapshot 은 `channelio_2974fadd_bnk966.html` · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-965 이지케어 역공학 2-4h · ★★★ **청구일정은 청구내역+청구내역상세** · ★★★ **확정 중 수정 불가 · 원천세 마감이면 취소 불가** · ★★ **RFID 코드 8 · `schedule-form` NotFound** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [일정관리](https://ezcare.easyms.co.kr/schedule_plan/) HTTP 200 · `5c58cd34`. [0bf7689d](https://docs.channel.io/ezcare/ko/articles/%EB%B0%B0%EC%A0%95%EB%90%9C-%EC%9D%BC%EC%A0%95-%EC%88%98%EC%A0%95%EC%82%AD%EC%A0%9C%EB%B2%95-0bf7689d) HTTP 200 · `0b94049c`. [rfid_compare](https://ezcare.easyms.co.kr/schedule_plan/rfid_compare.html) HTTP 200 · `c1051f04`. [4b8e1d3c](https://docs.channel.io/ezcare/ko/articles/%EA%B8%89%EC%97%AC-%ED%99%95%EC%A0%95-%ED%9B%84-%EC%88%98%EC%A0%95-%EB%B0%A9%EB%B2%95-4b8e1d3c) HTTP 200 · `3c597414`. fnc·charge 헤더 **9,624**. git FE `29c2304` · BE `92466cfb`.
