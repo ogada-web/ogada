@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T03:58:03Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T04:34:56Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-953 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **대시보드 id 40 · 오늘·공단 7(health 포함) · HQ 13** · ★★ **FAQ 21862 전화 지연 · 엑셀 컬럼 0** · P0 재오픈 0.
+> **최종 갱신**: 2026-10-08 (**BNK-954 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **재무회계 대행 4,903 · 헤더 9,621** · ★★★ **제19조 도움말 270분 초과=2회 · 앞 구간 240분 · 480분 연속=8시간** · ★★ **방문현황 일일 7열 · 확정 잠금** · P0 재오픈 0.
+
+| 기능 / 서비스 항목 (BNK-954 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 제19조 도움말 · 270/240/480 (BNK-954 #1 · 신규 URL · 확인)** | ✅ 상한 「1분 이상 480분 이하」. 270분을 240분 기준으로 나누는 코드 **0**. 주야간 시드 유지. id=7 **1.0** | ⚪ | ✅ [d542c844](https://docs.channel.io/ezcare/ko/articles/%EA%B7%BC%EB%AC%B4%EC%8B%9C%EA%B0%84%EA%B3%BC-%EC%88%98%EA%B0%80-%EC%9D%B8%EC%A0%95%EC%8B%9C%EA%B0%84-%EC%B0%A8%EC%9D%B4-%ED%99%95%EC%9D%B8-d542c844) `1334476b` · 초과 시 2회 · 최초 270분=240분 기준 · 480분 연속=8시간 · 예 300분→270분 · 정각 경계 **미확인** · 고시 원문 **미확인** | ⚪ | ⚪ 원문 재실측 없음 | `channelio_d542c844_bnk954.html` · §954-2 · RFID 30분과 별축 |
+| **★★ 방문현황 4탭 · 엑셀은 내보내기 (BNK-954 #2 · 메뉴/필드/워크플로 · 확인)** | ⚪ 재가 4탭을 주야간 P0 로 두지 않음 · SEC-D34 유지 | ⚪ | ✅ `PGID=schedule-p500` `9cdbbc65` · 일일 7열(`pName`·`wName`·`sName`·`stmTotal`·`sTime`·`address`·`name`) · 월간 목록 +`sDate`·`tAmount` · 주간·달력은 colModel 없음 · 라디오 `001` 요양 · `002` 간호 · `003` 목욕 · 열은 git HEAD 와 동일 · 113,249→95,493B 는 구인 폼 `frm-jobPostInsert` 부재(삭제 여부는 **미확인**) · `xls_statusTable.month2.php` · 파일 헤더 **미확인** | ⚪ | ⚪ | §954-3 · 처리상태 열 없음 · nav `95286775` IDENTICAL |
+| **★★ 확정 잠금 · 직접 배정 칸 (BNK-954 #3 · 신규 URL · 확인)** | ✅ 「확정된 방문일정은 수정할 수 없습니다.」 급여 삭제 차이는 BNK-951 유지 | ⚪ | ✅ [FAQ 21165](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21165&type=web) `88edad69` 일정 초기화 · X · 수정 칸 4(서비스 구분·방문시간 및 제공서비스·급여제공자·수당) · 확정 중 수정·삭제 불가 · [21317](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21317&type=web) 배정하기·↓배정 · [21175](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21175&type=web) 3.2 드래그·방문일정 저장 | ⚪ | ⚪ | §954-3 · 영상 내레이션 **미확인** |
+| **★★ 도입 수 4,903 · 헤더 9,621 (BNK-954 #4 · 재실측 · 확인)** | ⚪ 이용료 시드 변경 없음 | ⚪ | ✅ 홈 `9672829b` **53.9 / 9,514 / 4,903 / 2,353 / 1,820** · 집계일 **2026.09.30** · fnc·charge 헤더 **9,621** · D1 2028년까지 0원 · D2 월 **70,000** · 셋팅 **33,000** · 마감 **2026-10-31** · FAQ 233/21781 · 엑셀 제목은 브라우저 2건 | ⚪ | ⚪ | `ezcare_home_live_bnk954.html` · §954-1 · 세 칸을 합치지 않음 |
+| **★ HEAD · merge gate 4 (BNK-954 #5)** | ✅ SHA BNK-953과 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · yaml `4aad7cc2` 는 test | ⚪ | ✅ 로그인 code=0000 · 카탈로그 **10/148/59** · 색인 `71ca632d` IDENTICAL | ⚪ | ⚪ | §954-0 · §954-4 |
+
+> **직전 갱신**: 2026-10-08 (**BNK-953 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **대시보드 id 40 · 오늘·공단 7(health 포함) · HQ 13** · ★★ **FAQ 21862 전화 지연 · 엑셀 컬럼 0** · P0 재오픈 0.
 
 | 기능 / 서비스 항목 (BNK-953 delta·교차검증·갭 우선순위 8h+) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

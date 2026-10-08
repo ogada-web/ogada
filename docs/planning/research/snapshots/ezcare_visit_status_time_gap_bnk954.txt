@@ -1,0 +1,74 @@
+BNK-954 ezCare 2-4h extract · 2026-10-08T04:34:56Z
+git FE 29c2304d479f317acff6344d114f7fb88115c3a9 ahead 1 vs origin/test 5cf667b
+git BE 92466cfb0afc62dec318bb0aa9fef47a7e407600 ahead 3 vs origin 1e8857b4 · local test 4aad7cc2 · develop is 2 commits ahead of test
+HTTP 450 · @Test 2485 · surefire 2505 · npm 2865 · module 97.41% carried from BNK-952 same SHA · tests not re-run
+
+PRICE
+home HTTP 200 73390B md5 9672829be8e9c7242781ff714b54afc4
+data-count 53.9 / 9514 / 4903 / 2353 / 1820
+집계일 2026.09.30
+BNK-953 home was 73184B 3c84585f · BPO 4902 → 4903 · 이용기관 9514 유지 · 후기 문장 교체
+fnc HTTP 200 17870B ff74b848be6de76678032a23ba936eab · header 전국 9,621개 (BNK-951 9,619)
+charge HTTP 200 22979B d01ea51b3d27a75d68c3e43788633c5e · same header 9,621 · 55,000 취소선 · 40% · 2026년 10월 31일까지 · 33,000원
+price HTTP 200 64928B 4d7b24ece7bf067277e6d8e1144bcee9 · query-strip IDENTICAL vs BNK-951
+D1 promotionFree notice 2028년까지 전액 무료
+D2 주야간보호 스탠다드 월 70,000원 고정
+
+FAQ LIST
+HTTP 200 80058B 533b2c95f3cf26eaf45dc2b9912db062
+rowid 233 · max 21781 · added 0 · removed 0
+hit +2 21663 · +1 21778 · +1 21317 · +1 21208 · +1 21143
+excel titles remain 21563 edge download · 21534 chrome download · import column change 0
+
+NEW Channel d542c844
+https://docs.channel.io/ezcare/ko/articles/근무시간과-수가-인정시간-차이-확인-d542c844
+HTTP 200 224743B 1334476b0626ed0284e653325ba88517
+title 근무시간과 수가 인정시간 차이 확인
+방문일정 근무시간 ≠ 공단 급여비용 인정시간
+방문요양 270분 이상 · 그리고 같은 글의 「270분을 초과하는 경우 급여비용을 2회로 분할」·최초 270분은 240분 기준
+480분(8시간) 이상 연속이면 8시간 모두 인정
+예) 실제 300분(5시간) > 수가 인정 270분(4.5시간)
+근거 표기: 장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시 제19조
+직원 근무시간은 공단 급여비용 산정기준으로 반영
+270 정각의 이상/초과 경계는 글 안에서 문장이 갈림 · 정각 분할 여부는 미확인
+index https://docs.channel.io/ezcare/ko BYTE-IDENTICAL vs bnk951 71ca632d 218877B · articles 222 · body was not snapshotted before
+
+DEMO
+login code 0000 · title [DEMO 이지케어] 체험 이지케어 재가복지센터
+redirect /new.ez 70B e1d52bd5
+nav top-nav-item-V2.js?20260428 25470B 95286775 BYTE-IDENTICAL
+catalog 10 / 148 / 59
+PGID schedule-p500 HTTP via session 95493B 9cdbbc65d475cee07091152f49ce8f8a
+tabs: 일일 schedule_day · 주간 get_weekSch · 월간.달력 get_monthSch · 월간.목록 schedule_month
+일일 grid-schedule-day: 수급자 pName · 요양보호사 wName · 서비스 sName · 총시간 stmTotal · 방문시간 sTime · 방문 소재지 address · 비고 name
+월간.목록 grid-schedule-month: 서비스일 sDate · 수급자 pName · 요양보호사 wName · 서비스 sName · 방문시간 sTime · 수가 tAmount · 방문 소재지 address · 비고 name
+주간·월간.달력 colModel 없음
+radio sKind_day/week/month/month2: '' 전체 · 001 요양 · 002 간호 · 003 목욕
+ajax /page/schedule/json-schedule-young.php?data=schedule · data=base_data
+excel outbound ./schedule_print/xls_statusTable.month2.php · 다운로드 파일 헤더 행은 미확인
+화면 열에 처리상태 없음
+git HEAD 스냅샷 113,249B → 이번 95,493B
+jqGrid label/name 15쌍과 탭 4개는 동일
+바이트 차이는 frm-jobPostInsert(성별·방문요양/목욕/간호·요일) 가 이번 HTML 에 없는 것
+그 폼의 제품 삭제 여부는 미확인 · 방문현황 열 삭제 아님
+
+FAQ 21165 HTTP 200 14876B 88edad6964f4d9be68676db3417eaf42
+3.방문일정 관리
+전체일정 삭제: 해당월·수급자 선택 → 일정 초기화
+하루 삭제: 방문일의 X → 배정한 일정 이지케어에 저장하기
+수정: 더블클릭 → 선택일정 수정하기 · 서비스 구분, 방문시간 및 제공서비스, 급여제공자, 수당 → 수정하기
+주의: 일정이 확정된 상황에서는 수정이나 삭제가 불가능 · 일정확정 취소 후 진행
+
+FAQ 21317 HTTP 200 16001B 4177022afaef9b4c5a84484c5011a177
+직접배정 youtube embed H9-bZbxxBeI · 공단 가져오기 embed dnNAsuJZTRw · 영상 내레이션 미확인
+단계: 3.방문일정 관리 → 해당월 → 수급자 → 서비스구분·방문시간 및 제공서비스·급여제공자.수당 체크 → 배정하기 → 저장
+요일 ↓배정 은 그 요일의 모든 일자
+img http://ezcare.easyms.co.kr/ezCare/help/file/일정 직접배정.png · 픽셀 미확인
+
+FAQ 21175 HTTP 200 14393B a9c4e23545049198ccdd3f4ffd333a85
+3.방문일정 > 3.2 관리자 일정관리 → 방문자 선택 → 수급자 드래그 → 방문일정 저장 · 일정표 출력 가능
+
+ogada VisitService.validateServiceMinutes: 1분 이상 480분 이하
+제19조 270→240 분할 구현은 main java 에 없음
+VisitService: 확정된 방문일정은 수정할 수 없습니다
+신규 진성갭 0

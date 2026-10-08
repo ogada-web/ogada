@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-954 이지케어 역공학 2-4h · ★★★ **재무회계 대행 4,903 · 헤더 9,621** · ★★★ **제19조 도움말 270분 초과=2회 · 240분 기준 · 480분=8시간** · ★★ **방문현황 일일 7열 · 확정 잠금** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [Channel d542c844](https://docs.channel.io/ezcare/ko/articles/%EA%B7%BC%EB%AC%B4%EC%8B%9C%EA%B0%84%EA%B3%BC-%EC%88%98%EA%B0%80-%EC%9D%B8%EC%A0%95%EC%8B%9C%EA%B0%84-%EC%B0%A8%EC%9D%B4-%ED%99%95%EC%9D%B8-d542c844) HTTP 200 · `1334476b`. [FAQ 21165](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21165&type=web) `88edad69`. 홈 `data-count` **4,903**. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 도입 수는 세 칸이다 (확인)** — 홈 이용기관 **9,514**, 주요기능·셋팅 헤더 **9,621**(BNK-951 의 9,619 에서 +2), 재무회계 대행 **4,903**(4,902 에서 +1). 집계일 **2026.09.30**. D1 은 2028년까지 전액 무료, D2 는 월 70,000원, 셋팅은 2026-10-31 까지 33,000원. **planner: 9,514 와 9,621 과 4,903 을 한 숫자로 쓰지 않는다. 이용료 시드는 유지한다.**
+
+2. **★★★ 270분 분할은 방문요양 도움말이다 (확인)** — Channel 은 고시 제19조를 인용한다. 270분 초과는 2회, 앞 270분은 240분 기준, 480분 이상 연속은 8시간 인정, 예는 300분→270분. 같은 글에 「이상」과 「초과」가 같이 있어 **270분 정각은 미확인**. ogada 는 1–480분 상한만 있다. **planner: 주야간 수가에 240분 치환을 넣지 않는다. RFID 30분 검출과 합치지 않는다. id=7 은 1.0.**
+
+3. **★★ 방문현황과 확정 잠금은 재가 일정이다 (확인)** — `schedule-p500` 일일 7열 · 월간 목록 8열(수가 `tAmount` 포함) · 라디오 요양 001 · 간호 002 · 목욕 003. 엑셀은 `xls_statusTable.month2.php` 내보내기다. FAQ 21165 는 확정 중 수정·삭제를 막는다. ogada 문장 「확정된 방문일정은 수정할 수 없습니다.」와 방향이 같다. **planner: 가져오기 양식과 SEC-D34 를 열지 않는다. 4탭을 주야간 P0 로 올리지 않는다.**
+
+4. **★ HEAD 는 BNK-953 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · merge gate **4**. yaml·gitlink `4aad7cc2` 는 로컬 test 다. FAQ 목록은 233/21781 이고 엑셀 제목은 브라우저 다운로드 2건이다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 번복 0** · **미확인**(270분 정각 · 고시 원문 · 엑셀 다운로드 헤더 · 영상 내레이션) · 신규 snapshot 은 `_bnk954` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-953 교차검증·갭 우선순위 8h+ · ★★★ **대시보드 id 40 · 오늘·공단 7** · ★★ **FAQ 21862 전화 지연 · 엑셀 컬럼 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: `DashboardPage.jsx` id **40**. [FAQ 21862](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21862&type=web) HTTP 200 · `75887711`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 645차. git FE `29c2304` · BE `92466cfb`.
