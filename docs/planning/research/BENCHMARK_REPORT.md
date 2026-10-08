@@ -1,9 +1,107 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:09:20Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:48:27Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §964 BNK-964 — 케어포 역공학 0-2h · ★★★ **PDF 메뉴위치 4-2는 물리 제공기록 · 4-7은 제공 리포트** · ★★★ **시설 7-4~7-9 주석은 보이는 번호보다 하나 큼** · ★★ **`position_YC_nursing` 과 `position_YC_report` 는 다른 view** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:48:27Z -->
+
+**조사일**: 2026-10-08T11:48:27Z | **rotation**: 케어포 역공학 0-2h. BNK-963(2026-10-08T11:09:20Z) 이후 약 39분. 초점: (1) 매뉴얼 바닥 쪽수의 4번 메뉴위치 (§964-1) · (2) 시설 `L04_M02` 라벨 셋과 기능회복 기록지 (§964-2) · (3) 7-x 보이는 번호와 HTML 주석 (§964-3) · (4) 욕창 view 둘 (§964-4) · (5) planner 액션 (§964-5).
+
+### §964-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-963과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-963과 동일 SHA)
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-963 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+- path **132** · d4=**6** · path `report` **29/132=22.0%**. `physical` path **0**. id=4 는 **1.0**. id=7 은 **1.0**.
+
+### §964-1 · ★★★ 2018 PDF 의 4번은 지금 메뉴 id 와 한 칸씩 어긋난다
+
+[func.php](https://www.carefor.co.kr/daycare/func.php) · [demo-work](https://demo-work.carefor.co.kr/) · [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) 는 12–20초 안에 연결되지 않았다. HTTP **000**. 디스크 PDF `96f7d45e` / 9,992,772B 를 다시 해시했다. 본문은 덮어쓰지 않았다.
+
+**확인(바닥 쪽수, `pdftotext`)**: 4-1 간호급여 제공기록이 바닥 -52-부터 -55-까지 네 절(일지·처치, 투약, 진료, 서류 최대 20건)이다. 4-1-1 통합 바이탈은 -56-. **4-2 는 물리(작업)치료 제공기록**(-57-). 4-3 응급(-58-). 4-4 통합 간호 리포트(-59-, 출력 5종). 4-5 병의원(-60-). **4-6 은 투약 기록·관리 리포트**(-61-). **4-7 은 물리 제공 리포트**(-62-). 출력 칸은 일자, 시간, 치료방법, 비고, 치료자.
+
+목차 칸은 같은 장을 한 쪽 작게 적는다. 물리 제공기록 목차 **56** = 바닥 **57**. BNK-506 이 이미 바닥 57 = PDF 4-2 = 주야간 4-6 을 적었다. 이번 장은 4-3부터 4-7까지를 그 뒤에 붙인다.
+
+| 화면 | 주야간 `func.php` | 시설 demo 제목 | 2018 PDF 메뉴위치 |
+|---|---|---|---|
+| 물리 제공기록 | 4-6 (필요시) | 4-1 `L04_M01` `view.physical_service` | **4-2** |
+| 물리 일정 | 4-6-1 | 4-2 `L04_M02` | 메뉴위치 **0**. 4-2 본문 ①이 운영일정 추가 |
+| 물리 제공 리포트 | 4-6-2 | 4-3 `L04_M03` class `rpt` | **4-7** |
+| 물리 일정 리포트 | 4-6-3 | 4-4 `L04_M04` class `rpt` | 메뉴위치 **0** |
+| 응급 | 4-2 | 3-1-4 | **4-3** |
+| 통합 간호 리포트 | 4-3 | 3-6 | **4-4** |
+| 병의원 | 4-4 | 3-8 | **4-5** |
+| 투약 리포트 | 4-5 | 3-9 | **4-6** |
+
+바닥 -57- 필드(확인): ① 급여계획에 없는 운영일정 신규 추가. ② 시작·종료 시간과 치료방법, 출력. ③ 수급자 추가. 치료계획은 직접선택 또는 물리치료급여계획. 전제는 `1-3` 전체 기초평가의 물리치료계획서, `6.물리(작업)치료 급여계획서`. HTML input name 은 **미확인**.
+
+시설 `loadPage` 잎은 `<li` **112**. 사이트맵 버튼 1건은 잎에서 뺐다. `이동서비스` **0**. 문자열 `109` **0**. func.php `욕창` **0** · `체위` **0** · `물리` **11**.
+
+### §964-2 · ★★★ `L04_M02` 는 한 잎에 라벨이 셋이다
+
+시설 4-2 의 보이는 제목은 「4-2.물리(작업)치료 일정」이다. 같은 `<li>` 주석은 「4-2.물리(작업)치료 평가 및 급여제공계획」이다. view 는 `functionEvaluating_servicePlan` 이다. 주야간 4-6-1 의 제목과 주석은 둘 다 「일정」이다.
+
+L04 잎은 **4**. class `rpt` 는 **2/4**(4-3, 4-4). 제목에 「리포트」가 있는 칸도 **2/4** 다. 번호 깊이는 시설 물리 **2**, 주야간 물리 **3**(4-6-1), PDF 메뉴위치 **2**(4-7). ogada `physical` path 는 **0** 이다.
+
+PDF 바닥 -46- 근처의 급여제공 기록지 한 장은 두 영역이다. 간호 및 처치는 4-1. 기능회복훈련 프로그램은 5-1 프로그램 일지, PDF 4-2 물리 제공기록, 3-1 의 기능회복훈련 기록항목이다. 5-4 프로그램 정보의 시간 칸(바닥 -69-)은 신체기능훈련, 기본동작훈련, 일상생활동작훈련, 물리치료, 작업치료, 인지 및 정신기능훈련, 언어치료, 기타 재활 치료다. ogada `/programs/functional-recovery` 는 지표 27 계획 화면이다.
+
+**신규 증거**: [functionEvaluating CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/physical/view.functionEvaluating_servicePlan&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) · [physical_service CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/physical/view.physical_service&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) HTTP **200** · 3B · `58e0494c` · 본문 `[]`.
+
+### §964-3 · ★★★ 7-x 정본은 보이는 제목이다. 시설 주석은 7-4부터 하나 크다
+
+주야간 func.php 7-1~7-10 은 제목과 주석이 같다. 시설 셸의 보이는 제목도 그 번호와 같다. ogada 경로는 그 보이는 번호에 붙어 있다.
+
+| 보이는 제목 | 시설 HTML 주석 | view | ogada `@29c2304` |
+|---|---|---|---|
+| 7-1 청구 | 7-1 | `/share/cost/view.cost_master` | `/billing` |
+| 7-2 입금 | 7-2 | `view.cost_receipt` | `/billing/payments` |
+| 7-2-1 의료비공제 | 7-2-1 | `view.cost_master_statistic` | `/billing/reports/statistics` |
+| 7-3 미납 | 7-3 | `view.cost_nopay` | `/billing/overdue` |
+| 7-4 CMS | **7-5** | `view.cms_manage` | `/billing/cms` |
+| 7-5 간편결제 | **7-6** | `view.npay_manage` | `/billing/easy-pay` |
+| 활성 잎 없음 | **7-7** 연간 청구대장 | `view.cost_master_patient_yearly` | Route **0** |
+| 7-6 청구대장 | **7-7** 연간 | `view.cost_master_report` | `/billing/reports/charges` |
+| 7-7 입금대장 | **7-8** 월별 | `view.cost_deposit_report` | `/billing/reports/deposits` |
+| 7-8 수납대장 | **7-9** | `view.cost_receipt_report` | `/billing/reports/receipts` |
+| 7-9 수납,환불 | **7-10** 수납내역 | `view.cost_receipt_apply_yearly` | `/billing/reports/refunds` |
+| 7-10 간편계산기 | 7-10 | `/cost/view.cost_calculator` | `/billing/calculator` |
+
+7-10 만 경로가 `/cost/` 다. 나머지 활성 잎은 `/share/cost/` 다. L07 class `rpt` **5/11**. 제목 「리포트」 **3/11**. 7-x 의 가장 깊은 ogada 경로는 `/billing/reports/statistics`(깊이 3)다. d4=**6** 안에 7-x 는 **0** 이다. id=7 은 **1.0**.
+
+### §964-4 · ★★ 욕창 기록조회와 체위변경 리포트는 view 가 다르다
+
+BNK-957 은 `L03_M02`·`L03_M03` 을 assessment · plan · records 중 어디에 붙일지 **미확인**으로 두었다. 소스 `pressureUlcer.js` 가 pamcode 를 찍는 칸은 둘이다. 분기 코호트는 `L03_M05`. 제공 리포트는 `L03_M15`. assessment · plan · records 에는 `L03_M02` 와 `L03_M03` 이 **0** 이다.
+
+| 잎 | view | ogada |
+|---|---|---|
+| `L02_M06` 「2-7.체위변경 대상자 관리 리포트」 class `rpt` | `/care/view.position_YC_report` | `/care/reports/position-change` |
+| 같은 잎의 주석 | 「2-7.체위변경/욕창간호 리포트」 | 제목에 욕창간호 없음 |
+| `L03_M02` 「3-2.욕창예방 관리」 | `/nursing/view.YC_highlisk` | pamcode **0** |
+| `L03_M03` 「3-3.욕창예방, 욕창간호 기록조회」 | `/nursing/view.position_YC_nursing` | pamcode **0** |
+
+욕창 view 접두사는 `/nursing/` 이다. 물리 view 접두사는 `/share/physical/` 이다. 주야간 func.php 에는 욕창·체위 문자열이 **0** 이다.
+
+**신규 증거**: [YC_highlisk CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/nursing/view.YC_highlisk&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) · [position_YC_nursing CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/nursing/view.position_YC_nursing&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) HTTP **200** · `[]` · `58e0494c`. input name 은 **미확인**.
+
+### §964-5 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=4 는 **1.0**. id=7 은 **1.0**.
+
+1. 물리 화면 번호를 쓸 때는 셸을 같이 적는다. PDF 4-2 는 제공기록이다. 주야간 제공기록은 4-6 이고 시설 제공기록은 4-1 이다. PDF 4-7 은 제공 리포트다.
+2. `L04_M02` 의 일정, 평가·급여제공계획, `functionEvaluating_servicePlan` 을 세 화면으로 만들지 않는다. input name 은 미확인이다. `physical` path 0 을 P0 로 열지 않는다.
+3. `/programs/functional-recovery` 는 지표 27 이다. PDF 의 급여제공 기록지(4-1 + 5-1 + 4-2 + 3-1)와 한 칸으로 적지 않는다. 5-4 의 물리치료 시간 칸도 그 경로가 아니다.
+4. 7-x 는 보이는 제목을 쓴다. 시설 주석의 7-5 CMS, 7-7 연간 청구대장을 두 번째 메뉴로 만들지 않는다. 7-10 은 `/billing/calculator` 다. `/billing/reports` 아래로 옮기지 않는다.
+5. `view.position_YC_nursing` 을 `/care/reports/position-change` 에 붙이지 않는다. assessment · plan · records 에 `L03_M02`·`L03_M03` 을 이번 사이클에서 찍지 않는다.
+6. 메뉴 수는 주야간 화면 **105**, 주석 **106**, 시설 `<li loadPage>` **112** 다. 「109」는 쓰지 않는다. 이동서비스 정본은 func.php M2 다.
+7. git 은 BNK-963 과 같다. FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+주력 `carefor_l04_pdf_number_bnk964.txt`. 신규 증거 URL 4(CDX 넷, 본문 `[]`). 기존 URL 재실측 1(오리진 HTTP 000, PDF `96f7d45e` 유지). 미확인 해소 1(`L03_M02`/`L03_M03` 은 세 자식 Route 의 pamcode 가 아님). 미확인 1(물리·욕창 input name). per-cycle minimum 4종 충족.
+
+---
 
 ## §963 BNK-963 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **서명은 내 정보 탭 · 결재라인은 쉼표 한 칸 · 직인은 jpg** · ★★ **`/settings/profile` 은 이 트리에 없다** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

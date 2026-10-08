@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-964 케어포 역공학 0-2h · ★★★ **PDF 4-2=물리 제공기록 · 4-7=제공 리포트** · ★★★ **시설 7-4~7-9 주석은 보이는 번호+1** · ★★ **욕창 기록조회와 체위변경 리포트는 view 가 다름** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: 디스크 PDF `96f7d45e` 바닥 -57-·-62-. 시설 demo `carefor_demo_work_live_bnk943.html` L04·L07. func.php 욕창 **0**. [YC_highlisk CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/nursing/view.YC_highlisk&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) · [functionEvaluating CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/physical/view.functionEvaluating_servicePlan&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) HTTP 200 · `58e0494c`. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 물리 제공기록의 번호는 셸마다 다르다 (확인)** — 주야간은 4-6. 시설은 4-1 `view.physical_service`. 2018 PDF 바닥 -57- 의 메뉴위치는 **4-2**다. 제공 리포트는 주야간 4-6-2, 시설 4-3, PDF **4-7**이다. 출력 칸은 일자, 시간, 치료방법, 비고, 치료자다. 목차 쪽수는 바닥보다 하나 작다. BNK-506 의 「PDF 4-2=물리」는 유지하고, 4-3 응급부터 4-7까지를 이번에 이었다. **planner: PDF 4-2 로 Route 를 만들지 않는다. 4-7 을 주야간 4-7 로 읽지 않는다. `physical` path 0 을 P0 로 열지 않는다. id=4 는 1.0.**
+
+2. **★★★ `L04_M02` 는 한 잎이다 (확인)** — 제목은 「일정」. 주석은 「평가 및 급여제공계획」. view 는 `functionEvaluating_servicePlan`. 주야간 4-6-1 은 제목과 주석이 둘 다 「일정」이다. PDF 에 물리 일정 메뉴위치는 0이고, 4-2 본문 ①이 운영일정 추가다. 급여제공 기록지 한 장은 4-1 과 5-1 과 PDF 4-2 와 3-1 이다. ogada `/programs/functional-recovery` 는 지표 27 이다. **planner: 세 라벨을 세 화면으로 나누지 않는다. 지표 27 과 물리 제공기록을 한 칸으로 적지 않는다. input name 은 미확인이다.**
+
+3. **★★★ 7-x 정본은 보이는 제목이다 (확인)** — func.php 는 제목과 주석이 같다. 시설의 보이는 7-1~7-10 도 같다. 시설 주석은 7-4 CMS 부터 7-9 까지 보이는 번호보다 **하나** 크다. 주석 안의 `view.cost_master_patient_yearly` 는 활성 잎이 아니다. 7-10 계산기 view 만 `/cost/` 이고 나머지는 `/share/cost/` 다. ogada 는 보이는 번호에 있다. 7-2-1 은 `/billing/reports/statistics`. 7-10 은 `/billing/calculator`. **planner: 주석의 7-5 CMS 나 7-7 연간 청구대장을 메뉴로 만들지 않는다. id=7 은 1.0.**
+
+4. **★★ 욕창 두 view 를 한 Route 로 적지 않는다 (확인)** — `L02_M06` 은 `view.position_YC_report` 이고 ogada `/care/reports/position-change` 다. 주석은 「체위변경/욕창간호」를 덧붙인다. `L03_M03` 은 `view.position_YC_nursing` 이다. `L03_M02` 는 `view.YC_highlisk` 다. 소스 pamcode 는 `L03_M05` 와 `L03_M15` 만이다. assessment · plan · records 에 M02·M03 은 0 이다. func.php 욕창·체위 문자열은 0 이다. **planner: BNK-957 의 미확인을 세 자식 Route 배정으로 닫지 않는다. 체위변경 리포트 제목에 욕창간호를 붙이지 않는다.**
+
+5. **★ HEAD 는 BNK-963 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · `<li loadPage>` **112** · 「109」 **0** · 시설 이동서비스 **0** · merge gate **4**. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**미확인 해소 1**(M02·M03 은 세 자식 Route 의 pamcode 가 아님) · **미확인 1**(물리·욕창 input name) · 신규 snapshot 은 `carefor_l04_pdf_number_bnk964.txt` 와 CDX 4건 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-963 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **서명은 `user-myInfo` · 직인은 jpg · 결재라인은 쉼표** · ★★ **`/settings/profile` 은 이 트리에 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 836.94s. `mvn -q test` surefire **2505/0/0/0** · 114s. [서명 등록](https://docs.channel.io/ezcare/ko/articles/%EA%B2%B0%EC%9E%AC%EB%9D%BC%EC%9D%B8-%EC%84%9C%EB%AA%85-%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-d3fc8630) HTTP 200 · `979f09bd`. 데모 `user-myInfo` `89c1dd60` · `setting-f01` `ecc41ba4` · login **0000** · nav `95286775` IDENTICAL.

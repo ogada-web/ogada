@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:09:20Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:48:27Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-963 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **서명=`user-myInfo` · 직인=jpg · 결재라인=쉼표** · ★★ **`/settings/profile` 은 이 트리에 0** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+> **최종 갱신**: 2026-10-08 (**BNK-964 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **PDF 4-2=물리 제공기록 · 4-7=제공 리포트** · ★★★ **시설 7-4~7-9 주석 = 보이는 번호+1** · ★★ **`position_YC_nursing` ≠ 체위변경 리포트** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-963 실행값).
+
+| 기능 / 서비스 항목 (BNK-964 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 물리 번호 세 셸 (BNK-964 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ `physical` path **0**. `/programs/functional-recovery` 는 지표 27. id=4 **1.0** | ✅ 주야간 제공기록 **4-6**. 시설 **4-1** `view.physical_service`. PDF 바닥 -57- 메뉴위치 **4-2**. 제공 리포트는 주야간 **4-6-2** · 시설 **4-3** · PDF **4-7**. 바닥 -62- 출력은 일자·시간·치료방법·비고·치료자. 목차는 한 쪽 작음 | ⚪ | ⚪ | ⚪ | `carefor_l04_pdf_number_bnk964.txt` · §964-1 · PDF `96f7d45e` · 오리진 HTTP **000** |
+| **★★★ L04_M02 라벨 셋 (BNK-964 #2 · 확인)** | ⚪ 일정·평가계획·`functionEvaluating` Route **0**. P0 재오픈 0 | ✅ 제목 「4-2.일정」 · 주석 「평가 및 급여제공계획」 · view `functionEvaluating_servicePlan`. L04 `rpt` **2/4**. [CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/physical/view.functionEvaluating_servicePlan&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) `[]` `58e0494c` | ⚪ | ⚪ | ⚪ | §964-2 · input name **미확인** · 기록지 한 장=4-1+5-1+PDF 4-2+3-1 |
+| **★★★ 7-x 주석 +1 (BNK-964 #3 · 확인)** | ✅ 보이는 7-1~7-10 · 7-2-1=`/billing/reports/statistics` · 7-10=`/billing/calculator`. 연간 청구대장 Route **0**. id=7 **1.0**. d4=6 안에 7-x **0** | ✅ func 제목=주석. 시설 보이는 번호는 func 와 같음. 주석은 7-4부터 **+1**(CMS 주석 7-5). 주석 잎 `cost_master_patient_yearly` 활성 **0**. 7-10 view 는 `/cost/` | ⚪ | ⚪ | ⚪ | §964-3 · 주석 번호를 두 번째 메뉴로 만들지 않음 |
+| **★★ 욕창 view 둘 (BNK-964 #4 · 신규 URL · 확인)** | ✅ `/care/reports/position-change` = `L02_M06` `position_YC_report`. assessment·plan·records 에 `L03_M02`·`L03_M03` **0**. 코호트 `L03_M05` · 제공 `L03_M15` | ✅ `L03_M03` = `/nursing/view.position_YC_nursing`. `L03_M02` = `view.YC_highlisk`. func 욕창·체위 **0**. [CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/nursing/view.YC_highlisk&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) `[]`. 시설 이동서비스 **0**. `<li loadPage>` **112**. 「109」 **0** | ⚪ | ⚪ | ⚪ | §964-4 · BNK-957 미확인 해소 · input name **미확인** |
+| **★ HEAD · merge gate 4 (BNK-964 #5)** | ✅ SHA BNK-963과 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · 테스트 미실행 | ⚠ func.php·demo-work·PDF HTTP **000** | ⚪ | ⚪ | ⚪ | §964-0 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-963 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **서명=`user-myInfo` · 직인=jpg · 결재라인=쉼표** · ★★ **`/settings/profile` 은 이 트리에 0** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
 
 | 기능 / 서비스 항목 (BNK-963 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
