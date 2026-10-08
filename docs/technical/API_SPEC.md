@@ -78,7 +78,9 @@
 
 ### 0-5. 역할 코드
 
-운영 로그인 역할은 `ogada_platform_admin`, `sysadmin`, `hq_admin`, `branch_admin`, `staff` 5개다.
+운영 로그인 역할은 `ogada_platform_admin`, `hq_admin`, `branch_admin`, `staff` 4개다.
+
+플랫폼 관리자는 전체 고객사·서비스 운영을 담당한다. 센터의 기술·보안 설정(`/settings/system`, 감사 로그·백업)은 통합 관리자(`hq_admin`)가 자기 조직 범위에서 관리하며 화면은 `/organization/settings`로 통합한다. 기존 `sysadmin` 계정은 비활성화하고 세션을 폐기한다. 센터 IT 계정을 전 고객사 권한으로 자동 승격하지 않는다.
 
 사회복지사·요양보호사 로그인 역할은 `staff`로 통합한다. 기존 직종은 `users.staff_job_code`에 보존하며 권한 역할과 구분한다. 본문에 남은 기존 직원 역할 명칭은 `staff` 권한으로 해석한다. 직원 방문 체크인·체크아웃은 본인에게 배정된 일정만 가능하며, 관리자만 배정을 대신 처리할 수 있다.
 
