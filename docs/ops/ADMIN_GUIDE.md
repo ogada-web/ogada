@@ -1,13 +1,13 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T01:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T02:50:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 5-9 그룹 이력은 겹치는 배정만 인원으로 묶음)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 프로그램 마스터는 API만 · 5-9 그룹 이력은 겹치는 배정만 인원으로 묶음)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
-> **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL + **Flyway V1–V196**
+> **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL + **Flyway V1–V197**
 
 ---
 
@@ -56,6 +56,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > 
 > **기능 클로저**: 
 > - **월별 청구 생성은 지점·달 1건** ✅ (**Q962**, US-M03): **`POST /billing/claims/generate`** 본문 `branchId`·`yearMonth` · 기존 청구가 있으면 **재계산 없이 그 청구 반환** · 줄 수정 API 없음 · 발행일 칸 없음 · 발송일 수정은 **우편만**
+> - **프로그램 마스터(이름·유형·목표)** ✅ (**Q964**, US-P01): **`GET/POST /programs/catalog`** · **`PATCH …/{catalogId}`** · 활성 지점 · 이름 120자 · 목표 500자 · 유형 `GENERAL`·`FUNCTIONAL_RECOVERY`·`COGNITIVE` · 활성 이름 중복 거부 · **행 삭제 없음** · **화면 `/programs/catalog` 없음** · **당일 일정과 별도** · Flyway **V197** (`92466cf`)
 > - **프로그램 수급자 그룹 등록·배정** ✅ (**Q959**, US-P01): **`GET/POST /programs/groups`** · **`PATCH …/{groupId}`** · **`GET/POST …/{groupId}/members`** · 활성 지점 · 이름 120자 · 활성 이름 중복·기간 겹침 거부 · **행 삭제 없음** · **화면 `/programs/groups` 없음** · 집계는 **5-9** `group-history` · Flyway 추가 없음(V179) (`d73aec1`)
 > - **청구 명세·국세청 CSV 엑셀 수식 실행 위험 차단** ✅ (**Q946**, SEC-D33): `=`·`+`·`-`·`@` 시작 글자 칸에 `'` prefix · 금액 숫자(음수 포함)는 유지 (`57523b5`, CWE-1236) — FAQ Q534·Q535
 > - **안전·선임·외출 시각 `<time dateTime>` a11y** ✅ (**Q945**, UXD-204): 안전 점검 **저장 시각** · 선임 **전자서명 시각** · 외출 **실제 출발/복귀 시각** — 화면 표시 무변경 (`95b6c52`, WCAG 1.3.1)
@@ -3174,6 +3175,32 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 
 > 현장: USER_MANUAL §5-9 · FAQ **Q959** · **Q963** · **Q714** · DEPLOYMENT §1-4
 
+#### 10-11-2b. 프로그램 마스터 API (US-P01, v3.1 Must, V197)
+
+활성 지점의 프로그램 이름·유형·목표입니다. **화면 `/programs/catalog` 와 프론트 클라이언트는 없습니다.** **삭제 API는 없습니다.** `active=false` 는 행을 남깁니다. 당일 `activity_programs` 일정은 이 행을 가리키도록 바뀌지 않습니다. 스키마는 **V197** `program_catalog` 입니다 (FAQ **Q964**).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/programs/catalog` | 활성 지점 목록(비활성 포함, 이름순). `items[]`: `id`·`name`·`programType`·`goal`·`active` | `hq_admin`·`branch_admin`·`social_worker` |
+| POST | `/programs/catalog` | 생성. body `name`(trim, 120자)·`goal`(trim, 500자)·`programType`(생략·공백이면 `GENERAL`). 생성 시 활성 | 동일 |
+| PATCH | `/programs/catalog/{catalogId}` | `name`·`programType`·`goal`·`active` **중 하나 이상** | 동일 |
+
+| 규칙 | 내용 |
+|------|------|
+| 지점 | 목록은 **JWT 활성 지점**. 활성 지점 없음 → **403** 「활성 지점이 선택되지 않았습니다.」 |
+| 유형 | `GENERAL`·`FUNCTIONAL_RECOVERY`·`COGNITIVE` 만. 앞뒤 공백 제거 후 대문자. 그 외 → **422** 「프로그램 유형은 GENERAL, FUNCTIONAL_RECOVERY, COGNITIVE 중 하나여야 합니다.」 |
+| 이름 | 활성 항목끼리 지점 내 **대소문자 무시** 중복 → **422** 「같은 이름의 활성 프로그램이 이미 있습니다.」 비활성 이름은 재사용 가능. 비활성을 다시 켤 때도 같은 검사 |
+| 빈·초과 | 생성 빈 값·120/500자 초과 → **400** 입력 검증. 수정에 빈 `name` → **422** 「프로그램 이름을 입력해야 합니다.」 · 빈 `goal` → **422** 「프로그램 목표를 입력해야 합니다.」 |
+| 빈 수정 | 네 칸 모두 없음 → **422** 「변경할 프로그램 정보가 없습니다.」 |
+| 없는 항목 | 다른 기관 식별자 → **404** 「프로그램 정보를 찾을 수 없습니다.」 |
+| 일정 | 이 API는 당일 일정·참여 기록을 **만들지 않고 고치지 않음** |
+| 응답 | 이용자 개인정보 없음 |
+| RBAC | **`caregiver`·`guardian` → 403** |
+| 스키마 | **V197** `program_catalog` · 활성 이름 유니크 인덱스 · 롤백 주석은 `DROP TABLE program_catalog`. 운영에서 프로그램 하나를 지울 때는 테이블을 지우지 말고 `active=false` |
+| 테스트 | **`ProgramCatalogServiceTest`** · **`ProgramCatalogControllerRoutingTest`** · **`ProgramCatalogControllerAccessTest`** |
+
+> 현장: USER_MANUAL §5-9 · FAQ **Q964** · DEPLOYMENT §1-4
+
 #### 10-11-1. 기능회복 훈련 API (G17, US-T06, `73e169a`·`0821ce8`·`0048105`·`e820b28`, V72) — **FE UI Fixed**
 
 MOHW **평가 지표 25–27** 대응. **`FunctionalRecoveryPage`**(`/programs/functional-recovery`)에서 StatCard·계획 목록·등록 폼을 제공합니다. **`mapFunctionalRecoveryComplianceView`** 가 API count 필드를 UI StatCard에 매핑합니다 (`0821ce8`·`21b1855`·`7450161`). **`DashboardPage`** 에 지표27 gap·상태 위젯이 silverangel **row3 verbatim** 라벨로 연동됩니다 (`7450161`, Q271).
@@ -4026,6 +4053,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q964 신설** — §1-4·§10-11-2b **프로그램 마스터 API**(이름·유형·목표, 화면 없음, 당일 일정과 별도, V197) · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q963 신설** — §10-11-2a **5-9 그룹 이력** 겹침 집계·인원만 표시·화면 행 키는 그룹 id · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q962 신설** — §1-4·§10 **월별 청구는 지점·달 1건** · 재호출은 재계산 없음 · `/transport/auto-dispatch` 는 `/transport` 로 이동 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q961 신설** — §10-10 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
