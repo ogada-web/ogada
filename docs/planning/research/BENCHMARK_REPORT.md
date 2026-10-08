@@ -1,9 +1,72 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T05:16:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:12:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §956 BNK-956 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **수지파인 로그인 칸이 주석 안으로 들어감** · ★★ **기본 회계 4업무는 희망이음과 유료 대행** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:12:00Z -->
+
+**조사일**: 2026-10-08T06:12:00Z | **rotation**: ogada git 실측 6-8h. BNK-955(2026-10-08T05:16:00Z) 이후 약 56분. 초점: (1) develop HEAD·Route·Page·모듈 % 재산정 (§956-0) · (2) `npm test`·`mvn test` 재실행 (§956-1) · (3) id=12 회계 포털·Channel 기본 회계 업무 (§956-2) · (4) planner 액션 (§956-3).
+
+### §956-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-955와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-955와 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133**(`<Route` 132 + `<Routes>` 1) · path **132** · 깊이 최대 **4** · d4=**6** · path `report` **29/132=22.0%**. prefix 는 billing 17 · nursing 16 · care 16 · staff 13 · clients 11 · transport 9 · programs **8** · `/accounting` **1**. `/programs/catalog` 는 **0**. `/programs/groups` 는 **0**. Page **106**.
+- 모듈은 엔트리 **29** · 합 **28.25** · **97.41%**. 비-1.0 은 id=2·8·10 이 **0.85**, id=12 가 **0.7**. id=5 는 **1.0**. coverage 파일은 FE SHA 와 같이 바뀌지 않았다. 과거 매트릭스 행의 SHA 는 그 차수 실측이다. 이번 차수 ogada 열은 `@29c2304`/`@92466cfb` 다.
+
+### §956-1 · ★★★ 주석 개수와 실행 개수를 다시 돌린다
+
+| 계수 | 값 | 비고 |
+|---|---|---|
+| `@Test` 줄 시작 | **2485** | BNK-952 와 같은 주석 수. 카탈로그 12 포함 |
+| `@ParameterizedTest` | 3메서드 · 실행 **20**행 | 역할 7 · 알림 이벤트 5 · 은행 8. 소스의 `Arguments`·`EnumSource`·`BankFormatCase` 를 다시 셈 |
+| surefire | **2505** / 실패 0 / 오류 0 / 건너뜀 0 | 2485+20. `mvn -q test` exit 0. 보고서 418개 · 05:57:39Z–05:59:18Z · 경과 112s |
+| npm test | 파일 **493** · 테스트 **2865** PASS · 833.95s | exit 0. 시작 05:57:28Z. e2e 53파일은 제외. 디스크 테스트 파일 **546** |
+| `@RestController` 단어 경계 | **82** | 부분문자열 83 은 `@RestControllerAdvice` 1건 |
+| `@Entity` | **93** | |
+| HTTP | **450** | GET **234** / POST **147** / PATCH **46** / PUT **13** / DELETE **10** |
+| Flyway | V1–**V197** | 결번 0 |
+
+yaml `2479/2479` 는 2485 도 2505 도 아니다. BNK-952 의 실행 숫자와 같고, 소요만 830.76s → 833.95s 다. 서버 미기동은 이 단위 테스트 결과에 없다. live-e2e 하네스 stderr 의 `127.0.0.1:8080` 네트워크 오류는 그 단위 테스트가 기동 실패를 흉내 내는 줄이다.
+
+### §956-2 · ★★★ 수지파인 로그인 드리프트 · ★★ 기본 회계 4업무
+
+**신규 증거**: [장기요양기관의 기본 회계 업무](https://docs.channel.io/ezcare/ko/articles/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%B0%EA%B4%80%EC%9D%98-%EA%B8%B0%EB%B3%B8-%ED%9A%8C%EA%B3%84-%EC%97%85%EB%AC%B4-67496d4d) HTTP **200** · 250,902B · `07bd349d`. 색인 222건 안에 있던 글이고, 본문 스냅샷은 이번이 처음이다.
+
+| 단계 | 이지케어 도움말 `67496d4d` | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 결의서·회계장부 | 매월 작성 권장. 회계 규칙상 의무는 아님. 지도점검 대비. 희망이음 작성 | Route 0. `/accounting` 은 외부 포털 진입 |
+| 추경 | 해당 회계연도 안. 결산 전에만 받는 지역도 있음. 희망이음 → 시군구 | 화면 0 |
+| 예산 | 회계연도 개시 5일 전. 예: 2024년 예산은 2023-12-26. 일부 지자체는 12월 초·중순 | 화면 0. 날짜 시드 없음 |
+| 결산 | 다음 해 3월 31일. 임직원 보수일람표 작성 후 시군구 보고 | 화면 0 |
+| 프로그램만 | 직원·수급자, 일정, 본인부담, 급여명세서, 통장 거래내역, 현금영수증, 자동이체 | M11 급여와 본인부담·수납은 in-app. 통장 엑셀은 입금 대사 |
+| 유료 대행 | 결의서, 인건비, 추경·예산·결산, 취득·상실, 원천세. 1644-0340 내선 3. 금액은 이 글에 없음 | id=12 **0.7**. 문서 코드 `M12-BPO`. 제품명 「수지파인」 |
+
+**기존 URL 재실측**: [sujifine.co.kr/login](https://sujifine.co.kr/login) HTTP **200** · curl 4,516B. [www 로그인](https://www.sujifine.co.kr/login) HTTP **200** · curl 4,556B. 주석 밖 문장은 둘 다 「수지파인이 케어포 재무회계로 새롭게 오픈중에 있습니다.」이고 링크는 [erp.carefor.co.kr](https://erp.carefor.co.kr/) 「케어포 재무회계 바로가기」다. `login_id` 와 `login_password` 는 HTML 주석 안이다. BNK-780 스냅샷 3,974B · `19d1eefb` 는 그 칸이 주석 밖이었다. 주석의 「8/4일 부터」에 연도는 없다. **가정**: 연도는 적지 않는다. 저장본은 세션 토큰을 `REDACTED` 로 바꾼 4,368B · `7f70029d` 다. 다음 비교도 같은 치환 뒤의 md5 를 쓴다.
+
+**신규 증거**: [erp.carefor.co.kr/login](https://erp.carefor.co.kr/login) HTTP **200** · curl 3,608B · 치환본 `8b1fba49`. `POST` action 은 같은 URL. 칸은 `login_id`(「이메일을 입력하세요」) · `login_password`(「비밀번호를 입력하세요.」) · `rememberId` 값 `Y` · 버튼 「로그인」. 화면 제목은 「케어포 재무회계」. document title 은 「장기요양 재무회계 관리프로그램」으로 수지파인과 같다. 루트 `https://erp.carefor.co.kr/` 는 HTTP **302** 로 `/auth_login` 이고, 그 본문 80B 스크립트는 `http://erp.carefor.co.kr/login` 으로 보낸다. 그 평문 주소는 이 호스트에서 25초에 끊겼다. HTTP **000**. 전역 장애로 적지 않는다.
+
+GET [www /carefor_login](https://www.sujifine.co.kr/carefor_login) 은 HTTP **404** · curl 10,352B · 치환본 `072950eb`. apex 도 HTTP **404** · 10,260B. 404 셸에 「계정과목」「자금원천」「상대계정」「회계년도」「서명 등록」「Sorry, not found page.」가 보인다. 로그인된 장부로 승격하지 않는다. GET [erp /carefor_login](https://erp.carefor.co.kr/carefor_login) 은 HTTP **405** · 845,829B. Laravel 디버그라 저장하지 않았다. POST 핸드오프가 되는지는 **미확인**.
+
+### §956-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=12 는 **0.7**. id=2·8·10 은 **0.85**. id=5·id=7·id=11 은 **1.0**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 과 부모 gitlink 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. `@Test` 정본은 **2485** 다. 이번 실행 합계는 surefire **2505**, npm **2865/2865** 다. 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다.
+3. 컨트롤러는 **82**, 엔티티는 **93**, HTTP 는 **450**, 모듈은 **97.41%**, merge gate 는 **4** 다.
+4. 결의서·추경·예산·결산은 희망이음과 유료 재무회계 대행 문장이다. in-app 장부를 이 사이클의 P0 로 열지 않는다. 급여명세서까지는 프로그램 기능이라는 문장과 M11 은 맞다.
+5. 공개 진입 URL `https://sujifine.co.kr/login` 은 이메일 칸을 보여 주지 않는다. 후속 HTTPS 로그인 칸은 `https://erp.carefor.co.kr/login` 이다. URL 상수 교체는 코드 변경이라 이 문서에만 적는다. SSO allowlist 는 GET 404·405 만으로 지우지 않는다.
+6. 수가 시드는 유지한다. 서버 미기동은 단위 테스트 실패가 아니다.
+
+주력 `ogada_git_baseline_bnk956.txt` + `channelio_67496d4d_bnk956.html` + `sujifine_login_live_bnk956.html` + `carefor_erp_login_bnk956.html`. 신규 증거 URL 2(Channel 기본 회계 · ERP HTTPS 로그인). 기존 URL 재실측 1(수지파인 `/login` 문장 교체). 가정 1(8/4 연도). 미확인 3(희망이음 칸 · 유료 금액 · SSO POST). per-cycle minimum 4종 충족.
+
+---
 
 ## §955 BNK-955 — 엔젤·롱텀·규제 4-6h · ★★★ **주야간 1일 수가 30칸이 시드와 같다** · ★★★ **러-1~4 GIF `31064a16` 는 BNK-945 판독 그대로** · ★★ **통합재가 안내의 「건강관리」는 고시 제55조의2에 없다** · ★★ **제35조 목욕 가산은 주 1회 3,000원** · ★ **낙상예방 메뉴가 시범사업으로 바뀜** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

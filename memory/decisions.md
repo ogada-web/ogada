@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-956 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **수지파인 로그인 칸이 주석으로 들어감** · ★★ **기본 회계 4업무는 희망이음·유료 대행** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 833.95s. `mvn -q test` surefire **2505/0/0/0**. [Channel 67496d4d](https://docs.channel.io/ezcare/ko/articles/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%B0%EA%B4%80%EC%9D%98-%EA%B8%B0%EB%B3%B8-%ED%9A%8C%EA%B3%84-%EC%97%85%EB%AC%B4-67496d4d) HTTP 200 · `07bd349d`. [수지파인 로그인](https://sujifine.co.kr/login) 문장 「오픈중에」. [ERP 로그인](https://erp.carefor.co.kr/login) `8b1fba49`.
+
+### 결정
+
+1. **★★★ 실행 합계는 다시 2505와 2865다 (확인)** — 같은 SHA를 이번 사이클에 다시 돌렸다. strict `@Test` **2485**. 매개변수 20행(7+5+8). surefire **2505/0/0/0** · 418보고서 · 05:57:39Z–05:59:18Z. npm **493파일/2865** PASS · 833.95s · exit 0. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · Flyway **V197** · 모듈 **97.41%**(28.25/29). **planner: 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다.**
+
+2. **★★★ 공개 포털은 이메일 칸을 보여 주지 않는다 (확인)** — `https://sujifine.co.kr/login` 과 `www` 모두 주석 밖 문장이 「수지파인이 케어포 재무회계로 새롭게 오픈중에 있습니다.」이고 링크는 `https://erp.carefor.co.kr/` 이다. `login_id`·`login_password` 는 주석 안이다. BNK-780 은 그 칸이 주석 밖이었다. ogada `ACCOUNTING_BPO_PORTAL_URL` 은 아직 `https://sujifine.co.kr/login` 이다. **planner: 결의서 화면을 이 드리프트의 대안으로 만들지 않는다. 공개 URL 교체는 별도 판단이다. id=12 는 0.7.**
+
+3. **★★ 후속 로그인 칸은 `login_id`·`login_password`·`rememberId` 다 (확인)** — `https://erp.carefor.co.kr/` 는 `/auth_login` 으로 가고, 그 스크립트는 `http://erp.carefor.co.kr/login` 을 연다. 그 HTTP 주소는 이 호스트에서 25초 타임아웃(HTTP **000**)이다. `https://erp.carefor.co.kr/login` 은 HTTP **200** 이고 placeholder 는 「이메일을 입력하세요」「비밀번호를 입력하세요.」이다. **planner: 평문 HTTP 타임아웃을 전역 장애로 적지 않는다.**
+
+4. **★★ 기본 회계 4업무는 ogada 화면이 아니다 (확인)** — Channel 글은 결의서(매월 권장)·추경(회계연도 내)·예산(개시 5일 전, 예 2023-12-26)·결산(다음 해 3월 31일)을 희망이음→시군구로 적는다. 재무회계는 유료 부가서비스이고 금액은 이 글에 없다. 프로그램만으로 되는 일은 직원·수급자·일정·본인부담·급여명세서·통장조회·현금영수증·자동이체다. ogada 에 「희망이음」과 「결의서」 Route 는 0 이다. **planner: 이 4업무를 P0 로 열지 않는다. M11 급여와 본인부담은 유지한다.**
+
+5. **★ SSO GET 은 404와 405다 (확인)** — `sujifine` `/carefor_login` GET 은 HTTP **404**. `https://erp.carefor.co.kr/carefor_login` GET 은 HTTP **405** 이고 본문은 Laravel 디버그라 저장하지 않았다. POST 성공은 **미확인**. 404 셸의 계정과목·자금원천·상대계정은 장부 화면이 아니다. **planner: GET 결과만으로 allowlist 를 지우지 않는다. `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 1**(8/4 주석의 연도) · **미확인 3**(희망이음 칸 · 유료 금액 · SSO POST) · 신규 snapshot 은 `_bnk956` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-955 엔젤·롱텀·규제 4-6h · ★★★ **주야간 30칸 = 시드** · ★★★ **러-1~4 GIF 유지** · ★★ **「건강관리」는 고시 문장이 아님** · ★★ **목욕 가산 주 1회 3,000원** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [수가 2742](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) HTTP 200 · `0571d9bb`. [고시 본문](https://www.law.go.kr/LSW/admRulLsInfoR.do) `c5e5bc59`. [GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16`. [시범사업 2732](https://www.longtermcare.or.kr/npbs/r/o/299/npro299m01.web?menuId=npe0000002732) `14ee299e`. git FE `29c2304` · BE `92466cfb`.

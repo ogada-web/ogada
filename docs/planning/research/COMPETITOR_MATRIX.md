@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T05:16:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:12:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,19 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-955 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **주야간 30칸 = 시드** · ★★★ **러-1~4 GIF `31064a16`** · ★★ **제55조의2에 「건강관리」 없음** · ★★ **목욕 가산 주 1회 3,000원** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-08 (**BNK-956 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **수지파인 로그인 칸 주석** · ★★ **기본 회계 4업무 = 희망이음** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+
+| 기능 / 서비스 항목 (BNK-956 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ surefire 2505 · npm 2865 재실행 (BNK-956 #1 · git 실측 · 확인)** | ✅ strict `@Test` **2485**. 매개변수 20행(7+5+8). `mvn -q test` **2505/0/0/0** · 418보고서 · 112s. `npm test` **493파일/2865** PASS · 833.95s. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · V197. yaml `2479` 는 둘 다 아님 | ⚪ | ⚪ | ⚪ | ⚪ | `ogada_git_baseline_bnk956.txt` · §956-1 · SHA 는 BNK-955 와 같음 |
+| **★★★ 모듈 97.41% · prefix (BNK-956 #2 · 재산정 · 확인)** | ✅ 29엔트리 · 28.25/29. 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. path `report` **29/132=22.0%**. d4=**6**. programs **8**. `/accounting` **1**. `/programs/catalog` **0** | ⚪ | ⚪ | ⚪ | ⚪ | §956-0 · coverage 파일 무변경 |
+| **★★★ 수지파인 로그인 칸 주석 (BNK-956 #3 · 기존 URL 재실측 · 확인)** | ✅ 공개 URL 은 아직 `https://sujifine.co.kr/login`. 화면은 포털 진입만. id=12 **0.7** | ✅ 바로가기 대상이 `https://erp.carefor.co.kr/` | ⚪ | ⚪ | ⚪ | `sujifine_login_live_bnk956.html` `7f70029d` · BNK-780 은 칸이 주석 밖 · §956-2 |
+| **★★ ERP 로그인 칸 (BNK-956 #4 · 신규 URL · 확인)** | ⚪ URL 상수는 이 사이클에서 바꾸지 않음 | ✅ [HTTPS 로그인](https://erp.carefor.co.kr/login) `8b1fba49` · `login_id` · `login_password` · `rememberId=Y`. 루트는 `/auth_login` 뒤 평문 HTTP. 그 HTTP 는 이 호스트 **000** | ⚪ | ⚪ | ⚪ | `carefor_erp_login_bnk956.html` · §956-2 · 전역 장애로 적지 않음 |
+| **★★ 기본 회계 4업무 (BNK-956 #5 · 메뉴/필드/워크플로 · 확인)** | ⚪ 결의서·추경·예산·결산 Route **0**. 「희망이음」 **0**. M11 급여·본인부담은 in-app. id=12 **0.7** | ⚪ 희망이음 작성은 이 글의 문장 | ✅ [67496d4d](https://docs.channel.io/ezcare/ko/articles/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%B0%EA%B4%80%EC%9D%98-%EA%B8%B0%EB%B3%B8-%ED%9A%8C%EA%B3%84-%EC%97%85%EB%AC%B4-67496d4d) `07bd349d` · 매월 결의서 · 추경은 연내 · 예산은 개시 5일 전 · 결산은 다음 해 3/31 · 유료 대행 · 금액 **미확인** | ⚪ | ⚪ | `channelio_67496d4d_bnk956.html` · §956-2 · P0 재오픈 0 |
+| **★ SSO GET 404·405 (BNK-956 #6 · 재실측)** | ✅ allowlist 는 `sujifine` `/carefor_login`. POST 성공은 **미확인**. GET 만으로 지우지 않음 | ✅ GET [erp /carefor_login](https://erp.carefor.co.kr/carefor_login) HTTP **405** · 845,829B · 디버그 미저장 | ⚪ | ⚪ | ⚪ | `sujifine_carefor_login_404_bnk956.html` `072950eb` · 계정과목 라벨은 404 셸 · §956-3 |
+| **★ HEAD · merge gate 4 (BNK-956 #7)** | ✅ SHA BNK-955와 같음 · FE ahead **1** · BE ahead **3** · yaml `4aad7cc2` 는 test | ⚪ | ⚪ | ⚪ | ⚪ | §956-0 · §956-3 |
+
+> **직전 갱신**: 2026-10-08 (**BNK-955 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **주야간 30칸 = 시드** · ★★★ **러-1~4 GIF `31064a16`** · ★★ **제55조의2에 「건강관리」 없음** · ★★ **목욕 가산 주 1회 3,000원** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-955 delta·엔젤·롱텀·규제 4-6h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
