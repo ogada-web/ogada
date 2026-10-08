@@ -1,0 +1,47 @@
+BNK-960 교차검증·갭 우선순위 8h+
+조사일 2026-10-08T09:03:00Z
+FE 29c2304d479f317acff6344d114f7fb88115c3a9 develop=test origin 5cf667b ahead 1 WT CLEAN
+BE 92466cfb0afc62dec318bb0aa9fef47a7e407600 origin 1e8857b4 ahead 3 local test 4aad7cc2 develop는 test보다 2커밋 앞 WT CLEAN
+SHA는 BNK-959와 같다. npm test·mvn test 이번 사이클 미실행. 직전 실행은 surefire 2505 · npm 2865.
+Route 133 · Page 106 · HTTP 450 · 모듈 97.41% · merge gate 4. 대시보드 id 40 · HQ 13.
+
+신규 URL
+Channel CMS c24b346e HTTP 200 · 238,444B · 4cf5b856
+https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4CMS-%EC%84%9C%EB%B9%84%EC%8A%A4-c24b346e
+본문 요금: 월사용료 3만원 · 지금 가입시 3개월 무료 · 가입비 100,000원 면제 · SMS 1만 포인트.
+본문 250원 · 300원 · 가상계좌 · 카드 · 엑셀 = 0.
+경로: 효성 CMS 가입신청 → 승인 → [2 수급자관리] > 수급자 > 탭 CMS 생성 → 승인신청 → 매월 출금요청.
+문의 1577-7232.
+3개월 무료가 오늘 계약 조건인지는 미확인. 문장은 라이브 페이지에 있다.
+
+Channel TOP-10 79c05b96 HTTP 200 · 235,220B · e9e2a764
+6월 기록 238,819B 와 크기가 다르다. 옛 파일은 snapshots에 없어 어느 글이 빠졌는지는 미확인.
+제목은 자주 하는 질문. 본문 대시보드 0. 엑셀 글은 브라우저 다운로드(90ded611 · ecbc2f50). 컬럼 변경 0.
+
+재실측
+홈 6e933ae7 73,443B. BNK-954 9672829b 와 다름. 차이는 후기 교체. data-count 53.9 / 9514 / 4903 / 2353 / 1820 · 집계일 2026.09.30. noticeDetail 21861 · 21859 · 21856.
+FAQ edb63fa7 80,058B. 제목 233 / max 21781 동일. 조회수 35/234 증가. 엑셀 제목은 21563 · 21534(브라우저). 21529 · 21762는 파일 다운로드.
+FAQ 21861 9327aff2 · 21856 8bd3679e · 21802 c55f6d1d = BNK-946/221 BYTE-IDENTICAL.
+21861 시행일 2026-10-19. 본문 그대로. 21870 · 21871 · 21872 · 21880 · 21890 · 21900 · 22000 은 13,327B 껍질 e5762090.
+notice.ez 404 c8839f4e IDENTICAL.
+엔젤 목록 03fd9d9e IDENTICAL.
+NHIS #44 c886ff1f 7,572B 648차. 별지 0 · 제22호 0.
+law 검색 별지 제21호 HTTP 200 · 결과 제목은 법령 메뉴. 서식 행 없음. 서식 번호 미확인.
+
+G14
+FAQ 21802 필수 10문장: 급여종류 · 수급자명 · 작성일자 · 작성자명 · 세부목표 · 필요내용 · 세부제공내용 · 횟수 · 시간 · 종합의견.
+ogada 폼 required true 는 9칸. 수급자명은 required false. BE resolveClientNameSnapshot 이 비면 이용자 이름을 넣는다.
+황갈색 = 5개월 또는 11개월. 빨간색 = 통보 이후 발급된 개인별장기요양이용계획서.
+통보 이후 수정·삭제는 별도 문장. ogada upsert 는 notifiedAt 이 있어도 덮어쓴다.
+carePlanFiveMonth · carePlanElevenMonth · carePlanReissue 는 지점 위젯. HQ_WIDGET_IDS 13개 밖.
+
+대시보드
+id 40 유지. HQ 13 유지. 오늘·공단 7(health 포함) 유지. 새 위젯 0.
+
+v1.3-C
+/transport/service-fees 유지. #44 별지 0. P0 재오픈 0.
+
+v2 CMS
+ogada 5코드 collectionImplemented true. 250원/건 · 300원/건. 월 30,000원 행 없음.
+이지케어 도움말 월사용료 3만원은 효성 가입 요금. 건당 요금과 한 표로 적지 않음.
+P0 재오픈 0. 신규 진성갭 0.

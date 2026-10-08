@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T08:25:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:03:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-959 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **도움말 1.8 ≠ 1.9 · 화면 이름은 하나** · ★★ **달력·일괄배정·결재 출력 ≠ 일일 로스터** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+> **최종 갱신**: 2026-10-08 (**BNK-960 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **CMS 도움말 월사용료 3만 원 · 건당 0** · ★★ **G14 문장 10 · 폼 required 9 · 이름 스냅샷** · ★★ **엑셀 컬럼 변경 0 · 조회수 35** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-959 실행값).
+
+| 기능 / 서비스 항목 (BNK-960 delta·교차검증·갭 우선순위 8h+) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ CMS 월사용료 3만 원 (BNK-960 #1 · 신규 URL · 확인)** | ✅ 건당 250원 · 300원. 월 30,000원 행 **0**. 5코드 `collectionImplemented=true`. `CARD` → `/billing/easy-pay`. `CASH_RECEIPT` → `/billing/cash-receipts` | ⚪ | ✅ [c24b346e](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4CMS-%EC%84%9C%EB%B9%84%EC%8A%A4-c24b346e) `4cf5b856` · 월사용료 **3만 원** · 3개월 무료 문장 · 가입비 **100,000원** 면제 · SMS 1만 포인트 · 경로 `[2 수급자관리]` 탭 `CMS 생성` · 본문 250원·가상계좌·엑셀 **0** | ⚪ 단가 재실측 없음. 월 30,000원·250원·300원은 BNK-955 | ⚪ | §960-2 · 월 이용료와 건당을 한 표로 적지 않음 · 프로모션 계약 **미확인** · P0 재오픈 0 |
+| **★★ G14 필수 10문장 · 폼 9칸 (BNK-960 #2 · 메뉴/필드/워크플로 · 확인)** | ✅ required **9**. `clientNameSnapshot` required false · 비면 `client.getName()`. 급여종류 6종. `upsert` 는 `notifiedAt` 이후에도 덮어씀. `/clients/:clientId/care-plan-form` | ⚪ input name **미확인** | ✅ [FAQ 21802](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21802&type=web) `c55f6d1d` IDENTICAL · 필수 10문장에 수급자명 포함 · 황갈색=5·11개월 · 빨간색=이용계획서 재발급 · 통보 후 수정 불가는 별도 문장 | ⚪ | ⚪ | §960-2 · 재발급 위젯을 잠금으로 적지 않음 · P0 재오픈 0 |
+| **★★ 대시보드 40 · HQ 13 (BNK-960 #3 · 확인)** | ✅ id **40**. HQ **13**. 오늘·공단 **7**(`health` 포함). 급여계획 3개는 지점. `/dashboard` · `/dashboard/hq` | ⚪ | ⚪ 만료 7통 재대조 안 함. [TOP-10](https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96) `e9e2a764` 235,220B · 대시보드 **0** | ⚪ | ⚪ | §960-2 · 위젯 재집계 0 · 색만으로 5·11개월을 옮기지 않음 |
+| **★★ 엑셀·공지 스캔 (BNK-960 #4 · 재실측 · 확인)** | ⚪ 가져오기 컬럼 변경 0 · SEC-D34 유지 · `/transport/service-fees` 유지 | ⚪ | ✅ 홈 `6e933ae7` 후기만 교체 · **53.9/9514/4903** · 캐러셀 21861/21859/21856 본문 IDENTICAL · FAQ `edb63fa7` 제목 233 · 조회수 **35** · 엑셀 제목 21563·21534 · 21870–22000 표본 7건은 껍질 `e5762090` · notice.ez **404** `c8839f4e` | ✅ 목록 `03fd9d9e` IDENTICAL | ✅ [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **648차** · 별지 **0** | §960-1 · 서식 번호 **미확인** · v1.3-C P0 재오픈 0 |
+| **★ HEAD · merge gate 4 (BNK-960 #5)** | ✅ SHA BNK-959와 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · 테스트 미실행 | ⚪ | ⚪ 이번 사이클 데모 재로그인 없음 | ⚪ | ⚪ | §960-0 · §960-4 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-959 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **도움말 1.8 ≠ 1.9 · 화면 이름은 하나** · ★★ **달력·일괄배정·결재 출력 ≠ 일일 로스터** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
 
 | 기능 / 서비스 항목 (BNK-959 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

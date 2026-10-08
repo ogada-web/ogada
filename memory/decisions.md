@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-960 교차검증·갭 우선순위 8h+ · ★★★ **CMS 도움말은 월 3만 원 · 건당 250·300원은 없음** · ★★ **G14 필수 문장 10 · 폼 칸 9 · 이름은 스냅샷** · ★★ **엑셀 컬럼 변경 0 · 조회수 35** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [Channel c24b346e](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4CMS-%EC%84%9C%EB%B9%84%EC%8A%A4-c24b346e) HTTP 200 · `4cf5b856`. [FAQ 21802](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21802&type=web) `c55f6d1d` IDENTICAL. [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) `edb63fa7` 제목 233. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 648차. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 이지케어 CMS 본문 요금은 월사용료 3만 원이다 (확인)** — 가입 시 3개월 무료, 가입비 100,000원 면제, SMS 1만 포인트. 본문에 250원·300원·가상계좌·카드·엑셀은 0이다. 경로는 효성 가입 → 승인 → `[2 수급자관리]` 탭 `CMS 생성` → 매월 출금요청이다. ogada 카탈로그는 건당 250원·300원이고 월 30,000원 행은 없다. **planner: 월 3만 원과 건당 요금을 한 표로 적지 않는다. 월 이용료를 P0 로 열지 않는다. 3개월 무료가 오늘 계약인지는 미확인이다.**
+
+2. **★★ G14 필수 문장은 10개이고 폼의 required 는 9칸이다 (확인)** — FAQ 21802 는 수급자명을 필수로 적는다. 폼은 `clientNameSnapshot` 을 required false 로 두고, 비면 이용자 이름을 넣는다. 황갈색은 5개월·11개월, 빨간색은 통보 뒤에 나온 개인별장기요양이용계획서다. 통보 후 수정 불가는 그 색과 다른 문장이다. upsert 는 `notifiedAt` 이 있어도 덮어쓴다. **planner: 수급자명 칸을 새로 필수로 열지 않는다. 재발급 위젯을 수정 잠금으로 적지 않는다. 잠금을 P0 로 열지 않는다.**
+
+3. **★★ 대시보드 40 · HQ 13 · 엑셀 컬럼 변경 0 (확인)** — 급여계획 위젯 3개는 지점만이다. 홈 캐러셀은 21861·21859·21856 이고 본문은 BNK-946 과 같다. 시행일 2026-10-19 는 그대로다. FAQ 제목 233, 조회수 35곳 증가. 엑셀 제목은 브라우저 다운로드 2건이다. 21870 이후 짚은 7개 rowid 는 빈 껍질이다. **planner: 위젯을 새로 세지 않는다. SEC-D34 를 열지 않는다. 색 음영만으로 5·11개월을 보여 주지 않는다.**
+
+4. **★ HEAD 는 BNK-959 와 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 모듈 **97.41%** · merge gate **4**. #44 별지 0. 서식 번호는 **미확인**. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. v1.3-C · v2 CMS · G14 를 P0 로 다시 열지 않는다.**
+
+**가정 정정 1**(통보 잠금 ≠ 재발급 위젯) · **가정 유지 1**(1.8=1.9=같은 PGID · 데모 재로그인 없음) · **미확인 2**(3개월 무료의 현재 계약 · 서식 번호) · 신규 snapshot 은 `_bnk960` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-959 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **1.8과 1.9는 같은 화면 이름** · ★★ **달력 출퇴근부 ≠ 일일 로스터** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 837.86s. `mvn -q test` surefire **2505/0/0/0**. [출퇴근부](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EC%B6%9C%ED%87%B4%EA%B7%BC%EB%B6%80-%EC%9E%91%EC%84%B1%EB%B2%95-27df8d81) `5467e671`. [근무일지](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EA%B7%BC%EB%AC%B4%EC%9D%BC%EC%A7%80-%EC%9E%91%EC%84%B1%EB%B2%95-7537add3) `ab7e77c0`. [8-4 CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/staff/view.staff_work_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) `[]` · `58e0494c`.

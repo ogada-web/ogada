@@ -1,9 +1,81 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T08:25:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:03:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §960 BNK-960 — 교차검증·갭 우선순위 8h+ · ★★★ **CMS 도움말은 월사용료 3만 원 · 건당 금액 0** · ★★ **G14 필수 문장 10 · 폼 required 9 · 이름은 스냅샷** · ★★ **엑셀 컬럼 변경 0 · 조회수 35** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:03:00Z -->
+
+**조사일**: 2026-10-08T09:03:00Z | **rotation**: 교차검증·갭 우선순위 8h+. BNK-959(2026-10-08T08:25:00Z) 이후 약 38분. 초점: (1) 공지·엑셀 포맷 스캔 (§960-1) · (2) G14·대시보드·v1.3-C·v2 CMS 재정렬 (§960-2) · (3) 이전 가정 번복 (§960-3) · (4) planner 액션 (§960-4).
+
+### §960-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-959와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-959와 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-959 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+
+### §960-1 · ★★ 공지·엑셀 스캔 · 컬럼 변경 0
+
+**재실측**: [홈](https://ezcare.easyms.co.kr/) HTTP **200** · 73,443B · `6e933ae7`. BNK-954 `9672829b`(73,390B) 와 다르다. 정규화 차이는 후기 문장이다. `data-count` 는 **53.9 / 9,514 / 4,903 / 2,353 / 1,820**, 집계일 **2026.09.30**. `noticeDetail` 은 **21861 · 21859 · 21856**.
+
+**재실측**: [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) HTTP **200** · 80,058B · `edb63fa7`. 제목 집합은 BNK-954 와 같다. rowid **233** · max **21781**. `faq-hit` **35/234** 증가. 엑셀 제목은 [21563](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21563&type=web) 엣지 · [21534](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21534&type=web) 크롬이다. 21529 · 21762 는 파일 다운로드다.
+
+**재실측**: FAQ [21861](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21861&type=web) `9327aff2` · [21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856&type=web) `8bd3679e` · [21802](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21802&type=web) `c55f6d1d` 는 디스크와 **BYTE-IDENTICAL**. 21861 시행일은 **2026-10-19**. 21856 의 엑셀 문장은 상담일지 작성 현황 다운로드 추가이고 열 헤더는 없다. rowid **21870 · 21871 · 21872 · 21880 · 21890 · 21900 · 22000** 은 HTTP **200** · 13,327B · `e5762090` 빈 껍질이다. `/help/notice.ez` 는 HTTP **404** · `c8839f4e` IDENTICAL.
+
+**재실측**: [엔젤 소식](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) `03fd9d9e` IDENTICAL. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` · 7,572B · **648차**. 「별지」 **0** · 「제22호」 **0**.
+
+**신규 증거**: [자주 하는 질문 TOP-10](https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96) HTTP **200** · 235,220B · `e9e2a764`. 6월 기록은 238,819B 다. 그 파일은 `snapshots/` 에 없어 빠진 글 목록은 **미확인**. 이번 본문의 「대시보드」는 **0**. 엑셀 글은 브라우저 다운로드 `90ded611` · `ecbc2f50` 이다.
+
+### §960-2 · ★★★ CMS 월 3만 원 · ★★ G14 필드 · 대시보드 위젯
+
+**신규 증거**: [본인부담금 자동이체(CMS) 서비스](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4CMS-%EC%84%9C%EB%B9%84%EC%8A%A4-c24b346e) HTTP **200** · 238,444B · `4cf5b856`. 기사 앞부분의 250원·300원·가상계좌·카드·엑셀은 **0** 이다.
+
+| 단계 | 이지케어 `c24b346e` | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 가입 | 효성 CMS 가입신청 → 승인 | 벤더 가입 화면 0 |
+| 화면 | `[2 수급자관리]` > 수급자 > 탭 `CMS 생성` | `/billing/cms` |
+| 입력 | 자동이체 정보 승인신청 | `AUTO_DEBIT_CMS` |
+| 출금 | 매월 출금요청 | 5코드 `collectionImplemented=true` |
+| 요금 | 월사용료 **3만 원**. 가입 시 **3개월 무료**. 가입비 **100,000원** 면제. SMS **1만** 포인트. 문의 **1577-7232** | 건당 **250원** · **300원**. 월 30,000원 행 **0**. `CARD` → `/billing/easy-pay`. `CASH_RECEIPT` → `/billing/cash-receipts` |
+| 가상계좌 | 본문 **0** | `VIRTUAL_ACCOUNT` **300원/1건** |
+
+3개월 무료 문장은 오늘 페이지에 있다. 그 문장이 오늘 계약 조건인지는 **미확인**.
+
+| 칸 | FAQ 21802 | ogada |
+|---|---|---|
+| 필수 문장 | 급여종류 · 수급자명 · 작성일자 · 작성자명 · 장기요양 세부 목표 · 필요내용 · 세부제공내용 · 횟수 · 시간 · 종합의견 (**10**) | 폼 `required: true` **9**. `clientNameSnapshot` 은 `required: false`. 비어 있으면 `client.getName()` |
+| 급여종류 | 문장만 | 6종(주야간·방문요양·방문목욕·방문간호·단기보호·통합재가) |
+| 작성일 | 회계연도 기준 | `planYear` 2000–2100 · 작성일은 그 해 |
+| 5·11개월 | 황갈색 음영 | `carePlanFiveMonth` · `carePlanElevenMonth`. 라벨이 있다 |
+| 재발급 | 빨간색 = 통보 뒤 발급된 개인별장기요양이용계획서 | `carePlanReissue`. HQ 13개 밖 |
+| 통보 후 | 수정·삭제 불가 · 재작성 | `upsert` 는 `notifiedAt` 이 있어도 덮어씀 |
+
+대시보드 `id` 는 **40**. `HQ_WIDGET_IDS` 는 **13**. 오늘·공단 **7** 에는 `health` 가 들어 있다. 급여계획 3개는 지점 준수 묶음이다. `/dashboard` · `/dashboard/hq` · `/clients/:clientId/care-plan-form` · `/transport/service-fees` · `/billing/cms` 는 같은 SHA 에 있다.
+
+### §960-3 · 가정
+
+- **정정**: 통보 후 수정 불가와 빨간색 재발급은 다른 문장이다. `carePlanReissue` 를 수정 잠금으로 적지 않는다.
+- **유지**: BNK-959 의 1.8=1.9=`worker-timesheet3` 가정. 이번 사이클은 데모에 다시 로그인하지 않았다.
+- **유지**: 서식 번호. law 검색 `query=별지 제21호` 는 HTTP **200** 이고 결과 제목은 법령 메뉴다. 서식 행은 없다. #44 에도 별지는 0 이다.
+
+### §960-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=2·8·10 은 **0.85**. id=12 는 **0.7**. id=7 은 **1.0**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. G14 에 수급자명 필수 칸을 추가하지 않는다. 이름은 이용자 스냅샷이다. 통보 후 잠금을 이번 사이클의 P0 로 열지 않는다.
+3. 대시보드 위젯을 다시 세지 않는다. 5·11개월을 색만으로 옮기지 않는다. 급여계획 3개를 통합 화면으로 올리지 않는다.
+4. v1.3-C `/transport/service-fees` 를 유지한다. #44 **648차** 에 별지는 없다.
+5. v2 CMS 의 건당 250원·300원을 유지한다. 이지케어 월사용료 3만 원·3개월 무료를 그 칸에 합치지 않는다. 월 이용료를 P0 로 열지 않는다.
+6. 엑셀 가져오기 양식을 바꾸지 않는다. SEC-D34 를 열지 않는다. 21861 약관 문장으로 ogada 약관을 바꾸지 않는다.
+
+주력 `cross_gap_priority_bnk960.txt` + `channelio_c24b346e_bnk960.html` + `channelio_79c05b96_bnk960.html` + `ezcare_faq_live_bnk960.html` + `ezcare_home_live_bnk960.html` + `nhis_jo44_live_bnk960.html`. 신규 증거 URL 2(CMS · TOP-10). 재실측 5(홈 · FAQ · 21802/21856/21861 · 엔젤 · #44). 가정 정정 1. 가정 유지 1(1.8=1.9). 미확인 2(프로모션 계약 · 서식 번호). per-cycle minimum 4종 충족.
+
+---
 
 ## §959 BNK-959 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **도움말 1.8과 1.9는 같은 화면 이름** · ★★ **이지케어는 달력·일괄배정·결재 출력, ogada는 일일 로스터** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 
