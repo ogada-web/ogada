@@ -1,3 +1,27 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-08T01:54:06Z -->
+<!-- tester-sync: TSR 2004 2026-10-08T01:54:06Z (backend) — test@4aad7cc2 mvn -o -B test 2479/2479 PASS(01:19 min,412 suites,EXIT 0); develop@92466cfb WT CLEAN 0/2; targeted 26/26 PASS; merge SKIP; QA-B690 Open BLOCK pending 1→2; local transfer BLOCK; operation BLOCK. -->
+
+### [TSR] TSR2004 backend — `@4aad7cc2` 회귀 (local BLOCK)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 토큰 `merged` · v3.1 `pending` · test `@4aad7cc2` |
+| develop/test divergence | **0/2** — `d73aec11` groups · `92466cfb` catalog (V197) |
+| merge | **SKIP** (backend `merge_status=ready` 없음 · tester merge 없음) |
+| `mvn -o -B test` | **2479/2479 PASS** (01:19 min · 412 suites · 0F/0E/0S · EXIT 0) `src/backend-test` |
+| develop targeted | **26/26 PASS** (11.7s) · develop 전체 suite 미실행 |
+| `npm test` | N/A |
+| health / disk | **DOWN** :8080 · **2.5G/95%** |
+| Open | **1** BE `QA-20261007-B690` (BLOCK, pending 2) · **1** FE `QA-20261007-B689` (HIGH) |
+| local transfer | **BLOCK** |
+| operation | **BLOCK** (health DOWN · push 미수행 · origin/test BE+1 FE+1 · QA-B116 · QA-B95) |
+| live E2E | **SKIP** |
+| cross-stream | **BLOCK** (BE pending 2 · FE `@29c2304` SYNCED) |
+
+재현: `git -C src/backend rev-list --left-right --count test...develop` = `0 2` · `mvn -o -B test` in `src/backend-test` · develop targeted `-Dtest=ProgramCatalogControllerAccessTest,ProgramCatalogControllerRoutingTest,ProgramCatalogServiceTest,ProgramClientGroupControllerAccessTest,ProgramClientGroupControllerRoutingTest,ProgramClientGroupServiceTest`.
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:40:00Z -->
 <!-- tester-sync: TSR 2003 2026-10-07T17:40:00Z (backend) — test@4aad7cc2 mvn -o -B test 2479/2479 PASS(01:24 min,412 suites,EXIT 0); develop@d73aec11 WT CLEAN 0/1; targeted 14/14 PASS; merge SKIP; QA-B690 Open BLOCK; local transfer BLOCK; operation BLOCK. -->
 

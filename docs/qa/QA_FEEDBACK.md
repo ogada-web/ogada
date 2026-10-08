@@ -1,3 +1,48 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-08T01:54:06Z -->
+<!-- tester-sync: TSR 2004 2026-10-08T01:54:06Z (backend) — ROADMAP v3 token merged / v3.1 pending (no backend merge_status=ready); src/backend-test@4aad7cc2 mvn -o -B test 2479/2479 PASS(01:19 min,412 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop@92466cfb WT CLEAN pending 2 (d73aec11 groups + 92466cfb catalog V197); develop targeted 26/26 PASS; merge SKIP; QA-B690 Open BLOCK updated pending 1→2; FE SYNCED @29c2304 Open QA-B689 HIGH; local transfer BLOCK; operation BLOCK(health DOWN, push not attempted, origin/test BE+1 FE+1, QA-B116+QA-B95, disk 95%). -->
+
+### [TSR] TSR2004 backend — `@4aad7cc2` 회귀 (BLOCK · QA-B690 pending 1→2)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v3 토큰 `merged` · v3.1 `pending` · test `@4aad7cc2` · develop `@92466cfb` |
+| `mvn -o -B test` | **2479/2479 PASS** (01:19 min · 412 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0) on test |
+| develop targeted | US-P01 **26/26 PASS** (11.7s) on `@92466cfb` · develop 전체 suite 미실행 |
+| develop/test divergence | **0/2** — `d73aec11` · `92466cfb` |
+| develop WT | **CLEAN** · origin/develop **ahead 3** |
+| merge | **SKIP** (tester 수동 merge 금지 · backend `merge_status=ready` 없음) |
+| `npm test` | N/A |
+| Open(BE) | **1** (`QA-20261007-B690`, BLOCK, pending **1→2**) |
+| Open(FE) | **1** (`QA-20261007-B689`, HIGH, carry) |
+| local transfer | **BLOCK** |
+| operation | **BLOCK** — health **DOWN** · push 미수행 · origin/test BE **+1** · FE **+1** · **QA-B116**·**QA-B95** |
+| disk | **2.5G avail / 95%** |
+| live E2E | **SKIP** (backend · merge 없음 · health DOWN) |
+| cross-stream | **BLOCK** (BE pending 2 · FE SYNCED `@29c2304`) |
+
+test 회귀 PASS는 develop 이관 PASS가 아니다. `92466cfb`와 `d73aec11`이 test에 없다.
+
+### [TSR] Open — backend develop→test pending 2 (`QA-20261007-B690`)
+
+- **id**: QA-20261007-B690
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (UPDATED · TSR2004 · pending 1→2)
+- **found_at**: 2026-10-07T17:40:00Z
+- **updated_at**: 2026-10-08T01:54:06Z
+- **version**: v3.1 / US-P01 / program client groups + program catalog
+- **summary**: develop `@92466cfb` 가 test `@4aad7cc2`보다 2커밋 앞이다. `test..develop=0/2`. WT **CLEAN**. `d73aec11` 그룹 배정(V179 재사용) + `92466cfb` 프로그램 마스터(`V197__program_catalog_us_p01.sql`, Flyway max on test = V196). `## v3` `merge_status` 첫 토큰은 `merged`, `## v3.1`은 `pending`. backend 버전 중 `merge_status=ready` 는 0건이라 `maybe_merge_version_to_test`가 발화하지 않는다. tester 수동 merge 없음. 단위 테스트 실패 아님.
+- **tests**: test `mvn -o -B test` **2479/2479 PASS** `@4aad7cc2` (01:19 min · 412 suites · 0F/0E/0S · EXIT 0) · develop targeted **26/26 PASS** (`ProgramCatalogControllerAccessTest` 3 · `ProgramCatalogControllerRoutingTest` 1 · `ProgramCatalogServiceTest` 8 · `ProgramClientGroupControllerAccessTest` 3 · `ProgramClientGroupControllerRoutingTest` 2 · `ProgramClientGroupServiceTest` 9 · 11.7s)
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` → `0 2` · `git log --oneline test..develop` → `92466cfb` · `d73aec11` · diffstat 26 files, +1831 · V197는 develop에만 있음
+- **assignee**: PLN
+- **impact**: local BE transfer BLOCK. health DOWN·push 미수행·disk 95%는 operation 잔여이며 이 항목의 원인 아님.
+- **prevention**: v3.1 완료 기준이 남아 있으면 `## v3.1`을 `ready`로 올리지 않는다. 미완 범위가 develop 전체와 함께 test로 FF되고 해당 버전이 `merged`/`done`으로 닫힌다. US-P01만 이관하려면 완료 기준이 모두 `[x]`인 버전 토큰을 `ready`로 맞춘 뒤 다음 build의 auto-merge에 맡긴다.
+- **expected**: `src/backend-test` `test..develop=0/0` 후 `QA-20261007-B690` Absorbed
+- **actual**: `test..develop=0/2` (`d73aec11` · `92466cfb`) · v3 token `merged` · v3.1 `pending`
+- **related**: FE `@29c2304` SYNCED · Open `QA-20261007-B689` HIGH · Planned residual **QA-B116**·**QA-B95**
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:40:00Z -->
 <!-- tester-sync: TSR 2003 2026-10-07T17:40:00Z (backend) — ROADMAP v3 token merged / v3.1 pending; src/backend-test@4aad7cc2 mvn -o -B test 2479/2479 PASS(01:24 min,412 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop@d73aec11 WT CLEAN pending 1 (US-P01, targeted 14/14 PASS); merge SKIP (no backend merge_status=ready); NEW Open QA-B690 BLOCK; FE SYNCED @29c2304 Open QA-B689 HIGH; local transfer BLOCK; operation BLOCK(health DOWN, push not attempted, origin/test BE+1 FE+1, QA-B116+QA-B95). -->
 
@@ -22,12 +67,12 @@
 
 test 회귀 PASS는 develop 이관 PASS가 아니다. `d73aec11`이 test에 없다.
 
-### [TSR] Open — backend develop→test pending 1 (`QA-20261007-B690`)
+### [TSR] ~~Open~~ **Snapshot** — backend develop→test pending 1 (`QA-20261007-B690` · TSR2003)
 
 - **id**: QA-20261007-B690
 - **severity**: BLOCK
 - **stream**: backend
-- **status**: Open (NEW · TSR2003)
+- **status**: superseded by TSR2004 Open (pending 1→2, current body at top)
 - **found_at**: 2026-10-07T17:40:00Z
 - **version**: v3.1 / US-P01 / program client group assignment
 - **summary**: develop `@d73aec11` `feat(v3.1/US-P01): add program client group assignment API` 가 test `@4aad7cc2`에 없다. `test..develop=0/1`. WT **CLEAN**. 신규 migration 없음(V179 재사용, Flyway max V196). 그룹 CRUD·멤버 배정 API. `## v3`의 `merge_status` 첫 토큰은 `merged`이고 `## v3.1`은 `pending`이라 `maybe_merge_version_to_test`가 발화하지 않는다. 본문「ready 유지」와 파서 토큰이 다르다. tester 수동 merge 없음. 단위 테스트 실패 아님.

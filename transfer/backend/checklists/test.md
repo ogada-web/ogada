@@ -1,3 +1,30 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-08T01:54:06Z -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop**: `src/backend` `@92466cfb` WT **CLEAN** (origin/develop ahead 3)  
+> **test**: `src/backend-test` `@4aad7cc2` (origin/test ahead 1)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v3 토큰 `merged` · v3.1 `pending`  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-10-08T01:54:06Z
+
+> **TSR2004 (2026-10-08T01:54:06Z) — test `@4aad7cc2` `mvn -o -B test` 2479/2479 PASS** (01:19 min, 412 suites, 0F/0E/0S, BUILD SUCCESS, EXIT 0) · develop `@92466cfb` WT **CLEAN** · `test..develop` **0/2** · merge **SKIP** · develop targeted **26/26 PASS** · `npm test` N/A · FE develop/test `@29c2304` **SYNCED** · origin/test unpushed BE **+1** · FE **+1** · **QA-20261007-B690 Open(BLOCK, pending 1→2)** · health **DOWN** · disk **95%**(2.5G) · **local transfer BLOCK** · **operation BLOCK**.
+
+> **PASS 금지 사유 (TSR2004)**: **QA-B690 Open(BLOCK)** — develop WT **CLEAN**이지만 `test..develop` **0/2** (`d73aec11` groups, `92466cfb` catalog + V197)이라 HEAD가 다르다. backend에 `merge_status=ready` 버전이 없어 auto-merge가 발화하지 않았고 tester는 merge하지 않았다. test 회귀 **2479/2479 PASS**. **테스트 PASS ≠ develop 이관 가능**.
+
+| 항목 | 결과 |
+|------|------|
+| test 회귀 | PASS 2479/2479 |
+| develop targeted | PASS 26/26 (`92466cfb`, 전체 suite 아님) |
+| develop→test 동기 | FAIL pending 2 |
+| working tree | PASS CLEAN |
+| 프론트 교차 | FE SYNCED `@29c2304` · cross-stream BLOCK(BE pending 2) |
+| 헬스 | DOWN :8080 (operation) |
+| 로컬 이관 판정 | **BLOCK** |
+| 운영 승격 판정 | **BLOCK** |
+
+health DOWN(:8080, 서버 없음), 원격 인증 부재(push 미수행), disk 95%는 operation 잔여다. 로컬 BLOCK 원인은 `QA-B690`(HEAD 불일치, pending 2)이다. 잔여: **QA-B116** · **QA-B95** · FE Open **QA-B689**(HIGH).
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-10-07T17:40:00Z -->
 # Backend develop → test 이관 체크리스트
 
