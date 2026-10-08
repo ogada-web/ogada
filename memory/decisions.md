@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-968 이지케어 역공학 2-4h · ★★★ **3.3은 수급자 일정표와 요양보호사 일정표** · ★★★ **근무현황표는 세 양식** · ★★ **9.8 문장과 9.9 문장은 잎이 하나** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [543ab69a](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC%EC%88%98%EA%B8%89%EC%9E%90-%EC%9D%BC%EA%B4%84-%EC%B6%9C%EB%A0%A5-%EB%AC%B8%EC%9E%90%EC%A0%84%EC%86%A1-%EB%B0%A9%EB%B2%95-543ab69a) HTTP 200 · `d14b4678`. [1597701d](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%EA%B7%BC%EB%AC%B4%ED%98%84%ED%99%A9%ED%91%9C%EC%B6%9C%EA%B7%BC%EB%B6%80-%EC%B6%9C%EB%A0%A5-%EB%B0%A9%EB%B2%95-1597701d) HTTP 200 · `563fa3ef`. [d1e35db4](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1%EB%B0%A9%EB%B2%95-d1e35db4) HTTP 200 · `0f291ca8`. [190bab47](https://docs.channel.io/ezcare/ko/articles/%EC%88%98%EA%B8%89%EC%9E%90%EA%B8%89%EC%97%AC%EC%A0%9C%EA%B3%B5%EC%9E%90-%EB%AF%B8%EB%93%B1%EB%A1%9D-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-190bab47) HTTP 200 · `6d669edd`. 데모 `schedule-p100` `e8b40e56`. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 이중 일정 출력은 3.3의 두 탭이다 (확인)** — 543ab69a 와 FAQ 21185 의 경로는 `[3 방문일정]` > `[3.3 일정표 출력 및 문자발송]` 이다. 탭은 수급자 일정표와 요양보호사 일정표다. 형식은 가로와 세로다. 데모에서 `sw=B` 가 가로, `sw=A` 가 세로다. `sKind` 는 체크박스 001 요양 · 003 목욕 · 002 간호다. ogada `/staff/schedules` 는 직원 월간 일정표이고 알림톡 21이다. **planner: 두 탭을 주야간 P0 로 열지 않는다. 가로/세로를 8-2 화면에 붙이지 않는다. id=2 는 0.85.**
+
+2. **★★★ 출근부 양식은 셋이다 (확인)** — 1597701d 와 FAQ 21179 의 이름은 근무현황표 · 근무현황표A · 근무현황표B 다. 인쇄는 `sw=E`. 엑셀 A 는 `xls_status.worker_A.html`, B 는 `worker_B.html` 이다. 이 A/B 는 일정표의 세로/가로와 글자만 같다. 근무자 명단은 12열이다. 보이는 그리드의 시간은 실근무시간과 수가인정시간이다. **planner: sw 글자를 한 뜻으로 쓰지 않는다. 12열을 가져오기 양식으로 바꾸지 않는다. SEC-D34 를 열지 않는다.**
+
+3. **★★ 일정표 문자와 이용료 자동이체는 화면이 다르다 (확인)** — d1e35db4 는 회신번호를 고른 뒤 문자발송하기다. 후불은 자동이체를 신청한 기관만이다. 그 글은 `[9.9]` 라고 적고, BNK-967 은 `[9.8]` 이라고 적는다. 내비 잎은 「자동이체 신청서」 하나다. FAQ 21193 의 「7. 문자/앱」은 지금 7번 재무회계가 아니다. 직원인권문자는 `send-message-protect-list-GET` 다. **planner: 9.9 를 두 번째 메뉴로 만들지 않는다. 후불 조건을 `/billing/cms` 에 넣지 않는다. 회신번호 input name 은 미확인이다. 발송내역 위치도 미확인이다.**
+
+4. **★★ 공단 일정이 빠지면 사람 정보가 안 맞는 경우다 (확인)** — 190bab47 의 버튼은 「미등록 수급자/급여제공자 확인 및 등록하기」다. 등록 뒤 다시 올린다. 맞춰 볼 칸은 수급자 생년월일 또는 인정번호, 급여제공자 생년월일이다. 시군구 승인 전에는 반영되지 않는다. 07e874d3 의 사회복지사 출력은 3.2 의 달력과 목록이다. **planner: 엑셀 열을 추가하지 않는다. 3.2 출력을 3.3 출근부에 넣지 않는다. P0 로 열지 않는다.**
+
+5. **★ 도입 수와 HEAD 는 BNK-967 과 같다 (확인)** — 홈은 **53.9 / 9,514 / 4,904**. 헤더는 **9,624**. FAQ 제목 233, 조회수 +1 은 **2**건, 엑셀 열 변경은 0이다. FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. 9,514 와 9,624 와 4,904 를 한 칸에 적지 않는다.**
+
+**경로 구분 2**(3.3 ≠ 3.2 · 일정표 문자 ≠ 직원인권문자) · **번호 문장 충돌 1**(9.8 과 9.9) · **미확인 3**(문자 팝업 input · 발송내역 탭 · 미등록 글의 엑셀 열) · 신규 snapshot 은 Channel 5건 · FAQ 3건 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-967 교차검증·갭 우선순위 8h+ · ★★★ **이용료 자동이체는 9.8** · ★★★ **명세서 24는 1장 1건 · 24X는 1장 2건** · ★★ **엑셀 컬럼 변경 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [청구·수납](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%B2%AD%EA%B5%AC-%EB%B0%8F-%EC%88%98%EB%82%A9-%EA%B4%80%EB%A6%AC-7f402f5a) HTTP 200 · `4e4ae879`. [일괄 수납](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%88%98%EB%82%A9%EC%B2%98%EB%A6%AC-%EB%B0%A9%EB%B2%95-95f96b21) HTTP 200 · `7712e8f6`. [이용료 자동이체](https://docs.channel.io/ezcare/ko/articles/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-%EC%9D%B4%EC%9A%A9%EB%A3%8C-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4-%EC%8B%A0%EC%B2%AD%EB%B0%A9%EB%B2%95-77715a35) HTTP 200 · `733dce5b`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **650차**. git FE `29c2304` · BE `92466cfb`.

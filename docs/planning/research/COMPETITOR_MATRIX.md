@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:04:11Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:42:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,18 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-967 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **이용료 자동이체 = 9.8 · 본인부담 CMS와 다른 메뉴** · ★★★ **명세서 24 = 1장 1건 · 24X = 1장 2건** · ★★ **엑셀 컬럼 0 · 조회수 11** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 BNK-967 에서 미실행(BNK-966 실행값).
+> **최종 갱신**: 2026-10-08 (**BNK-968 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **3.3 = 수급자 일정표 · 요양보호사 일정표** · ★★★ **근무현황표 · A · B** · ★★ **9.8 문장과 9.9 문장 · 잎은 하나** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 BNK-968 에서 미실행(BNK-966 실행값).
+
+| 기능 / 서비스 항목 (BNK-968 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 3.3 이중 일정 출력 (BNK-968 #1 · 신규 URL · 메뉴/필드/워크플로 · 확인)** | ✅ `/staff/schedules` 는 8-2. 알림톡 `message_kind=21`. 가로/세로 `sw` **0**. `/programs/reports/schedules` 는 프로그램 리포트. id=2 **0.85** | ⚪ | ✅ [543ab69a](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC%EC%88%98%EA%B8%89%EC%9E%90-%EC%9D%BC%EA%B4%84-%EC%B6%9C%EB%A0%A5-%EB%AC%B8%EC%9E%90%EC%A0%84%EC%86%A1-%EB%B0%A9%EB%B2%95-543ab69a) `d14b4678` `[3.3]`. 탭 수급자 일정표 · 요양보호사 일정표. 일괄/개별. 가로/세로. [FAQ 21185](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21185&type=web) `745a25de`. 데모 `schedule-p100` `e8b40e56`. `sw=B` 가로 · `sw=A` 세로. `sKind` 체크 001/003/002 | ⚪ | ⚪ | §968-2 · 주야간 P0 아님 · 팝업 input **미확인** |
+| **★★★ 근무현황표 3양식 (BNK-968 #2 · 신규 URL · 확인)** | ⚪ 근무현황표A/B 다운로드 **0**. 실근무시간·수가인정시간 열 **0** | ⚪ | ✅ [1597701d](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%EA%B7%BC%EB%AC%B4%ED%98%84%ED%99%A9%ED%91%9C%EC%B6%9C%EA%B7%BC%EB%B6%80-%EC%B6%9C%EB%A0%A5-%EB%B0%A9%EB%B2%95-1597701d) `563fa3ef` · [FAQ 21179](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21179&type=web) `caad2b68`. 인쇄 `sw=E`. 엑셀 A=`worker_A.html` · B=`worker_B.html`. 명단 12열 `excel_worker_list` | ⚪ | ⚪ | §968-3 · `sw` A/B 뜻이 일정표와 다름 |
+| **★★ 일정표 문자 · 회신번호 (BNK-968 #3 · 신규 URL · 확인)** | ✅ 직원 알림톡 21. 회신번호 선택 **0**. 직원인권문자 엔드포인트 **0** | ⚪ | ✅ [d1e35db4](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1%EB%B0%A9%EB%B2%95-d1e35db4) `0f291ca8` 회신번호 뒤 문자발송. 후불은 자동이체 신청 기관. 글은 `[9.9]`. 내비 잎은 「자동이체 신청서」 하나. BNK-967 은 `[9.8]`. [FAQ 21193](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21193&type=web) 의 「7. 문자/앱」은 지금 7번(재무회계)이 아님. 직원인권문자는 `send-message-protect-list-GET` | ⚪ | ⚪ | §968-2 · 발송내역 탭 **미확인** · CMS 건당과 합치지 않음 |
+| **★★ 미등록이면 일정 미반영 (BNK-968 #4 · 신규 URL · 확인)** | ⚪ 가져오기 열 추가 0 · SEC-D34 유지 | ⚪ | ✅ [190bab47](https://docs.channel.io/ezcare/ko/articles/%EC%88%98%EA%B8%89%EC%9E%90%EA%B8%89%EC%97%AC%EC%A0%9C%EA%B3%B5%EC%9E%90-%EB%AF%B8%EB%93%B1%EB%A1%9D-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-190bab47) `6d669edd` 「미등록 수급자/급여제공자 확인 및 등록하기」·`+등록`·재업로드. 생년월일 · 인정번호. 시군구 승인 전 미반영. [07e874d3](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95%ED%91%9C-%EC%B6%9C%EB%A0%A5-%EB%B0%A9%EB%B2%95-07e874d3) `5b7ef4e7` 은 3.2 달력/목록 | ⚪ | ⚪ | §968-3 · 엑셀 열 **미확인** · 3.2 ≠ 3.3 |
+| **★★ 가격·엑셀 스캔 (BNK-968 #5 · 재실측 · 확인)** | ⚪ 도입 수 카피 없음 · 컬럼 변경 0 | ⚪ | ✅ 홈 `bd793ea9` 후기만 · **53.9/9,514/4,904**. 헤더 **9,624**. FAQ `bbf3ef71` 조회수 **2**건 +1. 엑셀 제목 2 · RFID 제목 1 · 「이중」 제목 0. 색인 `71ca632d` IDENTICAL 222. login **0000** · nav IDENTICAL | ⚪ | ⚪ | §968-1 · 9,514 와 9,624 를 한 칸에 적지 않음 |
+| **★ HEAD · merge gate 4 (BNK-968 #6)** | ✅ SHA BNK-967과 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · 테스트 미실행 | ⚪ | ✅ 카탈로그 **10/148/59** · `schedule-p100` 버튼 유지 · `tmp=` 만 변경 | ⚪ | ⚪ | §968-0 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-967 — 교차검증·갭 우선순위 8h+** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **이용료 자동이체 = 9.8 · 본인부담 CMS와 다른 메뉴** · ★★★ **명세서 24 = 1장 1건 · 24X = 1장 2건** · ★★ **엑셀 컬럼 0 · 조회수 11** · P0 재오픈 0. 그 차수 ogada 열은 그 시점 HEAD. BNK-968 이 같은 SHA 를 다시 세었고 테스트는 돌리지 않았다.
 
 | 기능 / 서비스 항목 (BNK-967 delta·교차검증·갭 우선순위 8h+) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

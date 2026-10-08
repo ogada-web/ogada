@@ -1,9 +1,87 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:04:11Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:42:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §968 BNK-968 — 이지케어 역공학 2-4h · ★★★ **3.3은 수급자 일정표와 요양보호사 일정표를 한 화면의 탭으로 둔다** · ★★★ **근무현황표 · A · B는 버튼이 셋** · ★★ **도움말 9.9와 9.8은 같은 자동이체 잎** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T14:42:00Z -->
+
+**조사일**: 2026-10-08T14:42:00Z | **rotation**: 이지케어 역공학 2-4h. BNK-967(2026-10-08T14:04:11Z) 이후 약 38분. 초점: (1) 가격·도입 수 (§968-1) · (2) 이중 일정 출력·문자 (§968-2) · (3) 근무현황표 세 양식·미등록 오류 (§968-3) · (4) planner 액션 (§968-4).
+
+### §968-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-967과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-967과 동일 SHA)
+- 부모 **커밋된** gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-966 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+- `./scripts/ezcare-demo-fetch.sh --pgid schedule-p100` 로그인 code=**0000**. 비로그인 `/new.ez` 는 **70B** `e1d52bd5`. 내비 `top-nav-item-V2.js?20260428` `95286775` / 25,470B 는 **BYTE-IDENTICAL**. 카탈로그는 모듈 **10** · leaf **148** · PGID **59**. `fetched_at` 만 `2026-10-08T14:41:11Z` 다.
+
+### §968-1 · ★★ 도입 수는 그대로고, 후기만 바뀐다
+
+**재실측**: [홈](https://ezcare.easyms.co.kr/) HTTP **200** · 73,186B · `bd793ea9`. BNK-967 `115f9338`(72,820B) 와 다르다. 보이는 문장 차이는 이용후기다. `data-count` 는 **53.9 / 9,514 / 4,904 / 2,353 / 1,820**. 집계일 **2026.09.30**. `noticeDetail` 은 **21861 · 21859 · 21856**.
+
+**재실측**: [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) HTTP **200** · 80,058B · `bbf3ef71`. 제목 집합은 BNK-967 과 같다. rowid **233** · max **21781**. 조회수가 오른 글은 **2**건이다. [21132](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21132&type=web) 14692→**14693**. [21273](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21273&type=web) 14598→**14599**. 엑셀 제목은 엣지 **21563** · 크롬 **21534** 다. RFID 제목은 **21589** 한 건이다. 제목에 「이중」은 **0** 이다. 열 헤더 변경은 **0** 이다.
+
+**재실측**: [주요기능](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) · [이용요금](https://ezcare.easyms.co.kr/new/ezCare_charge.html) · [요금](https://ezcare.easyms.co.kr/index.html?PG=price) 는 쿼리를 지우면 BNK-965 본문과 같다. 헤더는 **9,624**. 셋팅은 **33,000원**. 마감 문구는 「**2026년 10월 31일까지**」. D1 은 **2028년까지** 0원, D2 는 월 **70,000원**. [Channel 색인](https://docs.channel.io/ezcare/ko) `71ca632d` / 218,877B · 글 **222** **BYTE-IDENTICAL**.
+
+### §968-2 · ★★★ 이중 일정 출력은 3.3 탭이고, 문자는 회신번호가 있다
+
+**신규 증거**: [일정표 일괄 출력·문자전송](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC%EC%88%98%EA%B8%89%EC%9E%90-%EC%9D%BC%EA%B4%84-%EC%B6%9C%EB%A0%A5-%EB%AC%B8%EC%9E%90%EC%A0%84%EC%86%A1-%EB%B0%A9%EB%B2%95-543ab69a) HTTP **200** · 234,137B · `d14b4678`. 경로는 `[3 방문일정]` > `[3.3 일정표 출력 및 문자발송]` 다. 탭은 **수급자 일정표** 또는 **요양보호사 일정표** 다. 대상은 일괄 또는 개별이다. 형식은 **가로** 또는 **세로** 다. 버튼 이름은 「출력하기」와 「문자보내기」다. 문자는 수급자 또는 보호자 연락처가 있어야 나간다. 개별 출력의 다른 경로는 `[방문일정 관리]` 에서 수급자를 고른 뒤 출력창이다.
+
+**신규 증거**: [일정표 문자 발송방법](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1%EB%B0%A9%EB%B2%95-d1e35db4) HTTP **200** · 228,039B · `0f291ca8`. 같은 3.3 에서 가로/세로를 고르고 「문자로 보내기」를 누른 뒤 **회신번호**를 고르고 「문자발송하기」다. 무료 포인트가 끝나면, 이용료 자동이체를 신청한 기관만 후불로 넘어간다. 이 글의 신청 메뉴 문장은 `[9.9 자동이체 신청서]` 다.
+
+**신규 증거**: [FAQ 21185](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21185&type=web) HTTP **200** · 14,661B · `745a25de`. [FAQ 21193](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21193&type=web) HTTP **200** · 15,845B · `f1638b6c`. 21185 는 3.3 의 일괄/개별과 가로/세로가 543ab69a 와 같다. 21193 의 발송 이력 문장은 「7. 문자/앱 > 7.2 문자 보내기 → 수급자 > 문자 발송내역」이다.
+
+데모 [PGID schedule-p100](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-p100) HTTP **200** · 96,012B · `e8b40e56`. 제목은 「3. 방문일정 - 일정표 출력 및 문자발송」. HEAD 대비 차이는 `tmp=` 캐시 값뿐이다. 버튼 문장은 같다.
+
+| 칸 | 데모 `schedule-p100` | 도움말 |
+|---|---|---|
+| 탭 | `#tabs-schedule-p100-01` 수급자 일정표 · `-02` 요양보호사 일정표 | 같은 두 이름 |
+| 구분 | `name=sKind` 체크박스. `001` 요양 · `003` 목욕 · `002` 간호 | 이 글에 라디오는 없다 |
+| 일정표 | 그룹 라벨 「일정표(+문자)」. `sw="B"` 가 **가로**. `sw="A"` 가 **세로** | 「출력하기」「문자로 보내기」는 이 툴바 라벨이 아니다 |
+| 조회 | 수급자 `/page/schedule/json-schedule.php?data=patient_schedule`. 요양보호사 `data=worker_schedule` | — |
+| 문자 팝업 | `patient_month_schedule` · `worker_month_schedule` 로 넘긴다. 회신번호 input name 은 이 HTML에 **0** | 회신번호 다음 문자발송하기. **미확인** |
+| 다른 문자 | `#btn-message-send` 「직원인권문자」. `data=send-message-protect-list-GET` | 일정표 문자와 다른 버튼 |
+
+수급자 그리드 보이는 열은 이름 · 정보 · 그룹 · 생년월일 · 서비스총액 `tAmount` · 제공시간 계 `stmTotal` · 방문횟수 · 요양보호사 · 일정관리다. 엑셀로만 나가는 숨은 열은 수급자명 · 생년월일 · 인정번호 `longTermMgmtNo` · 고유번호 `pID` · 연락처(본인) `telNo` · 보호자 `gName` · 보호자(휴대폰) `gHandphone` · 횟수 · 수가총액 · 요양보호사다. 요양보호사 그리드의 보이는 시간은 **실근무시간** `terM` 과 **수가인정시간** `stmTotal` 이다.
+
+내비 JS `20260428` 의 7번은 **재무회계**다. 「문자 발송내역」 잎은 **0** 이다. 수급자 문자는 `mobile-sendP`, 직원 문자는 `mobile-sendW` 다. FAQ 의 「7. 문자/앱」을 지금 7번 메뉴로 읽지 않는다. 발송내역이 `mobile-sendP` 안의 탭인지는 **미확인** 이다.
+
+자동이체 잎은 이름이 「자동이체 신청서」인 팝업 하나다. `open_request_dialog("자동이체", ...)`. JS 에 `9.8` 과 `9.9` 문자열은 **0** 이다. BNK-967 의 [77715a35](https://docs.channel.io/ezcare/ko/articles/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-%EC%9D%B4%EC%9A%A9%EB%A3%8C-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4-%EC%8B%A0%EC%B2%AD%EB%B0%A9%EB%B2%95-77715a35) 는 `[9.8]` 이라고 적고, 이 글은 `[9.9]` 라고 적는다. 옆 잎은 「문자 발신번호 관리」 `PGID=mobile-returnNumber` 다.
+
+ogada `/staff/schedules` 는 케어포 8-2 근무일정표다. 발송은 직원에게 가는 알림톡 `message_kind=21` 이다. 이 페이지의 가로/세로 `sw` 와 회신번호는 **0** 이다. `/programs/reports/schedules` 는 프로그램 리포트다. 방문 일정표 탭이 아니다.
+
+### §968-3 · ★★★ 출근부는 세 양식이고, 미등록이면 공단 일정이 안 들어온다
+
+**신규 증거**: [근무현황표(출근부) 출력](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%EA%B7%BC%EB%AC%B4%ED%98%84%ED%99%A9%ED%91%9C%EC%B6%9C%EA%B7%BC%EB%B6%80-%EC%B6%9C%EB%A0%A5-%EB%B0%A9%EB%B2%95-1597701d) HTTP **200** · 228,465B · `563fa3ef`. 경로는 3.3 의 요양보호사 탭이다. 고를 수 있는 이름은 **근무현황표 · 근무현황표A · 근무현황표B** 다. 출력물은 내부 서명과 보관용이라고 적는다. [FAQ 21179](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21179&type=web) HTTP **200** · 14,588B · `caad2b68` 가 같은 세 이름이다.
+
+데모에서 인쇄 `sw="E"` 의 라벨은 「근무현황표」다. 엑셀은 `sw="A"` 가 `/schedule_print/xls_status.worker_A.html`, `sw="B"` 가 `worker_B.html` 이다. 일정표의 `sw="A"` 는 세로, `sw="B"` 는 가로는 이 엑셀과 글자가 같다. 뜻은 다르다. 근무자 명단 엑셀 열은 **12**개다. 이름 · 생년월일 · 관리번호 · 휴대폰번호 · 서비스횟수 · 근무일수 · 근무시간 · 요양 근무시간 · 목욕 근무시간 · 간호 근무시간 · 계 · 방문 수급자. 끝점은 `data=excel_worker_list` 다.
+
+**신규 증거**: [사회복지사 방문일정표 출력](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95%ED%91%9C-%EC%B6%9C%EB%A0%A5-%EB%B0%A9%EB%B2%95-07e874d3) HTTP **200** · 232,090B · `5b7ef4e7`. 경로는 `[3.2 관리자-일정관리]` 탭 「일정관리(달력)」다. 출력은 **일정표(달력)** 또는 **일정표(목록)** 이다. 방문자 직종은 **사회복지사** 또는 **팀장급 요양보호사**일 때만 켜진다. 3.3 의 근무현황표 버튼이 아니다.
+
+**신규 증거**: [수급자/급여제공자 미등록 오류](https://docs.channel.io/ezcare/ko/articles/%EC%88%98%EA%B8%89%EC%9E%90%EA%B8%89%EC%97%AC%EC%A0%9C%EA%B3%B5%EC%9E%90-%EB%AF%B8%EB%93%B1%EB%A1%9D-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-190bab47) HTTP **200** · 230,251B · `6d669edd`. 공단일정 가져오기 뒤에도 그 수급자 일정이 없으면, 수급자나 급여제공자가 이지케어에 없을 때다. 안내의 버튼은 「**미등록 수급자/급여제공자 확인 및 등록하기**」다. 정보를 넣고 「**+등록**」한 뒤 「**공단일정 이지케어에 올리기**」를 다시 한다. 이미 등록됐는데도 뜨면 수급자의 **생년월일 또는 인정번호**, 급여제공자의 **생년월일**을 공단과 맞춘다. 요양보호사의 **시군구 승인 전**에는 방문일정이 반영되지 않는다. 승인 뒤에 다시 올린다. 엑셀 **열 이름**은 이 글에 없다. **미확인**.
+
+`docCode="0134"` 업무수행 버튼은 `Ym >= 2025-07` 이면 숨긴다. BNK-966 의 hwp 경계와 같은 달이다. 이 화면의 주야간 송영 필드는 **0** 이다.
+
+### §968-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=2·8·10 은 **0.85**. id=12 는 **0.7**. id=7 은 **1.0**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. 3.3 의 두 탭을 주야간 P0 로 열지 않는다. `/staff/schedules` 의 알림톡 21 은 직원 월간 일정표다. 수급자 탭과 가로/세로 인쇄를 그 화면에 붙이지 않는다.
+3. `sw` 글자를 하나로 읽지 않는다. 일정표에서 A 는 세로, B 는 가로다. 출근부 엑셀에서 A 는 근무현황표A, B 는 근무현황표B 다. 인쇄 `sw=E` 가 세 번째 근무현황표다.
+4. 근무자 명단 12열을 가져오기 양식으로 바꾸지 않는다. SEC-D34 를 열지 않는다. 보이는 그리드와 숨은 엑셀 열을 한 표로 적지 않는다. id=2 는 **0.85**.
+5. 도움말의 9.9 와 BNK-967 의 9.8 을 메뉴 둘로 만들지 않는다. 내비 잎은 「자동이체 신청서」 하나다. 후불 문자의 조건을 `/billing/cms` 건당 250원·300원에 넣지 않는다.
+6. FAQ 의 「7. 문자/앱」으로 모듈을 만들지 않는다. 지금 7번은 재무회계다. 발송내역 화면 위치는 **미확인** 이다. 직원인권문자와 일정표 문자를 한 버튼으로 적지 않는다. 회신번호 input name 은 **미확인** 이다.
+7. 미등록 오류의 고칠 칸은 생년월일 · 인정번호 · 시군구 승인이다. 엑셀 열을 추가하지 않는다. 3.2 달력/목록 출력을 3.3 출근부에 넣지 않는다.
+8. 9,514 와 9,624 와 4,904 를 한 칸에 적지 않는다. 후기 교체는 기관 수 변동이 아니다. D1 · D2 · 셋팅 문장은 유지한다.
+
+주력 `ezcare_dual_schedule_print_bnk968.txt` + `channelio_543ab69a_bnk968.html` + `channelio_1597701d_bnk968.html` + `channelio_d1e35db4_bnk968.html` + `channelio_190bab47_bnk968.html` + `ezcare_faq_rowid_21185_bnk968.html`. 신규 증거 URL 8(Channel 5 · FAQ 3). 재실측 7(홈 · FAQ · fnc · charge · 요금 · 색인 · 데모 `schedule-p100`). 경로 구분 2(3.3 ≠ 3.2 · 일정표 문자 ≠ 직원인권문자). 번호 문장 충돌 1(9.8 과 9.9 · 잎은 하나). 미확인 3(문자 팝업 input name · 발송내역 탭 · 미등록 글의 엑셀 열). per-cycle minimum 4종 충족.
+
+---
 
 ## §967 BNK-967 — 교차검증·갭 우선순위 8h+ · ★★★ **이용료 자동이체는 9.8 · 본인부담 CMS와 다른 메뉴** · ★★★ **명세서 24는 한 장에 1건 · 24X는 한 장에 2건** · ★★ **엑셀 컬럼 변경 0 · 조회수 11** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 
