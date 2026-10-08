@@ -2480,6 +2480,16 @@
 
 ### 문서 작성 질문
 
+### [TWR] 서명 그림·직인·결재라인 (2026-10-08T11:48:16Z)
+
+- **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `SettingsPage` 탭은 보안·카카오 API·로그인 이력·감사 로그·백업이다. `allowedRolesForPath("/settings")` 는 `sysadmin` 만이다. `App.jsx` 에 `/settings/profile` Route 는 없다.
+- **없는 칸**: 소스에 직인 업로드·`approval_line`·서명 캔버스(`toDataURL` 은 QR 전용)가 없다. 출퇴근 화면의 결재 인쇄도 없다.
+- **업무수행일지**: `POST /api/v1/staff/lead-caregiver-logs/{logId}/sign` 본문은 `signerUserId`·`signatureMethod`(`DIRECT`·`SMS_VERIFIED`)다. 그림 필드는 없다. 완료 후 수정은 「전자서명이 완료된 업무수행일지는 수정할 수 없습니다.」 화면은 로그인한 사용자 id를 보낸다. 문자 인증은 체크만 하고 실발송은 없다.
+- **화면 가드**: `/staff` 로 시작하는 경로는 `branch_admin`·`hq_admin` 만 통과한다. 사이드 메뉴와 기록 하위 메뉴는 `social_worker`·`caregiver` 에게도 링크를 보여 주고, 그 역할은 `/forbidden` 으로 간다. API `@PreAuthorize` 는 네 역할이다.
+- **운전자 서명**: 이동서비스 일지는 `driverSignatoryName` 과 `driverSignedOn` 을 같이 받는다. 하나만 있으면 「운전자 서명자명과 서명일을 함께 입력하세요.」
+- **문서**: CHANGELOG 2026-10-08 카드 · FAQ **Q974** · 사용자 매뉴얼 §1-5·§5-5·§5-8·§5-9 · 관리 가이드 §1-4 · 배포 가이드 §1-4.
+- **미문서 잔여**: 프로그램 마스터·수급자 그룹은 API만 있고 화면(`/programs/catalog`·`/programs/groups`)은 없다. 의견수렴(`/programs/feedback`)·월간 계획(`/programs/plans`)은 화면과 API가 아직 없다.
+
 ### [TWR] 인지지원 단기보호와 시급 칸 (2026-10-08T10:40:17Z)
 
 - **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `NHIS_2026` 주야간 시드 상수에 74,060·100,000 단기보호 행은 없다.
