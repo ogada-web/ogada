@@ -1,0 +1,30 @@
+BNK-961 이지케어 역공학 2-4h · 2026-10-08T09:46:00Z
+FE @29c2304 ahead 1 · BE @92466cfb ahead 3 · test @4aad7cc2 · HTTP 450 carry · 모듈 97.41% · merge gate 4
+login code=0000 · nav 95286775 IDENTICAL · redirect 70B e1d52bd5 · 색인 71ca632d IDENTICAL 222글
+
+가격: price a7e04d8a 64928B · 숫자 쿼리 제거 시 BNK-954 4d7b24ec 과 동일
+  D1 2028년까지 0원 · D2 월 70,000원 · 셋팅 33,000원 · 마감 2026.10.31
+홈: 961ac4df 72480B · data-count 53.9 / 9514 / 4904(+1) / 2353 / 1820 · 집계일 2026.09.30
+  후기 날짜 20건 교체 · noticeDetail 21861·21859·21856
+fnc 11eb5bb0 · charge e5c359dc · 헤더 9,621 → 9,623. 홈 9,514와 합치지 않음
+FAQ f0fc7007 · 제목 233 · max 21781 · 조회수 +1 이 4건 · 엑셀 제목은 21563·21534 · 컬럼 변경 0
+
+신규 URL Channel 5b5717bb 6b2a8579 236037B
+  일반요양 시급 = [1 직원관리] 수당설정 포괄시급
+  가족요양 시급 = [2 수급자관리] 급여계획 · 급여구분·방문시간·방문요일 · 급여제공자 · 가족케어 시급 또는 방문당
+  시급은 방문일정 업로드 시점 스냅샷. 이후 수정은 재업로드. 확정 건은 일정확정 취소 후
+FAQ 21135 0a53425d 15309B · 같은 두 경로. 탭 이름은 급여제공계획. 방문당·재업로드 문장 없음
+
+PGID worker-timesheet3 6333c35a 112129B
+  화면 HTML에 메뉴 번호 1.8·1.9 없음(SVG 좌표). 결재 문자열 0
+  일괄배정 #btn-save-all · 다이얼로그 「Ym 일정 일괄 배정하기」
+  기본값 09:00–18:00 · kind 정상근무 · breaktime 60
+  저장 #btn-save-timesheet-all → /page/worker/run-worker.php?mode=worker_memo_UPDATE2 (날짜별)
+  토·일·공휴일은 chk_sat·chk_sun·chk_holiday 가 켜진 날만
+  일괄삭제 #btn-delete-timesheet-all → mode=worker-timesheet-batch-DELETE · data wCode+Ym
+  근무일지 저장 필드 wCode·sDate·Ym·memo·memo_ext
+  그리드 상태·이름·생년월일·실근무시간·연차일수·직종
+  state 01활동 02휴직 03퇴사 04기타
+  구인 폼 frm-jobPostInsert 는 이번 HTML에 없음. 위젯 제목은 「요양보호사 지원 알림」. 기능 삭제로 적지 않음
+
+ogada: 가족케어 90%는 청구 감산(feeSurchargeRates). 포괄시급 필드 0. /staff/attendance 는 일일 로스터. 일괄배정 P0 아님

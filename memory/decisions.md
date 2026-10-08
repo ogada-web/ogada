@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-961 이지케어 역공학 2-4h · ★★★ **가족 시급은 수급자 급여계획 · 일반 시급은 직원 포괄시급** · ★★★ **일괄배정 기본 09:00–18:00 · 날짜별 `worker_memo_UPDATE2`** · ★★ **재무회계 대행 4,904 · 헤더 9,623** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [Channel 5b5717bb](https://docs.channel.io/ezcare/ko/articles/%EA%B0%80%EC%A1%B1%EC%9A%94%EC%96%91-%EC%9D%BC%EB%B0%98%EC%9A%94%EC%96%91-%EB%8F%99%EC%8B%9C-%EC%A0%9C%EA%B3%B5-%EC%8B%9C-%0A%EC%8B%9C%EA%B8%89-%EC%84%A4%EC%A0%95%EB%B2%95-5b5717bb) HTTP 200 · `6b2a8579`. [FAQ 21135](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21135&type=web) HTTP 200 · `0a53425d`. 데모 `worker-timesheet3` `6333c35a` · login **0000** · nav `95286775` IDENTICAL. 홈 `961ac4df` **4904**. fnc·charge 헤더 **9,623**. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 동시 제공 시급은 화면이 둘이다 (확인)** — 일반요양(방문요양) 시급은 `[1 직원 관리]` 수당설정의 **포괄시급**이다. 가족요양 시급은 `[2 수급자 관리]` 급여계획에서 급여제공자를 고른 뒤 넣는다. 일급이면 도움말은 단위를 **방문당**으로 바꾼다. 금액은 방문일정 업로드 시점의 값이고, 그 뒤 고치면 재업로드다. 확정된 일정은 일정확정 취소가 먼저다. FAQ 21135 는 같은 두 경로이고 탭 이름만 **급여제공계획**이다. 방문당·재업로드 문장은 FAQ 에 없다. ogada `family-care-90` 은 청구를 90%로 산정하는 규칙이고 시급 칸이 아니다. **planner: 포괄시급과 가족 시급을 한 칸으로 적지 않는다. 90% 감산에 시급을 섞지 않는다. 재가 규칙을 주야간 수가에 넣지 않는다. P0 로 열지 않는다. 데모 탭 라벨은 미확인이다.**
+
+2. **★★★ 출퇴근 화면 번호는 1.8 도 1.9 도 아니다 (확인)** — 데모 PGID 는 `worker-timesheet3` 하나다. HTML 의 1.8·1.9 숫자는 SVG 좌표다. 「결재」 문자열은 0이다. 일괄배정은 직원 선택 뒤 다이얼로그이고 기본은 **09:00–18:00**, 휴게 **60분**, 구분 **정상근무**다. 저장은 이번 달 날짜마다 `worker_memo_UPDATE2` 다. 토·일·공휴일은 체크된 날만 들어간다. 일괄삭제는 `worker-timesheet-batch-DELETE`(`wCode`+`Ym`)다. 근무일지 저장 필드는 `wCode`·`sDate`·`Ym`·`memo`·`memo_ext` 다. ogada `/staff/attendance` 는 일일 로스터다. **planner: 1.8·1.9 로 Route 를 만들지 않는다. 일괄배정과 일괄삭제를 P0 로 열지 않는다. 이 HTML 에 없는 결재란을 만들지 않는다. 인쇄 PDF 결재란은 미확인이다. id=8 은 0.85.**
+
+3. **★★ 도입 수는 세 문장이다 (확인)** — 홈 **53.9 / 9,514 / 4,904 / 2,353억 / 1,820억**, 집계일 **2026.09.30**. 재무회계 대행만 4,903→**4,904**. 후기 시각 20건이 교체됐다. fnc·charge 헤더는 **9,623**(9,621→+2). 요금 본문은 BNK-954 와 같다. D1 은 2028년까지 0원, D2 는 월 70,000원, 셋팅은 2026-10-31 까지 33,000원이다. FAQ 제목 233, 조회수 증가는 4건, 엑셀 열 변경은 0이다. **planner: 9,514 와 9,623 과 4,904 를 한 칸에 적지 않는다. SEC-D34 를 열지 않는다.**
+
+4. **★ HEAD 는 BNK-960 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 모듈 **97.41%** · merge gate **4**. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 부분 확인 1**(화면은 `worker-timesheet3` 하나 · 도움말 번호 정본은 미확인) · **미확인 3**(데모 탭 라벨 · 인쇄 결재란 · 구인 폼 삭제 여부) · 신규 snapshot 은 `_bnk961` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-960 교차검증·갭 우선순위 8h+ · ★★★ **CMS 도움말은 월 3만 원 · 건당 250·300원은 없음** · ★★ **G14 필수 문장 10 · 폼 칸 9 · 이름은 스냅샷** · ★★ **엑셀 컬럼 변경 0 · 조회수 35** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [Channel c24b346e](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EC%9E%90%EB%8F%99%EC%9D%B4%EC%B2%B4CMS-%EC%84%9C%EB%B9%84%EC%8A%A4-c24b346e) HTTP 200 · `4cf5b856`. [FAQ 21802](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21802&type=web) `c55f6d1d` IDENTICAL. [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) `edb63fa7` 제목 233. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 648차. git FE `29c2304` · BE `92466cfb`.

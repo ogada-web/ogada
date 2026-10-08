@@ -1,9 +1,89 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:03:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:46:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §961 BNK-961 — 이지케어 역공학 2-4h · ★★★ **가족요양 시급은 수급자 급여계획 · 일반요양 시급은 직원 포괄시급** · ★★★ **일괄배정은 09:00–18:00 · 날짜별 `worker_memo_UPDATE2`** · ★★ **재무회계 대행 4,904 · 헤더 9,623** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T09:46:00Z -->
+
+**조사일**: 2026-10-08T09:46:00Z | **rotation**: 이지케어 역공학 2-4h. BNK-960(2026-10-08T09:03:00Z) 이후 약 43분. 초점: (1) 가격·도입 기관 수 (§961-1) · (2) 가족요양·일반요양 동시 시급 (§961-2) · (3) 데모 `worker-timesheet3` 일괄배정 (§961-3) · (4) planner 액션 (§961-4).
+
+### §961-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-960과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-960과 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-959 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+
+### §961-1 · ★★ 재무회계 대행 +1 · 헤더 이용기관 +2 · 요금 본문은 동일
+
+| 표면 | 실측 |
+|---|---|
+| [홈](https://ezcare.easyms.co.kr/) | HTTP **200** · 72,480B · `961ac4df` |
+| [요금](https://ezcare.easyms.co.kr/index.html?PG=price) | HTTP **200** · 64,928B · `a7e04d8a` · 숫자 쿼리를 지우면 BNK-954 `4d7b24ec` 과 **동일** |
+| [주요기능](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | HTTP **200** · 17,870B · `11eb5bb0` |
+| [이용요금](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | HTTP **200** · 22,979B · `e5c359dc` |
+| [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) | HTTP **200** · 80,058B · `f0fc7007` |
+| [Channel 색인](https://docs.channel.io/ezcare/ko) | HTTP **200** · 218,877B · `71ca632d` · BNK-951 과 **BYTE-IDENTICAL** · 글 **222** |
+
+홈 `data-count` 는 **53.9 / 9,514 / 4,904 / 2,353 / 1,820**. BNK-960 의 세 번째 칸은 **4,903** 이었다. 집계일 **2026.09.30**. `noticeDetail` 은 **21861 · 21859 · 21856**. 후기 시각 20건이 빠지고 20건이 들어왔다. 크기 73,443B → 72,480B 는 그 교체다.
+
+`ezCare_fnc.html` 과 `ezCare_charge.html` 헤더는 「전국 **9,623개** 기관 사용중」이다. BNK-954 헤더는 **9,621** 이었다. 차이는 그 숫자와 CSS 쿼리다. 홈 9,514와 헤더 9,623은 같은 시각의 다른 문장이다.
+
+요금 모달 D1 은 **2028년까지 전액 무료**. D2 는 주야간보호 스탠다드 「**월 70,000원** 고정」. 셋팅비는 기준 **55,000원**, **40% 할인**, **33,000원**, **2026. 10. 31** 까지다.
+
+FAQ 제목은 **233** · max **21781** · 추가 0 · 삭제 0. 조회수가 1 늘어난 곳은 **4**건(21277 · 21602 · 21343 · 21778)이다. 엑셀 제목은 [21563](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21563&type=web) 엣지 · [21534](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21534&type=web) 크롬이다. 제목에 「이중」은 **0**이다. RFID 제목은 [21589](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web) 문자 발송 1건이다.
+
+### §961-2 · ★★★ 동시 제공 시급은 직원 칸과 수급자 칸이 다르다
+
+**신규 증거**: [Channel 5b5717bb](https://docs.channel.io/ezcare/ko/articles/%EA%B0%80%EC%A1%B1%EC%9A%94%EC%96%91-%EC%9D%BC%EB%B0%98%EC%9A%94%EC%96%91-%EB%8F%99%EC%8B%9C-%EC%A0%9C%EA%B3%B5-%EC%8B%9C-%0A%EC%8B%9C%EA%B8%89-%EC%84%A4%EC%A0%95%EB%B2%95-5b5717bb) HTTP **200** · 236,037B · `6b2a8579`. 제목은 「가족요양, 일반요양 동시 제공 시 시급 설정법」. 색인 스냅샷은 이번이 처음이다.
+
+**신규 증거**: [FAQ 21135](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21135&type=web) HTTP **200** · 15,309B · `0a53425d`. 제목은 「요양보호사가 가족케어와 방문요양을 동시에 하는데 시급은 어떻게 설정해야하나요?」. 조회수 **17290**. 본문 스냅샷은 이번이 처음이다.
+
+| 칸 | Channel `5b5717bb` | FAQ 21135 | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|---|
+| 일반요양 | `[1 직원 관리]` > 직원 > 탭 `수당설정` > **포괄시급** | `1.직원 관리` > 수당설정 > **포괄시급** | 포괄시급 필드 **0**. 계약 문장은 월급·시급 체크 |
+| 가족요양 | `[2 수급자 관리]` > 탭 `급여계획` > 추가 > 급여구분·방문시간·방문요일 > 급여제공자 > **가족케어 시급** | `2.수급자 관리` > **급여제공계획** > 추가 > 같은 네 단계 | 수급자별 가족 시급 칸 **0** |
+| 일급 | 시급을 **방문당**으로 바꾼 뒤 방문당 수당 | 그 문장 **0** | 방문당 수당 칸 **0** |
+| 반영 시점 | 방문일정 **업로드 시점**의 금액. 이후 수정은 **재업로드**. 확정 건은 **일정확정 취소** 후 | 그 문장 **0** | 일정 재업로드로 시급을 다시 심는 경로 **0** |
+| 청구 감산 | 본문 **0** | 본문 **0** | `family-care-90` = 가족 방문 50% 미만이면 **90% 산정**. 시급이 아니다 |
+
+탭 이름 `급여계획` 과 `급여제공계획` 은 두 글의 차이다. 데모 수급자 화면의 탭 라벨은 이번 사이클 **미확인**이다.
+
+### §961-3 · ★★★ 출퇴근 화면은 PGID 하나 · 일괄배정은 날짜별 저장
+
+`./scripts/ezcare-demo-fetch.sh --menu-catalog --pgid worker-timesheet3` · 로그인 code=**0000**. 비로그인 `/new.ez` 는 **70B** `e1d52bd5`. 내비 `95286775` / 25,470B 는 **BYTE-IDENTICAL**. 제목은 「[DEMO 이지케어] 체험 이지케어 재가복지센터」. 상위 메뉴는 직원·수급자·방문일정·RFID점검·본인부담·직원급여·재무회계·세무·사회보험·기관관리·기관평가 **10**개다.
+
+**재실측**: [PGID worker-timesheet3](https://ezcare.easyms.co.kr/new.ez?PGID=worker-timesheet3) 112,129B · `6333c35a`. git HEAD 의 같은 파일은 더 컸다. 줄어든 바이트는 구인 폼 `frm-jobPostInsert` 가 이번 HTML 에 없는 차이다. 위젯 제목은 「요양보호사 지원 알림」이고 버튼 「미확인 지원자 확인하기」는 있다. 출퇴근 열 삭제로 적지 않는다. 그 폼이 제품에서 빠졌는지는 **미확인**이다. 정본 파일은 되돌렸다.
+
+화면 HTML 에서 「1.8」「1.9」로 보이는 숫자는 SVG 좌표다. 메뉴 번호 문자열은 **0**이다. 「결재」도 **0**이다. BNK-959 도움말의 결재라인은 이 HTML 에 없다. 인쇄 PDF 의 결재란은 **미확인**이다.
+
+| 동작 | 이지케어 `worker-timesheet3` | ogada `/staff/attendance` |
+|---|---|---|
+| 직원 고르기 | 왼쪽 그리드. 열은 상태·이름·생년월일·실근무시간·연차일수·직종. `state` **01** 활동 · **02** 휴직 · **03** 퇴사 · **04** 기타. `worker_kind` **01–21** | 일일 로스터. 고용상태 4값 필터 **0** |
+| 일괄배정 | `#btn-save-all`. 미선택 시 「왼쪽 리스트에서 직원을 선택하세요.」 다이얼로그 제목 `Ym 일정 일괄 배정하기`. 기본 **09:00–18:00** · `kind=정상근무` · `breaktime=60` | 일괄배정 버튼 **0** |
+| 저장 | `#btn-save-timesheet-all` 이 이번 달 칸마다 `POST /page/worker/run-worker.php?mode=worker_memo_UPDATE2`. `extData` 는 `breaktime`. 토·일·공휴일은 `chk_sat` · `chk_sun` · `chk_holiday` 가 켜진 날만 | `POST /check-in` · `/check-out`. 방식 `MANUAL`/`MOBILE`/`NFC` |
+| 일괄삭제 | `#btn-delete-timesheet-all` · 확인 「출퇴근이력을 일괄 삭제하시겠습니까?」 · `mode=worker-timesheet-batch-DELETE` · `wCode`+`Ym` | 월 단위 일괄 삭제 **0** |
+| 근무일지 | 저장 필드 `wCode` · `sDate` · `Ym` · `memo` · `memo_ext`. 출력은 기간 `sDate` | 근무일지 결재 경로 **0** |
+
+**확인**: nav 의 출퇴근 URL 은 `worker-timesheet3` 하나다. 1.8 과 1.9 는 이 화면의 번호가 아니다. 어느 도움말 번호가 정본인지는 **미확인**으로 남긴다.
+
+### §961-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=8 은 **0.85**. id=7 은 **1.0**. 수가 시드 변경 **0**.
+
+1. 홈 이용기관 **9,514**, 헤더 **9,623**, 재무회계 대행 **4,904** 를 한 칸에 적지 않는다. 집계일은 **2026.09.30** 이다. D1·D2·셋팅 문장은 BNK-954 와 같다.
+2. 가족요양 시급과 일반요양 시급을 한 칸으로 적지 않는다. 포괄시급은 직원 수당설정이고, 가족케어 시급은 수급자 급여계획이다. `family-care-90` 은 청구 감산이다. 재가 시급을 주야간 수가에 넣지 않는다. P0 로 열지 않는다.
+3. 시급은 일정 업로드 시점의 값이다. 확정된 일정의 시급을 바꾸려면 도움말은 일정확정 취소를 먼저 요구한다. FAQ 21135 에는 그 문장이 없다. 데모 탭 라벨은 **미확인**이다.
+4. 1.8·1.9 로 Route 를 만들지 않는다. 일괄배정 기본 09:00–18:00 과 일괄삭제를 P0 로 열지 않는다. 화면 HTML 에 없는 결재란을 이번 페이지로 만들지 않는다. NFC 방식은 유지한다.
+5. 엑셀 가져오기 양식을 바꾸지 않는다. SEC-D34 를 열지 않는다. git 은 BNK-960 과 같다. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+주력 `ezcare_dual_wage_timesheet_bnk961.txt` + `channelio_5b5717bb_bnk961.html` + `ezcare_faq_rowid_21135_bnk961.html` + `ezcare_new_ez_pgid_worker-timesheet3_bnk961.html`. 신규 증거 URL 2(동시 시급 · FAQ 21135). 재실측 6(홈 · 요금 · fnc · charge · FAQ · `worker-timesheet3`). 가정 부분 확인 1(화면 번호는 1.8·1.9 가 아님). 미확인 3(데모 탭 라벨 · 인쇄 결재란 · 구인 폼 삭제 여부). per-cycle minimum 4종 충족.
+
+---
 
 ## §960 BNK-960 — 교차검증·갭 우선순위 8h+ · ★★★ **CMS 도움말은 월사용료 3만 원 · 건당 금액 0** · ★★ **G14 필수 문장 10 · 폼 required 9 · 이름은 스냅샷** · ★★ **엑셀 컬럼 변경 0 · 조회수 35** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 
