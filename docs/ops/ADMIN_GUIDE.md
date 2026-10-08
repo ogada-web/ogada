@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T05:10:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T06:30:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **공단 2026 주야간 1일 수가 시드** ✅ (**Q967**, G9): **빈 칸만** · 최대 **30칸**(1~5등급 25 + 인지지원 5) · 인지지원은 **8시간부터 56,360원** · 5등급 10~13시간은 **62,460원** · **`hq_admin`만** · `year=2027` **422** · 단기보호·치매전담실·목욕 주 1회 3,000원은 **이 시드에 없음** · 출석 시각으로 밴드를 고르는 계산 **없음**(비우면 `H10_13`)
 > - **방문 일정 서비스 시간·확정 후 수정** ✅ (**Q966**, G21): **`serviceMinutes` 1~480 그대로** · **270분→2회·240분 환산 없음** · 화면 목록 **수정 버튼 없음** · **`PATCH /visits/{id}` 는 `DRAFT` + `branch_admin`/`social_worker`만** · 그 외 「확정된 방문일정은 수정할 수 없습니다.」 · RFID 인정시간 차 **30분 이상**은 표시만
 > - **월별 청구 생성은 지점·달 1건** ✅ (**Q962**, US-M03): **`POST /billing/claims/generate`** 본문 `branchId`·`yearMonth` · 기존 청구가 있으면 **재계산 없이 그 청구 반환** · 줄 수정 API 없음 · 발행일 칸 없음 · 발송일 수정은 **우편만**
 > - **프로그램 리포트 5-7·5-8·5-10 원본 분리** ✅ (**Q965**, US-P02): **5-7** 참여 한 건당 한 줄 · **5-8** 참여가 있는 프로그램·날짜만 · **5-10** 등록 일정이면 참여 0이어도 표시 · **`program_catalog` 미사용**
@@ -2698,7 +2699,7 @@ silverangel [**businessSupportService.do**](https://www.silverangel.kr/newSilver
 | 수가 등록 | `POST /billing/fee-schedules` | `{ "year": 2026, "ltcGrade": 3, "durationBand": "H10_13", "dailyRate": 68000, "effectiveFrom": "2026-01-01" }` · **`ltcGrade: 0`** 인지지원등급 (Q311·V99) |
 | NHIS seed payloads | `GET /billing/fee-schedules/nhis-seed-payloads?year=` | 미등록 셀 NHIS 참조 payload — **`Nhis2026DaycareRateCatalog`** · **`year=2026`만** · 미지원 연도 **`422`** — **`{year}년 수가 seed는 지원하지 않습니다. …`** (Q747 deepen, `2f4bfdf`) · **`hq_admin` only** (Q748, Q311) |
 | NHIS seed 일괄 등록 | `POST /billing/fee-schedules/apply-nhis-seeds?year=` | 미등록 **표준+인지지원** 셀 bulk create — **`FeeScheduleSeedApplyResponse`** · **`year=2026`만** · 미지원 year **`422` year-specific message** · **`hq_admin` only** · **`branch_admin` → 403** (Q747·Q748, Q311) |
-| NHIS 2026 시드 | UI **「공단 2026 수가 시드 (N건)」** | 미등록 **표준+인지지원** 셀 — UI는 셀별 `POST` 반복 · API는 **`apply-nhis-seeds`** 동일 (`edd2771`) |
+| NHIS 2026 시드 | UI **「공단 2026 수가 시드 (N건)」** | 미등록 **표준 25+인지지원 5 = 최대 30칸** — N은 **빈 칸 수** · 1등급 `H3_6` **41820** · 인지지원 `H10_13`·`H13_PLUS` **56360**(5등급 62460·67240과 다름) · UI는 셀별 `POST` 반복 · API는 **`apply-nhis-seeds`** 동일 (`edd2771`, **Q967**) · 단기보호·치매전담실·목욕 주 1회 3,000원 **없음** |
 | NHIS import 선행 | **`FeeScheduleYearCoverage`** (US-G04, Q260) | **`GET /billing/fee-schedules/year-coverage?year=`** — **표준 25칸 gate(항상)** + **인지지원 5칸 gate(활성 `ltcGrade=0` 이용자 있을 때)** · **`POST /billing/imports/nhis` → `422`** (`8bb6583`) |
 | 수가 수정 | `PATCH /billing/fee-schedules/{id}` | 이력 보존 — **새 적용일 > 기존 적용일** (forward-only, Q48) |
 | 이용자 밴드 | `POST/PATCH /clients` | `{ "durationBand": "H10_13" }` — **신규** 청구 수가 키 |
@@ -4060,6 +4061,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q967 신설** — §1-4·§6-3-1 **공단 2026 수가 시드 30칸 금액** · 빈 칸만 · 인지지원 8시간부터 56,360원 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q966 신설** — §1-4·§10-12 **방문 일정 서비스 시간은 1~480분 그대로** · 270분 분할 없음 · 작성중만 PATCH · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q965 신설** — §1-4·§10-11-2 **프로그램 리포트 5-8은 참여가 있는 날만, 5-10은 일정만 있어도 표시** · 마스터 미사용 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q964 신설** — §1-4·§10-11-2b **프로그램 마스터 API**(이름·유형·목표, 화면 없음, 당일 일정과 별도, V197) · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
