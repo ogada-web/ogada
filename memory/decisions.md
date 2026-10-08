@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-969 엔젤·롱텀·규제 4-6h · ★★★ **주야간 인건비 48.6%** · ★★★ **제11조제2항은 2017-12-31 이전** · ★★ **CMS FAQ는 50원+200원** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [인건비 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768519) HTTP 200 · `e419f74a`. [원거리 GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768525) HTTP 200 · `f3b2cc6d`. [시행규칙](https://www.law.go.kr/LSW/lsInfoR.do) `2a916774` · 시행 2025-12-12 · 부령 1138. [FAQ 35000](https://www.silverangel.kr/silverangel/support/faq/list.do) `59d81cd6`. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 주야간 인건비 지출비율은 48.6%다 (확인)** — 제11조의2 표는 시설 62.6 · 공동생활 65.2 · 주야간 48.6 · 단기 58.9 · 방문요양 87.0 · 방문목욕 49.7 · 방문간호 60.2 다. ogada 문장은 「법정 60%」이고 임계는 `60.00` 이다. **planner: 상수를 이번 사이클에서 고치지 않는다. 60.2 를 주야간 칸으로 쓰지 않는다. 일곱 칸을 한 숫자로 적지 않는다. P0 로 열지 않는다.**
+
+2. **★★★ 가-1~7은 방문 원거리교통비다 (확인)** — 가-1 은 5km 이상~10km 미만 3,400원이고 가-7 은 35km 이상 13,600원이다. 러-1~4 는 830 / 2,630 / 5,230 / 8,630 이다. GIF `31064a16` 은 BNK-958 과 같다. **planner: 3,400원을 이동서비스비에 넣지 않는다. `resolveFromKm` 을 고치지 않는다.**
+
+3. **★★★ 시행규칙 제11조제2항 기관은 2017-12-31 이전이다 (확인)** — 조문 제목은 단기보호 급여기간이다. ①은 월 9일, 고시 사유면 1회 9일·연 4회다. ②는 그 날짜 이전 지정 또는 설치신고 재가기관이고 월 15일, 같은 사유면 1회 15일·연 2회다. 고시 제38조 ⑤의 5%·15% 감산은 이 기관의 단기보호 급여비용이다. **planner: BNK-962 의 기관 범위 미확인을 닫는다. 감산을 주야간 수가에 넣지 않는다. 고시 제11조의2(인건비)와 시행규칙 제11조의2(간호조무사 교육기관)를 한 조문으로 쓰지 않는다.**
+
+4. **★★ CMS 공개 단가는 문장이 둘이다 (확인)** — FAQ 10문항은 단일계좌 월 3만 원, 다계좌 월 4만 원, 출금요청 50원, 이체성공 200원, 부가세 별도다. 실시간 CMS 600원은 제공하지 않는다. extraService 는 월 3만 원, 자동이체 250원, 가상계좌 300원이다. ogada 는 건당 250원·300원이고 월 이용료 행은 없다. **planner: 50+200 을 250으로 합쳐 적지 않는다. 월 4만 원을 카탈로그에 넣지 않는다. 실시간 600원을 추가하지 않는다. 마케팅 250원의 부가세는 미확인이다.**
+
+5. **★ HEAD 와 #44 는 금액 변동이 없다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. #44 **651차** 별지 **0**. lcms 는 type1 `b76e658c` 로 돌아왔고 배차는 0이다. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. 배너 회전을 제품 갭으로 세지 않는다.**
+
+**미확인 해소 1**(제11조제2항 기관 범위) · **번호 구분 2**(고시 제11조의2 ≠ 시행규칙 제11조의2 · 가 ≠ 러) · **미확인 2**(마케팅 250원 부가세 · 평가 PDF) · 신규 snapshot 은 GIF 2건 · FAQ 1건 · 시행규칙 본문 1건 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-968 이지케어 역공학 2-4h · ★★★ **3.3은 수급자 일정표와 요양보호사 일정표** · ★★★ **근무현황표는 세 양식** · ★★ **9.8 문장과 9.9 문장은 잎이 하나** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [543ab69a](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC%EC%88%98%EA%B8%89%EC%9E%90-%EC%9D%BC%EA%B4%84-%EC%B6%9C%EB%A0%A5-%EB%AC%B8%EC%9E%90%EC%A0%84%EC%86%A1-%EB%B0%A9%EB%B2%95-543ab69a) HTTP 200 · `d14b4678`. [1597701d](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%EA%B7%BC%EB%AC%B4%ED%98%84%ED%99%A9%ED%91%9C%EC%B6%9C%EA%B7%BC%EB%B6%80-%EC%B6%9C%EB%A0%A5-%EB%B0%A9%EB%B2%95-1597701d) HTTP 200 · `563fa3ef`. [d1e35db4](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%91%9C-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1%EB%B0%A9%EB%B2%95-d1e35db4) HTTP 200 · `0f291ca8`. [190bab47](https://docs.channel.io/ezcare/ko/articles/%EC%88%98%EA%B8%89%EC%9E%90%EA%B8%89%EC%97%AC%EC%A0%9C%EA%B3%B5%EC%9E%90-%EB%AF%B8%EB%93%B1%EB%A1%9D-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-190bab47) HTTP 200 · `6d669edd`. 데모 `schedule-p100` `e8b40e56`. git FE `29c2304` · BE `92466cfb`.
