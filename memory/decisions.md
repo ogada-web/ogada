@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-963 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **서명은 `user-myInfo` · 직인은 jpg · 결재라인은 쉼표** · ★★ **`/settings/profile` 은 이 트리에 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 836.94s. `mvn -q test` surefire **2505/0/0/0** · 114s. [서명 등록](https://docs.channel.io/ezcare/ko/articles/%EA%B2%B0%EC%9E%AC%EB%9D%BC%EC%9D%B8-%EC%84%9C%EB%AA%85-%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-d3fc8630) HTTP 200 · `979f09bd`. 데모 `user-myInfo` `89c1dd60` · `setting-f01` `ecc41ba4` · login **0000** · nav `95286775` IDENTICAL.
+
+### 결정
+
+1. **★★★ 실행 합계는 다시 2505와 2865다 (확인)** — 같은 SHA를 이번 사이클에 다시 돌렸다. strict `@Test` **2485**. 매개변수 20행(7+5+8). surefire **2505/0/0/0** · 418보고서 · 10:55:33Z–10:57:15Z. npm **493파일/2865** PASS · 836.94s · exit 0. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · Flyway **V197** · 모듈 **97.41%**(28.25/29 · `42e9a565`). `/programs/catalog` 는 **0**. **planner: 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다. 836.94s 는 개수 변화가 아니다. 프로그램 마스터 API 커밋을 프론트 경로가 있는 것으로 세지 않는다.**
+
+2. **★★★ 서명 · 직인 · 결재라인은 화면이 셋이다 (확인)** — 도움말 9.6 은 `user-myInfo` 탭 `서명`이다. canvas 400×300, 동의 체크, `sign-pwd-CONFIRM`, `sign-user-UPDATE` 의 `img`. 기관 직인은 `setting-f01` 의 `dojang_kind=jikin` · jpg · 350px · 300dpi 다. 도장 폼은 HTML 주석이고 「현재 적용되는 서식은 없습니다.」 결재라인은 `approval_line` 쉼표 텍스트다. 반영 서류는 기초평가 욕구사정 · 업무수행일지 · 서류함이다. **planner: 세 칸을 한 필드로 적지 않는다. 9.6 으로 Route 를 만들지 않는다. 이 이미지를 주야간 출퇴근에 붙이지 않는다. 주석의 도장을 두 번째 직인으로 만들지 않는다. P0 로 열지 않는다. id=8 은 0.85.**
+
+3. **★★ `/settings/profile` 은 이 develop 에 없다 (확인)** — 경로 문자열 0. `git log -S` 0. 계정 화면은 `/settings` 5탭이고 서명 탭은 없다. 업무수행일지 서명은 `DIRECT`/`SMS_VERIFIED` 상태다. **planner: BNK-563 의 `/settings/profile` 문장으로 서명 화면을 만들지 않는다. 상태 서명과 캔버스 이미지를 한 칸으로 적지 않는다.**
+
+4. **★ HEAD 는 BNK-962 와 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 는 test 다. 출퇴근 인쇄 결재란과 구인 폼 삭제는 **미확인**. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다. 아이디 추가 비용 문장을 D2 월 70,000원과 한 칸에 적지 않는다.**
+
+**경로 정정 1**(`/settings/profile`) · **미확인 2**(인쇄 결재란 · 구인 폼) · 신규 snapshot 은 `channelio_d3fc8630_bnk963.html` · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-962 엔젤·롱텀·규제 4-6h · ★★★ **인지지원 단기보호는 가족휴가 마-5** · ★★ **제38조 당일 12시간 · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 페이지는 배차·단가 0** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: [고시 본문](https://www.law.go.kr/LSW/admRulLsInfoR.do) HTTP 200 · `c5e5bc59`. [502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `0571d9bb`. [보안](https://www.silverangel.kr/silverangel/angelsystem/security.do) HTTP 200 · `066238cb`. [GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16`. git FE `29c2304` · BE `92466cfb`.

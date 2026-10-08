@@ -1,0 +1,40 @@
+# BNK-963 서명 · 직인 · 결재라인 — 2026-10-08
+# 세 칸은 화면이 다르다. 출퇴근부 HTML 의 결재란이 아니다.
+
+Channel d3fc8630 HTTP 200 · 234,994B · 979f09bd
+  제목 결재라인 서명 등록 방법
+  경로 [9 기관관리] > [9.6 내 정보관리/수정]
+  로그인 아이디별 진행
+  탭 서명 · 서명 또는 이미지 저장
+  반영 서류: 기초평가 욕구사정 · 업무수행일지 · 서류함 서식
+  FAQ: 아이디 추가 제한 없음 · 비용 동일
+  출퇴근 · 주야간 · 금액 0
+
+nav 95286775 IDENTICAL
+  9.6 숫자는 JS 에 없음
+  상위 이름 6번째 = 내 정보관리/수정 = user-myInfo (dialog)
+  결재라인 = setting-f01#tab3
+  직인(도장) = setting-f01#tab2
+
+user-myInfo 89c1dd60 · 93,441B (구인 폼 없음 · 정본 225f16c2 복원)
+  탭: 내정보 변경 · 패스워드 · 자동 로그아웃 · 서명
+  duty · telephone · email
+  loginKeepSec 20분~4시간 · 기본 선택 14400
+  canvas 400×300 · #sign-file · file_ext 는 계산만
+  #chk_sign_apply 미체크 → 「서명 등록 동의에 체크해 주세요.」
+  sign-pwd-CONFIRM {pwd} · 불일치 「비밀번호가 일치하지 않습니다.」
+  sign-user-UPDATE {img: toDataURL("img/png", 0.5)} · 0000 「서명이 등록되었습니다.」
+  이 화면 결재 0 · 직인 0
+
+setting-f01 ecc41ba4 · 89,220B (정본 d5a3f8cd 복원)
+  직인 dojang_kind=jikin · accept=.jpg · 350px · 300dpi
+  도장 폼은 주석. 「현재 적용되는 서식은 없습니다.」
+  approval_line 쉼표 텍스트. placeholder 사회복지사,시설장,대표
+  예) 팀장,사회복지사,시설장
+  setting-approval-line-UPDATE · setting-dojang-UPDATE · setting-dojang-DELETE
+
+ogada @29c2304 / @92466cfb
+  /settings 5탭. 서명·직인·approval_line 0
+  /settings/profile 0 (log -S 0)
+  업무수행일지 상태 서명 DIRECT/SMS_VERIFIED 는 이미지 스탬프가 아님
+  id=8 0.85 · P0 재오픈 0

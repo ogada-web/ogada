@@ -1,9 +1,69 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T10:19:16Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:09:20Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §963 BNK-963 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **서명은 내 정보 탭 · 결재라인은 쉼표 한 칸 · 직인은 jpg** · ★★ **`/settings/profile` 은 이 트리에 없다** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:09:20Z -->
+
+**조사일**: 2026-10-08T11:09:20Z | **rotation**: ogada git 실측 6-8h. BNK-962(2026-10-08T10:19:16Z) 이후 약 50분. 초점: (1) develop HEAD·Route·Page·모듈 % 재산정 (§963-0) · (2) `npm test`·`mvn test` 재실행 (§963-1) · (3) 서명·직인·결재라인 세 화면 (§963-2) · (4) planner 액션 (§963-3).
+
+### §963-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-962와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-962와 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다. 이 사이클은 gitlink 를 옮기지 않는다.
+- merge gate **4**(FE 1 + BE 3). Route **133**(`<Route` 132 + `<Routes>` 1) · path **132** · 깊이 최대 **4** · d4=**6** · path `report` **29/132=22.0%**. prefix 는 billing 17 · nursing 16 · care 16 · staff **13** · clients 11 · transport 9 · programs **8** · `/accounting` **1** · `/staff/attendance` **1** · `/settings` **1**. `/programs/catalog` 는 **0**. `/programs/groups` 는 **0**. `/settings/profile` 은 **0**. Page **106**.
+
+### §963-1 · ★★★ 주석 개수와 실행 개수를 다시 돌린다
+
+| 계수 | 값 | 비고 |
+|---|---|---|
+| `@Test` 줄 시작 | **2485** | BNK-959 와 같은 주석 수. 카탈로그 12 포함 |
+| `@ParameterizedTest` | 3메서드 · 실행 **20**행 | 역할 7 · 알림 이벤트 5 · 은행 8 |
+| surefire | **2505 / 0 / 0 / 0** | 418보고서 · 10:55:33Z–10:57:15Z · `mvn -q test` **114s** · exit 0 |
+| npm | **493파일 / 2865** PASS | flock · **836.94s** · 10:55:22Z–11:09:20Z · exit 0 |
+| HTTP | **450** | GET 234 · POST 147 · PATCH 46 · PUT 13 · DELETE 10 |
+| 컨트롤러 · 엔티티 · Flyway | **82** · **93** · **V197** | `@RestControllerAdvice` 1 은 82 밖. 결번 0 |
+| 모듈 | **97.41%** | 29엔트리 · 28.25/29. 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. 파일 `42e9a565` |
+
+yaml `2479` 는 2485 도 2505 도 아니다. 836.94s 는 BNK-959 의 837.86s 와 같은 2865 의 소요 차이다. 개수 변화가 아니다.
+
+### §963-2 · ★★★ 서명 · 직인 · 결재라인은 화면이 셋이다
+
+**신규 증거**: [결재라인 서명 등록 방법](https://docs.channel.io/ezcare/ko/articles/%EA%B2%B0%EC%9E%AC%EB%9D%BC%EC%9D%B8-%EC%84%9C%EB%AA%85-%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-d3fc8630) HTTP **200** · 234,994B · `979f09bd`. 설명은 「직원의 서명을 등록하여 서류에 반영할 수 있어요.」 경로는 `[ 9 기관관리] > [9.6 내 정보관리/수정]`. 순서는 사용자 아이디로 로그인, 탭 `서명`, 서명 또는 이미지 저장이다. 반영 서류는 **기초평가 욕구사정** · **업무수행일지** · **서류함 내 각종 서식**이다. FAQ 는 아이디 추가에 제한이 없고 비용이 같다는 문장이다. 본문에 출퇴근·주야간·금액은 **0**이다.
+
+디스크 nav `95286775` 는 **BYTE-IDENTICAL**. 숫자 `9.6` 은 JS 에 없다. 메뉴 9 의 상위 이름만 세면 여섯 번째가 `내 정보관리/수정` 이고 url 은 `user-myInfo`(dialog)다. `결재라인` 은 `setting-f01#tab3` 이고 `직인(도장)` 은 `setting-f01#tab2` 다.
+
+데모 로그인 code=**0000**. [user-myInfo](https://ezcare.easyms.co.kr/new.ez?PGID=user-myInfo) 93,441B · `89c1dd60`. [setting-f01](https://ezcare.easyms.co.kr/new.ez?PGID=setting-f01) 89,220B · `ecc41ba4`. 둘 다 구인 폼이 빠져 정본보다 작다. 정본 `225f16c2` · `d5a3f8cd` 는 복원했다. 폼이 제품에서 빠졌는지는 **미확인**이다.
+
+| 칸 | 이지케어 | ogada `@29c2304`/`@92466cfb` |
+|---|---|---|
+| 개인 서명 | `user-myInfo` 탭 `서명`. canvas **400×300**. `#sign-file` 은 확장자를 읽기만 한다. `#chk_sign_apply` 가 꺼지면 「서명 등록 동의에 체크해 주세요.」 비밀번호 `sign-pwd-CONFIRM`. 저장 `sign-user-UPDATE` 의 `img` 는 `toDataURL("img/png", 0.5)`. 성공 코드 `0000` 은 「서명이 등록되었습니다.」 이 HTML 의 결재·직인은 **0** | `/settings` 에 서명 탭 **0**. 업무수행일지는 `signatureStatus` `SIGNED`/`DRAFT` 와 `signatureMethod` `DIRECT`/`SMS_VERIFIED` |
+| 기관 직인 | `setting-f01` 탭 `직인(도장)`. `dojang_kind=jikin`. `accept=.jpg`. 권장 **350px** · **300dpi**. `setting-dojang-UPDATE` · `setting-dojang-DELETE`. `dojang` 폼은 HTML 주석이고 문장은 「현재 적용되는 서식은 없습니다.」 | 직인 업로드 **0** |
+| 결재라인 | 같은 화면 탭 `결재라인`. `approval_line` 한 칸. placeholder `사회복지사,시설장,대표`. 쉼표 구분. 예) `팀장,사회복지사,시설장`. `setting-approval-line-UPDATE` | `approval_line` **0**. `/staff/attendance` 인쇄 결재란 **0** |
+| 계정 경로 | 도움말 번호 9.6 = 위 대화상자 | `/settings` 탭 5(보안·카카오 API·로그인 이력·감사 로그·백업). `/settings/profile` 문자열 **0**. `git log -S` 도 **0** |
+
+BNK-563 매트릭스가 적은 `/settings/profile` parity 는 이 develop 트리의 경로가 아니다. 비밀번호 변경은 `/settings` 의 보안 탭에 있다. 서명 이미지는 그 탭에 없다.
+
+### §963-3 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=8 은 **0.85**. id=2·id=10 도 **0.85**. id=12 는 **0.7**. 모듈 **97.41%**. 수가 시드 변경 **0**.
+
+1. develop HEAD 는 FE `@29c2304` · BE `@92466cfb` 다. yaml 과 부모 gitlink 의 `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+2. `@Test` 정본은 **2485** 다. 이번 실행 합계는 surefire **2505**, npm **2865/2865** 다. 2473 · 2493 · yaml 2479 를 현재 수로 쓰지 않는다. 836.94s 는 개수 변화가 아니다.
+3. 개인 서명, 기관 직인, 쉼표 결재라인을 한 칸으로 적지 않는다. 9.6 으로 Route 를 만들지 않는다. 화면 id 는 `user-myInfo` 와 `setting-f01` 이다.
+4. 도움말의 반영 서류는 기초평가 욕구사정 · 업무수행일지 · 서류함이다. 그 이미지를 주야간 출퇴근 8-4 에 붙이지 않는다. 출퇴근부 인쇄의 결재란은 **미확인**이다.
+5. ogada 업무수행일지의 상태 서명은 `DIRECT`/`SMS_VERIFIED` 다. 캔버스 이미지와 다른 칸이다. 서명 스탬프를 P0 로 열지 않는다. 주석 처리된 도장 폼을 두 번째 직인으로 만들지 않는다.
+6. `/settings/profile` 을 이 트리에 다시 만들지 않는다. 아이디 추가 비용 문장을 D2 월 70,000원과 한 칸에 적지 않는다.
+7. `/programs/catalog` 는 **0** 이다. 프로그램 마스터 API 커밋을 프론트 경로가 있는 것으로 세지 않는다.
+
+주력 `ogada_git_baseline_bnk963.txt` + `ezcare_signature_approval_bnk963.txt` + `channelio_d3fc8630_bnk963.html`. 신규 증거 URL 1(서명 등록). 재실측 3(`user-myInfo` · `setting-f01` · nav IDENTICAL). 경로 정정 1(`/settings/profile`). 미확인 2(출퇴근 인쇄 결재란 · 구인 폼 삭제 여부). per-cycle minimum 4종 충족.
+
+---
 
 ## §962 BNK-962 — 엔젤·롱텀·규제 4-6h · ★★★ **인지지원 단기보호는 가족휴가 마-5뿐** · ★★ **제38조 입·퇴소 12시간 · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 페이지에 배차·단가 없음** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

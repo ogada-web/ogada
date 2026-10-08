@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T10:19:16Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:09:20Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-962 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **인지지원 단기보호 = 가족휴가 마-5 · 일반 표 행 0** · ★★ **제38조 12시간 50% · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 배차·단가 0 · CMS 250/300/30,000 IDENTICAL** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-959 실행값).
+> **최종 갱신**: 2026-10-08 (**BNK-963 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **서명=`user-myInfo` · 직인=jpg · 결재라인=쉼표** · ★★ **`/settings/profile` 은 이 트리에 0** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+
+| 기능 / 서비스 항목 (BNK-963 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ surefire 2505 · npm 2865 재실행 (BNK-963 #1 · git 실측 · 확인)** | ✅ strict `@Test` **2485**. 매개변수 20행(7+5+8). `mvn -q test` **2505/0/0/0** · 418보고서 · 114s. `npm test` **493파일/2865** PASS · 836.94s. Route **133** · Page **106** · HTTP **450** · 컨트롤러 **82** · 엔티티 **93** · V197. yaml `2479` 는 둘 다 아님 | ⚪ | ⚪ | ⚪ | ⚪ | `ogada_git_baseline_bnk963.txt` · §963-1 · SHA 는 BNK-962 와 같음 |
+| **★★★ 모듈 97.41% · prefix (BNK-963 #2 · 재산정 · 확인)** | ✅ 29엔트리 · 28.25/29 · 파일 `42e9a565`. 비-1.0 은 id=2·8·10 **0.85** · id=12 **0.7**. path `report` **29/132=22.0%**. d4=**6**. programs **8**. `/programs/catalog` **0**. `/settings` **1** | ⚪ | ⚪ | ⚪ | ⚪ | §963-0 · coverage 파일 무변경 |
+| **★★★ 서명 · 직인 · 결재라인 (BNK-963 #3 · 신규 URL · 메뉴/필드/워크플로 · 확인)** | ✅ `/settings` 5탭. 서명 캔버스 · 직인 · `approval_line` **0**. 업무수행일지는 `SIGNED`/`DRAFT` · `DIRECT`/`SMS_VERIFIED`. id=8 **0.85** | ⚪ | ✅ [d3fc8630](https://docs.channel.io/ezcare/ko/articles/%EA%B2%B0%EC%9E%AC%EB%9D%BC%EC%9D%B8-%EC%84%9C%EB%AA%85-%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-d3fc8630) `979f09bd` · 9.6=`user-myInfo` 탭 서명 · canvas 400×300 · `sign-pwd-CONFIRM` · `sign-user-UPDATE`. [setting-f01](https://ezcare.easyms.co.kr/new.ez?PGID=setting-f01) `ecc41ba4` · 직인 `jikin` jpg · 도장 폼은 주석 · `approval_line` 쉼표 | ⚪ | ⚪ | §963-2 · 세 칸을 한 필드로 적지 않음 · P0 재오픈 0 |
+| **★★ `/settings/profile` 경로 (BNK-963 #4 · 정정 · 확인)** | ✅ 경로 문자열 **0**. `git log -S` **0**. 비밀번호는 `/settings` 보안 탭 | ⚪ | ⚪ BNK-563 은 `user-myInfo` 를 `/settings/profile` parity 로 적음. 그 경로는 이 트리에 없음 | ⚪ | ⚪ | §963-2 · 서명 탭을 그 경로로 만들지 않음 |
+| **★ HEAD · merge gate 4 (BNK-963 #5)** | ✅ SHA BNK-962와 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** | ⚪ | ✅ 데모 login **0000** · nav `95286775` IDENTICAL · 구인 폼은 이번 HTML 에 없음 · 정본 복원 | ⚪ | ⚪ | §963-0 · §963-3 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-962 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **인지지원 단기보호 = 가족휴가 마-5 · 일반 표 행 0** · ★★ **제38조 12시간 50% · 한시적 지원금 월 10만 원** · ★★ **엔젤 보안 배차·단가 0 · CMS 250/300/30,000 IDENTICAL** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-959 실행값).
 
 | 기능 / 서비스 항목 (BNK-962 delta·엔젤·롱텀·규제 4-6h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
