@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T15:10:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T16:07:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 명세서 24·한 장 두 건은 없음 · 수납은 건별 · 이용료 자동이체 신청서는 없음 · 일정표 가로·세로·근무현황표 A·B는 없음 · 방문 일지 세 칸 서명·생년월일 링크·「새 일지로 저장」은 없음 · 선임 일지는 서명자 한 명 · 전월 복제는 초안만 · 프로그램 의견수렴·월간 계획·외부강사 명단은 없음 · 당일 만족도는 참여 한 줄 · 급여제공결과 평가는 연 1회 · 서명 그림·기관 직인·쉼표 결재라인은 없음 · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `3f7f274` · 좁은 화면은 「메뉴」 버튼 · 인건비 미리보기는 60% 한 숫자(주야간 고시 48.6%로 바꾸지 않음) · 단기보호 한도는 월 9일, 2017-12-31 이전 기관만 월 15일 · **Flyway V1–V197** · 모듈 **97.41%** · 명세서 24·한 장 두 건은 없음 · 수납은 건별 · 이용료 자동이체 신청서는 없음 · 일정표 가로·세로·근무현황표 A·B는 없음 · 방문 일지 세 칸 서명·생년월일 링크·「새 일지로 저장」은 없음 · 선임 일지는 서명자 한 명 · 전월 복제는 초안만 · 프로그램 의견수렴·월간 계획·외부강사 명단은 없음 · 당일 만족도는 참여 한 줄 · 급여제공결과 평가는 연 1회 · 서명 그림·기관 직인·쉼표 결재라인은 없음 · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -229,7 +229,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | M11 payroll ledger FE (Q775) | UI **`/payroll/ledger`** — 직원·급여월·기본급 입력 후 **「미리보기 계산」** | **`StaffPayrollLedgerPage`** · **`StaffPayrollLedgerPage.test`** PASS (`e18ee5c`) |
 | M11 payroll reports FE (Q778) | UI **`/payroll/reports`** — 동일 입력 후 명세서 라인·실지급액 확인 | **`StaffPayrollReportsPage`** · **`StaffPayrollReportsPage.test`** PASS (`585155c`) |
 | M11 payroll basis FE (Q779) | UI **`/payroll/basis`** — 수당/공제 마스터 표 로드 | **`StaffPayrollBasisPage`** · **`StaffPayrollBasisPage.test`** PASS (`9ea151b`) |
-| M11 labor-cost-ratio preview (Q780) | `POST /api/v1/staff/payroll/labor-cost-ratio-preview` body `{"yearMonth":"2026-07","totalLaborCost":6100000,"totalCareRevenue":10000000}` | 200 · **`laborCostRatioPercent=61.00`** · **`complianceMet=true`** · **`riskLevel=COMPLIANT`** · **`documentCode=M11-5`** · **`caregiver` JWT → 403** (`907007e`) |
+| M11 labor-cost-ratio preview (Q780·Q981) | `POST /api/v1/staff/payroll/labor-cost-ratio-preview` body `{"yearMonth":"2026-07","totalLaborCost":6100000,"totalCareRevenue":10000000}` | 200 · **`laborCostRatioPercent=61.00`** · **`statutoryThresholdPercent=60.00`** · **`complianceMet=true`** · **`riskLevel=COMPLIANT`** · **`documentCode=M11-5`** · 급여 종류로 48.6을 돌려주지 않음 · **`caregiver` JWT → 403** (`907007e`) |
 | M11 retirement accrual preview (Q781) | `POST /api/v1/staff/payroll/retirement-accrual-preview` body `{"yearMonth":"2026-07","accrualBasePay":2400000,"priorAccumulatedBalance":0,"continuousServiceMonths":6}` | 200 · **`monthlyAccrualAmount=200000`** · **`accrualEligible=true`** · **`documentCode=M11-2`** · **`caregiver` JWT → 403** (`ff90532`) |
 | M12 accounting BPO launch (Q782) | `GET /api/v1/billing/accounting/bpo-launch` | 200 · **`documentCode=M12-BPO`** · **`portalUrl=https://sujifine.co.kr/login`** · **`ssoAvailability`**=`PLANNED`(미설정) 또는 `AVAILABLE`(자격 env) · **`caregiver` JWT → 403** (`093ac88`) |
 | M12 accounting BPO SSO handoff (Q787·**Q801**·**Q803**·**Q922**) | `POST /api/v1/billing/accounting/bpo-sso-handoff` | 자격·allowlist(**`/carefor_login` path only**, Q922) 시 200 · **`usmusid`·`otp`·`handoffReady=true`** · 미설정 **422 `BUSINESS_RULE`** · 비허용 URL/경로 **422** · 과다 **429 `RATE_LIMITED`** · **`social_worker`/`caregiver` → 403** · FE **`/accounting` 한글 안내** (`a742788`/`592a483`) |
@@ -1892,7 +1892,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 - [ ] **`POST /api/v1/staff/payroll/ledger-preview`** — **`hq_admin`/`branch_admin`/`social_worker` 200** · **`attendanceDays`·`netPay`** · 공제>총액 **422** (Q775, `5beaffb`)
 - [ ] **`POST /api/v1/staff/payroll/simple-payment-statement-preview`** — 동일 body · **`paymentLines`·`netPay`** · **`documentTitle=간이지급명세서`** (Q778, `c455145`)
 - [ ] **`GET /api/v1/staff/payroll/allowance-deduction-catalog`** — **`documentCode=M11-4`** · **수당 3·공제 6** · **`caregiver` 403** (Q779, `eca95e3`)
-- [ ] **`POST /api/v1/staff/payroll/labor-cost-ratio-preview`** — **`laborCostRatioPercent`·`complianceMet`** · **60% threshold** · **`caregiver` 403** (Q780, `907007e`)
+- [ ] **`POST /api/v1/staff/payroll/labor-cost-ratio-preview`** — **`laborCostRatioPercent`·`complianceMet`** · **`statutoryThresholdPercent=60.00` 한 숫자** · 주야간 48.6으로 분기하지 않음 · **`caregiver` 403** (Q780·Q981, `907007e`)
 - [ ] **`POST /api/v1/staff/payroll/retirement-accrual-preview`** — **`monthlyAccrualAmount`·`accrualEligible`** · **근속 1개월 규칙** · **`caregiver` 403** (Q781, `ff90532`)
 - [ ] **`GET /api/v1/billing/accounting/bpo-launch`** — **`documentCode=M12-BPO`** · **`portalUrl`** · **`caregiver` 403** (Q782, `093ac88`)
 - [ ] **`POST /api/v1/billing/accounting/bpo-sso-handoff`** — 자격·allowlist 시 **200·`handoffReady`** · 미설정 **422** · **`social_worker`/`caregiver` 403** · 과다 **429** · FE `/accounting` 한글 안내 (Q787·Q801·**Q803**, `bf96c29`/`71839a6`)
@@ -2298,6 +2298,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q980·Q981·Q982 신설** — §1-4 스모크 **좁은 화면 메뉴는 768px 이하** · 인건비 미리보기 `statutoryThresholdPercent=60.00` · 단기보호 월 9일·월 15일 한도는 시드 응답에 없음 · baseline **`92466cf`/`3f7f274`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q977·Q978·Q979 신설** — §1-4 스모크 **명세서 PDF는 한 문서** · 서식 24·한 장 두 건 없음 · 수납은 건별 · 근무일정표 알림톡은 `staff-monthly-schedule` · 가로·세로 인쇄 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q976 신설** — §1-4 스모크 **방문 사회복지사 일지 없음** · 같은 날 일지 재등록 422 · 전월 복제는 초안 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
 | 2026-10-08 | **Q975 신설** — §1-4 스모크 **프로그램 의견수렴·월간 계획·외부강사 주소는 없음** · 당일 만족도는 1~5 · 급여제공결과 평가는 연 1회 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** · 모듈 **97.41%** |
