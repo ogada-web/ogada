@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T08:24:59Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T09:33:06Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,8 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **급여계획서는 통보 뒤에도 같은 해를 덮어씀** ✅ (**Q970**, G14): 화면 안내는 필수 10칸 · 저장 필수 **9칸** · 수급자명 비우면 **이용자 이름** · `PUT …/care-plan-forms` 는 `notifiedAt` 이 있어도 덮어씀 · 재발급 카드는 **잠금 아님** · 지점 대시보드에만 5·11개월·재발급 카드 · 통합 대시보드 13개에는 없음
+> - **CMS 수수료는 건당** ✅ (**Q971**, G2b): `AUTO_DEBIT_CMS` **250원/1건** · `VIRTUAL_ACCOUNT` **300원/1건** · 카드·다계좌·현금영수증 수수료 **없음** · **월 30,000원 행 없음** · `collectionImplementedCount` **5**
 > - **직원 출퇴근은 하루치 표** ✅ (**Q612**, 8-4): `/staff/attendance` 열 7개(직원·역할·상태·출근 시각·출근 방식·퇴근 시각·처리) · **달력·일괄배정·근무내역·결재·PDF 없음** · `CalendarDayMarker` **미사용**(Q843 정정) · 1.8·1.9는 이 메뉴 번호가 아님
 > - **이동서비스비 거리 정각** ✅ (**Q969**, G16): 화면은 `distanceBand`만 보냄 · 초안 **RU_1** · **5.0km→RU_2 · 10.0km→RU_3 · 20.0km→RU_4** · `distanceKm`만 보내면 그 정각은 **한 단계 아래**(5.0→RU_1) · 구간을 같이 보내면 그 구간이 우선 · 좌표가 있어도 생성은 RU_1
 > - **13시간 정각·단기보호 금액** ✅ (**Q967**, G9): 고시 라-4는 **13시간 이하** → 화면 **「10~13시간」** · 화면 「13시간 이상」은 **13시간 초과** · **6시간 정각은 「6~8시간」** · 단기보호 1~5등급 **74,060·68,580·63,350·61,680·60,000** 은 시드 **없음** · 치매전담실 2등급 3~6시간 미만 **48,700** · 1등급 열 없음
@@ -1438,11 +1440,13 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | 필드 | `benefitServiceType`·`clientNameSnapshot`·`writtenDate`·`authorName`·`detailedGoal`·`neededContent`·`detailedProvisionContent`·`serviceFrequency`·`serviceDuration`·`overallOpinion`·`notifiedAt`(옵션) |
 | DB | **V164** UK `(organization_id, client_id, plan_year)` · **V183** `idx_client_care_plan_forms_org_branch_plan_year` — bulk-export 지점×연도 roster (`547c85f`, Q726) · CHECK 11건 · 트리거 3건(`set_org_branch`·`guard_active_client` INSERT only·`set_recorded_by`) |
 | FE UI | **`ClientCarePlanForm`** — 이용자 상세 **「급여계획서」** 탭 · **`ClientCarePlanFormPage`**(`/clients/:clientId/care-plan-form`) · **`CarePlanNotificationPage`** 행 링크 · **`ClientCarePlanBulkExportPanel`** — G38 **`/clients/care-plan-notifications`** 일괄 출력 (`0d0b587`/`96196ed`/`d759ade`, Q726·Q734) · API 전송 전 **branchId trim** · **clientOptions dedupe** |
-| G38 연계 | **`GET /clients/care-plan-notifications/compliance`** — 5·11개월 milestone은 **G37 첨부**와 병행 · 본 API **`notifiedAt`** 은 통지 시각 기록용 · **일괄 출력 패널**은 compliance 목록 위에 mount |
+| G38 연계 | **`GET /clients/care-plan-notifications/compliance`** — 5·11개월 milestone은 **G37 첨부**와 병행 · 본 API **`notifiedAt`** 은 통지 시각 기록용 · **통보 시각이 있어도 upsert는 같은 연도 행을 덮어씀**(잠금 없음, Q970) · **일괄 출력 패널**은 compliance 목록 위에 mount |
+| 필수 칸 | 화면 안내 「10개 필수」 · 검증 필수 **9** · `clientNameSnapshot`·`notifiedAt` 는 생략 가능 · 이름 생략 시 `client.getName()` (Q970) |
+| 대시보드 | 지점 `/dashboard` 카드 **「급여 5개월 경과」·「급여 11개월 경과」·「이용계획서 재발급 미반영」** · `carePlanReissue` 는 수정 잠금이 아님 · `HQ_WIDGET_IDS` **13개에 이 셋 없음** |
 | 보존 | **퇴소 후 5년** — `DATA_RETENTION_POLICY` §2-1 · `ON DELETE CASCADE` |
 | 테스트 | **`ClientCarePlanFormServiceTest`** · **`ClientCarePlanForm.test.jsx`** · **`ClientCarePlanFormPage.test.jsx`** · **`MustApiEndpointRoutingTest.bulkExportCarePlanFormsRouteShouldAcceptGet`** · **`ClientCarePlanBulkExportPanel.test`** 5/5 (Q726·Q734) |
 
-> 현장: USER_MANUAL §3-3·§4-3 · FAQ **Q557·Q726·Q734** · G38 §6-2-2
+> 현장: USER_MANUAL §3-3·§4-3 · FAQ **Q557·Q970·Q726·Q734** · G38 §6-2-2
 
 ### 6-2-2b. G-BILLING-PRIOR-DEPOSIT-GUARD 청구 생성 선행입금 가드 (BNK-433, BE·FE Fixed)
 
@@ -4065,6 +4069,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q970·Q971 신설** — §1-4·§6-2-2a **급여계획서는 통보 뒤에도 같은 해를 덮어씀** · 필수 9칸 · **CMS 건당 250·300원** · 월 3만 원 행 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q612·Q843 정정** — §1-4 **직원 출퇴근은 하루치 7열** · 달력·결재·PDF 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q969 신설 · Q967 보강** — §1-4·§6-3-1·§10-10 **이동서비스비 정각은 화면에서 위 구간** · **13시간 정각은 `H10_13`** · 단기보호·치매전담실 금액은 주야간 시드 밖 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q968 신설** — §1-4·§6-2-26 **통합 간호 리포트의 2-11은 화면 카드 문구** · 시설 요양 메뉴는 2-10까지 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |

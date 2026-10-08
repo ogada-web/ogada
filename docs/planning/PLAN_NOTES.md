@@ -2463,6 +2463,14 @@
 
 ### 문서 작성 질문
 
+### [TWR] 급여계획서 덮어쓰기와 CMS 건당 수수료 (2026-10-08T09:33:06Z)
+
+- **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `ClientCarePlanFormService.upsertForm` 은 기존 `notifiedAt` 을 보지 않고 요청 값으로 같은 연도 행을 저장한다. `clientNameSnapshot` 은 `@NotBlank` 가 아니고, 비면 `client.getName()` 이다. 폼 `CARE_PLAN_FORM_FIELDS` 의 `required: true` 는 9칸이다. 화면 안내 문장은 「공단 양식 10개 필수 항목」이다.
+- **대시보드**: 카드 라벨은 「급여 5개월 경과」「급여 11개월 경과」「이용계획서 재발급 미반영」. `HQ_WIDGET_IDS` 는 13개이고 `carePlan*` 는 없다. 재발급 카드는 급여계획서 `PUT` 을 막지 않는다.
+- **CMS**: `CmsPaymentMethodCatalog` 는 자동이체 `250원/1건`, 가상계좌 `300원/1건`, 나머지 세 수단 `feeLabel` null, `collectionImplemented` 전부 true. 월 30000 행은 이 목록에 없다. 패널 각주는 「수수료는 효성CMS 기준 안내 문구」이다. FAQ 뒤쪽 Q701 표는 가상계좌·다계좌를 미구현으로 적고 있어 5/5로 고쳤다.
+- **문서**: CHANGELOG 2026-10-08 카드 · FAQ **Q970**·**Q971** · Q557·Q701 연결 · 사용자 매뉴얼 §1-5·§3-3·§4-6 · 관리 가이드 §1-4·§6-2-2a · 배포 가이드 §1-4.
+- **미문서 잔여**: 프로그램 마스터·수급자 그룹은 API만 있고 화면(`/programs/catalog`·`/programs/groups`)은 없다. 의견수렴(`/programs/feedback`)·월간 계획(`/programs/plans`)은 화면과 API가 아직 없다.
+
 ### [TWR] 통합 간호 리포트 2-11은 화면 카드 문구 (2026-10-08T07:20:11Z)
 
 - **실측**: BE develop `92466cfb` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. `navConfig.js` 사이드 메뉴는 「통합 간호제공 리포트」이고 번호가 없다. `AppShell` 제목은 `title` 「통합 간호제공 리포트 (L02_M14)」. 조회 안내·집계 카드·인쇄만 `label` 「2-11.통합 간호제공 리포트」를 쓴다. 병의원·투약도 같다(2-12·2-13).
