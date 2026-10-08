@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T17:40:00Z -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-08T01:50:00Z -->
 # 위협 모델 (security/THREAT_MODEL.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **방법**: STRIDE + 데이터 흐름 기반  
 > **시스템**: ogada — 주간보호센터 B2B SaaS (멀티테넌트)  
 > **스택**: React SPA ↔ Spring Boot API ↔ PostgreSQL  
-> **2026-10-07 35차 갱신**: local develop = local test **`4aad7cc2`/`29c2304`**(양 스트림 **CLEAN**). origin/develop = origin/test **`1e8857b`/`5cf667b`**(**+1** · SEC-D18 **Monitor** · SEC-D14 P0는 origin에 유지). **Mitigated 강화**: SEC-D46 첨부 URL이 단일 라벨·`.home.arpa`·`.svc`를 fail-closed(서버는 URL을 fetch하지 않음). **Open 유지**: SEC-D47 prod `react-router@6.30.4` · SEC-D48 dev high 4. **35차 신규 BLOCK 0**. 상세 `SECURITY_AUDIT.md` §1.37.
+> **2026-10-08 36차 갱신**: backend develop **`d73aec11`** · frontend **`29c2304`**(양 스트림 **CLEAN**). local test BE **`4aad7cc2`** · FE **`29c2304`**. origin **`1e8857b`/`5cf667b`**(BE **+2** · FE **+1** · SEC-D18 **Monitor** · SEC-D14 P0는 origin에 유지). **Pass**: US-P01 그룹 배정은 org·branch·역할 안(표시 이름만). **Open 유지**: SEC-D47 — CVE-2026-53668은 `react-router-dom@6.30.6`, 백슬래시 오픈 리다이렉트·SSR은 7.18.0+ · SEC-D48 dev high 4. **36차 신규 BLOCK 0**. 상세 `SECURITY_AUDIT.md` §1.38.
 
 ---
 
@@ -564,6 +564,7 @@ flowchart TB
 | T-I17 | CSV/수식 인젝션 | 이용자명·보호자명에 `=`/`+`/`-`/`@` 삽입 → 명세·NTS·직원현황 CSV를 Excel로 열 때 수식·DDE 실행 | org+branch RBAC · `CsvFormulaEscaper` `'` prefix | **Low** — SEC-D33 **Mitigated**(34차) · 잔여: 선행 공백/LF |
 | T-I18 | staff access key 응답 본문 평문 노출 | 발송 응답 JSON에 6-digit accessKey 포함 시 JWT 탈취·MITM·브라우저 콘솔 캡처 시 유출 | `StaffAccessKeyNotifyResponse`에 `accessKey` 필드 없음 — SMS 채널 전용 전달 | **Low** — 24차 설계 시점부터 응답 record에서 제외 |
 | T-I19 | staff access key payload_json at-rest 잔존 | DB 침해 시 dispatch 전 PENDING 행의 평문 accessKey | finalize 시 `NotificationPayloadRedactor`가 `accessKey`를 `***`로 치환 · 토큰 테이블은 SHA-256 | **Low** — SEC-D37 **Mitigated**(34차) · 잔여: PENDING~finalize·parse fail-open |
+| T-I20 | 프로그램 그룹 멤버 이름 | 다른 기관·다른 지점 이용자 이름을 그룹 멤버 목록으로 읽기 | JWT org · branch read/write · V179 `(org, client)`·`(org, branch, client)` FK · V180 3-way 그룹 FK · 활성 이용자만 · 응답은 `clientName` | **Low** — US-P01 **Pass** `@d73aec11`. 전화·주소·주민번호 없음. 잔여: 페이지 상한 없음 · 기간 겹침은 앱 검사(V180 P3) · local test·origin 미포함 |
 | T-I6 | DB 백업 유출 | 스토리지 침해 | — | **High** | 백업 암호화 |
 | T-I7 | PII 전화번호 마스킹 회귀 | 마스킹 제거 빌드 배포 | `PhoneMaskingUtil`·`MaskedPhone` | **Low** — SEC-D9 Fixed · `010-****-5678` 유지 |
 | T-I8 | Solapi relay credential 노출 | env 누락·로그 유출 | env 주입·HMAC 헤더 | **Low** — 미설정 fail-closed · 로그에 key/전화 미노출 |
@@ -591,7 +592,7 @@ flowchart TB
 | T-E6 | staff access key brute force | 직원 휴대전화 미보유 공격자가 `/auth/password/reset`에 6-digit 키 시도 | `AuthRateLimitService` ip 20/min·token 8/min · `PasswordResetTokenEntity` 단일활성(invalidateActiveTokensForUser) · 60분 TTL · SHA-256 hash 비교 · 키스페이스 10^6 | **Low** — SEC-D36 Monitor(키 길이/charset 확장 검토·현행 rate limit으로 P(match)≈0.05%/60분/토큰) |
 | T-E7 | Accounting BPO SSO 과다 권한·공유 credential | SOCIAL_WORKER·타 org이 동일 시설 SSO mint | **HQ/BRANCH only** · portal **host+path** allowlist · rate limit · JWT·password 미저장·env fail-closed | **Low** — SEC-D43 **Mitigated 강화**(잔여: process-wide env · org-scope 장기) |
 | T-E8 | FacilityNotice 첨부 URL 피싱·로컬 해석 | 권한 직원이 공개 호스트 또는 검색경로 이름(`metadata`, `*.svc`)을 게시 → 다른 직원 브라우저가 클릭 | http(s)·기본 포트·IP/localhost/난독화·**단일 라벨·`.home.arpa`·`.svc`** 거부 · FE href 차단 · RBAC · 서버 fetch 없음 | **Low** — SEC-D46 **Mitigated 강화**(35차 `4aad7cc2`/`29c2304`) · 잔여: allowlist env 미설정(공개 호스트·`ndots`로 붙는 짧은 복수 라벨). origin에는 이 커밋 없음 |
-| T-E9 | 로그인 후 외부 이동 | 인증 전 경로가 `navigate(pathname)`으로 전달되고 react-router가 외부로 해석 | `react-router@6.30.4` · `ProtectedRoute` state.from · `LoginPage.redirectTo` | **Moderate** — SEC-D47 CVE-2026-53669 · 패치 ≥7.18.0 · SSR 생성자 주입(GHSA-337j-9hxr-rhxg)은 Vite SPA에서 해당 낮음 |
+| T-E9 | 로그인 후 외부 이동·XSS | 인증 전 경로가 `navigate(pathname)`으로 전달되고 react-router가 외부 위치 또는 스크립트 실행으로 해석 | `react-router@6.30.4` · `ProtectedRoute`가 location을 저장 · `LoginPage.redirectTo`는 **pathname만** 사용 | **Moderate** — SEC-D47. CVE-2026-53668(GHSA-jjmj)는 `react-router-dom` **6.30.6**. 백슬래시 오픈 리다이렉트(GHSA-wrjc)와 SSR(GHSA-337j)는 **≥7.18.0**. 요약 audit 카운트는 moderate 2 |
 
 ---
 
@@ -651,7 +652,7 @@ flowchart TB
 | 운영 시크릿은 시크릿 매니저 | **부분 충족** (develop prod: `ProductionSecretValidator` / test stale) | test merge + 시크릿 매니저 |
 | 파일럿 사용자 기기 무악성 | 낮음 | 보호자 모바일 고려 |
 | Spring Boot 단일 JVM 또는 키 공유 | **부분 충족** (develop prod 키 필수; test stale) | test merge |
-| 검증 코드 = 배포 산출물 | **부분** — local test == develop `4aad7cc2`/`29c2304` · origin/test·origin/develop는 `1e8857b`/`5cf667b`(**+1**, SEC-D46 검색경로 미포함) | SEC-D18 Monitor · push는 별도 호출 |
+| 검증 코드 = 배포 산출물 | **부분** — FE local test == develop `29c2304` · BE local test `4aad7cc2`는 develop `d73aec11`보다 1커밋 뒤(US-P01) · origin은 `1e8857b`/`5cf667b`(BE **+2**, FE **+1**) | SEC-D18 Monitor · 이관은 QA-B690 · push는 별도 호출 |
 
 ---
 
@@ -671,7 +672,7 @@ flowchart TB
 | 1 | T-T2/T-D3 / SEC-D4 | 6 | POI 5.4.0+ — **NHIS·은행입금·RFID·요양보호사** 4 파서 회귀 테스트 |
 | 2 | T-E3 / A06-1 | 5 | Spring Boot 패치 라인 업그레이드 |
 | 3 | T-I14 / SEC-D25 | 4 | 첨부 magic-byte(HR·보수교육·사진·**프로그램 일정 사진**·xlsx·급여계약서·등급이력·요양보호사) |
-| 4 | T-E9 / SEC-D47 | 4 | react-router **7.18.0+** (로그인 복귀 경로) |
+| 4 | T-E9 / SEC-D47 | 4 | `react-router-dom` **6.30.6**(CVE-2026-53668) 후 **7.18.0+**(GHSA-wrjc·SSR, 로그인 복귀 경로) |
 | 5 | T-T2 / SEC-D34 | 3 | 요양보호사 import 확장자/Content-Type 검증 |
 | 6 | T-I15 / SEC-D48 | 3 | dev 빌드체인 high 4 (browserslist·nanoid·postcss·source-map-js) · SEC-D26 form-data는 Fixed |
 | 7 | T-I12 / SEC-D22 | 3 | parent repo `.gitignore` `*.env` 커밋 |
@@ -683,13 +684,14 @@ flowchart TB
 | 13 | SEC-D36 | 2 | staff access key 키 길이/charset 확장 검토(현행 rate limit 의존·24차 carry) |
 | 14 | SEC-D38 | 2 | **(NEW 25차)** prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시·운영 가이드 문서화 |
 | 15 | SEC-D39 | 2 | **(NEW 25차)** CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토 |
-| 16 | SEC-D18 | 2 | **Monitor 재개**(35차) — origin/develop·origin/test가 develop보다 **+1** (`1e8857b`/`5cf667b` vs `4aad7cc2`/`29c2304`) |
+| 16 | SEC-D18 | 2 | **Monitor**(36차) — origin은 `1e8857b`/`5cf667b`, develop은 `d73aec11`/`29c2304`(BE **+2** · FE **+1**). local test BE 1 behind |
 | 17 | **SEC-D41** | — | **Mitigated** — 기본 30일·최대 366일·200건 |
 | 18 | **SEC-D42** | 2 | safety `payload_json` PII 평문 — P3 UUID/암호화 |
 | 19 | SEC-D43 residual | 2 | **Mitigated 강화** — path allowlist 착지 · 잔여 org-scoped BPO credential 장기 |
 | 20 | **SEC-D44** | — | **Mitigated** — 6-digit · 잔여 fail throttle |
 | 21 | **SEC-D45** | — | **Mitigated** — payroll 필드 redact · PENDING 구간 잔여 |
-| 22 | **SEC-D46** | 2 | 단일 라벨·`.home.arpa`·`.svc` 착지(로컬) · 잔여: prod allowlist · origin +1 미반영 |
+| 22 | **SEC-D46** | 2 | 단일 라벨·`.home.arpa`·`.svc` 착지(로컬 `4aad7cc2`/`29c2304`) · 잔여: prod allowlist · origin 미반영 |
+| 23 | T-I20 / US-P01 | 2 | **Pass** `@d73aec11` — 그룹 멤버는 표시 이름·테넌트 FK. 잔여: 페이지 상한·겹침은 앱 검사 |
 | ✅ | SEC-D35 WT CLEAN · program photo Pass · SEC-D43 path · QA-B95 decode · SEC-D17·D19·D14·D23·D24 | ↓ | develop `a742788`/`592a483` Pass/Mitigated/Fixed |
 
 ---
@@ -715,4 +717,4 @@ flowchart TB
 3. 파일럿 배포 시 MFA 요구 여부
 
 ---
-*다음 갱신: origin에 `4aad7cc2`/`29c2304` 반영(SEC-D18)·react-router 7.18.0+(SEC-D47)·dev audit high(SEC-D48)·poi-ooxml 5.4.0+(SEC-D4)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·prod attachment allowlist(SEC-D46 잔여)·safety payload_json PII(SEC-D42)·org-scoped BPO credential(SEC-D43 residual) 또는 신규 src 변경 후*
+*다음 갱신: origin에 `d73aec11`/`29c2304` 반영(SEC-D18)·US-P01 test 이관(QA-B690)·react-router-dom 6.30.6 후 7.18.0+(SEC-D47)·dev audit high(SEC-D48)·poi-ooxml 5.4.0+(SEC-D4)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·prod attachment allowlist(SEC-D46 잔여)·safety payload_json PII(SEC-D42)·org-scoped BPO credential(SEC-D43 residual) 또는 신규 src 변경 후*

@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T17:40:00Z -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-08T01:50:00Z -->
 # 보안 체크리스트 (security/SECURITY_CHECKLIST.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **용도**: develop 구현·test 이관·프로덕션 배포 전 게이트  
 > **연계**: `SECURITY_AUDIT.md`, `THREAT_MODEL.md`, `QA_FEEDBACK.md` `[SEC]` 항목
 
-> **2026-10-07 35차 재점검**: local develop = local test. backend **`4aad7cc2`** · frontend **`29c2304`** · 양 스트림 **WT CLEAN**(SEC-D35 Fixed). origin/develop = origin/test = **`1e8857b`/`5cf667b`**(**+1** · SEC-D18 **Monitor 재개** · P0는 origin에 유지). **Mitigated 강화**: SEC-D46 단일 라벨·`.home.arpa`·`.svc` fail-closed(로컬 test 포함). **Open 유지**: SEC-D47 prod `react-router@6.30.4` moderate 2(패치 ≥7.18.0) · SEC-D48 dev high 4(TSR QA-B689, non-BLOCK) · SEC-D4 poi 5.3.0 · A06-1 Boot 3.3.1. **BLOCK Open 0** · QA Open [SEC] 0.
+> **2026-10-08 36차 재점검**: backend develop **`d73aec11`** · frontend develop **`29c2304`** · 양 스트림 **WT CLEAN**(SEC-D35 Fixed). local test BE **`4aad7cc2`**(1 behind) · FE **`29c2304`**(SYNCED). origin/develop = origin/test = **`1e8857b`/`5cf667b`**(BE **+2** · FE **+1** · SEC-D18 **Monitor** · P0는 origin에 유지). **Pass**: US-P01 그룹 배정 API(RBAC·테넌트 FK·멤버 응답은 표시 이름만). **Open 유지**: SEC-D47 — 요약 prod moderate 2에 더해 lock `6.30.4`가 CVE-2026-53668 범위(`react-router-dom` **6.30.6**으로 닫힘, GHSA-wrjc·SSR은 ≥7.18.0) · SEC-D48 dev high 4(TSR QA-B689, non-BLOCK) · SEC-D4 poi 5.3.0 · A06-1 Boot 3.3.1. **BLOCK Open 0** · QA Open [SEC] 0. US-P01 test 미이관은 TSR `QA-B690`(보안 결함 아님).
 
 ---
 
@@ -47,6 +47,7 @@
 | A-2-4 | RRN reveal — 역할·audit·목적 기록 | High | ☑ (목적 검증 ☐) |
 | A-2-5 | 크로스테넌트 접근 통합 테스트 (TSR) | BLOCK | ☐ |
 | A-2-6 | 직원 계정 생성·역할 변경 권한상승 차단 | High | ☑ `UserService.enforceRolePolicy` — `ogada_*`/`sysadmin`/`platform_admin` 생성 차단(`isOgadaOnlyRole`) · `hq_admin` tenant API 차단 · branch_admin allowlist · **account-request approve도 재검증**(`provisionApprovedAccount`) · **V161 org당 hq_admin 1 UNIQUE** · 직접 `createUser` 봉인(승인 경유)(US-R03·20차) |
+| A-2-7 | US-P01 `/programs/groups` — HQ/BRANCH/SOCIAL_WORKER만 · org+branch · 멤버 응답은 표시 이름 | High | ☑ develop `d73aec11` — 5 endpoint `@PreAuthorize` · caregiver 403 테스트 · V179/V180 복합 FK · 전화·주소·주민번호 필드 없음 · ☐ local test·origin (TSR QA-B690, 이관 전) |
 
 ### A-3. 프론트엔드 인가
 
@@ -126,10 +127,10 @@
 | E-1 | Spring Boot 최신 패치 (3.3.1 CVE 해소) | BLOCK | ☐ develop **3.3.1**(A06-1) — 패치 라인 업그레이드 검토 |
 | E-2 | poi-ooxml ≥ **5.4.0** | High | ☐ (5.3.0 — **NHIS·은행입금·RFID(G21)·요양보호사 4 파서**, SEC-D4 20차 확대) |
 | E-3 | CI OWASP dependency-check (CVSS≥7 fail) | High | ☐ |
-| E-4 | CI `npm audit` (prod dep, moderate 이상 알림) | Medium | ☐ SEC-008 **회귀 유지**(35차 재실측) — prod **2 moderate** `react-router@6.30.4`(SEC-D47·패치 ≥7.18.0 · 범위 6.0.0–7.17.0) |
+| E-4 | CI `npm audit` (prod dep, moderate 이상 알림) | Medium | ☐ SEC-008 **회귀 유지**(36차 재실측) — 요약 prod **2 moderate** · lock `react-router@6.30.4`. JSON `via`의 CVE-2026-53668은 `react-router-dom` **6.30.6**. GHSA-wrjc·SSR은 **≥7.18.0**(SEC-D47) |
 | E-5 | Dependabot/Renovate 활성화 | Medium | ☐ |
 | E-6 | frontend dev `form-data` HIGH 해소 | Medium(dev) | ☑ **Fixed 유지** — form-data GHSA는 34차 audit에 없음(SEC-D26) |
-| E-7 | frontend dev 빌드체인 HIGH (browserslist·nanoid·postcss·source-map-js) | High(dev) | ☐ SEC-D48 — 35차 `npm audit` **4 high + 5 moderate**(합계 9). prod high 0. TSR QA-B689 Open(non-BLOCK). 런타임 번들 아님 |
+| E-7 | frontend dev 빌드체인 HIGH (browserslist·nanoid·postcss·source-map-js) | High(dev) | ☐ SEC-D48 — 36차 `npm audit` **4 high + 5 moderate**(합계 9). prod high 0. TSR QA-B689 Open(non-BLOCK). 런타임 번들 아님 |
 
 ---
 
@@ -162,15 +163,15 @@
 
 | # | 항목 | BLOCK 조건 |
 |---|------|------------|
-| H-0 | **develop P0 패치 `origin/test` 반영** | ◑ — P0는 origin `1e8857b`/`5cf667b`에 있음(SEC-D14 Fixed). develop/local test `4aad7cc2`/`29c2304`는 origin보다 **+1**(SEC-D46 검색경로 · **SEC-D18 Monitor** 35차) |
+| H-0 | **develop P0 패치 `origin/test` 반영** | ◑ — P0는 origin `1e8857b`/`5cf667b`에 있음(SEC-D14 Fixed). develop는 origin보다 BE **+2** / FE **+1**(SEC-D46 + US-P01 · **SEC-D18 Monitor** 36차). local test BE는 `4aad7cc2` |
 | H-1 | 위 **BLOCK** 항목 0건 (develop baseline) | **충족** — develop ☑ · `origin/test` P0 ☑ |
-| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — 35차 **QA Open [SEC] 0**(BLOCK 없음). SEC-D46 **Mitigated 강화** · SEC-D18 **Monitor**(push) · SEC-D47·D48·D4·A06-1 audit Open(**BLOCK 아님**). TSR QA-B689는 `[SEC]` 아님 |
+| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — 36차 **QA Open [SEC] 0**(BLOCK 없음). US-P01 Pass · SEC-D47 **Open 갱신**(6.30.6 + 7.18.0) · SEC-D18 **Monitor** · SEC-D48·D4·A06-1 carry. TSR QA-B689·QA-B690은 `[SEC]` 아님 |
 | H-3 | TSR 크로스테넌트·권한 거부 테스트 통과 | 필수 · `RoleBasedControllerAccessTest`(account-request·G-STAFF-NHIS·G-7-1 export·**G-SMS staff-access-key**)·live-e2e pilot E2E 회귀 |
 | H-4 | `.env`·키 파일 Git 미포함 | ◑ — **SEC-D22**: WT `.gitignore` `*.env` 무시 ☑ · parent repo HEAD 커밋 선행 권고 |
 | H-5 | 파일럿 센터 개인정보 처리방침·동의 UI | PLN 확인 |
 | H-6 | J01 `SecurityConfig` 코드 리뷰 | ☑ develop lineage (SEC-D8 Fixed) · 필터 순서(SEC-D24 Fixed) |
-| H-7 | workspace baseline = git 실측 HEAD | ☑ `4aad7cc2`/`29c2304` (35차 실측·양 스트림 **CLEAN**·local test SYNCED·origin은 +1) |
-| H-8 | develop→test merge·origin push | ◑ — develop == local test (`4aad7cc2`/`29c2304`). origin/develop·origin/test는 **+1**(SEC-D18 Monitor) |
+| H-7 | workspace baseline = git 실측 HEAD | ☑ develop `d73aec11`/`29c2304` (36차 실측·양 스트림 **CLEAN**). local test BE `4aad7cc2` · FE SYNCED. origin BE +2 · FE +1 |
+| H-8 | develop→test merge·origin push | ◑ — FE develop == local test `29c2304`. BE local test는 US-P01 1커밋 뒤(QA-B690). origin은 BE +2 · FE +1(SEC-D18 Monitor) |
 | H-9 | live-e2e bootstrap credential fail-fast | ☑ SEC-D29 — blank credential fail-fast·trim 정규화(`7848b0f`)·password 필드 0 · 24차 HealthControllerTest G21 seed detail lock으로 readiness 회귀 가드 추가 |
 | H-10 | 외부 SMS/Alimtalk dispatchReady fail-closed(credential 부재) | ☑ 24차 — `NotificationChannelReadinessService` 채널-credential 게이트(`fed6f1f`)·`isLiveConfigured` 마커 거부(stub/placeholder/change-me)·SEC-D15 deepen |
 | H-11 | staff manual SMS quiet-hours guard(KST 22:00~08:00) | ☑ 24차 — `NotificationService.dispatchManualStaffSms`가 `NotificationQuietHoursPolicy.isActiveNow` 시 `BusinessRuleException` 즉시 거부(v2/J03 lineage 정합) |
@@ -178,7 +179,7 @@
 | H-13 | US-V06 batch-unconfirm challenge entropy | ◑ SEC-D44 **Mitigated** — 6-digit ☑ · fail throttle ☐ |
 | H-14 | FacilityNotice attachment host allowlist / kind22 payroll payload redact | ◑ SEC-D46 **Mitigated 강화**(35차 단일 라벨·`.home.arpa`·`.svc`) · SEC-D45 redact ☑ · prod allowlist env ☐ |
 | H-15 | J03 dispatch-reference-unit-rates HQ/BRANCH only · 정적 catalog · secret 0 | ☑ 30차 — `NotificationChannelStatusController` `@PreAuthorize(HQ/BRANCH)` · `NotificationDispatchUnitRatesCatalog.REFERENCE` |
-| H-16 | prod `react-router` ≥7.18.0 (CVE-2026-53669) | ☐ SEC-D47 — lock `6.30.4` · 로그인 `navigate(pathname)` 싱크 |
+| H-16 | prod `react-router-dom` 6.30.6 (CVE-2026-53668) 및 이후 ≥7.18.0 (GHSA-wrjc·SSR) | ☐ SEC-D47 — lock `6.30.4`는 `>=6.30.2 <=6.30.5` 안 · 로그인 `navigate(pathname)` 싱크 |
 
 ---
 
@@ -194,4 +195,4 @@
 
 ---
 
-*마지막 점검: 2026-10-07 (35차) | develop HEAD `4aad7cc2`/`29c2304`(양 스트림 **CLEAN** · local test SYNCED · SEC-D35 Fixed) · **SEC-D46 검색경로·`.home.arpa`·`.svc` Mitigated 강화** · origin **+1**(SEC-D18 Monitor) · SEC-D47 prod moderate 2 · SEC-D48 dev high 4(QA-B689) · SEC-D4/A06-1 carry · **QA Open [SEC] 0***
+*마지막 점검: 2026-10-08 (36차) | develop HEAD `d73aec11`/`29c2304`(양 스트림 **CLEAN** · FE local test SYNCED · BE local test 1 behind · SEC-D35 Fixed) · **US-P01 Pass** · origin BE **+2** / FE **+1**(SEC-D18 Monitor) · SEC-D47 CVE-2026-53668은 6.30.6 · GHSA-wrjc는 7.18.0+ · SEC-D48 dev high 4(QA-B689) · SEC-D4/A06-1 carry · **QA Open [SEC] 0***

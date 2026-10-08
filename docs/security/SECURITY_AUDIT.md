@@ -1,15 +1,81 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-07T17:40:00Z -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-10-08T01:50:00Z -->
 # 보안 감사 보고서 (security/SECURITY_AUDIT.md)
 
 > **작성**: security_auditor (`SEC`)  
-> **감사일**: 2026-10-07 (35차 일일 재점검)  
-> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `4aad7cc2`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `29c2304`**, **WT CLEAN**), PostgreSQL  
-> **baseline**: workspace **git 실측** — backend develop **`4aad7cc2`**(34차 `1e8857b` → **+1** · SEC-D46 단일 라벨·`.home.arpa`·`.svc`) · frontend develop **`29c2304`**(34차 `5cf667b` → **+1** · 동일 lockstep)  
-> **원격**: backend **`origin/develop`=`origin/test`=`1e8857b`** · frontend **`origin/develop`=`origin/test`=`5cf667b`** — 로컬 develop보다 **각 +1**(SEC-D18 **Monitor 재개** · 이번 호출 push 없음) · 기존 P0는 origin에 유지(SEC-D14)  
-> **local test**: backend **`4aad7cc2`** · frontend **`29c2304`** — develop == local test · origin보다 +1  
+> **감사일**: 2026-10-08 (36차 일일 재점검)  
+> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `d73aec11`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `29c2304`**, **WT CLEAN**), PostgreSQL  
+> **baseline**: workspace **git 실측** — backend develop **`d73aec11`**(35차 `4aad7cc2` → **+1** · US-P01 프로그램 그룹 배정 API) · frontend develop **`29c2304`**(35차와 동일 · 0 커밋)  
+> **원격**: backend **`origin/develop`=`origin/test`=`1e8857b`**(**+2**) · frontend **`origin/develop`=`origin/test`=`5cf667b`**(**+1**) — SEC-D18 **Monitor** · 이번 호출 push 없음 · 기존 P0는 origin에 유지(SEC-D14)  
+> **local test**: backend **`4aad7cc2`**(develop보다 **1** 뒤 · `d73aec11` 미이관) · frontend **`29c2304`**(develop와 일치)  
 > **워킹트리**: backend **CLEAN** · frontend **CLEAN**(SEC-D35 **Fixed 유지**)  
 > **기준**: OWASP Top 10 (2021), 개인정보보호법(PIPA), `docs/ops/DATA_RETENTION_POLICY.md`, `docs/technical/API_SPEC.md`  
 > **코드 변경**: 없음 (읽기 전용 점검)
+
+---
+
+## 1.38 일일 재점검 델타 (2026-10-08 36차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `d73aec11` · `git -C src/frontend rev-parse HEAD` → `29c2304` · `git log 4aad7cc2..HEAD`(+1) / frontend **0** · `git status`(양 스트림 **WT CLEAN**) · `origin/develop`·`origin/test`는 34차 SHA **유지** · local test backend `4aad7cc2` · frontend `29c2304` · `npm audit --omit=dev`(요약 **2 moderate** · JSON `via`에 CVE-2026-53668) · `npm audit`(요약 **4 high + 5 moderate**) · `pom.xml`(poi **5.3.0** · Boot **3.3.1** 불변) · `ProgramClientGroupController`·`ProgramClientGroupService`·V179/V180 FK)를 35차 `4aad7cc2`/`29c2304` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 35차 develop | 36차 develop HEAD | origin/develop · origin/test | local test | WT |
+|--------|--------------|-------------------|-------------------------------|------------|----|
+| backend | `4aad7cc2` | **`d73aec11`**(+1 · US-P01 그룹·멤버 배정) | **`1e8857b`**(**+2 unpushed**) | **`4aad7cc2`**(**1 behind**) | **CLEAN** |
+| frontend | `29c2304` | **`29c2304`**(0) | **`5cf667b`**(**+1 unpushed**) | **`29c2304`** | **CLEAN** |
+
+→ **판정**: 신규 커밋은 백엔드 API 1건이다. `SecurityConfig`·`permitAll`·JWT·PII 암호화·Flyway 신규 버전 **0**. 프론트 델타 **0**(raw `fetch`·`dangerouslySetInnerHTML`·`localStorage` 도입 없음). `services.js`에 `/programs/groups` 클라이언트 **없음**. **36차 신규 BLOCK급 0** · **QA Open [SEC] 0**. 이관 대기 `QA-20261007-B690`은 TSR Open(transfer)이며 인증 우회가 아니므로 `[SEC]`로 복제하지 않는다.
+
+### (B) 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **US-P01 프로그램 수급자 그룹** (`d73aec11`) | **Pass** | 5개 엔드포인트 전부 `@PreAuthorize(HQ_ADMIN, BRANCH_ADMIN, SOCIAL_WORKER)`. 접근 테스트가 `CAREGIVER` 생성을 **403**. `requireOrganizationId` · 쓰기는 `validateBranchWriteScope` · 멤버 조회는 그룹 지점 `validateBranchReadScope` · 목록은 활성 지점만. 이용자는 `findByIdAndOrganizationIdAndActiveTrue`. 다른 지점·비활성 그룹·종료일 역전·기간 겹침·빈 이름·120자 초과는 고정 한국어 `BusinessRuleException`. 이름 `@NotBlank`/`@Size(max=120)` + trim. 삭제 API 없음(비활성만). 응답은 그룹 `id`·`name`·`active`, 멤버는 `clientName`과 기간. **주민번호·전화·주소·생년월일 필드 없음**. V179 `(organization_id, client_id)`·`(organization_id, branch_id, client_id)` FK와 V180 3-way 그룹 FK·활성 이용자 트리거가 행을 테넌트 안에 묶음. 이름 조회 `findAllById`는 그 FK 안에서만 성립 |
+| JWT / RBAC / PII | **Pass — 회귀 없음** | 델타 파일은 programs 그룹 컨트롤러·서비스·DTO·리포지토리·테스트뿐 |
+
+**잔여 (Low, 신규 ID 없음)**: 멤버 기간 겹침은 앱 검사만이다(V180이 DB exclusion을 P3로 둠). 동시 POST 두 건은 겹친 창을 남길 수 있다. 인증 우회는 아니다. 멤버 목록은 페이지 상한이 없고 표시 이름만 반환한다.
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **36차 신규 BLOCK급 audit Open 0건** | — | — | US-P01 Pass · **QA Open [SEC] 0** |
+| SEC-D47 | `react-router` / `react-router-dom` prod | **Moderate** | **Open 갱신** | `npm audit --omit=dev` 요약은 **2 moderate · high 0**으로 35차와 같다. JSON `via`에 35차 본문이 적지 않은 **CVE-2026-53668 / GHSA-jjmj-jmhj-qwj2**(오픈 리다이렉트가 XSS로 이어질 수 있음, CVSS 6.9)가 `react-router-dom` **`>=6.30.2 <=6.30.5`** 로 있다. lock은 `react-router@6.30.4`. GitHub advisory의 6.x 수정판은 **`react-router-dom@6.30.6`**. GHSA-wrjc-x8rr-h8h6(백슬래시 오픈 리다이렉트)와 GHSA-337j-9hxr-rhxg(SSR)는 여전히 **≥7.18.0**. 앱 싱크는 그대로다. `ProtectedRoute`가 `state.from`에 location을 넣고 `LoginPage.redirectTo`가 **pathname만** `navigate`에 넘긴다. 사용자 조작이 필요하고 Vite SPA라 SSR 항목의 런타임 해당은 낮다. QA Open `[SEC]`로 올리지 않음 |
+| SEC-D48 | npm audit dev-only | **High(dev)** | **Open** | dev 포함 요약 **4 high + 5 moderate**(합계 9). high: browserslist · nanoid · postcss · source-map-js. TSR `QA-20261007-B689` Open(HIGH, non-BLOCK). `[SEC]` 중복 없음 |
+| SEC-D18 | origin push · local test | Low | **Monitor** | BE origin **+2**(35차 +1에서 증가). FE origin **+1**. local test BE는 `4aad7cc2`라 US-P01이 없다(TSR `QA-B690`, 보안 결함 아님). 이번 호출은 push 금지 |
+| SEC-D46 | attachment host 구조 가드 | Low | **Mitigated 유지** | 코드 변화 없음. 착지 커밋 `4aad7cc2`/`29c2304`는 여전히 origin에 없음 |
+| SEC-D4 | poi-ooxml 5.3.0 | **Medium** | **Open** | CVE-2025-31672 · pom `<version>5.3.0</version>` 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | pom `<version>3.3.1</version>` 불변 |
+| SEC-D33·D37·D41·D44·D45·D25·D42 | carry | Low~Medium | **Mitigated / Open(Monitor)** | 이번 델타에서 코드 변화 없음 |
+
+### (D) 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 36차 재확인 |
+|------|-------------|
+| SEC-D14 origin/test P0 | **Fixed 유지** — origin의 P0 커밋은 그대로. 그 위에 SEC-D46과 US-P01이 로컬에만 있음 |
+| SEC-D17 raw fetch | **Fixed 유지** — FE HEAD 불변 · `/programs/groups` raw fetch 0 |
+| SEC-D19 error handler | **Fixed 유지** — 그룹 API 거부는 고정 한국어 카피 |
+| SEC-D24 SecurityConfig | **Fixed 유지** — 델타에 `permitAll` 없음 |
+| SEC-D35 WT | **Fixed 유지** — 양 스트림 CLEAN |
+| US-P01 단위 테스트 | **14/14 PASS** — `mvn -o -B -Dtest=ProgramClientGroupControllerAccessTest,ProgramClientGroupControllerRoutingTest,ProgramClientGroupServiceTest test` (2026-10-08, `@d73aec11`). 전체 스위트는 재실행하지 않음. test 브랜치 전체 2479/2479는 TSR2003 `@4aad7cc2` |
+
+### (E) 우선순위 (36차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | SEC-D47 | 먼저 `react-router-dom` **6.30.6**(CVE-2026-53668, 메이저 유지). GHSA-wrjc·SSR은 **7.18.0+** 별도 계획. `npm audit fix`가 7.x로 올리면 로그인 복귀 경로를 따로 회귀 |
+| 4 | SEC-D48 | dev high 4 — `QA-B689`. 런타임 번들 아님 |
+| 5 | SEC-D18 | push 가능한 호출에서 origin에 `d73aec11`/`29c2304` 반영. US-P01 test 이관은 TSR `QA-B690` |
+| 6 | SEC-D46 잔여 | prod `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` |
+| 7 | SEC-D25 | 첨부 image decode·AV·zip-bomb |
+
+### coder / planner 조치
+
+- **COD**: US-P01은 역할·테넌트 경계가 스펙과 맞다. 프론트를 붙일 때 `apiFetch` / `services.js`만 쓰고, 멤버 응답에 전화·주소·주민번호를 넣지 않는다. poi-ooxml **5.4.0+**, Spring Boot 패치 라인. `react-router-dom`은 **6.30.6**으로 CVE-2026-53668을 먼저 닫고, GHSA-wrjc·SSR은 **7.18.0+**로 따로 올린다. prod env `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 설정. dev 의존성은 빌드 체인만 갱신(SEC-D48 / QA-B689).
+- **PLN**: 36차 신규 BLOCK 없음. SEC-D47은 Moderate — QA Open `[SEC]`로 올리지 않음. `QA-B690`은 이관 게이트로 유지한다.
+- **TSR**: test에 `d73aec11`이 올라간 뒤, 요양보호사 403·다른 지점 이용자 배정 거부·멤버 JSON에 표시 이름 외 연락처가 없는지를 한 번 확인한다. `react-router-dom@6.30.6` 이후 로그인 복귀 pathname을 회귀한다.
 
 ---
 
