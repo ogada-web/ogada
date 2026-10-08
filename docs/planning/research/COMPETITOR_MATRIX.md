@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T22:27:19Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T01:51:20Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-07 (**BNK-949 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · 부모 gitlink BE `@4aad7cc2` · merge gate **3** · Route **133** · Page **106** · FE test 파일 **546**(실행 **493** · e2e 53 제외) · npm **2865/2865** · strict @Test **2473** · surefire **2493** · HTTP **447** · `@RestController` **81** · 모듈 **97.41%**). ★★★ **@Test 2474 폐기(서비스 테스트 9)** · ★★★ **컨트롤러 82 는 Advice 부분문자열** · ★★ **yaml develop `4aad7cc2` 는 test 브랜치** · ★ **프로그램 그룹 관리 화면 0 · 이력 4열 LIVE** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-08 (**BNK-950 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · HTTP **447** · 모듈 **97.41%**). ★★★ **7-2-1 = `/billing/reports/statistics`** · ★★★ **화면 105 · 「109」없음** · ★★ **Play 1.10.6 · 2024-10-28** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-950 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 7-2-1 의료비공제 경로 (BNK-950 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ `/billing/reports/statistics` 탭 **수납년도** `PAID_YEAR` · **청구년도** `CLAIM_YEAR` · `/clients/:clientId` 패널 귀속 연도 · CMS·간편결제 제외 · id=7 **1.0** | ✅ 화면 7-2-1 · view `/share/cost/view.cost_master_statistic` · PDF p.92 는 2018 번호 「7-8.의료비 공제」 · ① 수납년도/청구년도 | ⚪ 현금영수증은 FAQ 21701 | ⚪ | ⚪ | `carefor_play_721_depth_bnk950.txt` · §950-2 · BNK-947 표의 cash-receipts 칸을 통계로 정정 |
+| **★★★ 메뉴 깊이 · 「109」없음 (BNK-950 #2 · 재집계 · 확인)** | ✅ 경로 최대 깊이 **4** · d4=**6** · path `report` **29/132=22.0%** | ✅ 주야간 `0f1858cd` 화면 **105** · 주석 **106** · 최대 깊이 **3** · M2 이동서비스 **10** · 디스크 `6226e6eb` 은 **107** · 시설 loadPage **112** · 2번=요양 **14** · 이동서비스 **0** · 제목 리포트 26/112=**23.2%** · `rpt` 34/112=**30.4%** | ⚪ | ⚪ | ⚪ | §950-1 · 오리진 HTTP **000** · 본문 유지 |
+| **★★ Play 1.10.6 (BNK-950 #3 · 신규 URL · 확인)** | ✅ 웹 Transport·본인부담은 스토어 설명 유무로 내리지 않음 | ✅ [Play kr.co.carefor](https://play.google.com/store/apps/details?id=kr.co.carefor&hl=ko) `6036b568` · **1.10.6** · **2024. 10. 28.** · 10만+ · 한강시스템 · 설명은 시설/방문요양/방문목욕/방문간호/주야간 · 이동서비스 **0** · NFC 는 권한 한 줄 · iOS 는 1.10.1 | ⚪ | ⚪ | ⚪ | §950-3 · 출시 노트 **미확인** · 2026 웹 카탈로그 아님 |
+| **★ 청구 뷰 아카이브 없음 (BNK-950 #4 · 신규 URL)** | ⚪ 발행일 필드·줄 수정을 갭으로 열지 않음 | ✅ [view.cost_master CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/cost/view.cost_master&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) `[]` · [ai_response.js CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/js/ai_response.js&output=json&limit=5) `[]` · input name **미확인** | ⚪ | ⚪ | ⚪ | `carefor_view_cost_master_cdx_bnk950.json` · §950-2 |
+| **★ git @HEAD (BNK-950 #5)** | ✅ SHA BNK-949와 같음 · HTTP **447** · merge gate **3** | ⚠ func.php·demo-work·PDF HTTP **000** | ⚪ | ⚪ | ⚪ | §950-0 · §950-4 |
+
+> **직전 갱신**: 2026-10-07 (**BNK-949 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · 부모 gitlink BE `@4aad7cc2` · merge gate **3** · Route **133** · Page **106** · FE test 파일 **546**(실행 **493** · e2e 53 제외) · npm **2865/2865** · strict @Test **2473** · surefire **2493** · HTTP **447** · `@RestController` **81** · 모듈 **97.41%**). ★★★ **@Test 2474 폐기(서비스 테스트 9)** · ★★★ **컨트롤러 82 는 Advice 부분문자열** · ★★ **yaml develop `4aad7cc2` 는 test 브랜치** · ★ **프로그램 그룹 관리 화면 0 · 이력 4열 LIVE** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-949 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

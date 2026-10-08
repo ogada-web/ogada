@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-950 케어포 역공학 0-2h · ★★★ **7-2-1 은 `/billing/reports/statistics`** · ★★★ **화면 105 · 「109」없음** · ★★ **Play 1.10.6 · 2024-10-28** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
+
+**근거**: [Play kr.co.carefor](https://play.google.com/store/apps/details?id=kr.co.carefor&hl=ko) HTTP 200 · `6036b568`. [ai_response.js CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/js/ai_response.js&output=json&limit=5) HTTP 200 · `[]`. func.php·demo-work HTTP **000**. git FE `29c2304` · BE `d73aec11`.
+
+### 결정
+
+1. **★★★ 7-2-1 의료비공제의 화면은 통계다 (확인)** — `view.cost_master_statistic` 은 `/billing/reports/statistics` 와 `/clients/:clientId` 의 납입 패널이다. 탭은 수납년도(`PAID_YEAR`)·청구년도(`CLAIM_YEAR`)다. `/billing/cash-receipts` 는 현금영수증 목록(이지케어 FAQ 21701)이다. BNK-943·BNK-947 표의 그 칸을 이 경로로 고친다. **planner: id=7 은 1.0. 현금영수증 경로를 7-2-1 작업으로 바꾸지 않는다.**
+
+2. **★★★ 주야간 화면은 105개다 (확인)** — `0f1858cd` 화면 105 · 주석 106 · 디스크 `6226e6eb` 은 107. 시설 loadPage 는 112. 파일 안에 109 합계는 없다. 시설 2번은 요양 14이고 이동서비스 문자열은 0이다. **planner: 「109」로 갭을 세지 않는다. 두 셸을 한 표로 합치지 않는다.**
+
+3. **★★ Android 앱은 1.10.6 이고 갱신일은 2024-10-28 이다 (확인)** — 설명은 시설·방문요양·방문목욕·방문간호·주야간 다섯 줄이다. 이동서비스·본인부담 문장은 0이다. iOS 는 1.10.1(2021-08-18)이다. **planner: 스토어 설명을 2026 웹 메뉴 카탈로그로 쓰지 않는다. Transport 를 내리지 않는다.**
+
+4. **★★ 청구 뷰의 input name 은 아카이브에 없다 (확인)** — `view.cost_master` CDX 본문은 `[]` 이다. `ai_response.js` 도 `[]` 이다. BNK-947 의 아카이브 미확인은 여기서 빈 배열로 닫힌다. 발행일 필드와 줄 수정 화면은 **미확인**이다. **planner: 그 미확인을 갭으로 올리지 않는다.**
+
+5. **★ 리포트 분모와 git 은 유지한다 (확인)** — 제목 리포트 21/105=20.0% · 시설 제목 26/112=23.2% · `class=rpt` 34/112=30.4% · ogada path `report` 29/132=22.0%. SHA 는 BNK-949 와 같다. HTTP **447** · merge gate **3**. **planner: 한 비율로 우열을 쓰지 않는다.**
+
+**가정 0** · **미확인 2**(뷰 input name · Play 1.10.6 출시 노트) · 신규 snapshot **3**(txt 1 · json 2) · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-07 — benchmark_researcher(BNK): BNK-949 ogada git 실측 6-8h · ★★★ **@Test 2473 · surefire 2493** · ★★★ **컨트롤러 81 · Advice 를 세지 않음** · ★★ **yaml `4aad7cc2` 는 develop 이 아님** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · npm **2865** · merge gate **3**
 
 **근거**: git FE `29c2304` · BE `d73aec11` · local test `4aad7cc2` · 부모 gitlink `4aad7cc2`. `npm test` 493파일/2865 PASS. `mvn -q test` surefire 2493/0/0/0. [daycareProgram.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgram.do) HTTP 404 · `3c93af54`. [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 644차.

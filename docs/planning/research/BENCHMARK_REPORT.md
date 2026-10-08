@@ -1,9 +1,93 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-07T22:27:19Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T01:51:20Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §950 BNK-950 — 케어포 역공학 0-2h · ★★★ **7-2-1 `view.cost_master_statistic` 은 `/billing/reports/statistics`** · ★★★ **주야간 화면 105 · 주석 106 · 디스크 107 · 「109」없음** · ★★ **Play `1.10.6` · 2024-10-28** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · 신규 진성갭 0 · merge gate **3**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T01:51:20Z -->
+
+**조사일**: 2026-10-08T01:51:20Z | **rotation**: 케어포 역공학 0-2h. BNK-949(2026-10-07T22:27:19Z) 이후. 초점: (1) `func.php`·demo-work·PDF 재실측과 메뉴 깊이 (§950-1) · (2) 7-2-1 번호와 ogada Route (§950-2) · (3) Play 스토어 (§950-3) · (4) planner 액션 (§950-4).
+
+### §950-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-949와 동일 SHA)
+- ogada backend develop = `d73aec1180669399e61fbfe362fd13ff3dd2bf83` (origin = `1e8857b4` · **ahead 2** · local `test` = `4aad7cc2` · WT CLEAN · BNK-949와 동일 SHA)
+- merge gate **3**. Route **133** · Page **106** · HTTP **447** · strict `@Test` **2473** · 모듈 **97.41%**. 같은 SHA라 BNK-949 집계를 유지한다.
+- `npm test` / `mvn test` 는 이번 사이클 **미실행**(docs only).
+
+### §950-1 · ★★★ 화면 105 · 시설 loadPage 112 · 오리진은 다시 HTTP 000
+
+[func.php](https://www.carefor.co.kr/daycare/func.php) · [demo-work](https://demo-work.carefor.co.kr/) · `search_menu.js` · `ai_response.js` · `common.js` · [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) 는 10초 안에 연결되지 않았다. HTTP **000**. BNK-943 파일 `0f1858cd` · `007911c9` · `96f7d45e` 는 그대로 두었다.
+
+`carefor_func_live_bnk943.php` 재집계: 화면 줄 **105** · 주석 id **106**. 두 칸 번호 87 · 세 칸 번호 18 · 최대 깊이 **3**. 모듈 화면은 1=11 · 2=10 · 3=11 · 4=10 · 5=12 · 6=5 · 7=11 · 8=14 · 9=6 · 10=9 · 11=6. 디스크 `6226e6eb` 은 화면 **107**(5-3-1 이 화면에 있고 8-11 질향상노력이 있음). 세 파일 어디에도 잎 합계 109 는 없다.
+
+`carefor_demo_work_live_bnk943.html` 재집계: `loadPage` **112** · 고유 view **111** · 최대 깊이 **3**. 모듈 2=**14** 이고 openMenu 제목은 요양이다. `이동서비스` · `배차` · `송영` · `RFID` 는 **0**. 주야간 M2 는 이동서비스 **10** leaf 다.
+
+| 분모 | 값 |
+|---|---|
+| 주야간 제목 「리포트」 | 21/105 = **20.0%** |
+| 시설 제목 「리포트」 | 26/112 = **23.2%** |
+| 시설 `class=rpt` | 34/112 = **30.4%** |
+| ogada path `report` | 29/132 = **22.0%** |
+
+ogada 경로 최대 깊이는 **4**(d4=**6**). 케어포 메뉴 id 최대 깊이는 **3** 이다.
+
+[erp 로그인 GET](https://erp.carefor.co.kr/carefor_login) 은 HTTP **405**. 본문은 Laravel 디버그라 저장하지 않았다.
+
+### §950-2 · ★★★ 7-2-1 은 통계 화면 · 현금영수증은 다른 경로
+
+화면 번호는 주야간 func.php 와 시설 `left_sub7` 이 같다.
+
+| 화면 | demo view | ogada `@29c2304` |
+|---|---|---|
+| 7-1 청구관리 | `/share/cost/view.cost_master` | `/billing` · `/billing/claims/:claimId` |
+| 7-2 입금관리 | `/share/cost/view.cost_receipt` | `/billing/payments` |
+| 7-2-1 의료비공제 | `/share/cost/view.cost_master_statistic` | `/billing/reports/statistics` · `/clients/:clientId` 패널 |
+| 7-3 미납관리 | `/share/cost/view.cost_nopay` | `/billing/overdue` |
+| 7-4 CMS | `/share/cost/view.cms_manage` | `/billing/cms` |
+| 7-5 간편결제 | `/share/cost/view.npay_manage` | `/billing/easy-pay` |
+| 7-6 청구대장 | `/share/cost/view.cost_master_report` | `/billing/reports/charges` |
+| 7-7 입금대장 | `/share/cost/view.cost_deposit_report` | `/billing/reports/deposits` |
+| 7-8 수납대장 | `/share/cost/view.cost_receipt_report` | `/billing/reports/receipts` |
+| 7-9 수납·환불 | `/share/cost/view.cost_receipt_apply_yearly` | `/billing/reports/refunds` |
+| 7-10 간편계산기 | `/cost/view.cost_calculator` | `/billing/calculator` |
+
+`BillingStatisticsReportPage.jsx` 본문: 「케어포 view.cost_master_statistic」. 집계 기준 탭은 **수납년도** · **청구년도** (`PAID_YEAR` / `CLAIM_YEAR`). `MedicalExpenseDeductionPanel.jsx` 는 `/clients/:clientId` 에 있고 문구가 「케어포 7-2-1」이다. 귀속 연도를 받고, CMS·간편결제 수납은 집계에서 뺀다.
+
+PDF p.92 메뉴위치는 「7-8.의료비 공제 및 본인부담금 통계」이고, ①은 「수납년도나 청구년도」다. 그 7-8 은 2018 번호다. 현재 화면 7-8 은 수납대장이다.
+
+`/billing/cash-receipts` 는 `CashReceiptIssuancePage` 다. 문구는 「이지케어 FAQ 21701」이고 제목은 현금영수증 발급 목록이다. BNK-943·BNK-947 비교 표는 7-2-1 을 이 경로에 적었다. 이번 사이클에서 그 칸을 통계 경로로 고친다. 현금영수증 경로는 그대로 둔다. id=7 은 **1.0**.
+
+[view.cost_master CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/cost/view.cost_master&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) HTTP 200 · 본문 `[]` · `58e0494c`. 뷰 input name · 발행일 전용 필드 · 명세서 줄 수정은 **미확인**.
+
+[ai_response.js CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/js/ai_response.js&output=json&limit=5) HTTP 200 · 본문 `[]`. BNK-947 의 아카이브 미확인은 빈 배열로 닫힌다.
+
+### §950-3 · ★★ Play 1.10.6 은 2024-10-28
+
+[Play kr.co.carefor](https://play.google.com/store/apps/details?id=kr.co.carefor&hl=ko) HTTP 200 · 1,194,603B · `6036b568`. 개발자 **한강시스템**. 다운로드 **10만+**. 카테고리 라이프스타일. 화면 문구 「업데이트 날짜」 **2024. 10. 28.** 데이터 키 141 은 `1.10.6`, 키 146 은 같은 날짜다.
+
+설명: 「시설급여, 방문요양, 방문목욕, 방문간호, 주야간 보호급여」. 같은 HTML 에서 이동서비스 **0** · 본인부담 **0**. NFC 는 권한 문장 「NFC(Near Field Communication) 제어」한 줄이다. 「새로운 기능」제목은 **0** 이라 1.10.6 변경 내용은 **미확인**.
+
+iTunes(BNK-947)는 **1.10.1** · **2021-08-18** 이다. Android 와 iOS 버전을 한 숫자로 적지 않는다. 둘 다 2026 웹 메뉴 목록이 아니다.
+
+### §950-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=7 은 **1.0**. id=2 는 **0.85**. 수가 시드 변경 **0**.
+
+1. 7-2-1 의 대응 경로는 `/billing/reports/statistics` 와 이용자 상세의 의료비공제 패널이다. `/billing/cash-receipts` 는 현금영수증이다.
+2. 메뉴 수는 주야간 화면 **105**, 주석 **106**, 디스크 **107**, 시설 loadPage **112** 다. 「109」는 쓰지 않는다.
+3. 이동서비스 정본은 func.php M2 10 leaf 다. 시설 데모 2번은 요양 14 leaf 다.
+4. 리포트는 20.0% · 23.2% · 30.4% · ogada 22.0% 를 분모와 함께 적는다.
+5. Play 1.10.6(2024-10-28) 설명에 이동서비스가 없어도 Transport 를 내리지 않는다.
+6. 뷰 input name 은 아카이브가 비어 있어 갭으로 올리지 않는다.
+7. git 은 BNK-949 와 같다. FE `@29c2304` · BE `@d73aec11` · HTTP **447** · merge gate **3**.
+
+주력 `carefor_play_721_depth_bnk950.txt` + `carefor_ai_response_cdx_bnk950.json` + `carefor_view_cost_master_cdx_bnk950.json`. 신규 증거 URL 1(Play). 기존 URL 재실측 1(케어포 443 타임아웃). 미확인 해소 1(ai_response.js CDX `[]`). 가정 0. 미확인 2(뷰 input name · Play 출시 노트). per-cycle minimum 4종 충족.
+
+---
 
 ## §949 BNK-949 — ogada git 실측 6-8h · ★★★ **`@Test` 2474는 서비스 테스트 9개를 10으로 센 것이다** · ★★★ **컨트롤러 82는 `@RestControllerAdvice` 부분문자열이다** · ★★ **yaml 의 backend develop 은 로컬 test `4aad7cc2` 이고 develop HEAD 는 `@d73aec11`** · ★ **프로그램 그룹 관리 화면은 없고 이력 4열은 있다** · FE `@29c2304` · BE `@d73aec11` · HTTP **447** · surefire **2493** · npm **2865** · 신규 진성갭 0 · merge gate **3**
 
