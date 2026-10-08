@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T22:15:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T01:50:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 월별 청구는 지점·달마다 한 건)  
+> **최종 갱신**: 2026-10-08 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 5-9 그룹 이력은 겹치는 배정만 인원으로 묶음)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -3170,7 +3170,9 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 | RBAC | **`caregiver`·`guardian` → 403** |
 | 테스트 | **`ProgramClientGroupServiceTest`** · **`ProgramClientGroupControllerRoutingTest`** · **`ProgramClientGroupControllerAccessTest`** |
 
-> 현장: USER_MANUAL §5-9 · FAQ **Q959** · **Q714** · DEPLOYMENT §1-4
+> **5-9 집계** (`GET /programs/reports/group-history`): 배정 시작 ≤ 조회 종료, 그리고 종료가 없거나 종료 ≥ 조회 시작인 행만. `GROUP BY` 그룹·시작일·종료일, `COUNT(DISTINCT clientId)`. 화면 열은 그룹명·적용 시작·적용 종료·수급자 수. `active=false` 여도 기간이 겹치면 포함. 같은 그룹의 기간이 다르면 API 행은 나뉘지만 화면 행 키는 `groupId` 하나라 표는 한 줄로 남을 수 있다. 이름 전부는 `GET …/groups/{groupId}/members` (FAQ **Q963**).
+
+> 현장: USER_MANUAL §5-9 · FAQ **Q959** · **Q963** · **Q714** · DEPLOYMENT §1-4
 
 #### 10-11-1. 기능회복 훈련 API (G17, US-T06, `73e169a`·`0821ce8`·`0048105`·`e820b28`, V72) — **FE UI Fixed**
 
@@ -4024,6 +4026,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q963 신설** — §10-11-2a **5-9 그룹 이력** 겹침 집계·인원만 표시·화면 행 키는 그룹 id · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q962 신설** — §1-4·§10 **월별 청구는 지점·달 1건** · 재호출은 재계산 없음 · `/transport/auto-dispatch` 는 `/transport` 로 이동 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q961 신설** — §10-10 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q960 신설** — §10-10 **이동서비스비 거리 구간 수가**(830·2,630·5,230·8,630원) · 특장차량 월 가산 시드 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |

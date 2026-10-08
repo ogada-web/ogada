@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T22:15:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T01:50:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · Flyway **V1–V196** · 모듈 **97.41%** · 월별 청구는 지점·달마다 한 건)
+> **최종 갱신**: 2026-10-08 (기선 BE `d73aec1` / FE `29c2304` · Flyway **V1–V196** · 모듈 **97.41%** · 5-9 그룹 이력은 겹치는 배정만 인원으로 묶음)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -60,7 +60,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 
 | 구분 | 화면(프론트) | 핵심 API(백엔드) | 운영 확인 포인트 |
 |------|--------------|------------------|------------------|
-| **프로그램 수급자 그룹 (v3.1 Must, Q959)** | 화면 없음 · 결과만 **`/programs/reports/group-history`** | `GET/POST /api/v1/programs/groups` · `PATCH …/{groupId}` · `GET/POST …/{groupId}/members` | **활성 지점** · 이름 **120자** · 활성 이름 중복 거부 · **삭제 없음(비활성)** · 기간 겹침 거부 · **요양보호사 불가** · **hq/branch/social** |
+| **프로그램 수급자 그룹 (v3.1 Must, Q959·Q963)** | 화면 없음 · 결과만 **`/programs/reports/group-history`** | `GET/POST /api/v1/programs/groups` · `PATCH …/{groupId}` · `GET/POST …/{groupId}/members` · `GET …/reports/group-history` | **활성 지점** · 이름 **120자** · 5-9는 **겹치는 기간만** · 같은 시작·종료는 **한 줄·인원** · **이름 없음** · 기간이 여러 개면 표 한 줄만 믿지 말 것 · **요양보호사 불가** |
 | **프로그램 일정 활동 사진 (v3 Must, Q917·Q920·Q921·Q924·Q930·Q933)** | `/programs` 일정 표 **「활동 사진」** | `POST /api/v1/programs/schedule/{programId}/photo` · `GET …/schedule?date=` (`photoStorageKey`) | **JPEG/PNG/WEBP ≤5MB** · **Content-Type 파라미터 strip** · **magic-byte 서명 일치** · **오류 ARIA** · **성공 `role="status"` 안내** · **`ds-stack--tight` 간격** · **hq/branch/social/caregiver** · **등록됨/미등록** |
 | **이용자 프로필·서류함·공단 엑셀 업로드 (Must, Q926~Q931·Q933)** | `/clients/:id` 사진·급여계약·등급 이력 · `/staff` HR·보수교육·요양보호사 · `/visits`·`/billing/imports/nhis` NHIS | `POST …/clients/{id}/photo` · attachments · `POST …/imports/nhis*` · `POST …/staff/imports/nhis-caregivers*` | **사진 JPEG/PNG/WEBP**(성공 `role="status"` 안내) · **PDF/이미지 서류** · **엑셀 OOXML/OLE 서명(SEC-D34)·null fail-closed** · MIME 위장 거부 |
 | **이용자 등록 동의·라벨 a11y (Must, Q906)** | `/clients/new` · `/clients/:id/edit` · `/guardian/checkin` · `/transport` | *(CSS `components.css` — API 변경 없음)* | **`ds-consent-box`** 주민번호 동의 · **`ds-field-label`** · **`ds-page-breadcrumb`** · **`ds-submit-block`** · **`ds-transport-map__refresh-hint`** (`0438a17`, UXD-187) |
@@ -2880,7 +2880,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
    - **5-7** — 참여/불참 건수 요약 · 행별 **상태·만족도·G17b 미제공 사유**
    - **5-8** — 프로그램·일자별 **참석·불참·평균 만족도** (운영기록지 집계)
    - **5-10** — 일정별 **진행자·정원·참석·불참** 집계
-   - **5-9** — **그룹명·적용 기간·수급자 수** 집계 · 멤버십 없으면 **빈 목록** · 그룹을 넣는 화면은 없고, 위 **프로그램 수급자 그룹 API**로 배정한 행이 여기 나옵니다 (FAQ **Q959**)
+   - **5-9** — 열은 **그룹명·적용 시작·적용 종료·수급자 수**. 조회 기간과 **하루라도 겹치는** 배정만 나오고, **시작일·종료일이 같은** 이용자는 **한 줄**로 인원만 셉니다. 종료일이 없으면 **—**. 이용자 **이름은 없습니다**. 같은 그룹에 기간이 다른 배정이 있으면 조회 결과는 줄이 나뉘지만 표는 그룹마다 한 줄로 남을 수 있으니, 이름과 기간 전부는 그룹 배정 조회(`GET …/groups/{groupId}/members`)로 봅니다. 그룹을 꺼도 지난 배정은 기간이 겹치면 남습니다. 비면 「그룹 이력 없음」. 상단 **기록 건수**는 이용자 수가 아니라 줄 수입니다 (FAQ **Q959**·**Q963**)
 5. **「인쇄」** — 브라우저 인쇄로 현장 보관·점검 자료를 출력합니다.
 6. API 오류 시 **danger Alert** 와 **「다시 시도」** 버튼으로 재조회합니다.
 
@@ -2900,7 +2900,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | `GET /api/v1/programs/reports/participations?fromDate=&toDate=&clientId=&branchId=` | 5-7 참여 집계 · **`summary.totalCount`·`attendedCount`·`absentCount`** |
 | `GET /api/v1/programs/reports/provision-records?fromDate=&toDate=&branchId=` | 5-8 제공기록(운영) 집계 |
 | `GET /api/v1/programs/reports/schedules?fromDate=&toDate=&branchId=` | 5-10 일정·참석 집계 |
-| `GET /api/v1/programs/reports/group-history?fromDate=&toDate=&branchId=` | 5-9 그룹 이력 — **`groupConfigAvailable=true`** · **`items[].groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** |
+| `GET /api/v1/programs/reports/group-history?fromDate=&toDate=&branchId=` | 5-9 그룹 이력 — 기간이 **겹치는** 배정만 · 같은 그룹·같은 시작·같은 종료는 **한 줄** · **`groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** · 이름 없음 (**Q963**) |
 
 > **지점 스코프 (Q715)**: 화면은 **로그인 활성 지점** 기준입니다. **통합 관리자**가 Swagger로 **다른 지점**을 조회하려면 optional **`branchId`** query를 사용합니다 — 권한 밖 지점은 **403**.
 >
@@ -5066,6 +5066,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q963 신설** — §1-5·§5-9 **그룹 이력**은 겹치는 배정만 인원으로 묶고 이름은 멤버 API · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q961 신설** — §1-5·§5-8-0-1 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q960 신설 · Q317 연결** — §1-5·§5-8-1 **이동서비스비 거리 구간**(830·2,630·5,230·8,630원) · 옛 러-4 6,230원 제거 · 특장차량 월 가산은 화면 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
 | 2026-10-07 | **Q959 신설** — §1-3·§1-5·§5-9 **프로그램 수급자 그룹 등록·배정 API**(화면 없음·5-9 이력) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |

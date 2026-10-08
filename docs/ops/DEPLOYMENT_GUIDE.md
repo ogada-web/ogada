@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-07T22:15:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T01:50:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-07 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 월별 청구는 지점·달마다 한 건)
+> **최종 갱신**: 2026-10-08 (기선 BE `d73aec1` / FE `29c2304` · **Flyway V1–V196** · 모듈 **97.41%** · 5-9 그룹 이력은 겹치는 배정만 인원으로 묶음)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -144,6 +144,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | G-REPORT-DENSITY M5 program reports UI (Q714) | UI **`/programs/reports/participations`** · **`/programs/reports/schedules`** | **`ProgramReportNav`** 4-tab · filter form · **「다시 시도」** on error · **`ProgramReportsPage.test`** PASS (`15a3b7f`) |
 | G-REPORT-DENSITY 5-9 group-history fill (Q714 deepen) | `GET /api/v1/programs/reports/group-history?fromDate=2026-06-01&toDate=2026-06-25` | 200, **`groupConfigAvailable=true`** · **`items[]`** with **`groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** when V179 memberships exist · empty **`items:[]`** otherwise (`337453d`) |
 | 프로그램 수급자 그룹 (Q959, US-P01) | `GET /api/v1/programs/groups` · `POST /api/v1/programs/groups` body `{"name":"인지 그룹"}` (활성 지점 JWT · `hq_admin`/`branch_admin`/`social_worker`) | **200** · 목록 `items[]` `id`·`name`·`active` · 같은 활성 이름 재등록 **422** 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 · `caregiver` **403** · 화면 `/programs/groups` **없음** · **Flyway 추가 없음(V179)** · 배정 행은 위 5-9 조회에 집계 |
+| 5-9 그룹 이력 집계 (Q963, US-P01) | `GET /api/v1/programs/reports/group-history?fromDate=2026-10-01&toDate=2026-10-08` (직원 JWT, 활성 지점) · UI `/programs/reports/group-history` | **200** · 배정 시작 ≤ `toDate` 이고 종료가 없거나 종료 ≥ `fromDate` 인 행만 · 같은 그룹·같은 시작·같은 종료는 **한 줄** `clientCount` · 응답에 이용자 이름 **없음** · 화면 열 **그룹명·적용 시작·적용 종료·수급자 수** · 기간이 다른 같은 그룹은 API 행이 나뉘어도 화면 행 키는 `groupId` · 이름은 `GET …/programs/groups/{groupId}/members` · `caregiver` **403** |
 | 이동서비스비 거리 구간 (Q960, G16) | `GET /api/v1/transport/service-fee-rates` (직원 JWT) | **200** · `items[]` 에 **RU_1 830 · RU_2 2630 · RU_3 5230 · RU_4 8630** · 화면 `/transport/service-fees` 와 동일 · **V103** 적용 후 러-3 4,430·러-4 6,230이 남아 있으면 마이그레이션 미적용 · 특장차량 월 170,000 행은 **없음** |
 | 이동서비스 일지 서식 번호 (Q961, G15) | UI `/transport/compliance` · `/transport/runs/:runId` · `GET /api/v1/transport/service-fee-parity-rules` 의 `SERVICE_LOG` | 화면·규칙 문구는 **「별지 제22호」** · 조문 ④는 **이동서비스 일지 작성·보관** · 같은 본문에 「별지」·제18·19·20·22호 **없음** · 저장은 `PUT /api/v1/transport/runs/{runId}/service-log` · 코드 변경 없음 |
 | 월별 청구 1건 (Q962, US-M03) | `POST /api/v1/billing/claims/generate` body `{"branchId":"…","yearMonth":"YYYY-MM"}` (`hq_admin`/`branch_admin`) | **200** · 그 지점·그 달 **청구 1건** · **같은 본문 재호출**도 **200** 이고 **같은 `id`** · 줄(이용일수·일 수가)은 **다시 계산되지 않음** · 줄 수정 API **없음** · UI `/billing` 버튼은 **「월별 청구 생성」 하나** · `/transport/auto-dispatch` 는 **`/transport` 로 이동** |
@@ -2281,6 +2282,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q963 신설** — §1-4 스모크 **5-9 그룹 이력** 겹침 집계·인원만·이름 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q962 신설** — §1-4 스모크 **월별 청구는 지점·달 1건** · 재호출은 같은 id·재계산 없음 · `/transport/auto-dispatch` → `/transport` · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q961 신설** — §1-4 스모크 **이동서비스 일지** 화면 제목은 **별지 제22호** · 공단 조문 본문에는 서식 번호 없음 · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-10-07 | **Q960 신설** — §1-4 스모크 **이동서비스비 거리 구간 수가**(830·2,630·5,230·8,630원 · V103) · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** · 모듈 **97.41%** |

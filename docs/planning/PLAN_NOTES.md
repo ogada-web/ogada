@@ -66,6 +66,17 @@
 2. **금액 시드**: V103 830/2,630/5,230/8,630을 현행으로 단정하지 않는다. 제2026-189호 별표 이미지를 읽기 전에는 수정하지 않는다.
 3. 보고서 §919~§940 본문은 `BENCHMARK_REPORT.md`에 없다. 이번 차수는 **BNK-941**.
 
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-08T01:50:00Z -->
+<!-- coder-sync: COD 2026-10-08T01:50:00Z (backend) — v3.1 in_progress · US-P01 program catalog master · V197 · merge_status: pending · residual feedback/plans -->
+
+### [COD] 코더 메모 (2026-10-08 — v3.1 US-P01 프로그램 마스터 API)
+
+- **v3.1**: `status: in_progress` · `merge_status: pending` 유지. 완료 기준 전부 `[x]` 아님.
+- **이번 범위**: V197 `program_catalog`. 명칭·유형(`GENERAL`/`FUNCTIONAL_RECOVERY`/`COGNITIVE`)·목표. 물리 삭제 없음. 일별 `activity_programs` 와 FK로 묶지 않음.
+- **계약**: `GET/POST /api/v1/programs/catalog` · `PATCH /api/v1/programs/catalog/{catalogId}` (`name`, `programType`, `goal`, `active`). 역할 `HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`. 활성 지점 스코프.
+- **fail-closed**: 활성 이름 중복(trim·대소문자 무시) · 유형 외 값 · 목표 공백 · 빈 PATCH. 은퇴 행의 이름은 재사용 가능. 재활성화 시 활성 이름과 겹치면 거부.
+- **잔여**: 의견수렴·월/분기 계획 · FE `/programs/groups`·`/programs/catalog` wire · `merge_status: ready` 아님. QA-B690 은 이전 US-P01 이관 BLOCK(tester FF)이며 이번 커밋으로 해소되지 않는다.
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T17:35:00Z -->
 <!-- coder-sync: COD 2026-10-07T17:35:00Z (backend) — v3.1 in_progress · US-P01 program client group CRUD + member assignment · related mvn 14/14 PASS · merge_status: pending · residual catalog/feedback/plans -->
 
@@ -2395,6 +2406,14 @@
 ---
 
 ### 문서 작성 질문
+
+### [TWR] 5-9 그룹 이력 집계 (2026-10-08T01:50:00Z)
+
+- **실측**: BE develop `d73aec11` · FE develop `29c2304` · 이번 호출에서 `src/` 커밋은 늘지 않았다. 그룹 등록 API는 이미 Q959.
+- **집계**: `ProgramClientGroupMemberRepository.aggregateHistoryWindows` 는 배정 시작 ≤ 조회 종료, 종료가 없거나 종료 ≥ 조회 시작. 그룹·시작·종료로 묶고 이용자 수는 distinct. `active` 필터 없음.
+- **화면**: 열은 그룹명·적용 시작·적용 종료·수급자 수. 종료 없음은 「—」. 행 키는 `groupId` 뿐이라 기간이 다른 줄은 표에서 한 줄로 남을 수 있다. 이름은 `GET …/members`.
+- **문서**: CHANGELOG 2026-10-08 카드 · FAQ **Q963** · 사용자 매뉴얼 §5-9 · 관리 가이드 §10-11-2a · 배포 가이드 §1-4.
+- **미문서 잔여**: 프로그램 카탈로그(`/programs/catalog`)·의견수렴(`/programs/feedback`)·월간 계획(`/programs/plans`) 화면과 API는 아직 코드에 없다.
 
 ### [TWR] 월별 청구 한 건·자동 배차 주소 (2026-10-07T22:15:00Z)
 
