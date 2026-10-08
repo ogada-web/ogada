@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:12:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:56:47Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-956 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **수지파인 로그인 칸 주석** · ★★ **기본 회계 4업무 = 희망이음** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+> **최종 갱신**: 2026-10-08 (**BNK-957 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **시설 2-1-2 ≠ 주야간 3-1-2** · ★★★ **2-11·2-12·2-13 은 시설 메뉴에 없음** · ★★ **L07 rpt 5 · 제목 리포트 3** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
+
+| 기능 / 서비스 항목 (BNK-957 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 3-1-2 · 4-1 번호 충돌 (BNK-957 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ `/nursing/weight-records` 제목 `L03_M14` = 시설 3-1-2. `/nursing/service` 제목 `L03_M01` = 시설 3-1 = 주야간 4-1. `physical` path **0**. id=4 **1.0** | ✅ 주야간 3-1-2 는 요양보호사 바이탈·투약. 시설 3-1-2 는 체중 `L03_M14`. 주야간 4-1 은 간호. 시설 4-1 은 `view.physical_service`. 시설 이동서비스 **0**. 화면 105 · loadPage 112 · 「109」문자열 **0** | ⚪ | ⚪ | ⚪ | `carefor_shell_number_collision_bnk957.txt` · §957-1 · 오리진 HTTP **000** · 본문 `0f1858cd`/`007911c9` 유지 |
+| **★★★ 2-11·2-12·2-13 라벨 (BNK-957 #2 · 확인)** | ✅ `careReports.js` 라벨. route `/care/reports/nursing-service` · `/care/reports/hospital-visits` · `/care/reports/medication-delivery`. 통합 리포트 정본 경로는 `/nursing/service/reports/total` (`L03_M07`) | ✅ 시설 요양 활성 번호는 2-10 까지. `L02_M14` 제목은 「2-1-2.간호급여 제공기록」 class `submp`. `L02_M09` 는 삭제예정 주석. `L02_M10` 활성 leaf **0**. 병의원=시설 3-8 · 투약=시설 3-9 | ⚪ | ⚪ | ⚪ | §957-2 · 제목 변경은 이번 사이클 밖 · P0 재오픈 0 |
+| **★★ L07 리포트 분모 · 7-x (BNK-957 #3 · 확인)** | ✅ 7-1~7-10 과 7-2-1 통계 경로 유지. 7-10 은 `/billing/calculator`. path `report` **29/132=22.0%**. d4=**6** 안에 7-x **0**. id=7 **1.0** | ✅ L07 class `rpt` **5/11** · 제목 「리포트」 **3/11**. 7-9·7-10 은 `rpt` 이고 제목에 리포트 없음. L03 **5/13**. L04 **2/4**. 전체는 21/105 · 26/112 · 34/112 | ⚪ | ⚪ | ⚪ | §957-3 · BNK-950 7-x 표 유지 |
+| **★ 체중 view 아카이브 없음 (BNK-957 #4 · 신규 URL)** | ⚪ 체중·물리 input name 을 갭으로 열지 않음 | ✅ [weight view CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/nursing/view.nursing_weight_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) `[]` · `58e0494c` | ⚪ | ⚪ | ⚪ | `carefor_weight_view_cdx_bnk957.json` · §957-1 |
+| **★ HEAD · merge gate 4 (BNK-957 #5)** | ✅ SHA BNK-956과 같음 · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** | ⚠ func.php·demo-work·PDF HTTP **000** | ⚪ | ⚪ | ⚪ | §957-0 · §957-4 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-956 — ogada git 실측 6-8h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **같은 SHA 재실행** · ★★★ **수지파인 로그인 칸 주석** · ★★ **기본 회계 4업무 = 희망이음** · 신규 진성갭 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다.
 
 | 기능 / 서비스 항목 (BNK-956 delta·ogada git 실측 6-8h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

@@ -1,9 +1,93 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:12:00Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:56:47Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §957 BNK-957 — 케어포 역공학 0-2h · ★★★ **시설 2-1-2 와 주야간 3-1-2 는 다른 화면** · ★★★ **ogada 「2-11·2-12·2-13」은 시설 메뉴에 없다** · ★★ **L07 은 class=rpt 5 · 제목 「리포트」 3** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T06:56:47Z -->
+
+**조사일**: 2026-10-08T06:56:47Z | **rotation**: 케어포 역공학 0-2h. BNK-956(2026-10-08T06:12:00Z) 이후 약 45분. 초점: (1) `func.php`·시설 셸·PDF 목차의 번호 충돌 (§957-1) · (2) ogada `2-11`~`2-13` 과 Route (§957-2) · (3) 7-x 밀도·깊이 4 (§957-3) · (4) planner 액션 (§957-4).
+
+### §957-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-956과 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-956과 동일 SHA)
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-956 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+- path **132** · 깊이 최대 **4** · d4=**6** · path `report` **29/132=22.0%**. id=4 는 **1.0**. id=7 은 **1.0**. id=2 는 **0.85**.
+
+### §957-1 · ★★★ 같은 번호가 셸마다 다른 화면이다
+
+[func.php](https://www.carefor.co.kr/daycare/func.php) · [demo-work](https://demo-work.carefor.co.kr/) · [매뉴얼 PDF](https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) · `getting_started.php` · func.php CDX 는 20초 안에 연결되지 않았다. HTTP **000**. 디스크 `0f1858cd` · `007911c9` 는 덮어쓰지 않았다.
+
+**신규 증거**: [view.nursing_weight_manage CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/nursing/view.nursing_weight_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) HTTP **200** · 3B · `58e0494c` · 본문 `[]`. 빈 배열 해시는 BNK-950 의 `view.cost_master` CDX 와 같다. URL 은 이번이 처음이다. 체중 화면의 input name 은 **미확인**.
+
+`carefor_func_live_bnk943.php` 재집계: 화면 **105** · 주석 **106** · 문자열 `109` **0** · `체중` **0** · `구강` **0** · `욕창` **0**. M2 이동서비스 **10**. M4 간호/물리 **10**. 제목 「리포트」 **21/105=20.0%**. 최대 번호 깊이 **3**.
+
+`carefor_demo_work_live_bnk943.html` 재집계: `loadPage` **112** · 고유 view **111** · openMenu **11**. 모듈 2 제목은 요양이고 leaf **14**, 보이는 번호는 **2-10**까지다. `이동서비스` · `배차` · `송영` · `RFID` · `109` · `2-11` · `2-12` · `2-13` 은 **0**. L03 간호 **13**. L04 물리 **4**.
+
+| 번호 | 주야간 `func.php` | 시설 demo-work | ogada `@29c2304` |
+|---|---|---|---|
+| 3-1-2 | 요양. 「3-1-2.간호급여 제공기록(바이탈,투약)」. 주석은 요양보호사 | 간호. 「3-1-2.수급자 체중 관리」. `L03_M14` · `view.nursing_weight_manage` | `/nursing/weight-records`. 제목은 `L03_M14` |
+| 2-1-2 | 주야간 2번은 이동서비스 | `L02_M14` · class `submp` · `view.nursing_service` · `menu_target=care` · 제목 「2-1-2.간호급여 제공기록(바이탈,투약)」 | 라벨 「2-11.통합 간호제공 리포트」. route `/care/reports/nursing-service` |
+| 4-1 | M4 「4-1.간호급여 제공기록(간호,투약,진료)」 | `L04_M01` 「4-1.물리(작업)치료 제공기록」 · `view.physical_service` | `/nursing/service` 제목은 `L03_M01`. `physical` path **0** |
+| 3-1 | 요양 「3-1.요양급여 제공 기록」 | 간호 `L03_M01` · `view.nursing_service` (2-1-2 와 같은 view) | `/nursing/service` |
+
+시설에만 있고 주야간 M4 10장에 없는 leaf 는 **7**이다. 제목이 맞는 Route 는 체중 `/nursing/weight-records` · 구강 `/nursing/oral-care-checks` · 위험평가 `L03_M05` → `/nursing/pressure-ulcer/reports` · 배설/비위관 `/nursing/excretion-tubes` · 제공 리포트 `L03_M15` → `/nursing/pressure-ulcer/reports/provision` 이다. 욕창예방 `L03_M02` 와 기록조회 `L03_M03` 은 화면 제목에 pamcode 가 없다. `/nursing/pressure-ulcer/assessment` · `plan` · `records` 중 어느 칸인지는 **미확인**.
+
+PDF 목차(`carefor_manual_pdf_toc_bnk943.txt`) 4장은 p.50 이다. 체중 · 욕창 줄은 **0**. 구강은 3장 p.48 「구강관리 및 목욕도움관찰 리포트」다. 2018 목차는 `4-1` 식 화면 번호가 아니다.
+
+**가정**: 주야간 화면 105에서 이동서비스 10을 빼고 시설 요양 14만 더하면 109다. 그 문장을 적은 공개 출처는 없다. 시설 `loadPage` 실측은 **112**다.
+
+### §957-2 · ★★★ `2-11` · `2-12` · `2-13` 은 ogada 라벨이다
+
+`careReports.js` 의 라벨은 「2-11.통합 간호제공 리포트」 · 「2-12.병의원 진료내역 리포트」 · 「2-13.투약제공 리포트」다. `navLabel` 은 `L02_M14` · `L02_M09` · `L02_M10` 이다. `pamcode` 는 병의원·투약이 `L03_M09` · `L03_M10` 이다. `careforView` 는 `view.nursing_service` · `view.nursing_hospital_report` · `view.medication_delivery` 다.
+
+시설 셸에서 `L02_M14` 의 제목은 제공기록이고 class 는 `submp` 다. `L02_M09` 는 주석 `noready2` 이고 제목은 「2-8.건강상태 평가 리포트(삭제예정)」, view 는 `health_status` 다. `L02_M10` 활성 `loadPage` 는 **0**이다. 활성 요양 번호의 끝은 「2-10.급여제공 서비스 집계」다.
+
+통합 간호제공 리포트의 시설 번호는 **3-6** (`L03_M07` · `view.total_nursing_service`)이고 ogada 경로는 `/nursing/service/reports/total` 이다. 병의원 리포트는 시설 **3-8** = 주야간 **4-4**. 투약 리포트는 시설 **3-9** = 주야간 **4-5**.
+
+`App.jsx` 에 `physical` · `therapy` path 는 **0**이다. 온보딩 카탈로그에는 「물리(작업)치료 기록여부」와 「일지 특정일 복사」 문구가 있다. 그 문구는 입력 화면이 아니다. `/programs/functional-recovery` 는 평가 지표 27이다. id=4 는 **1.0**으로 둔다. 물리치료 화면의 input name 은 **미확인**.
+
+### §957-3 · ★★ 7-x 번호는 두 셸이 같고, 리포트 분모는 모듈 안에서 갈라진다
+
+| 화면 | demo view | ogada `@29c2304` / `@92466cfb` |
+|---|---|---|
+| 7-1 청구관리 | `view.cost_master` | `/billing` · `/billing/claims/:claimId` |
+| 7-2 입금관리 | `view.cost_receipt` | `/billing/payments` |
+| 7-2-1 의료비공제 | `view.cost_master_statistic` | `/billing/reports/statistics` · 수납년도 `PAID_YEAR` / 청구년도 `CLAIM_YEAR` |
+| 7-3 미납 | `view.cost_nopay` | `/billing/overdue` |
+| 7-4 CMS | `view.cms_manage` | `/billing/cms` |
+| 7-5 간편결제 | `view.npay_manage` | `/billing/easy-pay` |
+| 7-6 청구대장 | `view.cost_master_report` | `/billing/reports/charges` |
+| 7-7 입금대장 | `view.cost_deposit_report` | `/billing/reports/deposits` |
+| 7-8 수납대장 | `view.cost_receipt_report` | `/billing/reports/receipts` |
+| 7-9 수납·환불 | `view.cost_receipt_apply_yearly` | `/billing/reports/refunds` |
+| 7-10 간편계산기 | `view.cost_calculator` · class `rpt` | `/billing/calculator` |
+
+L07 은 class `rpt` **5/11** 이고 제목 「리포트」는 **3/11** 이다. `rpt` 다섯 칸은 7-6 · 7-7 · 7-8 · 7-9 · 7-10 이다. 제목에 「리포트」가 있는 칸은 7-6 · 7-7 · 7-8 이다. 7-9 와 7-10 은 `rpt` 인데 제목에 그 단어가 없다.
+
+L03 제목 「리포트」 **5/13=38.5%**. L04 **2/4=50%**. L03+L04 **7/17=41.2%**. 주야간 M4 **5/10=50%**. 전체 분모는 그대로다. 주야간 **21/105=20.0%** · 시설 제목 **26/112=23.2%** · 시설 `rpt` **34/112=30.4%** · ogada path `report` **29/132=22.0%**.
+
+깊이 4 경로는 **6**이다. `/guardian/invitations/:token/accept` · `/billing/imports/nhis/:batchId` · `/nursing/service/reports/total` · `/nursing/service/reports/hospital-visits` · `/nursing/service/reports/medication-delivery` · `/nursing/pressure-ulcer/reports/provision`. 마지막 칸은 시설 3-7 이고 주야간 번호가 없다. 7-x 의 가장 깊은 경로는 `/billing/reports/statistics`(깊이 3)다. 케어포 메뉴 id 최대 깊이는 **3**이다.
+
+### §957-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=7 은 **1.0**. id=4 는 **1.0**. id=2 는 **0.85**.
+
+1. 화면 번호를 쓸 때는 셸을 같이 적는다. 3-1-2 와 4-1 은 주야간과 시설에서 다른 화면이다.
+2. 「2-11」「2-12」「2-13」은 `careReports.js` 라벨이다. 시설 메뉴 id 로 인용하지 않는다. 이번 사이클에서 제목을 바꾸지 않는다.
+3. 7-2-1 은 `/billing/reports/statistics` 다. 7-10 은 class `rpt` 이고 경로는 `/billing/calculator` 다. `/billing/reports` 아래로 옮기지 않는다.
+4. 메뉴 수는 주야간 화면 **105**, 주석 **106**, 디스크 **107**, 시설 loadPage **112** 다. 「109」는 쓰지 않는다.
+5. 이동서비스 정본은 func.php M2 10 leaf 다. 시설 셸의 이동서비스 단어는 0 이다. Transport 를 내리지 않는다.
+6. 물리치료 전용 path 0 을 P0 로 열지 않는다. 기능회복 화면과 한 칸으로 적지 않는다. input name 은 미확인이다.
+7. git 은 BNK-956 과 같다. FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+주력 `carefor_shell_number_collision_bnk957.txt` + `carefor_weight_view_cdx_bnk957.json`. 신규 증거 URL 1(체중 view CDX). 기존 URL 재실측 1(오리진 HTTP 000, 본문 유지). 가정 1(109 산식). 미확인 3(체중 input name · 물리치료 input name · `L03_M02`/`L03_M03` 자식 Route). per-cycle minimum 4종 충족.
+
+---
 
 ## §956 BNK-956 — ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 를 같은 SHA에서 다시 실행** · ★★★ **수지파인 로그인 칸이 주석 안으로 들어감** · ★★ **기본 회계 4업무는 희망이음과 유료 대행** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

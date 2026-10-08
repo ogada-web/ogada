@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-957 케어포 역공학 0-2h · ★★★ **시설 2-1-2 ≠ 주야간 3-1-2** · ★★★ **ogada 2-11·2-12·2-13 은 시설 메뉴에 없음** · ★★ **L07 rpt 5 · 제목 리포트 3** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: 디스크 `carefor_func_live_bnk943.php` `0f1858cd` · `carefor_demo_work_live_bnk943.html` `007911c9`. 오리진 HTTP **000**. [체중 view CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/nursing/view.nursing_weight_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5) HTTP 200 · `[]` · `58e0494c`. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 번호는 셸을 붙여 적는다 (확인)** — 주야간 3-1-2 는 요양보호사 바이탈·투약 기록이다. 시설 3-1-2 는 체중(`L03_M14`)이다. 주야간 4-1 은 간호 제공기록이고 시설 4-1 은 물리치료 제공기록이다. ogada `/nursing/weight-records` 는 시설 번호를 따른다. **planner: 3-1-2 나 4-1 만으로 Route 를 고르지 않는다.**
+
+2. **★★★ 「2-11」「2-12」「2-13」은 케어포 메뉴 id 가 아니다 (확인)** — `careReports.js` 라벨이다. 시설 요양 메뉴의 마지막 활성 번호는 2-10 이다. `L02_M14` 의 시설 제목은 「2-1-2.간호급여 제공기록(바이탈,투약)」이고 class 는 `submp` 다. `L02_M09` 는 삭제예정 주석(건강상태 평가)이다. `L02_M10` 활성 leaf 는 0 이다. 통합 간호 리포트의 시설 번호는 3-6 이다. **planner: 이 라벨을 시설 메뉴로 인용하지 않는다. 이번 사이클에서 제목을 바꾸지 않는다. P0 로 열지 않는다.**
+
+3. **★★ 7-x 는 두 셸의 번호가 같다 (확인)** — 7-2-1 은 `/billing/reports/statistics` 다. L07 의 class `rpt` 는 5/11 이고 제목 「리포트」는 3/11 이다. 7-10 간편계산기는 `rpt` 이고 경로는 `/billing/calculator` 다. 깊이 4 경로 6개 안에 7-x 는 없다. **planner: 7-10 을 `/billing/reports` 로 옮기지 않는다. id=7 은 1.0.**
+
+4. **★ 잎 합계 「109」는 두 파일에 없다 (확인)** — 주야간 화면 105 · 주석 106 · 디스크 107 · 시설 loadPage 112. 시설 이동서비스 단어는 0 이다. 주야간 M4 에 없는 간호 leaf 7장 중 체중·구강·위험평가·배설관·제공 리포트는 `/nursing/*` 제목과 맞다. 욕창예방 `L03_M02` 와 기록조회 `L03_M03` 의 자식 Route 는 **미확인**. 물리치료 전용 path 는 0 이고 id=4 는 1.0 이다. **planner: 「109」를 쓰지 않는다. Transport 를 내리지 않는다. 물리치료 부재를 P0 로 열지 않는다. 기능회복과 한 칸으로 적지 않는다.**
+
+5. **★ HEAD 는 BNK-956 과 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · merge gate **4**. yaml·gitlink `4aad7cc2` 는 로컬 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 1**(105−10+14=109 는 출처 없는 산식) · **미확인 3**(체중 input name · 물리치료 input name · `L03_M02`/`L03_M03` 자식 Route) · 신규 snapshot 은 `_bnk957` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-956 ogada git 실측 6-8h · ★★★ **surefire 2505 · npm 2865 재실행** · ★★★ **수지파인 로그인 칸이 주석으로 들어감** · ★★ **기본 회계 4업무는 희망이음·유료 대행** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: git FE `29c2304` · BE `92466cfb`. `npm test` 493파일/2865 PASS · 833.95s. `mvn -q test` surefire **2505/0/0/0**. [Channel 67496d4d](https://docs.channel.io/ezcare/ko/articles/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%B0%EA%B4%80%EC%9D%98-%EA%B8%B0%EB%B3%B8-%ED%9A%8C%EA%B3%84-%EC%97%85%EB%AC%B4-67496d4d) HTTP 200 · `07bd349d`. [수지파인 로그인](https://sujifine.co.kr/login) 문장 「오픈중에」. [ERP 로그인](https://erp.carefor.co.kr/login) `8b1fba49`.

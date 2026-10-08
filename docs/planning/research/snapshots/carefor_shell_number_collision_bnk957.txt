@@ -1,0 +1,85 @@
+# BNK-957 케어포 셸 번호 충돌 — 2026-10-08T06:56:47Z
+# rotation: 케어포 역공학 0-2h
+# 오리진 HTTP 000. 본문은 BNK-943 디스크를 재집계. 덮어쓰기 없음.
+
+## 재실측
+func.php https://www.carefor.co.kr/daycare/func.php HTTP 000 (20s)
+demo-work https://demo-work.carefor.co.kr/ HTTP 000 (20s)
+PDF https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf HEAD 000
+getting_started.php HTTP 000
+func.php CDX HTTP 000
+신규 URL weight view CDX HTTP 200 · 3B · md5 58e0494c · 본문 []
+  https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/nursing/view.nursing_weight_manage&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=5
+디스크 func 0f1858cd / 98,268B · demo 007911c9 / 73,296B
+func 문자열: 체중 0 · 구강 0 · 욕창 0 · 109 0
+demo 문자열: 이동서비스 0 · 배차 0 · 송영 0 · RFID 0 · 109 0 · 2-11 0 · 2-12 0 · 2-13 0
+
+## 집계 (확인)
+주야간 화면 105 · 주석 106 · 디스크 6226e6eb 은 107
+시설 loadPage 112 · 고유 view 111 · openMenu 11 · 최대 번호 깊이 3
+시설 모듈 2 제목 = 요양 · leaf 14 · 보이는 번호는 2-10 까지
+L03 간호 13 · class=rpt 5 · 제목 리포트 5
+L04 물리 4 · class=rpt 2 · 제목 리포트 2
+L03+L04 17 · 제목 리포트 7/17 = 41.2%
+주야간 M4 10 · 제목 리포트 5/10 = 50%
+L07 11 · class=rpt 5 (7-6·7-7·7-8·7-9·7-10) · 제목 리포트 3 (7-6·7-7·7-8)
+
+## 같은 번호, 다른 화면 (확인)
+번호 | 주야간 func.php | 시설 demo-work | ogada @29c2304
+3-1-2 | 요양 3-1-2 간호급여 제공기록(바이탈,투약) · 주석 요양보호사 | 간호 3-1-2 수급자 체중 관리 · L03_M14 · view.nursing_weight_manage | /nursing/weight-records 제목은 L03_M14. 주야간 3-1-2 와 같은 화면이 아님
+2-1-2 | (주야간 2번은 이동서비스) | L02_M14 class=submp · view.nursing_service · menu_target=care · 제목 2-1-2.간호급여 제공기록(바이탈,투약) | careReports 라벨은 「2-11.통합 간호제공 리포트」· pamcode L02_M14 · view 이름만 같음 · route /care/reports/nursing-service
+4-1 | M4 4-1 간호급여 제공기록(간호,투약,진료) | L04_M01 4-1.물리(작업)치료 제공기록 · view.physical_service | /nursing/service 제목은 L03_M01 (=시설 3-1 = 주야간 4-1). physical/therapy path 0
+3-1 | 요양 3-1 요양급여 제공 기록 | 간호 3-1 L03_M01 view.nursing_service (L02_M14 와 같은 view) | /nursing/service
+
+## 시설에만 있는 7 leaf (주야간 M4 10장에 없음)
+3-1-2 체중 L03_M14 → /nursing/weight-records (제목 확인)
+3-1-3 구강 L03_M13 → /nursing/oral-care-checks (제목 확인)
+3-4 욕창 위험평가 L03_M05 → /nursing/pressure-ulcer/reports (분기 코호트 제목 확인)
+3-5 배설/비위관 L03_M06 → /nursing/excretion-tubes (제목 확인)
+3-7 욕창간호 제공 리포트 L03_M15 → /nursing/pressure-ulcer/reports/provision (깊이 4, 제목 확인)
+3-2 욕창예방 L03_M02 · 3-3 기록조회 L03_M03
+  화면 제목에 이 pamcode 가 없다. assessment · plan · records 중 1:1 은 미확인.
+  /nursing/pressure-ulcer 아래 그 세 경로는 있다.
+
+## ogada 라벨 2-11·2-12·2-13 (확인, 시설 메뉴에 없음)
+careReports.js
+  2-11.통합 간호제공 리포트 · nav L02_M14 · view.nursing_service · /care/reports/nursing-service
+  2-12.병의원 진료내역 리포트 · navLabel L02_M09 · pamcode L03_M09 · /care/reports/hospital-visits
+  2-13.투약제공 리포트 · navLabel L02_M10 · pamcode L03_M10 · /care/reports/medication-delivery
+시설 L02 활성 번호 끝은 2-10.급여제공 서비스 집계 (L02_M12)
+L02_M09 는 주석 noready2 · 제목 「2-8.건강상태 평가 리포트(삭제예정)」 · view.health_status
+L02_M10 활성 loadPage 0
+통합 간호제공 리포트의 시설 번호는 3-6 L03_M07 view.total_nursing_service
+병의원 리포트의 시설 번호는 3-8 L03_M09 = 주야간 4-4
+투약 리포트의 시설 번호는 3-9 L03_M10 = 주야간 4-5
+
+## 7-x (양 셸 번호 동일, BNK-950 유지)
+7-1 view.cost_master → /billing · /billing/claims/:claimId
+7-2 view.cost_receipt → /billing/payments
+7-2-1 view.cost_master_statistic → /billing/reports/statistics · 수납년도/청구년도
+7-3 view.cost_nopay → /billing/overdue
+7-4 view.cms_manage → /billing/cms
+7-5 view.npay_manage → /billing/easy-pay
+7-6 view.cost_master_report → /billing/reports/charges
+7-7 view.cost_deposit_report → /billing/reports/deposits
+7-8 view.cost_receipt_report → /billing/reports/receipts
+7-9 view.cost_receipt_apply_yearly → /billing/reports/refunds
+7-10 view.cost_calculator class=rpt · 제목에 리포트 없음 → /billing/calculator
+
+## ogada 깊이 4 경로 6
+/guardian/invitations/:token/accept
+/billing/imports/nhis/:batchId
+/nursing/service/reports/total          시설 3-6 · 주야간 4-3
+/nursing/service/reports/hospital-visits 시설 3-8 · 주야간 4-4
+/nursing/service/reports/medication-delivery 시설 3-9 · 주야간 4-5
+/nursing/pressure-ulcer/reports/provision 시설 3-7 · 주야간 번호 없음
+7-x 경로의 최대 깊이는 3 (/billing/reports/statistics). 깊이 4 여섯 칸에 7-x 는 없다.
+
+## PDF 목차 (carefor_manual_pdf_toc_bnk943.txt, 2018)
+4장 시작 p.50. 체중·욕창 줄 0. 구강은 3장 p.48 「구강관리 및 목욕도움관찰 리포트」.
+2018 목차는 4-1 식 화면 번호가 아니다. 메뉴 id 는 시설/주야간 화면 번호를 쓴다.
+
+## 109
+두 HTML/PHP 에 잎 합계 「109」 문자열 없음.
+가정: 주야간 105 에서 이동서비스 10을 빼고 시설 요양 14만 더하면 109. 그 문장을 적은 공개 출처는 없다.
+시설 loadPage 실측은 112.
