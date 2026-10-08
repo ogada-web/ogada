@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-951 이지케어 역공학 2-4h · ★★★ **재무회계 대행 4,902** · ★★★ **RFID 화면 7줄 · 도움말 3줄** · ★★ **10원 = 공단 일정 2개** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [홈](https://ezcare.easyms.co.kr/) HTTP 200 · `7a4ff019` · data-count3 **4902**. [Channel 556858d9](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%ED%83%9C%EA%B7%B8-%EC%A0%84%EC%86%A1-%EB%82%B4%EC%97%AD-%ED%99%95%EC%9D%B8%EB%B0%A9%EB%B2%95-556858d9) HTTP 200 · `1a26396b`. [Channel 6558b127](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EA%B3%B5%EB%8B%A8%EA%B3%BC-%EB%B6%88%EC%9D%BC%EC%B9%98--%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%ED%99%95%EC%9D%B8-6558b127) HTTP 200 · `97f059ae`. 데모 로그인 code=0000 · `schedule-rfid` 범례 IDENTICAL. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 재무회계 대행 이용기관은 4,902다 (확인)** — 집계일 문구는 2026.09.30 이다. 점유율 53.9% · 이용기관 9,514 · 청구 2,353억 · 급여 1,820억 · fnc 9,619 는 BNK-948 과 같다. 요금 모달(2028년까지 0원 · 월 70,000원 고정)과 셋팅 33,000원·마감 2026-10-31 도 같다. **planner: 4,902 를 이용기관 수나 fnc 9,619 와 한 숫자로 쓰지 않는다.**
+
+2. **★★★ RFID 검출 정본은 화면 일곱 줄이다 (확인)** — 도움말 556858d9 는 미전송 · 인정시간 30분 이상 · 제공자 불일치만 적는다. 데모 범례는 거기에 직접입력 · 시작·종료 **60분 초과** · 계획 없는 태그를 더한다. 비교는 엑셀을 올린 시점이다. ogada 는 `> 60` 과 `>= 30` 이다. **planner: 도움말 세 줄로 매처를 줄이지 않는다. 실시간 조회를 P0 로 열지 않는다. id=2 는 0.85.**
+
+3. **★★ 본인부담 불일치의 처리상태는 숫자 색과 확정 잠금이다 (확인)** — 진한 숫자는 청구일정 반영, 적색은 재업로드다. 확정 중에는 업로드가 들어가지 않는다. FAQ 21168 의 확정취소는 급여·퇴직금을 초기화(삭제)한다. 10원 차이는 공단이 일정을 둘로 나누고 이지케어는 일정표 하나인 경우다. **planner: `REFLECTED`/`NOT_REFLECTED` 를 유지한다. 급여 삭제와 10원 분할을 주야간 P0 로 올리지 않는다. id=7 은 1.0.**
+
+4. **★★ 프로그램 카탈로그 API 가 develop 에 있다 (확인)** — `@92466cfb` · `name`≤120 · 유형 3종 · `goal`≤500 · 은퇴는 `active` · DELETE 없음 · V197. FE `/programs/catalog` 는 0 이다. HTTP **450** · `@Test` **2485** · merge gate **4**. **planner: yaml `4aad7cc2` 를 develop 으로 쓰지 않는다. 이 API 부재를 이지케어 갭으로 세지 않는다. id=5 는 1.0.**
+
+5. **★ 공단 원본 엑셀 열 이름은 여전히 미확인이다 (확인)** — FAQ 제목 233 · max 21781 · 엑셀 제목은 브라우저 다운로드 2건이다. jqGrid 라벨은 비교 표다. **planner: SEC-D34 파서를 열지 않는다.**
+
+**가정 0** · **미확인 2**(원본 엑셀 열 · 주야간 송영) · 신규 snapshot 은 `_bnk951` 계열 · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-950 케어포 역공학 0-2h · ★★★ **7-2-1 은 `/billing/reports/statistics`** · ★★★ **화면 105 · 「109」없음** · ★★ **Play 1.10.6 · 2024-10-28** · ogada `@29c2304`/`@d73aec11` · HTTP **447** · merge gate **3**
 
 **근거**: [Play kr.co.carefor](https://play.google.com/store/apps/details?id=kr.co.carefor&hl=ko) HTTP 200 · `6036b568`. [ai_response.js CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/js/ai_response.js&output=json&limit=5) HTTP 200 · `[]`. func.php·demo-work HTTP **000**. git FE `29c2304` · BE `d73aec11`.

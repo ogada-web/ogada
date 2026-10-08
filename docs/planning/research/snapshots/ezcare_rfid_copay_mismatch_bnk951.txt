@@ -1,0 +1,56 @@
+BNK-951 ezcare reverse-engineering evidence
+fetched_at: 2026-10-08T02:29:01Z
+demo_login: code=0000 oCode=DEMO title=[DEMO 이지케어] 체험 이지케어 재가복지센터
+redirect_stub: 70B e1d52bd5 (비로그인 /new.ez)
+nav: top-nav-item-V2.js?20260428 25470B 95286775 BYTE-IDENTICAL vs BNK-948
+catalog: modules 10 / leaf 148 / unique PGID 59 — body identical, fetched_at only
+schedule-rfid: legend+colModel+radios IDENTICAL vs HEAD. md5 5753c483 → 60561ee0 is cache query 1791398653 → 1791426466 only.
+
+HOME data-count (집계일 2026.09.30 문구 유지)
+53.9% 방문요양 ERP 시장점유율
+9514 이지케어 이용기관
+4902 재무회계 대행 이용기관   ← BNK-948 4901 (+1)
+2353억 월 공단 청구 처리
+1820억 종사자 급여 처리
+fnc header: 전국 9,619개 기관 사용중 (strip IDENTICAL)
+price/charge strip IDENTICAL: D1 notice 2028년까지 전액 무료 · D2 수급자가 몇 명이든 월 70,000원 고정 · 셋팅비 33,000원 (2026년 10월 31일까지)
+
+FAQ list: titles 233 / max rowid 21781 IDENTICAL. hit-count diffs 34. excel titles still 21563·21534 (browser download). column-format title 0.
+
+NEW URL Channel 556858d9 요양보호사 태그 전송 내역 확인방법
+path: 4.RFID점검 > RFID 태그 내역 ↔ 공단계획 비교
+upload: 계획일정 + RFID 전송내역, 각각 공단조회 가져오기
+help lists 3: 시작/종료 태그 미전송 · 인정시간 30분 이상 차이 · 급여제공자 다름
+LIVE screen #explain_item lists 7:
+  태그찍지 않음 · 종료태그없음 · 직접입력
+  시작태그시간 및 종료태그시간 계획과 60분초과차이
+  인정시간 30분이상차이 · 급여제공자 다름 · 계획에 없는 태그내역
+notice: 태그내역 비교는 실시간이 아닙니다 (엑셀 업로드 시점)
+radios name=detail: all · 01 모두 안함 · 03 종료만 안함 · 04 시작 · 05 종료 · 06 인정시간 · 08 직접 입력 · 07 급여제공자 다름 · 09 계획없음
+grid groups: 방문시간 · 제공시간(계획/태그/시간차) · 급여제공자 · 태그안함(comp_01,comp_03) · 태그(인정) 시간차(comp_04,comp_05,comp_06=30분)
+NHIS source excel column headers: 미확인 (BNK-948 PNG). jqGrid labels are the compare grid, not the source file.
+
+NEW URL Channel 6558b127 본인부담금 공단과 불일치- 청구일정 반영 확인
+causes: 청구일정 최종 미반영 OR 본인부담률이 공단과 다름
+status: 공단청구 금액 진한 숫자 = 반영. 미반영 시 확정취소 후 청구일정 업로드.
+확정 상태에서는 업로드 미반영.
+rate history option 01: 2.수급자 관리 > 공단조회 변경이력 가져오기 > 범용 기관 인증서
+rate history option 02: 4.일정확정 > 수급자 본인부담률 직접 입력
+10원: 공단은 갱신·본인부담률 변경 시 일정이 2개. 이지케어는 하나의 일정표. 5.본인부담 청구에서 금액 수정.
+
+FAQ 21778 8ed0cf75: 청구일정 가져오기 · 진한 숫자 · 적색이면 재업로드 · 확정 중에는 반영 안 됨. hit 3562→3565
+FAQ 21168 a126381d: 확정 상태에서는 일정 가져오기 무효. 취소 시 요양보호사 급여(퇴직금) 초기화(삭제)
+FAQ 21614 5e4062ee: 2025 수가 재산정(월금액 재산정 → 재업로드). 엑셀 열 변경 아님.
+
+NEW URL Channel 1e75efd0 사회복지사 방문일정 반영법
+3.방문일정 > 관리자 일정관리
+실시간 방문내용 가져오기 = 월중 RFID
+청구 제출이력 가져오기 = 공단 청구 제출 이력
+시간차 시 해당 시간 표시. 직종: 팀장급 요양보호사. (FAQ 21647와 같은 두 갈래)
+
+ogada VisitRfidDiffCodes: TAG_TIME_DIFF_THRESHOLD_MINUTES=60 (초과, Duration > 60)
+RECOGNIZED_MINUTES_DIFF_THRESHOLD=30 (이상, abs >= 30)
+FE route /programs/catalog = 0
+BE 92466cfb GET/POST /api/v1/programs/catalog + PATCH /{catalogId}
+fields name≤120 · programType GENERAL|FUNCTIONAL_RECOVERY|COGNITIVE · goal≤500 · active retire, no DELETE
+HTTP 234/147/46/13/10 = 450 · @Test 2485 · Flyway V197 · merge gate 4

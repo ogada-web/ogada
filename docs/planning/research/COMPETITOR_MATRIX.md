@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T01:51:20Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T02:29:01Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,17 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-950 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · HTTP **447** · 모듈 **97.41%**). ★★★ **7-2-1 = `/billing/reports/statistics`** · ★★★ **화면 105 · 「109」없음** · ★★ **Play 1.10.6 · 2024-10-28** · 신규 진성갭 0.
+> **최종 갱신**: 2026-10-08 (**BNK-951 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · HTTP **450** · 모듈 **97.41%**). ★★★ **재무회계 대행 4,902** · ★★★ **RFID 도움말 3줄 / 화면 7줄(60분 초과·30분 이상)** · ★★ **청구 불일치 = 진한 숫자 · 확정 잠금 · 10원=일정 2개** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-951 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 재무회계 대행 4,902 (BNK-951 #1 · 기존 URL 재실측 · 확인)** | ⚪ 이용료 시드 변경 없음 | ⚪ | ✅ [홈](https://ezcare.easyms.co.kr/) `7a4ff019` · **53.9% / 9,514 / 4,902 / 2,353억 / 1,820억** · 집계일 **2026.09.30** · fnc **9,619** · D1 **2028년까지 0원** · D2 월 **70,000** 고정 · 셋팅 **33,000** · 마감 **2026-10-31** | ⚪ | ⚪ | `ezcare_home_live_bnk951.html` · §951-1 · 이용기관 9,514 는 그대로 |
+| **★★★ RFID 검출 7줄 · 도움말 3줄 (BNK-951 #2 · 신규 URL · 확인)** | ✅ `> 60` 시작·종료 · `>= 30` 인정시간 · `COMP_01`~`09` · 실시간 폴링 없음 · id=2 **0.85** | ⚪ | ✅ [556858d9](https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%ED%83%9C%EA%B7%B8-%EC%A0%84%EC%86%A1-%EB%82%B4%EC%97%AD-%ED%99%95%EC%9D%B8%EB%B0%A9%EB%B2%95-556858d9) 는 미전송·30분·제공자 3줄 · 데모 `schedule-rfid` 범례는 **7줄**(60분 초과 포함) · 비교는 업로드 시점 · 라디오 `detail` 01·03·04·05·06·07·08·09 | ⚪ | ⚪ | `channelio_556858d9_bnk951.html` · §951-2 · 원본 엑셀 열 **미확인** |
+| **★★ 청구 불일치 · 확정 잠금 · 10원 (BNK-951 #3 · 신규 URL · 확인)** | ✅ `billingClaimReflectionStatus` `REFLECTED`/`NOT_REFLECTED` · 확정취소가 급여를 지우지 않음 · id=7 **1.0** | ⚪ | ✅ [6558b127](https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EA%B3%B5%EB%8B%A8%EA%B3%BC-%EB%B6%88%EC%9D%BC%EC%B9%98--%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%ED%99%95%EC%9D%B8-6558b127) 진한 숫자=반영 · 확정 중 업로드 무효 · 변경이력은 인증서 또는 `일정확정` 직접 · 10원=공단 일정 **2** / 이지케어 일정표 **1** · [FAQ 21168](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21168&type=web) 취소 시 급여·퇴직금 **초기화(삭제)** | ⚪ | ⚪ | `ezcare_faq_rowid_21778_bnk951.html` · §951-2 · 주야간 P0 아님 |
+| **★ 프로그램 카탈로그 API (BNK-951 #4 · git · 확인)** | ✅ `GET`·`POST /api/v1/programs/catalog` · `PATCH /{catalogId}` · `name`≤120 · `programType` 3종 · `goal`≤500 · DELETE **0** · FE 경로 **0** · V197 · id=5 **1.0** | ⚪ 5-4 는 이번 사이클 미실측 | ⚪ 재가 데모에 프로그램 마스터 없음 | ⚪ | ⚪ | §951-0 · §951-4 · 이지케어 갭 아님 |
+| **★ git @HEAD · FAQ 233 (BNK-951 #5)** | ✅ FE `@29c2304` · BE `@92466cfb` · HTTP **450** · `@Test` **2485** · merge gate **4** | ⚪ | ✅ FAQ 제목 233 / max **21781** · 조회수 변동 34 · 엑셀 제목은 브라우저 2건 · [1e75efd0](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81%EB%B2%95-1e75efd0) 실시간/제출이력 · nav `95286775` IDENTICAL | ⚪ | ⚪ | `ezcare_rfid_copay_mismatch_bnk951.txt` · §951-3 |
+
+> **직전 갱신**: 2026-10-08 (**BNK-950 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@d73aec11` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **3** · Route **133** · Page **106** · HTTP **447** · 모듈 **97.41%**). ★★★ **7-2-1 = `/billing/reports/statistics`** · ★★★ **화면 105 · 「109」없음** · ★★ **Play 1.10.6 · 2024-10-28** · 신규 진성갭 0.
 
 | 기능 / 서비스 항목 (BNK-950 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@d73aec11` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
