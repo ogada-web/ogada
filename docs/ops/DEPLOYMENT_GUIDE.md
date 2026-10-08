@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T03:55:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T05:10:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -147,6 +147,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 프로그램 수급자 그룹 (Q959, US-P01) | `GET /api/v1/programs/groups` · `POST /api/v1/programs/groups` body `{"name":"인지 그룹"}` (활성 지점 JWT · `hq_admin`/`branch_admin`/`social_worker`) | **200** · 목록 `items[]` `id`·`name`·`active` · 같은 활성 이름 재등록 **422** 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 · `caregiver` **403** · 화면 `/programs/groups` **없음** · **Flyway 추가 없음(V179)** · 배정 행은 위 5-9 조회에 집계 |
 | 5-9 그룹 이력 집계 (Q963, US-P01) | `GET /api/v1/programs/reports/group-history?fromDate=2026-10-01&toDate=2026-10-08` (직원 JWT, 활성 지점) · UI `/programs/reports/group-history` | **200** · 배정 시작 ≤ `toDate` 이고 종료가 없거나 종료 ≥ `fromDate` 인 행만 · 같은 그룹·같은 시작·같은 종료는 **한 줄** `clientCount` · 응답에 이용자 이름 **없음** · 화면 열 **그룹명·적용 시작·적용 종료·수급자 수** · 기간이 다른 같은 그룹은 API 행이 나뉘어도 화면 행 키는 `groupId` · 이름은 `GET …/programs/groups/{groupId}/members` · `caregiver` **403** |
 | 프로그램 리포트 5-8·5-10 (Q965, US-P02) | `GET /api/v1/programs/reports/provision-records?fromDate=2026-10-01&toDate=2026-10-08` · `GET …/schedules?fromDate=2026-10-01&toDate=2026-10-08` (직원 JWT, 활성 지점) · UI `/programs/reports/provision-records` · `/programs/reports/schedules` | **200** · 5-8 `items[]` 는 **참여가 있는** 프로그램·날짜만 · 5-10 `items[]` 는 **기간 내 일정**이고 참여가 없어도 `attendedCount=0` · 카탈로그 `POST /programs/catalog` 만으로는 두 목록이 **늘지 않음** · 5-7만 이용자 이름 · `caregiver` **403** |
+| 방문 일정 서비스 시간 (Q966, G21) | `POST /api/v1/visits` body `serviceMinutes: 300` (`branch_admin`/`social_worker`, 방문요양 지점) · UI `/visits` 「서비스 시간(분)」 | **200** · 저장 분은 **300** (240으로 줄거나 일정이 둘로 나뉘지 않음) · JSON **481** 은 **400** 요청 검증 · 화면은 저장 전 「서비스 시간은 1~480분 사이여야 합니다.」 · 공단 import 범위 밖 행은 **건너뜀** 「서비스 제공 시간은 1분 이상 480분 이하여야 합니다.」 · 확정 행에 범위 안 분을 `PATCH` 하면 **422** 「확정된 방문일정은 수정할 수 없습니다.」 · 목록에 **수정 버튼 없음** · `hq_admin`·`caregiver` 의 POST/PATCH 는 **403** |
 | 이동서비스비 거리 구간 (Q960, G16) | `GET /api/v1/transport/service-fee-rates` (직원 JWT) | **200** · `items[]` 에 **RU_1 830 · RU_2 2630 · RU_3 5230 · RU_4 8630** · 화면 `/transport/service-fees` 와 동일 · **V103** 적용 후 러-3 4,430·러-4 6,230이 남아 있으면 마이그레이션 미적용 · 특장차량 월 170,000 행은 **없음** |
 | 이동서비스 일지 서식 번호 (Q961, G15) | UI `/transport/compliance` · `/transport/runs/:runId` · `GET /api/v1/transport/service-fee-parity-rules` 의 `SERVICE_LOG` | 화면·규칙 문구는 **「별지 제22호」** · 조문 ④는 **이동서비스 일지 작성·보관** · 같은 본문에 「별지」·제18·19·20·22호 **없음** · 저장은 `PUT /api/v1/transport/runs/{runId}/service-log` · 코드 변경 없음 |
 | 월별 청구 1건 (Q962, US-M03) | `POST /api/v1/billing/claims/generate` body `{"branchId":"…","yearMonth":"YYYY-MM"}` (`hq_admin`/`branch_admin`) | **200** · 그 지점·그 달 **청구 1건** · **같은 본문 재호출**도 **200** 이고 **같은 `id`** · 줄(이용일수·일 수가)은 **다시 계산되지 않음** · 줄 수정 API **없음** · UI `/billing` 버튼은 **「월별 청구 생성」 하나** · `/transport/auto-dispatch` 는 **`/transport` 로 이동** |

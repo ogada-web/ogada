@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T03:55:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T05:10:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,11 +50,12 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-19 develop HEAD `57523b5` / frontend `95b6c52`)
+### 1-4. 구현 상태 안내 (2026-10-08 develop HEAD `92466cf` / frontend `29c2304`)
 
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **방문 일정 서비스 시간·확정 후 수정** ✅ (**Q966**, G21): **`serviceMinutes` 1~480 그대로** · **270분→2회·240분 환산 없음** · 화면 목록 **수정 버튼 없음** · **`PATCH /visits/{id}` 는 `DRAFT` + `branch_admin`/`social_worker`만** · 그 외 「확정된 방문일정은 수정할 수 없습니다.」 · RFID 인정시간 차 **30분 이상**은 표시만
 > - **월별 청구 생성은 지점·달 1건** ✅ (**Q962**, US-M03): **`POST /billing/claims/generate`** 본문 `branchId`·`yearMonth` · 기존 청구가 있으면 **재계산 없이 그 청구 반환** · 줄 수정 API 없음 · 발행일 칸 없음 · 발송일 수정은 **우편만**
 > - **프로그램 리포트 5-7·5-8·5-10 원본 분리** ✅ (**Q965**, US-P02): **5-7** 참여 한 건당 한 줄 · **5-8** 참여가 있는 프로그램·날짜만 · **5-10** 등록 일정이면 참여 0이어도 표시 · **`program_catalog` 미사용**
 > - **프로그램 마스터(이름·유형·목표)** ✅ (**Q964**, US-P01): **`GET/POST /programs/catalog`** · **`PATCH …/{catalogId}`** · 활성 지점 · 이름 120자 · 목표 500자 · 유형 `GENERAL`·`FUNCTIONAL_RECOVERY`·`COGNITIVE` · 활성 이름 중복 거부 · **행 삭제 없음** · **화면 `/programs/catalog` 없음** · **당일 일정·5-7~5-10 리포트와 별도** · Flyway **V197** (`92466cf`)
@@ -3283,7 +3284,8 @@ MOHW **평가 지표 44** 대응. **`ProvisionResultEvaluationPage`**(`/programs
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/visits?from=&to=&scheduleKind=` | 월간 일정 조회 — **`billingClaimReflectionStatus`** (Q376, `6da49aa`) | 스코프 내 |
-| POST | `/visits` | 일정 등록 (`DRAFT`) | `branch_admin`, `social_worker` |
+| POST | `/visits` | 일정 등록 (`DRAFT`). **`serviceMinutes`는 1~480이면 입력값 그대로**. 생략하면 빈 값 허용. **270분 분할·240분 환산 없음** (Q966) | `branch_admin`, `social_worker` |
+| PATCH | `/visits/{id}` | **작성중만** 수정. 그 외 **422** 「확정된 방문일정은 수정할 수 없습니다.」 통합 관리자·요양보호사 **거부** (Q966) | `branch_admin`, `social_worker` |
 | POST | `/visits/{id}/confirm` | 확정 — **페어 DRAFT 동시 CONFIRMED** (`confirmPairedSchedule`, Q259, `aacf20b`) | 동일 |
 | POST | `/visits/{id}/check-in` | 체크인 — **`checkInMethod` `MOBILE`/`MANUAL` 소문자 정규화** (Q275) · **페어 PLAN/BILLING 진행 동기화** (Q238, `9d7c17f`) | `social_worker`, `caregiver` |
 | POST | `/visits/{id}/check-out` | 체크아웃 — **페어 완료 동기화** | 동일 |
@@ -4058,6 +4060,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q966 신설** — §1-4·§10-12 **방문 일정 서비스 시간은 1~480분 그대로** · 270분 분할 없음 · 작성중만 PATCH · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q965 신설** — §1-4·§10-11-2 **프로그램 리포트 5-8은 참여가 있는 날만, 5-10은 일정만 있어도 표시** · 마스터 미사용 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q964 신설** — §1-4·§10-11-2b **프로그램 마스터 API**(이름·유형·목표, 화면 없음, 당일 일정과 별도, V197) · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q963 신설** — §10-11-2a **5-9 그룹 이력** 겹침 집계·인원만 표시·화면 행 키는 그룹 id · baseline **`d73aec1`/`29c2304`** · Flyway **V1–V196** |
