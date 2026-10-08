@@ -75,6 +75,7 @@
 - **이번 범위**: V197 `program_catalog`. 명칭·유형(`GENERAL`/`FUNCTIONAL_RECOVERY`/`COGNITIVE`)·목표. 물리 삭제 없음. 일별 `activity_programs` 와 FK로 묶지 않음.
 - **계약**: `GET/POST /api/v1/programs/catalog` · `PATCH /api/v1/programs/catalog/{catalogId}` (`name`, `programType`, `goal`, `active`). 역할 `HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`. 활성 지점 스코프.
 - **fail-closed**: 활성 이름 중복(trim·대소문자 무시) · 유형 외 값 · 목표 공백 · 빈 PATCH. 은퇴 행의 이름은 재사용 가능. 재활성화 시 활성 이름과 겹치면 거부.
+- **검증**: `mvn -o -B test -Dtest=ProgramCatalogServiceTest,ProgramCatalogControllerRoutingTest,ProgramCatalogControllerAccessTest` **12/12 PASS**.
 - **잔여**: 의견수렴·월/분기 계획 · FE `/programs/groups`·`/programs/catalog` wire · `merge_status: ready` 아님. QA-B690 은 이전 US-P01 이관 BLOCK(tester FF)이며 이번 커밋으로 해소되지 않는다.
 
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-10-07T17:35:00Z -->

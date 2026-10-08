@@ -1500,7 +1500,21 @@
 
 거부: 활성 이름 중복 「같은 이름의 활성 프로그램 그룹이 이미 있습니다.」 · 비활성 그룹 배정 · 지점 불일치 · 종료일이 시작일보다 앞섬 · 기간 겹침 「같은 기간에 이미 배정된 이용자입니다.」
 
-> **가정**: 엔드포인트는 frontend `services.js` 클라이언트와 정합 — DBA·BE 구현 시 본 절 확정.
+### 13-2. 프로그램 마스터 (US-P01, v3.1)
+
+활성 지점 스코프. 역할 `hq_admin`, `branch_admin`, `social_worker`. 행은 비활성화만 하고 삭제하지 않는다. 스키마는 V197 `program_catalog`. 일별 `activity_programs` 와는 별도이며 이번 버전은 FK로 묶지 않는다.
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| GET | `/programs/catalog` | 지점 마스터 목록 (`id`, `name`, `programType`, `goal`, `active`) |
+| POST | `/programs/catalog` | 생성. body `name`(필수, trim, 120자), `programType`(생략·공백이면 `GENERAL`), `goal`(필수, trim, 500자) |
+| PATCH | `/programs/catalog/{catalogId}` | 부분 수정. body `name`, `programType`, `goal`, `active` 중 하나 이상 |
+
+`programType`: `GENERAL` · `FUNCTIONAL_RECOVERY` · `COGNITIVE`.
+
+거부: 활성 이름 중복 「같은 이름의 활성 프로그램이 이미 있습니다.」 · 유형 외 값 「프로그램 유형은 GENERAL, FUNCTIONAL_RECOVERY, COGNITIVE 중 하나여야 합니다.」 · 목표 공백 「프로그램 목표를 입력해야 합니다.」 · 빈 PATCH 「변경할 프로그램 정보가 없습니다.」
+
+> **가정**: 엔드포인트는 frontend `services.js` 클라이언트와 정합 — DBA·BE 구현 시 본 절 확정. 화면 `/programs/catalog` wire는 FE 잔여.
 
 ---
 

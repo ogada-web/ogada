@@ -1738,8 +1738,9 @@ v3 — Extensions & market differentiation (P3)
 - [ ] **G-NURSING live E2E harness 실행** 1회 — L03 13/14 leaf (post-merge 권장 · **P1**)
 - [ ] 목욕 일정 CRUD + 제공 완료 + 이용자별 조회
 - [ ] 요양/식사/화장실·목욕·급여제공 **리포트** 화면 + 인쇄
-- [ ] 프로그램 그룹·마스터·의견·계획 + **리포트 4종** — 그룹 CRUD·배정 API ✅(아래). 마스터·의견·계획은 잔여
+- [ ] 프로그램 그룹·마스터·의견·계획 + **리포트 4종** — 그룹·마스터 CRUD API ✅(아래). 의견·계획은 잔여
 - [x] **(v3.1/US-P01)** 프로그램 수급자 그룹 CRUD·이용자 배정 API — `GET/POST/PATCH /api/v1/programs/groups` · `GET/POST /api/v1/programs/groups/{groupId}/members` (V179 재사용·물리 삭제 없음·활성 이름 중복·기간 겹침 fail-closed)
+- [x] **(v3.1/US-P01)** 프로그램 마스터 CRUD — `GET/POST /api/v1/programs/catalog` · `PATCH /api/v1/programs/catalog/{catalogId}` (V197 `program_catalog`·명칭·유형·목표·물리 삭제 없음·활성 이름 중복 fail-closed·일정 테이블과 미연결)
 - [ ] 위생·안전 점검·감염·시설운영일지 CRUD
 - [ ] `pilotPageFlows` v3.1 E2E · `merge_status: ready`
 - [ ] **G29** 인지활동북 — 학습지 PDF·낱장 출력·수급자별 배포 (이지케어 FAQ 21781 패리티 · BNK-59)
