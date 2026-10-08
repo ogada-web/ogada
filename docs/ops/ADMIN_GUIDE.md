@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T14:10:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-10-08T15:10:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 방문 일지 세 칸 서명·생년월일 링크·「새 일지로 저장」은 없음 · 선임 일지는 서명자 한 명 · 전월 복제는 초안만 · 프로그램 의견수렴·월간 계획·외부강사 명단은 없음 · 당일 만족도는 참여 한 줄 · 급여제공결과 평가는 연 1회 · 서명 그림·기관 직인·쉼표 결재라인은 없음 · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)  
+> **최종 갱신**: 2026-10-08 (기선 BE `92466cf` / FE `29c2304` · **Flyway V1–V197** · 모듈 **97.41%** · 명세서 24·한 장 두 건은 없음 · 수납은 건별 · 이용료 자동이체 신청서는 없음 · 일정표 가로·세로·근무현황표 A·B는 없음 · 방문 일지 세 칸 서명·생년월일 링크·「새 일지로 저장」은 없음 · 선임 일지는 서명자 한 명 · 전월 복제는 초안만 · 프로그램 의견수렴·월간 계획·외부강사 명단은 없음 · 당일 만족도는 참여 한 줄 · 급여제공결과 평가는 연 1회 · 서명 그림·기관 직인·쉼표 결재라인은 없음 · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · 인지지원 단기보호는 가족휴가 6만 원만 · 12시간·감산·월 10만 원은 시드 밖 · 포괄시급·가족 시급 칸 없음 · 가족케어 90%는 안내 문장 · 공단 2026 수가 시드는 빈 칸만 최대 30칸 · 방문 시간은 입력한 분 그대로 · 확정 후 목록에서 수정 불가 · 프로그램 마스터는 API만 · 5-8은 참여가 있는 날만 · 5-10은 일정만 있어도 표시 · 통합 간호 리포트의 2-11은 화면 카드 문구 · 이동서비스비 5·10·20km 정각은 화면에서 위 구간 · 13시간 정각은 10~13시간 칸 · 단기보호 1일 금액은 시드 밖 · 급여계획서는 통보 뒤에도 같은 해를 덮어씀 · CMS 수수료는 건당이고 월 3만 원 행은 없음)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -55,6 +55,9 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **이관·QA (TSR)**: BE develop **@ `57523b5`** · FE develop **@ `95b6c52`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **명세서 24·한 장 두 건** ✅ (**Q977**, G-7-1): PDF 제목 **「ogada 급여비용 명세서」** · `GET /api/v1/billing/claims/{claimId}/statement.pdf` · 이용자를 **한 문서**에 이어 적음 · 서식 번호 선택 **없음** · 인쇄는 주소라벨·명세서·영수증·청구리스트 · 영수증은 `PAID`+`paidAt` · 본인부담 안내 알림톡은 **다른 버튼**
+> - **건별 수납·이용료 자동이체** ✅ (**Q978**, US-L01): `/billing/payments` 수단 **현금·계좌이체** · 행마다 「수납」 · **일괄 체크·휴지통 없음** · 이용료 결제일 10일·2차 20일·생년월일 6자리·사업자 10자리·팩스 **없음** · `/billing/cms` 는 본인부담 건당
+> - **근무일정표 출력** ✅ (**Q979**, 8-2): `/staff/schedules` 는 PLAN 목록·알림톡 · **가로·세로 인쇄·근무현황표·회신번호 없음** · `POST /api/v1/staff/notifications/staff-monthly-schedule` 본문은 직원·연월·요약 · 미매칭은 **「수급자 찾기」** · `/programs/reports/schedules` 는 5-10
 > - **방문 일지와 선임 업무수행일지** ✅ (**Q976**, G34): 방문 사회복지사 일지(급여제공자·방문자·시설장, 생년월일 링크, 「새 일지로 저장」) **없음** · `/staff/lead-caregiver-log` 서명자는 **로그인 1명** · 「전월 일지 복제」는 **초안 append** · 화면 버튼은 **목록 API** · `import-draft` 는 직접 호출 · 같은 이용자·같은 날 **422** · hwp·출력 **없음**
 > - **프로그램 의견·월간 계획·외부강사** ✅ (**Q975**, US-P01): **`/programs/feedback`·`/programs/plans`·`/programs/instructors` 없음** · 만족도는 `POST /programs/participations` **1~5** · 화면 일정은 유형 미전송 → **`GENERAL`** · 담당은 `facilitator` 자유 글 · 급여제공결과 평가는 이용자·해 **1건** · 요양보호사는 준수 `GET …/compliance` **403** 으로 화면 목록이 같이 실패할 수 있음
 > - **서명 그림·직인·결재라인** ✅ (**Q974**, G34): `/settings` 는 **`sysadmin`** · 탭 **5**(보안·카카오 API·로그인 이력·감사·백업) · **서명 탭·`/settings/profile`·직인 jpg·쉼표 결재라인 없음** · 업무수행일지 `POST …/lead-caregiver-logs/{logId}/sign` 는 `signerUserId`·`signatureMethod`(`DIRECT`·`SMS_VERIFIED`) · **그림 없음** · 완료 후 수정 거부 · **화면** `/staff/lead-caregiver-log` 는 **`branch_admin`·`hq_admin`만** · 메뉴에 있는 `social_worker`·`caregiver` 는 **`/forbidden`** · API 는 네 역할 · 운전자 서명은 **성명+서명일**
@@ -1733,7 +1736,8 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | FE UI | **`StaffMonthlySchedulePage`**(`/staff/schedules`) · **`StaffContextNav`「근무일정표」** (`33944e4`) |
 | data API | **`fetchVisitsApi`** → **`GET /api/v1/visits?from=&to=&branchId=&scheduleKind=PLAN`** — **전용 BE controller 없음** |
 | summary | **`summarizeStaffMonthlyVisits`** — 근무일 수·확정·전체 StatCard · **`filterStaffMonthlyVisits`** 직원 scope |
-| dispatch | **`StaffNotificationDispatchPanel`** — **`notifyStaffMonthlyScheduleApi`** → **`POST /api/v1/staff/notifications/monthly-schedule`** (G-SMS catalog message_kind=21) |
+| dispatch | **`StaffNotificationDispatchPanel`** — **`notifyStaffMonthlyScheduleApi`** → **`POST /api/v1/staff/notifications/staff-monthly-schedule`** (G-SMS catalog message_kind=21) · 본문 **직원·연월·요약** · **회신번호 없음** |
+| 없는 출력 (Q979) | **수급자/요양보호사 일정표 가로·세로 인쇄 없음** · **근무현황표 A·B 엑셀 없음** · 실근무시간·수가인정시간 열 **없음** · 공단 import 미등록 즉시 등록 **없음** — 미매칭은 **「수급자 찾기」** · `/programs/reports/schedules` 는 **5-10** |
 | RBAC | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` → 403 UI Alert** |
 | a11y | **`aria-label="근무일정표 조회 조건"`** form · StatCard **`role="group" aria-label="근무 요약"`** · **「다시 조회」`aria-busy={loading}`** · **`StaffMonthlySchedulePage.test`** (UXD-165 `bee97b9`) |
 | scope note | **일정 CRUD는 `/visits`** — 8-2 화면은 **read-only aggregation + notify** |
@@ -4099,6 +4103,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-10-08 | **Q977·Q978·Q979 신설** — §1-4·§6-2-21 **명세서 24·한 장 두 건은 없음** · 수납은 건별 · 이용료 자동이체 신청서는 없음 · 근무일정표 알림톡 경로는 `staff-monthly-schedule` · 가로·세로 인쇄·근무현황표 없음 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q976 신설** — §1-4·§6-2-9 **방문 사회복지사 일지는 없음** · 선임 일지 서명자는 로그인 한 명 · 전월 복제는 초안 · 화면은 목록 API · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q975 신설** — §1-4·§10-11-2c **프로그램 의견수렴·월간 계획·외부강사 명단은 없음** · 당일 만족도 1~5 · 화면 일정은 `GENERAL` · 급여제공결과 평가는 연 1회 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
 | 2026-10-08 | **Q974 신설** — §1-4 **서명 그림·기관 직인·쉼표 결재라인 없음** · 업무수행일지 서명은 방식만 · 일지 화면은 센터장·통합 관리자 · baseline **`92466cf`/`29c2304`** · Flyway **V1–V197** |
