@@ -78,7 +78,11 @@
 
 ### 0-5. 역할 코드
 
-`platform_admin`, `hq_admin`, `branch_admin`, `social_worker`, `caregiver`, `guardian`, `client_user`, `sysadmin`
+운영 로그인 역할은 `ogada_platform_admin`, `sysadmin`, `hq_admin`, `branch_admin`, `staff` 5개다.
+
+사회복지사·요양보호사 로그인 역할은 `staff`로 통합한다. 기존 직종은 `users.staff_job_code`에 보존하며 권한 역할과 구분한다. 본문에 남은 기존 직원 역할 명칭은 `staff` 권한으로 해석한다. 직원 방문 체크인·체크아웃은 본인에게 배정된 일정만 가능하며, 관리자만 배정을 대신 처리할 수 있다.
+
+보호자·이용자 본인의 로그인, 보호자 포털·QR 셀프 체크인, 초대·본인 계정 발급 API는 폐지되어 접근을 거부한다. 기존 보호자 연락처와 이용자 연결 기록은 유지한다. `guardian`·`client_user`는 기존 기록 보존용 DB 코드이며 로그인 역할이 아니다. 미등록 프론트 경로도 기본 거부한다.
 
 ---
 
@@ -154,6 +158,7 @@
 | PATCH | `/branches/{branchId}` | 지점 수정·비활성 | hq_admin |
 | GET | `/users` | 직원 계정 목록(지점 필터) | hq_admin, branch_admin |
 | POST | `/users` | 직원 계정 생성·역할·지점 배정 | hq_admin, branch_admin |
+| POST | `/users/guardian-contacts` | 로그인 없이 보호자 연락처 등록: `branchId`, `displayName` 필수, `email`·`phone` 선택; 응답 `{id, name}` | hq_admin, branch_admin, staff (조직·지점 쓰기 스코프) |
 | PATCH | `/users/{userId}` | 계정 수정·역할 변경·퇴직 처리 | hq_admin, branch_admin |
 
 **PATCH `/organization/settings`**
