@@ -1,0 +1,603 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>가입상담신청</title>
+    <script type="text/javascript" src="/resources/hsfms_javascripts/lib/jquery-1.8.2.min.js"></script>
+    <link rel="stylesheet" href="/resources/hsfms_stylesheets/css/common2.css">
+</head>
+<body style="overflow-y: auto; overflow-x: auto;">
+<div id="wrap">
+    <!-- container -->
+    <section id="container">
+        <div id="content" class="etc sca_visual">
+            <div class="content_wrap">
+                <div class="sca-wrap">
+                    <ul class="faq-accordion">
+                        <li class="active" id="smcItem01">
+                            <div class="answer-area">
+                                <ul>
+	                                <li id="maintoptitle">
+										
+											
+											
+											
+											
+												<span>[본인부담금 자동이체 서비스] 무료방문상담 신청</span>
+											
+											         
+										
+	                                </li>
+                                </ul>
+
+                                <!-- 문의 정보 -->
+								<form name="frmSend" id="frmSend" action="/addon/board/insert" method="post">
+								<input type="hidden" value="" name="board_type">
+								
+									
+									
+										<input type="hidden" value="ANGELSYS" name="request_path">
+									         
+								
+
+								<input type='hidden' value='요양' name='cust_kind_nm'  id='cust_kind_nm'>
+								<input type='hidden' value='일반가맹점' name='business_type'  id='business_type'>
+								<input type='hidden' value='' name='new_business'  id='new_business'>
+								<input type='hidden' value='' name='product_kind'  id='product_kind'>
+								<input type='hidden' value='' name='product_apply_type'  id='product_apply_type'>
+								<input type='hidden' value='' name='payment_period'  id='payment_period'>
+								<input type='hidden' value='' name='payment_kind'  id='payment_kind'>
+								<input type='hidden' value='' name='charge_way'  id='charge_way'>
+								<input type='hidden' value='' name='month_mem_count'  id='month_mem_count'>
+								<input type='hidden' value='' name='average_payment_amount'  id='average_payment_amount'>
+								<input type='hidden' value='수납률 향상' name='interest_field'  id='interest_field'>
+								<input type='hidden' value='' name='management_system_flag'  id='management_system_flag'>
+								<input type='hidden' value='' name='technical_person_flag'  id='technical_person_flag'>
+                                <div class="step-03" style="display:block" id="pro1_4">
+                                    <p class="tit">개인정보 수집 및 이용안내</p>
+                                    
+                                    <div class="term-area">
+                                        <div class="term-box">
+	 										
+
+									<h3 class="trem-tit">개인정보의 수집 및 이용 동의 [필수]</h3>
+									■ 수집하는 개인정보 항목<br><br>
+									
+										
+										
+											효성에프엠에스㈜는 홈페이지 내 마련된 각종 신청 양식 등을 통해 수집한 개인정보는 이용자에게 보다 나은 서비스를 제공하는데 활용되고 있습니다.<br><br>
+											각종 신청 양식 등을 통해 수집된 개인정보와 개별 요청 내용, 관심 항목의 내용 등은 이용자의 기호에 맞는 서비스 발굴 및 대고객 서비스 개선을 위해 사용되며, 효성에프엠에스㈜ 내부의 자료로만 활용됩니다.<br><br>
+										         
+									
+
+									■ 개인정보의 수집내역<br><br>
+									<img src="/resources/hsfms_images/cms/personal_table01.jpg" alt="개인정보의 수집내역 - 항목:이름, 연락처(유선전화번호, 핸드폰번호) - 수집정보: 효성CMS 상담, - 제휴문의 상담/보유기간: 1년" /><br><br>
+									
+									■ 개인정보의 보유기간<br><br>
+
+									- 목적이 종료되는 시점에 즉시 삭제 처리합니다.  다만, 관계 법령에 의해 보관해야 하는 정보는 법령이 정한 기간 동안 보관 후 파기 합니다.<br><br>
+									
+									■ 개인정보의 수집 및 이용 동의<br><br>
+
+									위와 같이 개인정보 수집 동의에 대하여 거부할 권리가 있습니다.<br> 
+									그러나, 동의를 거부할 경우 서비스를 제공받으실 수 없습니다.
+
+
+										</div>
+                                        <div class="agree-box">
+                                            <ul class="agree-lists">
+                                                <li>
+                                                    <span class="inp-radio left">
+                                                        <input type="radio" name="agree" id="agree01" >
+                                                        <label class="radio-txt" for="agree01"><i class="icon icon-check"></i>동의합니다.</label>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="inp-radio left">
+                                                        <input type="radio" name="agree" id="agree02">
+                                                        <label class="radio-txt" for="agree02"><i class="icon icon-check"></i>동의하지 않습니다.</label>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+									<div class="term-area" >
+                                        <div class="term-box">
+											<h3 class="trem-tit">개인정보의 취급·위탁 동의 [필수]</h3>
+											<p class="trem-desc trem-desc--first">
+												효성에프엠에스㈜는 원활한 업무처리를 위하여 다음과 같이 개인정보 처리업무를 위탁하고 있으며, 관련 법령에 따라 위탁계약 시 개인정보가 안전하게 관리될 수 있도록 필요한 사항을 규정하고 있습니다.
+											</p>
+											<dl>
+												<dt class="trem-tit--mid">■ 개인정보 취급업무 위탁내역</dt>
+												<dd>
+													<img src="/resources/hsfms_images/cms/personal_table02.jpg" alt="위탁 받는자(수탁업체): 효성ITX, 영업대행협력사/업무내용: 효성CMS 상담, 제휴문의 상담/개인정보 보유 및 이용기간: 위탁계약 종료시 까지" />
+												</dd>
+												<dt class="trem-tit--mid">■ 개인정보의 취급업무 위탁 동의</dt>
+												<dd>
+													위와 같이 개인정보의 취급업무 위탁 동의에 대하여 거부할 권리가 있습니다. 그러나, 동의를 거부할 경우 서비스를 제공받으실 수 없습니다.
+												</dd>
+											</dl>
+                                        </div>
+                                        <div class="agree-box">
+                                            <ul class="agree-lists">
+                                                <li>
+                                                    <span class="inp-radio left">
+                                                        <input type="radio" name="agree2" id="agree03" >
+                                                        <label class="radio-txt" for="agree03"><i class="icon icon-check"></i>동의합니다.</label>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="inp-radio left">
+                                                        <input type="radio" name="agree2" id="agree04">
+                                                        <label class="radio-txt" for="agree04"><i class="icon icon-check"></i>동의하지 않습니다.</label>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p class="tit">정보 입력</p>
+                                    <table>
+                                        <caption>정보 입력 리스트 입니다. 회사명, 상담가능 시간대, 연락처, 비고로 구성</caption>
+                                        <colgroup>
+                                            <col style="width:175px">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                        	
+                                        	
+                                        	<th><span>회사명</span></th>
+                                        	
+                                            <td style="width:265px;">
+                                                <div class="">
+													<input name="board_cust_nm" id="board_cust_nm" type="text" maxlength="30">
+                                                </div>
+                                            </td>
+                                            <th><span>연락처</span></th>
+                                            <td>
+                                                <input type="text" name="board_tel"  id="board_tel" placeholder="'-'제외" maxlength="11" >
+                                            </td>                                     
+                                        </tr>
+                                        <tr>
+                                        	
+                                        	
+                                        	<th><span>문의자명</span></th>
+                                        	
+                                            <td>
+                                                <input type="text" name="board_nm" id="board_nm" maxlength="15">
+                                            </td>
+                                            <th><span>상담가능 시간대</span></th>
+                                            <td>
+                                                <div class="select-box">
+													<select name="consult_time" id="consult_time">
+														<option value="">선택</option>
+														<option value='0900-1000'>09:00 - 10:00</option>
+														<option value='1000-1100'>10:00 - 11:00</option>
+														<option value='1100-1200'>11:00 - 12:00</option>
+														<option value='1200-1300'>12:00 - 13:00</option>
+														<option value='1300-1400'>13:00 - 14:00</option>
+														<option value='1400-1500'>14:00 - 15:00</option>
+														<option value='1500-1600'>15:00 - 16:00</option>
+														<option value='1600-1700'>16:00 - 17:00</option>
+													</select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>비고</span></th>
+                                            <td colspan="4">
+                                                <div class="">
+                                                
+                                                
+                                                
+                                                    <textarea name="board_comment"  id="board_comment"  cols="30" rows="10" onkeyup="textChk();" >엔젤시스템 사용자 입니다.</textarea>
+                                                
+                                                
+                                                
+                                                
+                                                 
+                                                
+                                                
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="next-btn on">
+										<a href="javascript:void(0);" class="diag-btn" id="frmm">상담 신청하기</a>
+                                    </div>
+                                </div>
+								</form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- //container -->
+
+    <!-- 신청완료 팝업 -->
+    <div class="layer-pop">
+        <div class="wrap">
+            <p class="title">효성FMS는 고객님의 이름, 연락처 이 외의<br> <span>개인정보</span>는 수취하고 있지 않습니다.</p>
+            <p class="text">이 외의 개인정보를 입력하셨다면<br> 관리자에 의하여 임의 삭제가능 합니다.</p>
+            <div class="next-btn">
+				
+					
+					
+						<a href="/addon/board/result?type=ANGELSYS" >확인</a>
+					         
+				
+            </div>
+        </div>
+
+    </div>
+    <div id="" class="popup_dimmed"></div>
+    <div id="" class="header_dimmed"></div>
+</div>
+
+<script type="text/javascript" src="/resources/hsfms_javascripts/lib/TweenMax/TweenMax.min.js"></script>
+<script type="text/javascript" src="/resources/hsfms_javascripts/lib/TweenMax/easing/EasePack.min.js"></script>
+<script type="text/javascript" src="/resources/hsfms_javascripts/common2.js"></script>
+<script>
+var w_height ;
+var scroll_num ;
+
+
+    $(function(){
+
+        $(window).scroll(function(){
+
+            w_height = $(window).height() / 2;
+            scroll_num = $(window).scrollTop();
+            
+        })
+
+
+        /* 라디오타입 */
+        $(".pro2-item.radio-type").each(function(){
+            var $self = $(this);
+            $self.find("a").on("click", function () {
+                $self.find("a").removeClass("active");
+                $(this).addClass("active");
+                return false;
+            });
+        });
+
+        /* 체크박스타입 */
+        $(".pro2-item.checkbox-type").each(function(){
+            var $self = $(this);
+            $self.find("a").on("click", function () {
+                $(this).toggleClass("active");
+                return false;
+            });
+        });
+    })
+</script>
+
+
+<script>	
+function isInputChk (cc_id, cc_msg) {
+	if ($("#"+cc_id).val() == '')
+	{
+		alert (cc_msg);
+		$("#"+cc_id).focus();
+		return false;
+	} else {
+		return true;
+	}
+}
+function isInputNumChk (cc_id) {
+	var regNumber = /^[0-9]*$/;
+	if (!regNumber.test($("#"+cc_id).val()))
+	{
+		alert ("숫자만 입력해 주세요.");
+		$("#"+cc_id).focus();
+		return false;
+	} else {
+		return true;
+	}
+}
+	$(document).ready(function() 
+	{
+		$("#frmm").click(function()
+		{
+
+			if (! $("#agree01").is(":checked")) {
+				alert ('개인정보의 수집 및 이용에 동의하여 주세요.');
+				$("#agree01").focus();
+				return false;
+			}
+
+			if (! $("#agree03").is(":checked")) {
+				alert ('개인정보의 취급·위탁에 동의하여 주세요.');
+				$("#agree03").focus();
+				return false;
+			}
+
+			if($("#cust_kind_nm").val() == "전문-세무") {
+				if (!isInputChk("board_cust_nm", "세무사 사무소 상호를 입력 하여 주세요.")) {	return false}				
+				if (!isInputChk("board_tel", "연락처를 입력 하여 주세요.")) {	return false}
+				if (!isInputNumChk("board_tel")) {	return false}
+				if (!isInputChk("board_nm", "가입 세무사 성명을 입력 하여 주세요.")) {	return false}
+			} else {
+				if (!isInputChk("board_cust_nm", "회사명을 입력해 주세요.")) {	return false}
+				if (!isInputChk("board_tel", "연락처를 입력해 주세요.")) {	return false}
+				if (!isInputNumChk("board_tel")) {	return false}
+				if (!isInputChk("board_nm", "문의자명을 입력해 주세요.")) {	return false}
+			}
+			if (!isInputChk("consult_time", "상담가능 시간대를 선택해 주세요.")) {	return false}
+			//if (!isInputChk("board_comment", "비고를 입력 하여 주세요.")) {	return false}
+			// alert("성공");
+			// return false;
+			if(confirm("가입상담신청을 등록하시겠습니까?")) {
+				var formData = $("#frmSend").serialize();
+				$.ajax({
+		 					type : "POST",
+		 					url : "/addon/board/insert",
+		 					cache : false,
+		 					data : formData,
+		 					success : onSuccess,
+		 					error : onError
+				});
+			}
+		});
+	});
+	function onSuccess(json, status){
+		if (json.flag=='Y') {
+
+			$(".popup_dimmed").css("display","block");
+			TweenMax.to( $(".popup_dimmed"), .4, {opacity:0.7, ease: es_step});
+
+			$(".layer-pop").css({
+				display: "block",
+				top: "150px",
+				left: "442px"
+				//top : scroll_num + w_height - 225
+			});			
+			end_chk = 1;
+			// alert ('성공 ' + json.msg);
+
+		} else {
+			alert ('신청이 실패 되었습니다. (' + json.msg + ')');
+		}
+	}
+	function onError(data, status){alert("error");}
+</script>
+
+<script>
+var end_chk = 0;
+		// 종사 업종 선택
+		$("#pro1_1 button").on("click", function () {
+			$("#pro1_1 button").removeClass("active");
+			$(this).addClass("active");
+			if($( this ).is(".text") == true){ 
+				$("#pro1_1").find(".input_wrap").show();
+			} else {
+				$("#pro1_1").find(".input_wrap").hide();
+			}
+			return false;
+		});
+
+
+		$(".btn-area a").on("click", function () {
+			//$("#pro1_1 button").removeClass("active");
+			//$(this).addClass("active");
+			if($( this ).is(".text") == true){ 
+				$( this ).parent().next(".input-text-box").show();
+			} else {
+				$( this ).parent().next(".input-text-box").hide();
+			}
+			return false;
+		});
+		
+function actionProEx(cc_type) {
+	console.log('actionProEx : ' + cc_type)
+	switch(cc_type) {
+		case "1":
+			
+			if( !$("#pro1_1 button.active span").html() ) {
+				alert ( "종사 업종을 선택해 주세요." );
+				$("#pro1_1 button:first").focus();
+				return false;
+			} 
+			
+			if( $("#pro1_1 button.active span").text() == '기타') {
+				if( $("#pro1_1").find("input[type=text]").val() == '') {
+					alert( "종사 업종을 선택해 주세요");
+					$("#pro1_1").find("input[type=text]").focust();
+					return false;
+				}
+				$("#cust_kind_nm").val($("#pro1_1").find("input[type=text]").val());
+				
+			}else {
+				if($("#pro1_1 button.active span").text() == "세무") {
+					$("#cust_kind_nm").val("전문-세무");										
+				} else {
+					$("#cust_kind_nm").val($("#pro1_1 button.active span").text());					
+				}
+			}
+			
+			
+			
+			$("#pro1_1t .txt-complete").text( $("#cust_kind_nm").val());
+			$("#pro1_1t").addClass("complete");
+			$("#pro1_2t").addClass("active");
+			$("#smcItem01 .service-pro1").hide();
+			$("#smcItem01 .service-pro2").show();
+			break;
+			
+		case "2":
+
+			if(! $("#pro1_2_1 a.active").html()) {
+				alert ( "사업운영형태를 선택해 주세요." );
+				$("#pro1_2_1 a:first").focus();
+				return false;
+			}
+			if ($("#pro1_2_1 a.active.text").html()) {
+				if ($("#pro1_2_1").next(".input-text-box").find("input").val()==""){
+					alert ( "사업운영형태를 입력해 주세요." );
+					$("#pro1_2_1").next(".input-text-box").find("input").focus();
+					return false;
+				}else {
+					$("#business_type").val($("#pro1_2_1").next(".input-text-box").find("input").val());
+				}
+			} else {
+				$("#business_type").val($("#pro1_2_1 a.active span").text());
+			}
+			// console.log($("#product_apply_type").val());
+			$("#pro1_2t .txt-complete").text($("#business_type").val());
+			$("#pro1_2t").addClass("complete");
+			$("#pro1_3t").addClass("active");
+			$("#smcItem01 .service-pro2").hide();
+			$("#smcItem01 .service-pro3").show();
+			break;
+
+		case "3" :
+			if(! $("#pro1_3 a.active").html()) {
+				alert ( "관심분야를 선택해 주세요." );
+				$("#pro1_3 a:first").focus();
+				return false;
+			}
+
+			 $("#interest_field").val( $("#pro1_3 a.active span").text() ) ;
+
+			// console.log($("#product_apply_type").val());
+			$("#pro1_3t .txt-complete").text( $("#pro1_3 a.active span").text());
+			$("#pro1_3t").addClass("complete");
+			$("#pro1_4t").addClass("active");
+			$("#pro1_4t .txt-complete").text('정보입력');
+			$("#pro1_4t").addClass("complete");
+			$("#smcItem01 .service-pro3").hide();
+			$("#pro1_4").show();
+			break;
+
+		case "4" :
+			break;
+
+
+		default:			
+	}
+}
+
+
+
+// 이전 이동
+function actionMainEx(cc_type, cc_ob) {
+	
+
+	switch(cc_type) {
+
+	case "1_1t":
+
+			if ($(cc_ob).is(".complete")) {
+
+				if (!confirm("전 단계로 이동하시겠습니까?\n이동시 현재 입력한 정보가 초기화 됩니다.") == true){    
+					return ;
+				}
+				$("#pro1_2t, #pro1_3t , #pro1_4t").removeClass("active");
+				$("#pro1_1t, #pro1_2t, #pro1_3t , #pro1_4t").removeClass("complete");
+
+				$("#pro1_1").show();
+				$("#pro1_2").hide();
+				$("#pro1_3").hide();
+				$("#pro1_4").hide();
+
+				$("#pro1_1, #pro1_2, #pro1_3, #pro1_4").find("input").val("");
+				$("#pro1_1, #pro1_2, #pro1_3, #pro1_4").find("textarea").val("");	
+				$('input[name="agree"]').removeAttr("checked");
+				$('input[name="agree2"]').removeAttr("checked");
+				$("#pro1_1, #pro1_2, #pro1_3, #pro1_4").find("select").val("");
+				$("#pro1_1, #pro1_2, #pro1_3, #pro1_4").find("a").removeClass("active");
+				$("#pro1_1, #pro1_2, #pro1_3, #pro1_4").find("button").removeClass("active");
+
+			}else if ($(cc_ob).is(".active")) {
+			}else {
+			}
+
+
+			break;
+
+
+	case "1_2t":
+
+			if ($(cc_ob).is(".complete")) {
+
+				if (!confirm("전 단계로 이동하시겠습니까?\n이동시 현재 입력한 정보가 초기화 됩니다.") == true){   
+					return ;
+				}
+
+				$("#pro1_3t , #pro1_4t").removeClass("active");
+				$("#pro1_2t, #pro1_3t , #pro1_4t").removeClass("complete");
+
+				$("#pro1_1").hide();
+				$("#pro1_2").show();
+				$("#pro1_3").hide();
+				$("#pro1_4").hide();
+
+				$("#pro1_2, #pro1_3, #pro1_4").find("input").val("");
+				$("#pro1_2, #pro1_3, #pro1_4").find("textarea").val("");	
+				$('input[name="agree"]').removeAttr("checked");
+				$('input[name="agree2"]').removeAttr("checked");
+				$("#pro1_2, #pro1_3, #pro1_4").find("select").val("");
+				$("#pro1_2, #pro1_3, #pro1_4").find("a").removeClass("active");
+				$("#pro1_2, #pro1_3, #pro1_4").find("button").removeClass("active");
+
+			}else if ($(cc_ob).parent().is(".active")) {
+			}else {
+			}
+			break;
+
+	case "1_3t":
+
+			if ($(cc_ob).is(".complete")) {
+
+				if (!confirm("전 단계로 이동하시겠습니까?\n이동시 현재 입력한 정보가 초기화 됩니다.") == true){    
+					return ;
+				}
+
+				$("#pro1_4t").removeClass("active");
+				$("#pro1_3t , #pro1_4t").removeClass("complete");
+
+				$("#pro1_1").hide();
+				$("#pro1_2").hide();
+				$("#pro1_3").show();
+				$("#pro1_4").hide();
+
+				$("#pro1_3, #pro1_4").find("input").val("");
+				$("#pro1_3, #pro1_4").find("textarea").val("");
+				$('input[name="agree"]').removeAttr("checked");
+				$('input[name="agree2"]').removeAttr("checked");
+				$("#pro1_3, #pro1_4").find("select").val("");
+				$("#pro1_3, #pro1_4").find("a").removeClass("active");
+				$("#pro1_3, #pro1_4").find("button").removeClass("active");
+
+			}else if ($(cc_ob).parent().is(".active")) {
+			}else {
+			}
+			break;
+
+
+	}	
+}
+function textChk () {
+	if ($("#board_comment").val().length > 2000 )	{
+		alert("비고는 2,000자까지만 가능 합니다.");
+		$("#board_comment").val( $("#board_comment").val().substr(0,1999) );
+	}
+}
+$(window).on("beforeunload", function () {
+	if (end_chk != 1)	{
+		console.log("취소");
+	}
+});
+
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWVSJ94"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</body>
+</html>

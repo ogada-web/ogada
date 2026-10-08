@@ -1,9 +1,130 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T04:34:56Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T05:16:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §955 BNK-955 — 엔젤·롱텀·규제 4-6h · ★★★ **주야간 1일 수가 30칸이 시드와 같다** · ★★★ **러-1~4 GIF `31064a16` 는 BNK-945 판독 그대로** · ★★ **통합재가 안내의 「건강관리」는 고시 제55조의2에 없다** · ★★ **제35조 목욕 가산은 주 1회 3,000원** · ★ **낙상예방 메뉴가 시범사업으로 바뀜** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T05:16:00Z -->
+
+**조사일**: 2026-10-08T05:16:00Z | **rotation**: 엔젤·롱텀·규제 4-6h. BNK-954(2026-10-08T04:34:56Z) 이후 약 41분. 초점: (1) 제2026-189호 제34조 러-1~4 재확인 (§955-1) · (2) 2026 주야간·단기보호·통합재가 수가 (§955-2) · (3) 엔젤 CMS·지표 27·lcms (§955-3) · (4) planner 액션 (§955-4).
+
+### §955-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-954와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-954와 동일 SHA)
+- 부모 gitlink 와 `.agents/workspace_baseline.yaml` 의 backend develop 은 로컬 test `4aad7cc2` 다. develop HEAD 는 `@92466cfb` 다.
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106**. HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-952 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+
+### §955-1 · ★★★ 제34조 러-1~4 — 본문·GIF 재실측 · ★★ 제35조 목욕 가산
+
+셸 [admRulInfoP 2100000285470](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000285470) HTTP **200** · 78,450B · raw `fd701653`. `Time=` 만 지우면 디스크의 BNK-941 셸과 같다. `nwYn=Y` · 제2026-189호 · 시행 2026-10-01.
+
+본문 `POST` [admRulLsInfoR.do](https://www.law.go.kr/LSW/admRulLsInfoR.do) (`admRulSeq=2100000285470` · `prmlNo=2026-189` · `efYd=20261001`) HTTP **200** · 371,871B · `c5e5bc59` = BNK-945 **BYTE-IDENTICAL**.
+
+**확인(제34조 ②~⑤, 본문 텍스트)**:
+
+1. ② 이용 횟수와 관계없이 **1일 1회**. 편도는 ‘러-1’부터 ‘러-4’까지 비용의 **50%**.
+2. ③ 제공기관 신청으로 산정하고 **수급자가 부담하지 아니한다**.
+3. ④ 이동서비스를 제공하면 **이동서비스 일지**를 작성·보관한다. 이 HTML 의 「별지 제22호」·「제22호」는 **0**.
+4. ⑤ 신청·중단·일지 세부는 **공단 이사장**이 정한다.
+
+**확인(① 금액표)**: `<img alt="img169768531" src="/LSW/flDownload.do?flSeq=169768531">`. GIF HTTP **200** · 11,107B · `31064a16` = BNK-945 **BYTE-IDENTICAL**. BNK-945 판독(830 / 2,630 / 5,230 / 8,630)을 유지한다. 이번 사이클은 OCR 을 다시 돌리지 않았다. ogada 시드와 같다.
+
+**가정(경계)**: `TransportDistanceBand.resolveFromKm` 은 `<= 5`, `<= 10`, `<= 20` 이다. 표 문구가 「미만」이면 5.000·10.000·20.000km 는 한 단계 위일 수 있다. 코드 변경은 보류한다.
+
+**확인(제35조, 같은 본문에서 이번 차수 첫 인용)**: 「수급자에게 목욕 서비스를 제공한 경우 해당 수급자당 **주 1회**에 한하여 **3,000원**을 가산하되, 가산비용은 수급자가 부담하지 아니한다.」 `BathingScheduleIndicator27Catalog` 의 「월 5회 이상」은 평가 추적 문구다. 주 1회 3,000원 행은 청구 시드 grep 에서 보이지 않는다. 엔젤 공개 배차 화면의 갭은 아니다.
+
+**확인(제34조의2, 재인용)**: 특장차량 · 1·2등급 · 월 1회 이상 · 기관당 월 **170,000원** · 최초 산정 월부터 **36개월** · 수급자 부담 없음. 부칙은 2027-12-31 까지 신고한 기관이다.
+
+| 순서 | 규칙 | ogada |
+|---|---|---|
+| 1 | 신고 차량 · 실거주지↔기관 · 편도 최단거리 | 거리 밴드 |
+| 2 | 러-1~4 | `RU_1`~`RU_4` · 830 / 2,630 / 5,230 / 8,630 |
+| 3 | 1일 1회 · 편도 50% | `ONE_PER_DAY` · `ONE_WAY_RATIO=0.5` |
+| 4 | 기관 신청 · 수급자 부담 0 | 청구 주체 |
+| 5 | 이동서비스 일지 | 일지. 서식 번호는 본문에 **0** |
+| 6 | 목욕 가산 주 1회 3,000원 | 시드 **없음** |
+| 7 | 특장차량 월 170,000원 · 36개월 | 시드 **없음** |
+
+[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200** · 7,572B · `c886ff1f` **BYTE-IDENTICAL** · 저장계수 **646차**. 「별지」 **0** · 「제22호」 **0**.
+
+### §955-2 · ★★★ 주야간 30칸 · ★★ 단기보호 · 통합재가 문구
+
+**확인**: [월 한도액 및 급여비용 menuId=npe0000002742](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) HTTP **200** · 105,555B · `0571d9bb`. BNK-945 `57fd4b7e`(105,564B) 와의 차이는 `var s16;` 한 줄이다. 금액 칸은 같다. 제목은 「월 한도액 및 급여비용(**2026.1.1.** 기준)」. 「제2026-189호」 문자열은 **0**.
+
+열은 분류 · 등급 · 급여비용(원)이다. 30칸은 `Nhis2026DaycareRateCatalog` 와 같다.
+
+| HTML 구간 | 코드 | 1등급 | 2 | 3 | 4 | 5 | 인지지원 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 3시간 이상~6시간 미만 | `H3_6` | 41,820 | 38,720 | 35,740 | 34,120 | 32,490 | 32,490 |
+| 6시간 이상~8시간 미만 | `H6_8` | 56,060 | 51,930 | 47,940 | 46,300 | 44,650 | 44,650 |
+| 8시간 이상~10시간 미만 | `H8_10` | 69,730 | 64,590 | 59,640 | 58,010 | 56,360 | 56,360 |
+| 10시간 이상~13시간 **이하** | `H10_13` | 76,820 | 71,160 | 65,750 | 64,090 | 62,460 | 56,360 |
+| 13시간 **초과** | `H13_PLUS` | 82,370 | 76,310 | 70,500 | 68,860 | 67,240 | 56,360 |
+
+`DurationBand` 라벨은 `10~13h` · `13h+` 다. 시간에서 밴드를 고르는 함수는 없다. 13시간 정각을 어느 칸에 둘지는 **가정**으로 남긴다. 금액 시드는 유지한다.
+
+단기보호 1일: 1등급 **74,060** · 2등급 68,580 · 3등급 63,350 · 4등급 61,680 · 5등급 60,000. BNK-945 와 같다.
+
+같은 페이지의 「주·야간보호 내 치매전담실」표는 **2등급**부터 시작한다. 3시간 이상~6시간 미만 2등급은 **48,700원**이다. 나머지 칸은 스냅샷에 있다. 일반 30칸 시드에는 이 표가 없다.
+
+**확인(제55조의2, 고시 본문)**: 수급자 1인당 월 **100,000원**. 간호(조무)사 1인 이상. 물리치료사 또는 작업치료사 1인 이상(근무시간 합이 월 기준의 50% 이상이면 1명). 같은 기관기호에서 월 한도액의 **80%** 이상. **방문요양과 주·야간보호를 각각 월 1회 이상**. 수급자 부담 없음.
+
+[610 menuId=npe0000002731](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) HTTP **200** · 91,424B · `306ec215`. 디스크 `longterm_610.html` `0ea575be`(91,421B) 와의 차이는 두 줄이다. 메뉴 `npe0000002732` 가 「낙상예방 재가환경지원 **서비스**」에서 「**시범사업**」으로 바뀌었다. ePRIVACY 팝업 id 가 `2025-EP-R013` 에서 `2026-EP-R016` 으로 바뀌었다. 「월 10만원」 본문은 같다.
+
+610 안내의 주·야간보호형 줄은 「주·야간보호(**건강관리**) 월 1회 이상」이다. 고시 제55조의2 나목에는 「건강관리」가 없다. 금액의 정본은 고시다. [menuId=npe0000000650](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650) 은 LEAN `fad1ce61` · 88,399B 이고 10만원 문장이 없다.
+
+**신규 증거**: [낙상예방 재가환경지원 시범사업](https://www.longtermcare.or.kr/npbs/r/o/299/npro299m01.web?menuId=npe0000002732) HTTP **200** · 87,990B · `14ee299e`.
+
+| 칸 | 문장 |
+|---|---|
+| 대상 | 장기요양 수급자 · 본인 또는 가족 소유 집 · 주민등록 주소와 실거주지 동일 · 낙상 고위험 |
+| 제외 | 시설 입소 · 병의원 입원 · 기초생활보장 수급자 · 아파트 · 임대 |
+| 내용 | 1인당 생애 **100만 원** · 품목 **13** · 본인부담 **15%** · 한도 초과와 품목 밖은 전액 자부담 |
+| 제공 | 선정 시공업체 **140**개소 |
+| 신청 | 관할 공단 지사 · 방문·우편·팩스·홈페이지·「건강보험25시」앱 · 본인 또는 가족인 주택소유주 |
+| 서류 | 신청서 · 개인정보 동의 · 희망 품목·시공 구역 · 등기부등본 |
+| 버튼 | `신청하기` · `시공업체조회` |
+
+페이지에 주야간·이동서비스 문자열은 **0**이다. 품목 13개의 이름은 이미지라 **미확인**이다.
+
+### §955-3 · ★ 엔젤 CMS · 지표 27 · lcms 배너 회전
+
+| 소스 | 결과 |
+|---|---|
+| [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | HTTP 200 · `f9c5d877` **BYTE-IDENTICAL** · 월 **30,000원** · 자동이체 **250원/1건** · 가상계좌 **300원/1건** · 카드·계좌분리는 별도문의 |
+| [효성 상담](https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS) | HTTP 200 · 24,073B · `438f9ced` = BNK-704 **BYTE-IDENTICAL** |
+| [system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | HTTP 200 · `c9507190` · 이동서비스·배차·GPS·RFID·차량·송영 **0** |
+| [daycareEssential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | HTTP 200 · `c79c1be3` · 「주야간보호 **27 기능회복훈련**」 · 필수업무 일련 **27 가족과의 소통** |
+| [feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | HTTP 200 · `eab352a8` **BYTE-IDENTICAL** |
+| [lcms](https://www.lcms.or.kr/) | HTTP 200 · 50,170B · `b76e658c` · BNK-945 `7775b5b4`(type3 CJ MOU) 에서 **회전** |
+| [공지 목록](https://www.silverangel.kr/silverangel/publicize/angel_news_list.do) | HTTP 200 · `03fd9d9e` **BYTE-IDENTICAL** · 최신 제140차 · idx **221607** · 2026-09-17 |
+
+효성 폼 `frmSend` 은 `POST /addon/board/insert` 다. hidden `request_path=ANGELSYS`. 보이는 칸은 `board_cust_nm`(maxlength 30) · `board_tel`(11, 하이픈 제외) · `board_nm`(15) · `consult_time` · `board_comment` 이다. 댓글 기본문은 「엔젤시스템 사용자 입니다.」 동의 라디오는 `agree` · `agree2`. 완료 이동은 `/addon/board/result?type=ANGELSYS`. ogada `CmsPaymentMethodCatalog` 5코드의 건당 단가(250원 · 300원)와 같고, 월 30,000원 벤더 이용료 행은 없다.
+
+lcms 본문은 `ad_cont type1` 디자인 샘플 3종이다. `openIpAccessDeniedLayerPop` **3** · `KMCNOK` **0** · 배차 **0**. BNK-941 과 같은 해시다. CJ MOU 배너는 이번 응답에 없다.
+
+평가매뉴얼 PDF `download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf` 는 60초에 **4,853,112 / 7,203,889**바이트에서 끊겼다. 부분 파일은 삭제했다. 지표 27 의 이번 정본은 필수업무 페이지다. 평가지표 번호 27 은 기능회복훈련이고, 같은 표의 일련 27 은 가족과의 소통(보호자 회의 반기 1회 · 프로그램 계획표·식단표·소식 월 1회)이다.
+
+### §955-4 · 갭 · planner 액션
+
+신규 진성갭 **0**. P0 재오픈 **0**. id=2 **0.85** · id=7 **1.0** · 모듈 **97.41%** 유지. 수가 시드 변경 **0**.
+
+1. 주야간 30칸은 공단 HTML(2026.1.1. 기준)과 `Nhis2026DaycareRateCatalog` 가 같다. 제2026-189호가 시행 중이라는 이유로 일당 금액을 다시 쓰지 않는다. 고시 제37조 금액 이미지는 이번 사이클 **미확인**이다.
+2. 러-1~4 GIF 는 BNK-945 와 바이트가 같다. V103 830 / 2,630 / 5,230 / 8,630 을 유지한다. 5·10·20km 경계는 가정이다.
+3. 제35조 주 1회 3,000원과 평가 문구 「월 5회」를 한 규칙으로 적지 않는다. 3,000원 행은 기록만 한다.
+4. 제55조의2 월 100,000원과 단기보호 74,060원, 치매전담실 48,700원(3~6시간·2등급)은 일반 주야간 시드에 넣지 않는다. 610 안내의 「건강관리」를 고시 요건으로 옮기지 않는다.
+5. 낙상예방 시범사업(생애 100만 원 · 본인부담 15%)은 주야간 이동서비스가 아니다. 배차 백로그로 올리지 않는다.
+6. CMS 는 250원 · 300원 · 월 30,000원(엔젤·효성)이 유지된다. ogada 에 월 30,000원 벤더 이용료를 넣지 않는다. 지표 27 과 일련 27 을 한 번호로 쓰지 않는다.
+7. 평가 PDF 는 타임아웃이라 **미확인**이다. 별지 제22호는 현행 본문과 #44 에서 다시 0 이다.
+8. git 은 BNK-954 와 같다. FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+주력 `angel_longterm_regulatory_bnk955.txt` + `longterm_502_fee_menu2742_bnk955.html` + `longterm_fall_pilot_menu2732_bnk955.html` + `law_jo34_flSeq169768531_bnk955.gif`. 신규 증거 URL 1(낙상예방 시범사업). 기존 URL 변동 3(502 의 `var s16` · 610 메뉴명·eprivacy · lcms type1). 가정 2(킬로 경계 · 13시간 정각). 미확인 3(평가 PDF · 고시 제37조 이미지 · 시범사업 품목 이름). per-cycle minimum 4종 충족.
+
+---
 
 ## §954 BNK-954 — 이지케어 역공학 2-4h · ★★★ **재무회계 대행 4,902→4,903 · 헤더 이용 9,619→9,621** · ★★★ **제19조 도움말: 270분 초과는 2회 · 앞 270분은 240분 기준 · 480분 연속은 8시간** · ★★ **방문현황 일일 7열 · 월간 목록 8열 · 확정 중 수정·삭제 불가** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 

@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T04:34:56Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T05:16:00Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,19 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-954 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **재무회계 대행 4,903 · 헤더 9,621** · ★★★ **제19조 도움말 270분 초과=2회 · 앞 구간 240분 · 480분 연속=8시간** · ★★ **방문현황 일일 7열 · 확정 잠금** · P0 재오픈 0.
+> **최종 갱신**: 2026-10-08 (**BNK-955 — 엔젤·롱텀·규제 4-6h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **주야간 30칸 = 시드** · ★★★ **러-1~4 GIF `31064a16`** · ★★ **제55조의2에 「건강관리」 없음** · ★★ **목욕 가산 주 1회 3,000원** · 신규 진성갭 0.
+
+| 기능 / 서비스 항목 (BNK-955 delta·엔젤·롱텀·규제 4-6h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 주야간 1일 수가 30칸 (BNK-955 #1 · 메뉴/필드/워크플로 · 확인)** | ✅ `Nhis2026DaycareRateCatalog` 30칸과 동일. `H10_13` 라벨 `10~13h` · `H13_PLUS` 라벨 `13h+`. 시간 해석 함수 없음. 13시간 정각은 **가정**. id=7 **1.0** | ⚪ | ⚪ | ⚪ | ✅ [2742](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `0571d9bb` · 제목 **2026.1.1. 기준** · 제2026-189호 문자열 **0** · `var s16` 삭제만 BNK-945 와 다름 · 1등급 41,820 / 56,060 / 69,730 / 76,820 / 82,370 | §955-2 · 시드 유지 · 제37조 이미지 **미확인** |
+| **★★★ 제34조 러-1~4 GIF (BNK-955 #2 · 재실측 · 확인)** | ✅ 시드 830 / 2,630 / 5,230 / 8,630 · `ONE_WAY_RATIO=0.5` · 1일 1회 · 일지. km `<=` 경계는 **가정**. id=2 **0.85** | ⚪ | ⚪ | ⚠ [system_feature](http://www.silverangel.kr/silverangel/angelsystem/system_feature.do) `c9507190` 배차 6종 **0** | ✅ [본문](https://www.law.go.kr/LSW/admRulLsInfoR.do) `c5e5bc59` = BNK-945 · [GIF](https://www.law.go.kr/LSW/flDownload.do?flSeq=169768531) `31064a16` · [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` **646차** · 별지 **0** · 제22호 **0** | §955-1 · OCR 재실행 없음 |
+| **★★ 제35조 목욕 3,000원 · 제34조의2 170,000원 (BNK-955 #3 · 확인)** | ⚪ 주 1회 3,000원 시드 grep **0**. 월 5회는 평가 문구. 특장차량 170,000원 시드 **없음** | ⚪ | ⚪ | ⚪ | ✅ 같은 본문. 목욕 가산 주 1회 **3,000원** · 수급자 부담 없음. 특장차량 월 **170,000원** · 36개월 | §955-1 · 시드 추가 보류 |
+| **★★ 통합재가 · 단기보호 · 치매전담실 (BNK-955 #4 · 확인)** | ⚪ 일반 30칸에 넣지 않음 | ⚪ | ⚪ | ⚪ | ✅ 제55조의2 월 **100,000원** · 방문요양+주야간 각 월 1회 · 월한도 80%. [610 2731](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) `306ec215` 는 「건강관리」를 덧붙임. 단기보호 1등급 **74,060**. 치매전담실 3~6시간 2등급 **48,700** | §955-2 · 0650 은 LEAN `fad1ce61` |
+| **★★ CMS 250/300/30,000 · 지표 27 (BNK-955 #5 · 재실측)** | ✅ 5코드 · 건당 250원 · 300원 · 월 30,000원 행 없음 · 기능회복 ≠ 가족소통 | ⚪ | ⚪ | ✅ [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) `f9c5d877` · [효성](https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS) `438f9ced` `request_path=ANGELSYS` · [essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3` | ⚪ | §955-3 · 평가 PDF **미확인** |
+| **★ 낙상예방 시범사업 · lcms type1 (BNK-955 #6 · 신규 URL)** | ⚪ 배차 백로그 아님 | ⚪ | ⚪ | ✅ [lcms](https://www.lcms.or.kr/) `b76e658c` type1 디자인 샘플 · CJ 배너 없음 · IP 팝업 유지 · 공지 `03fd9d9e` idx **221607** | ✅ [2732](https://www.longtermcare.or.kr/npbs/r/o/299/npro299m01.web?menuId=npe0000002732) `14ee299e` · 생애 100만 원 · 본인부담 15% · 품목 13 · 시공 140 · 주야간 **0** | §955-2 · §955-3 · 품목 이름 **미확인** |
+| **★ HEAD · merge gate 4 (BNK-955 #7)** | ✅ SHA BNK-954와 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · yaml `4aad7cc2` 는 test | ⚪ | ⚪ | ⚪ | ⚪ | §955-0 · §955-4 |
+
+> **직전 갱신**: 2026-10-08 (**BNK-954 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **재무회계 대행 4,903 · 헤더 9,621** · ★★★ **제19조 도움말 270분 초과=2회 · 앞 구간 240분 · 480분 연속=8시간** · ★★ **방문현황 일일 7열 · 확정 잠금** · P0 재오픈 0.
 
 | 기능 / 서비스 항목 (BNK-954 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|
