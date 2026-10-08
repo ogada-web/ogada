@@ -1,4 +1,4 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:48:27Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T12:29:27Z -->
 
 # 경쟁사 기능·서비스 비교 매트릭스 (planning/research/COMPETITOR_MATRIX.md)
 
@@ -6,7 +6,18 @@
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`
 
-> **최종 갱신**: 2026-10-08 (**BNK-964 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **PDF 4-2=물리 제공기록 · 4-7=제공 리포트** · ★★★ **시설 7-4~7-9 주석 = 보이는 번호+1** · ★★ **`position_YC_nursing` ≠ 체위변경 리포트** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-963 실행값).
+> **최종 갱신**: 2026-10-08 (**BNK-965 — 이지케어 역공학 2-4h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **청구일정 = 청구내역+청구내역상세 동시** · ★★★ **확정 잠금 · 원천세 마감이면 취소 불가** · ★★ **RFID 01·03–09 · `schedule-form` NotFound** · 헤더 **9,624** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-963 실행값).
+
+| 기능 / 서비스 항목 (BNK-965 delta·이지케어 역공학 2-4h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
+|---|---|---|---|---|---|---|
+| **★★★ 청구 엑셀 짝 · 수정 4칸 (BNK-965 #1 · 신규 URL · 메뉴/필드/워크플로 · 확인)** | ✅ 방문 일정 import 와 청구내역상세 import 는 화면이 갈라져 있음. 열 헤더를 이 사이클에서 바꾸지 않음. SEC-D34 유지. id=2 **0.85** | ⚪ | ✅ [0bf7689d](https://docs.channel.io/ezcare/ko/articles/%EB%B0%B0%EC%A0%95%EB%90%9C-%EC%9D%BC%EC%A0%95-%EC%88%98%EC%A0%95%EC%82%AD%EC%A0%9C%EB%B2%95-0bf7689d) `0b94049c` 수정 칸 4(서비스 구분·방문시간 및 제공서비스·급여제공자·수당). [schedule_plan](https://ezcare.easyms.co.kr/schedule_plan/) `5c58cd34` 「청구내역과 청구내역상세를 동시에」. 확정·미등록이면 등록 실패. [59244cb3](https://docs.channel.io/ezcare/ko/articles/%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EC%A7%81%EC%A0%91%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-59244cb3) `862b7090` ↓배정 | ⚪ | ⚪ | `ezcare_schedule_plan_bnk965.html` · §965-2 · 열 이름 **미확인** · `schedule-form` NotFound `c86e2f91` |
+| **★★★ 확정 잠금 · 명세서 주황 (BNK-965 #2 · 신규 URL · 확인)** | ✅ `VisitBatchUnconfirmPanel` 은 급여·퇴직금을 지우지 않음. 주황 명세서 상태는 이 트리의 방문요양 급여 화면이 아님. id=7 **1.0** | ⚪ | ✅ 확정 중 수정·삭제 불가. 급여명세서+원천세 신고면 취소 제한 · 내선 3. [4b8e1d3c](https://docs.channel.io/ezcare/ko/articles/%EA%B8%89%EC%97%AC-%ED%99%95%EC%A0%95-%ED%9B%84-%EC%88%98%EC%A0%95-%EB%B0%A9%EB%B2%95-4b8e1d3c) `3c597414` 삭제(초기화)/임시저장(수정) · 일정 미확정이면 명세서 확정 비활성 | ⚪ | ⚪ | §965-2 · §965-3 · 주야간 P0 아님 |
+| **★★ RFID 그룹 3 · 코드 8 (BNK-965 #3 · 신규 URL · 확인)** | ✅ `COMP_01`~`09` · `02` 없음. 라벨은 「시작 시각 차이」. `>60` · `>=30` 는 BNK-951 유지. id=10 **0.85** | ⚪ | ✅ [rfid_compare](https://ezcare.easyms.co.kr/schedule_plan/rfid_compare.html) `c1051f04` 태그 안함 01·03 · 시간차 04·05·06(60/60/30분) · 기타 08·07·09. `ltm_sDataUpload` / `rfid_upload` | ⚪ | ⚪ | `ezcare_rfid_compare_bnk965.html` · §965-3 · 코드 신설 0 |
+| **★★ 3.2 관리자 일정 (BNK-965 #4 · 신규 URL · 확인)** | ⚪ 라운딩 달력 Route **0**. 팀장급 경력 5년은 별도. P0 재오픈 0 | ⚪ | ✅ [2b29f7fe](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EC%A7%81%EC%A0%91-%EB%93%B1%EB%A1%9D%EB%B2%95-2b29f7fe) `3400525e` 드래그·월 1회. [a0a11371](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EC%82%AD%EC%A0%9C%EB%B2%95-a0a11371) 저장 후에 삭제. [21174](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21174&type=web) 팀장 더블클릭. 데모 `b7a1ec5b` 실시간/제출이력 | ⚪ | ⚪ | §965-3 · 방문요양 · `family90`=90분가능 |
+| **★★ 헤더 9,624 (BNK-965 #5 · 재실측 · 확인)** | ⚪ 도입 수 카피 없음 | ⚪ | ✅ 홈 **53.9/9,514/4,904** `ad74f098` · fnc·charge **9,624** · 셋팅 33,000 · 「2026년 10월 31일까지」 · D1 2028년까지 0원 · D2 70,000. FAQ 233 · 엑셀 컬럼 0. 21298 `56f80ab6` IDENTICAL | ⚪ | ⚪ | §965-1 · 9,514 와 9,624 를 한 칸에 적지 않음 |
+| **★ HEAD · merge gate 4 (BNK-965 #6)** | ✅ SHA BNK-964와 같음 · FE ahead **1** · BE ahead **3** · HTTP **450** · `@Test` **2485** · 모듈 **97.41%** · 테스트 미실행 | ⚪ | ✅ login **0000** · nav `95286775` IDENTICAL · 색인 `71ca632d` 222 IDENTICAL | ⚪ | ⚪ | §965-0 · yaml `4aad7cc2` 는 test |
+
+> **직전 갱신**: 2026-10-08 (**BNK-964 — 케어포 역공학 0-2h** · ogada FE `@29c2304` / BE `@92466cfb` · BE local test `@4aad7cc2` · origin `@5cf667b`/`@1e8857b4` · merge gate **4** · Route **133** · Page **106** · strict @Test **2485** · surefire **2505** · npm **2865** · HTTP **450** · 모듈 **97.41%**). ★★★ **PDF 4-2=물리 제공기록 · 4-7=제공 리포트** · ★★★ **시설 7-4~7-9 주석 = 보이는 번호+1** · ★★ **`position_YC_nursing` ≠ 체위변경 리포트** · P0 재오픈 0. 이번 차수 ogada 열은 실측 HEAD. 아래 과거 행의 SHA 는 그 차수 값이다. `npm test` / `mvn test` 는 이번 사이클 미실행(BNK-963 실행값).
 
 | 기능 / 서비스 항목 (BNK-964 delta·케어포 역공학 0-2h) | ogada `@29c2304`/`@92466cfb` | 케어포 | 이지케어 | 엔젤시스템 | 롱텀(공단) | 비고 |
 |---|---|---|---|---|---|---|

@@ -4,6 +4,28 @@
 
 ---
 
+## 2026-10-08 — benchmark_researcher(BNK): BNK-965 이지케어 역공학 2-4h · ★★★ **청구일정은 청구내역+청구내역상세** · ★★★ **확정 중 수정 불가 · 원천세 마감이면 취소 불가** · ★★ **RFID 코드 8 · `schedule-form` NotFound** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
+
+**근거**: [일정관리](https://ezcare.easyms.co.kr/schedule_plan/) HTTP 200 · `5c58cd34`. [0bf7689d](https://docs.channel.io/ezcare/ko/articles/%EB%B0%B0%EC%A0%95%EB%90%9C-%EC%9D%BC%EC%A0%95-%EC%88%98%EC%A0%95%EC%82%AD%EC%A0%9C%EB%B2%95-0bf7689d) HTTP 200 · `0b94049c`. [rfid_compare](https://ezcare.easyms.co.kr/schedule_plan/rfid_compare.html) HTTP 200 · `c1051f04`. [4b8e1d3c](https://docs.channel.io/ezcare/ko/articles/%EA%B8%89%EC%97%AC-%ED%99%95%EC%A0%95-%ED%9B%84-%EC%88%98%EC%A0%95-%EB%B0%A9%EB%B2%95-4b8e1d3c) HTTP 200 · `3c597414`. fnc·charge 헤더 **9,624**. git FE `29c2304` · BE `92466cfb`.
+
+### 결정
+
+1. **★★★ 청구 가져오기는 파일 둘이다 (확인)** — 데모 `/schedule_plan/` 은 「청구일정은 청구내역과 청구내역상세 파일을 동시에 등록해야 됩니다」라고 적는다. 계획 가져오기와 청구 가져오기는 버튼이 둘이다. 확정이거나 미등록 수급자·급여제공자가 있으면 등록이 안 된다. 일괄 등록은 기존 일정과 수당을 초기화한다. 엑셀 열 헤더는 이 HTML에 없다. **planner: 두 파일을 한 업로드로 받는다. 열 이름을 추측해 바꾸지 않는다. SEC-D34 를 열지 않는다. P0 로 열지 않는다.**
+
+2. **★★★ 확정된 일정은 고칠 수 없다 (확인)** — 도움말 0bf7689d 의 수정 칸은 서비스 구분 · 방문시간 및 제공서비스 · 급여제공자 · 수당이다. 월 전체는 「일정 초기화」, 하루는 아이콘 뒤 저장 버튼이다. 급여명세서가 있고 원천세 신고가 끝났으면 확정 취소도 막힌다. 안내는 1644-0340 내선 3이다. 명세서 확정(4b8e1d3c)은 일정이 확정돼야 켜지고, 켜지면 이름이 주황이다. 삭제(초기화)는 복구가 안 되고 임시저장(수정)은 내용이 남는다. **planner: 이 잠금을 주야간 수가에 넣지 않는다. ogada 확정 취소가 급여를 지우는 쪽으로 바꾸지 않는다. P0 로 열지 않는다.**
+
+3. **★★ RFID 팝업의 코드는 여덟 개다 (확인)** — 그룹은 태그 안함(01 모두 · 03 종료태그), 시간차(04 시작 60분이상 · 05 종료 60분이상 · 06 인정시간 30분이상), 기타(08 직접 입력 · 07 급여제공자 다름 · 09 계획없음)다. `02` 는 없다. 업로드 mode 는 `ltm_sDataUpload` 와 `rfid_upload` 다. ogada `COMP_01`~`09` 와 코드 집합이 같다. **planner: 코드를 추가하지 않는다. 라벨 「시작 시각 차이」를 「시작 60분이상」으로 바꾸지 않는다. id=10 은 0.85.**
+
+4. **★★ 관리자 일정은 수급자 일정과 다른 화면이다 (확인)** — 3.2 는 드래그 후 저장이다. 삭제도 저장을 눌러야 반영된다. 직종은 사회복지사 또는 팀장급 요양보호사다. 팀장 표시는 직원 카드 더블클릭이다. 출력은 달력과 목록이다. `family90` 라벨은 90분가능이다. `PGID=schedule-form` 은 NotFound 다. **planner: 3.2 를 주야간 Route 로 만들지 않는다. 90분가능과 90% 산정을 한 칸으로 적지 않는다. schedule-form 이라는 화면을 만들지 않는다.**
+
+5. **★★ 도입 수는 세 문장이다 (확인)** — 홈은 **53.9 / 9,514 / 4,904**, 집계일 **2026.09.30**. 헤더는 **9,624**. 셋팅은 33,000원이고 문구는 「2026년 10월 31일까지」다. D1 은 2028년까지 0원, D2 는 월 70,000원이다. FAQ 제목 233, 엑셀 열 변경은 0이다. **planner: 9,514 와 9,624 와 4,904 를 한 칸에 적지 않는다.**
+
+6. **★ HEAD 는 BNK-964 와 같다 (확인)** — FE `@29c2304` · BE `@92466cfb` · HTTP **450** · merge gate **4**. yaml `4aad7cc2` 는 test 다. **planner: `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.**
+
+**가정 해소 1**(청구 파일 짝) · **미확인 1**(엑셀 열 헤더) · 신규 snapshot 은 `ezcare_schedule_edit_rfid_bnk965.txt` 와 Channel·팝업 HTML · per-cycle minimum 충족.
+
+---
+
 ## 2026-10-08 — benchmark_researcher(BNK): BNK-964 케어포 역공학 0-2h · ★★★ **PDF 4-2=물리 제공기록 · 4-7=제공 리포트** · ★★★ **시설 7-4~7-9 주석은 보이는 번호+1** · ★★ **욕창 기록조회와 체위변경 리포트는 view 가 다름** · ogada `@29c2304`/`@92466cfb` · HTTP **450** · merge gate **4**
 
 **근거**: 디스크 PDF `96f7d45e` 바닥 -57-·-62-. 시설 demo `carefor_demo_work_live_bnk943.html` L04·L07. func.php 욕창 **0**. [YC_highlisk CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/nursing/view.YC_highlisk&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) · [functionEvaluating CDX](https://web.archive.org/cdx/search/cdx?url=demo-work.carefor.co.kr/share/physical/view.functionEvaluating_servicePlan&output=json&fl=timestamp,statuscode,length,digest&filter=statuscode:200&limit=8) HTTP 200 · `58e0494c`. git FE `29c2304` · BE `92466cfb`.

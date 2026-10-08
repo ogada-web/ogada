@@ -1,0 +1,1615 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=1010" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+
+<title>[DEMO] 일정관리</title>
+
+<!-- jquery 공통 -->
+<script type="text/javascript" src="../js2/jquery.min.js?20230602"></script>
+<script type="text/javascript" src="../js2/jquery-ui.min.js?20230602"></script>
+<script type="text/javascript" src="../js2/jquery.jqGrid.min.js?20230602"></script>
+<link rel="stylesheet" type="text/css" href="../css2/smoothness/jquery-ui.min.css?20230602" />
+<link rel="stylesheet" type="text/css" href="../css2/ui.jqgrid.css?20230602" />
+
+<!-- jquery plugin -->
+<script type="text/javascript" src="../js2/plugin/jquery.form.js?20230602"></script>
+<script type="text/javascript" src="../js2/plugin/jquery.cookie.js?20230602"></script>
+<script type="text/javascript" src="../js2/plugin/jquery.number.js?20230602"></script>
+<script type="text/javascript" src="../js2/plugin/mh.jquery.dragDropFile.js?20230602"></script>
+<script type="text/javascript" src="../js2/plugin/jquery.validate.js?20230602"></script>
+
+<!-- 공통스크립트 및 스타일 -->
+<script type='text/javascript'>/* M0301 */ var oCode='DEMO', ezc_dialog_popup="", menu_index='M0301', ezc_helpButton=false;</script>
+<script type='text/javascript' src='/js2/common.js?date=20260129'></script>
+<script type='text/javascript' src='/js2/lib.ui.js?date=20240816'></script>
+<script type='text/javascript' src='/js2/plugin/jquery.cookie.js'></script>
+<script type='text/javascript' src='https://wcs.naver.net/wcslog.js'></script>
+
+<script type='text/javascript'>
+	if( typeof oCode && location.pathname=='/topMenu.html' ){
+		var _nasa={};
+		_nasa['cnv'] = wcs.cnv('5','1');
+	}
+	if(!wcs_add) var wcs_add={};
+	wcs_add['wa']='1450931d089ca10';
+	if(!_nasa) var _nasa={};
+	wcs.inflow('easyms.co.kr');
+	wcs_do(_nasa);
+	var hAmt_base = 10320;$(function(){ $('[DEMO]').remove() })</script>
+<link rel='stylesheet' type='text/css' href='/css2/common.css?date=20200730' />
+<script type="text/javascript" src="./calendar.js?20230602"></script>
+<script type="text/javascript" src="./addAmount.js?1791462381"></script>
+<script type="text/javascript" src="./tools.js?1791462381"></script>
+<script type="text/javascript" src="./event.js?1791462381"></script>
+<script type="text/javascript" src="../js2/plugin/lc_switch.js?20230602"></script>
+<script type="text/javascript" src="/js2/refresh_opener.js?20230602"></script>
+<script type="text/javascript" src="./giwoong.js?1791462381"></script>
+<!-- <script type="text/javascript" src="./json2.js"></script> -->
+<script type="text/javascript" src="./loader.js"></script>
+<script type="text/javascript" src="/module/module.js?1791462381"></script>
+
+
+<link rel="stylesheet" type="text/css" href="./calendar.css?1791462381" />
+
+<style type="text/css"></style>
+
+<script type="text/javascript" src="/assets/smartaib4pc/smart.scrap.js?1791462381"></script>
+
+<script type="text/javascript">
+<!--
+var file_jdata = "json_data.php";
+var file_action = "run.php";
+var debug= "";
+var Ym = "2026-10";
+var pCode = "";
+var calendar = new Calendar("#calendar");
+var base_data = {};
+var selWorker = { data:{}, schedule:{} };
+var fixWorker = { data:[] };
+var esP = { memo:[], pInfo:{}, schedule:{}, schedule_fix:false, memo:{}, familyWorker:{}};
+var confirmNum = "0000"; //8530 일정확정취소 확인번호
+var plan_tool_data = {perfect_time:false, perfect_worker:false};
+var overlap_chk = false; // 급여제공계획 배정시 중복체크
+var mody_open = false;
+var ltm_data = {plan:[], done:[], selType:"done"};
+var fix_data; //일정 확정 제공급여 요약
+var schedule_table_exist = "1"; //해당연도 스케쥴 테이블 존재여부 확인
+var pRate_arr={};
+var last_month = [];
+var next_month = [];
+var todayDate = new Date();
+var oCode = "DEMO";
+todayDate = todayDate.getFullYear()+"-"+pad(todayDate.getMonth()+1, 2)+"-"+pad(todayDate.getDate(), 2);
+var before_sKind, before_sCode;
+
+/* 자동로그아웃 [*/
+var tid,sec,
+	last_access = $.cookie("last_access"),
+	last_access_org = last_access,
+	last_access_trm = 14400,
+	last_access_sec = last_access_trm;
+
+function timerMsg(){
+	if(!$.cookie("login_uid")) top.location.href="/logout_msg.html?code=001";
+	var last_access_get = $.cookie("last_access");
+	if(last_access_org!=last_access_get && (last_access_get-last_access_org)<last_access_trm){
+		last_access_org = last_access_get;
+		last_access_sec = last_access_trm;
+	}
+	var t_bun = parseInt(last_access_sec/60);
+	var t_sec = last_access_sec%60;
+	if(t_bun<10) t_bun = "0"+t_bun;
+	if(t_sec<10) t_sec = "0"+t_sec;
+	$("#logOutTimer").text( t_bun+":"+t_sec);
+	if(last_access_sec<=0) location.href="/page/logout.php?mode=logout&sw=long_idle_time";
+	last_access_sec--;
+	sec--;
+	if(sec<0){
+		sec=1200;
+	}
+}
+
+function timerStart(s){
+	sec = s;
+	clearInterval(tid);
+	tid=setInterval( timerMsg,  1000);
+}
+/*]자동로그아웃 */
+
+$(function() {
+	timerStart(1200);
+	resizeHeight("#calendar table tbody",273,600);
+
+	$("#btn_debug").click(function(){
+		$("li.debug_tmp").toggle();
+	}).show();
+
+	$(document)
+		.ajaxStart(function(){
+			ez_ajax_mask.show({size:"medium", message:"요청 처리중<br>잠시만 기다려주세요."});
+		})
+		.ajaxStop(function(event,request,settings){
+			buttonRefresh();
+			setTimeout(function(){ez_ajax_mask.hide()}, 200);
+		})
+		.tooltip({
+			track:false,
+			content: function() {
+				if($(this).hasClass("ui-dialog-titlebar-close")) return ""; //dialog 창 close 안나오게
+				else if($(this).hasClass("memo")) return $(this).prop('title').replace(/\n/g, '<br>');
+				else return $(this).prop('title');
+			}
+		});
+
+	$("div#btn_sKind").buttonset(); //서빗구분 라디오버튼
+	get_jData.base(Ym, callBack);
+
+	ui_header_YmBar(Ym, function(gYm){
+		//if(gYm>='2025-01')  location.href="/schedule_plan/notice_2025.html";
+
+		if($("ul.schedule.trash, ul.schedule.new", "#calendar").length > 0){
+			dialog_confirm("작업 중 내용이 있습니다. 수급자 변경시 저장하지 않은 내용은 사라집니다.", "변경", function(){
+				if(version != -1 && version <= 9) location.href = "/schedule_plan/?pCode="+pCode+"&Ym="+gYm;
+				Ym=gYm;
+				get_jData.base(Ym, callBack);
+			},function(){ });
+			return false;
+		}else{
+			if(version != -1 && version <= 9) location.href = "/schedule_plan/?pCode="+pCode+"&Ym="+gYm;
+			Ym=gYm;
+			get_jData.base(Ym, callBack);
+		}
+
+	
+	});
+
+	
+
+
+	$("td.amt, span.amt").number(true);
+	$("input.amt").number(true);
+
+	if(!schedule_table_exist){ //해당연도 스케쥴 테이블 존재여부 확인
+		$("#content, #pList").hide();
+		$("#ignore_schedule_table").show();
+	}
+	if(!pCode) $("#div_select_patient_msg").show(); //2018.05.31 주팀장추가
+
+	$(".btn_help_ltm_excel_upload").click(function(){ //공단 엑셀 다운로드 받는 방법 안내
+		$("<img src='/img/ltm_excel_guide.png' width=900>").dialog({
+		  modal: true,
+		  height:700, width:1100,
+		  title: "공단 엑셀다운로드 위치안내",
+		  buttons:{
+			"닫기": function(){$(this).dialog("close")}
+			}
+		});
+	});
+
+	$("#btn_pGroup_select").groupButton({
+		text:"그룹",
+		position: { my:"left+150 top+50", at:"left bottom", of:$("#title")},
+		click: function(group){
+			get_jData.pList();
+		}
+	});
+
+	$("#pGroup").groupButton({
+		maxSelect:3, operatorHide: true, resetHide:true,
+		position: { my:"left top+123", at:"left top", of:$("#title")},
+		click: function(group){
+			ez_ajax_mask.show({message:"처리중입니다.", size:"", target:$("#block_photo")});
+			$.post("/patient/run2.php",{
+				"mode":"pGroup_UPDATE",
+				"pCode":pCode,
+				"pGroup":group
+			},function(result){
+				if(result.code == "0000"){
+					ez_ajax_mask.hide();
+					$(grid.pList).trigger('reloadGrid');
+				}else dialog_alert(result,"Error!");
+			},"json");
+		}
+	});
+
+	$("#chk_view_mobile").lc_switch({ size : "small" });
+
+	$(document).on("lcs-statuschange", "#chk_view_mobile", function() {
+		var chk = $("#chk_view_mobile").is(":checked");
+		$.ajax({
+			type:"POST",
+			url:"run.php",
+			data:{mode:"mobile_schedule_view", Ym:Ym, chk:chk},
+			dataType:"json",
+			success:function(data){
+				if(data == "1111") dialog_alert("네트워크 오류입니다 새로고침(f5) 후 다시 시도해주세요.");
+			}
+		});
+	});
+});
+
+function callBack(data){
+	base_data = data;
+    if(!base_data) {
+		$("#content, #pList").hide();
+		$("#ignore_schedule_table").show();
+		$("#ignore_schedule_table_Ym").text(Ym);
+        return;
+    }else{
+		$("#content, #pList").show();
+		$("#ignore_schedule_table").hide();
+    }
+	$("#selYm, #currentYm").text(Ym);
+	$("select[name=dLevel] option:not([value=''])").remove();
+	$.each(base_data.dlevel, function(idx, val){
+		$("select[name=dLevel]").append($("<option>").val(idx).text(val.name));
+	});
+	$("select[name=pRate] option:not([value=''])").remove();
+	$.each(base_data.pRate, function(idx, val){
+		$("select[name=pRate]").append($("<option>").val(idx).text(val.ext_title));
+	});
+
+	calendar.init(Ym);            //달력그리기
+
+	$("#d_"+todayDate, "#calendar").addClass("today");
+
+	getNotThisMonth();
+
+	if(!grid.draw) grid.init();   // 그리드 최초 한번 그리기
+	else get_jData.pList();
+	reset_patient();
+	$("div#plan_tool input:radio[value='001']").trigger("click");
+
+	if(base_data.unknown_patient.length > 0 || base_data.unknown_worker.length > 0) {
+		$("#not_patient_status").insertBefore($(grid.pList)).show();
+		//if(!pCode) $("#btn_not_persion").trigger("click");
+		set_unknown_num();
+	}else{
+		$("#not_patient_status").hide();
+	}
+
+	$.each(base_data.worker_kind, function(code, name){
+		$("#dialog_not_worker select[name=worker_kind]").append( $("<option>").text(name).val(code) );
+	});
+
+	$("#chk_view_mobile").lcs_destroy()
+	$("#chk_view_mobile").prop("checked", data.sv01 ? false : true);//.trigger("change");
+	$("#chk_view_mobile").lc_switch({
+		size : "small"
+	});
+}
+
+function chk_err(){
+	$.ajax({
+		type:"POST",
+		url:file_jdata+"?Ym="+Ym+"&data=chk-schedule-error",
+		data:{Ym:Ym},
+		dataType:"json",
+		success:function(data){
+			if(data && data.length){
+				let err_list = {};
+
+				console.log(data);
+				$.each(data, function(idx, val){
+					let err_txt = [];
+					if(val.pCode == ""){
+						err_txt.push("수급자정보 누락");
+
+					}else if(val.wCode == ""){
+						err_txt.push("직원정보 누락");
+
+					}else if(val.wCnt == 0){
+						err_txt.push("직원수 누락");
+
+					}else if(val.sCode == ""){
+						err_txt.push("수가코드 누락");
+
+					}else if(val.sDate.substring(0,7) != val.Ym){
+						err_txt.push("년도 오류");
+					}
+
+					if(!err_list[val.pCode]) err_list[val.pCode] = [];
+					err_list[val.pCode].push( val.sDate+" ( "+err_txt.join(", ")+" )" );
+				});
+
+				if(err_list){
+					$.each(err_list, function(tmp_pCode, val){
+						$("#patientList tr#"+tmp_pCode).addClass("chk-err").attr("err-msg",val.join("<br>"));
+						//.find("[aria-describedby=\"patientList_tAmount\"]")
+					});
+				}
+				console.log(err_list);
+			}
+		}
+	});
+}
+
+
+	$(document).on("mouseenter", ".chk-err", function(){
+		let that = $(this),
+			err_msg = that.attr("err-msg");
+			
+		$(".err-msg-view").remove();
+		if(err_msg){
+			let err_msg_view = $("<div>", {"class":"err-msg-view"}).html(err_msg);
+			$("body").append(err_msg_view);
+
+			err_msg_view.position({my:"left center", at:"right cetner", of:that})
+		}
+	}).on("mouseleave", ".chk-err", function(){
+		$(".err-msg-view").remove();
+	});
+
+
+function getNotThisMonth(){
+	last_month = [], next_month = [];
+	var year = Ym.split("-")[0],
+		month = Ym.split("-")[1],
+		this_month_first = new Date(year, month-1, "1"),
+		this_month_last = new Date(year, month, "");
+
+	/* 지난달 날짜 가져오기 [*/
+	if(this_month_first.getDay() == 0){
+		/* 일요일 시작인 경우 (주 1회 목욕 비교를 위해 이전 월요일까지 가져옴) [*/
+		var last_year_temp = year,
+			last_month_temp = month*1-1;
+
+		if(month == 1){
+			last_year_temp = year*1-1;
+			last_month_temp = 12;
+		}
+		var last_date_temp = new Date(last_year_temp, last_month_temp, "").getDate();
+
+		var chk_monday = true;
+		while(chk_monday){
+			var temp_last = new Date(last_year_temp, last_month_temp-1, last_date_temp);
+			last_month.push(last_year_temp+"-"+pad(last_month_temp, 2)+"-"+pad(last_date_temp, 2));
+			if(temp_last.getDay() == 1) chk_monday = false;
+			last_date_temp--;
+		}
+		/*] 일요일 시작인 경우 */
+	}else{
+		// 시작일 일요일 아닌경우 > 달력 not-this-month 가져와서 지난달 세팅
+		$.each($("td.not-this-month.last-month", "#calendar"), function(idx, td){ last_month.push($(td).attr("sDate")); });
+	}
+	/*] 지난달 날짜 가져오기*/
+
+	/* 다음달 날짜 가져오기(주 1회 목욕 비교를 위해 다음 일요일까지 가져옴) [*/
+	var next_year_temp = year,
+		next_month_temp = month*1+1,
+		next_date_temp = 1;
+	if(month == 12){
+		next_year_temp = year*1+1;
+		next_month_temp = 1;
+	}
+	var chk_sunday = true;
+	while(chk_sunday){
+		var temp_next = new Date(next_year_temp, next_month_temp-1, next_date_temp);
+		next_month.push(next_year_temp+"-"+pad(next_month_temp, 2)+"-"+pad(next_date_temp, 2));
+		if(temp_next.getDay() == 0) chk_sunday = false;
+		next_date_temp++;
+	}
+	/*] 다음달 날짜 가져오기*/
+}
+
+//-->
+</script>
+
+
+
+<style>
+	td.chk-err{position: relative;}
+	/* td.chk-err:before{content:'dev작업중';font-weight: bold;color:#000; position:absolute; margin-top:-5px; left:0; width:100%; height:22px; background:#ff9d9d; opacity:0.3; border:1px solid red;} */
+	
+	.chk-err td[aria-describedby='patientList_tAmount']:after{content:'!';
+		position: absolute;
+		margin-top: 5px;
+		margin-left: -5px;
+		font-size: 9px;
+		font-weight: bold;
+		background: red;
+		color: #fff;
+		width: 12px;
+		height: 12px;
+		border-radius: 20px;
+		text-align: center;}
+	
+	 div.err-msg-view{position:absolute; background:white; border-radius:5px; z-index:99990;height:auto; padding:2px 5px; border:2px solid red; background:#fff; color:#cf0000;}
+	 div.err-msg-view:before{content:'데이터 점검 필요'; font-size:10px;  position: absolute; margin-top:-18px; margin-left:0; padding:0 2px;  background:red; color:#fff; border-radius:5px 5px 0 0;}
+	 
+	#calendar ul.chk-err{background:red !important; -webkit-animation:Blink .5s step-end 3;}
+	#calendar ul.chk-err li{color:#fff !important;}
+	@keyframes Blink{
+		50% {
+			opacity: 0;
+		  }
+		}
+</style>
+
+
+
+
+</head>
+<body onload="">
+<h1 id="title" style="height:27px;">
+	<div id="wrap">
+		[DEMO] <span id='currentYm'></span> 일정관리 
+		<div id="btn_remote">원격지원</div>
+		<!-- 자주하는 질문 쿠키 삭제 후 오픈 버튼 
+		<div class="btn-tost-open" style="display: inline-block; height: 23px;margin: 1px;  line-height: 23px;cursor: pointer;border-radius: 3px;padding: 0 5px 0 5px;  float: right;color: #fff;background: #007bff;" popup-id="tostBOX-277" hit-id="53750">자주하는 질문</div>-->
+		<div id="btn_manual" style="background:#999;color:#eee">일정관리 메뉴얼</div>
+		<div id="logOutTimer" style="background:black; color:white; display:inline-block; line-height:23px; margin: 1px; padding: 0 5px 0 5px; float:right; height:23px; vertical-align:middle;">000:00</div>
+		<div id="mobile_view_btn" style="background:yellow; display:inline-block; line-height:23px; margin: 1px; padding: 0 5px 0 5px; float:right; height:23px; vertical-align:middle;">앱 일정노출<input type="checkbox" name="chk_view_mobile" id="chk_view_mobile" title="직원 모바일 페이지에 일정 노출하기" value="1" checked></div>
+
+		
+
+			</div>
+</h1>
+
+<div id="content">
+	<div id="header">
+		<div id="div_select_patient_msg">수급자를 선택하세요.</div>
+		<div id="pInfo">
+			<ul>
+				<li id="btn_pList_load">
+					<div><span id="pName">수급자 선택</span><span id="pList_arrowDown">▼</span></div>
+					<div id="birthdate"></div>
+				</li>
+				<li id="grade"></li>
+				<li id="pRate"></li>
+				<li id="longTermMgmtNo"></li>
+				<li id="etc_info">
+					<div id="pGroup"></div>
+					<button type="button" id="btn_pInfo" class="small icon search onlyIcon" style="float:right; margin-top:2px;"></button>
+				</li>
+			</ul>
+		</div>
+
+		<div id="service_summary">
+			<div style="border-bottom:1px solid #666">
+				<h6 id="btn_service_summary" style="float:right; width:35px; font-size:11px; text-align:center; border-radius:4px; height:36px; margin:1px;">요약<br><span id="btn_service_summary_arrow" style="color:#fff; font-size:10px">▶▶</span></h6>
+				<table id="tbl_balance">
+					<tr>
+						<th>등급 한도</th>
+						<td id="limit_Amount" class="amt"></td>
+						<th><span class="Amount_User"style="color:white">설정 한도</span></th>
+						<td><span id="limit_Amount_user" class="amt Amount_User"></span></td>
+					</tr>
+					<tr>
+						<th>잔액</th><!-- 등급한도 잔액 -->
+						<td id="n_tAmount" class="amt"></td>
+						<th><span class="Amount_User" style="color:white">잔액</span></th><!-- 설정한도 잔액 -->
+						<td><span id="n_tAmount_user" style="color:red; font-weight:bold;" class="amt Amount_User"></span></td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- <h6 id="btn_service_summary">제공급여 요약 (상세보기 <span id="btn_service_summary_arrow" style="color:#fff; font-size:10px">▶▶</span>)</h6>
+			<table id="tbl_balance">
+				<tr>
+					<th>급여 한도</th>
+					<td id="limit_Amount" class="amt"></td>
+					<th>급여 잔액</th>
+					<td id="n_tAmount"></td>
+				</tr>
+			</table> -->
+			<table id="tbl_total">
+				<colgroup>
+					<col style="width:28px;">
+					<col style="width:28px;">
+					<col>
+					<col style="width:60px;">
+					<col style="width:60px;">
+					<col style="width:60px;">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>구분</th>
+						<th>횟수</th>
+						<th>급여 계</th>
+						<th>본인부담</th>
+						<th style="letter-spacing:-2px;">비급여+초과</th>
+						<th>수당</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>요양</th>
+						<td id="sCnt_001" class="amt"></td>
+						<td id="tAmount_001" class="amt"></td>
+						<td id="pAmount_001" class="amt"></td>
+						<td id="pAmount_ext_001" class="amt"></td>
+						<td id="tAllowance_001" class="amt"></td>
+					</tr>
+					<tr>
+						<th>목욕</th>
+						<td id="sCnt_003" class="amt"></td>
+						<td id="tAmount_003" class="amt"></td>
+						<td id="pAmount_003" class="amt"></td>
+						<td id="pAmount_ext_003" class="amt"></td>
+						<td id="tAllowance_003" class="amt"></td>
+					</tr>
+					<tr>
+						<th>간호</th>
+						<td id="sCnt_002" class="amt"></td>
+						<td id="tAmount_002" class="amt"></td>
+						<td id="pAmount_002" class="amt"></td>
+						<td id="pAmount_ext_002" class="amt"></td>
+						<td id="tAllowance_002" class="amt"></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>계</th>
+						<td id="sCnt" class="amt"></td>
+						<td id="tAmount" class="amt"></td>
+						<td id="pAmount" class="amt"></td>
+						<td id="pAmount_ext" class="amt"></td>
+						<td id="tAllowance" class="amt"></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<div>
+			<div id="service_summary_detail">
+				<button type="button" id="btn_service_summary" class="small border_blink">◀<br>닫기</button>
+				<div>
+					<table id="tbl_service_summary"></table>
+				</div>
+			</div>
+		</div>
+
+		<div id="plan_tool" style=" border-right:0px !important;">
+			<ul>
+				<li style="width:135px">
+					<h6>서비스 구분</h6>
+					<div>
+						<div id="btn_sKind">
+							<input type="radio" name="sKind" value="001" id="sKind_001" checked><label for="sKind_001">요양</label>
+							<input type="radio" name="sKind" value="003" id="sKind_003"><label for="sKind_003">목욕</label>
+							<input type="radio" name="sKind" value="002" id="sKind_002"><label for="sKind_002">간호</label>
+						</div>
+						<ul id="ext_info_check">
+							<li>
+								<ul>
+									<li><input type="checkbox" id="service_ext_put" name="service_ext_put" value="1"><label for="service_ext_put" style="font-size:11px">비급여</label></li>
+									<li><input type="checkbox" id="timeOverlap" name="timeOverlap"><label for="timeOverlap" style="letter-spacing:-1px;">중복배정</label></li>
+								</ul>
+							</li>
+							<li sKind="001">
+								<ul>
+									<li><input type="checkbox" name="inji" id="inji" value="1"><label for="inji">인지활동</label></li>
+									<li><input type="checkbox" name="familyYn" id="familyYn" value="1"><label for="familyYn">가족케어</label></li>
+									<li id="familyYn_ext">┕<input type="checkbox" name="family90" id="family90" value="1"><label for="family90">90분가능</label></li>
+									<li><input type="checkbox" name="fullCare" id="fullCare" value="1"><label for="fullCare" style="letter-spacing:-1px;">치매가족휴가(<span id="fullcare_cnt"></span>회)</label></li>
+								</ul>
+							</li>
+							<li sKind="002">
+								<ul>
+									<li><input type="checkbox" name="HltMgmtSvcYn" id="HltMgmtSvcYn" value="1"><label for="HltMgmtSvcYn">건강관리</label></li>
+									<li><input type="checkbox" name="familyHlt" id="familyHlt" value="1"><label for="familyHlt">가족간호</label></li>
+									<li><input type="checkbox" name="dementia" id="dementia" value="1"><label for="dementia">치매관리</label></li>
+								</ul>
+							</li>
+							<li sKind="003">
+								<ul>
+									<li><input type="radio" name="bath_way" id="bath_way_1" value="1" checked><label for="bath_way_1">차 미이용</label></li>
+									<li><input type="radio" name="bath_way" id="bath_way_2" value="2"><label for="bath_way_2">차(차량내)</label></li>
+									<li><input type="radio" name="bath_way" id="bath_way_3" value="3"><label for="bath_way_3">차(가정내)</label></li>
+									<li id="one_bath_wrap"><input type="checkbox" name="one_bath" id="one_bath" value="1"><label for="one_bath">1인 목욕</label></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				<li style="width:310px">
+					<h6>방문시간 및 제공서비스</h6>
+					<div>
+						<ul>
+							<li id="sTime">
+								<input type="text" name="stH" id="stH" maxlength=2 onlyNumber fnc-select="all">:<input type="text" name="stM" id="stM" maxlength=2 onlyNumber fnc-select="all"> ~
+								<input type="text" name="etH" id="etH" maxlength=2 onlyNumber fnc-select="all">:<input type="text" name="etM" id="etM" maxlength=2 onlyNumber fnc-select="all">
+								<select id="sCode" name="sCode" disabled>
+								<option></option>
+								<option>150분</option>
+								</select>
+							</li>
+							<li style="margin-top:22px">
+								<table id="tbl_service_time">
+								<caption>배정시간</caption>
+									<tr align=center>
+										<th>배정</th>
+										<th>인정</th>
+										<th>야간</th>
+										<th>심야</th>
+										<th style="display:none">주간</th>
+									</tr>
+									<tr align=center>
+										<td id="terM">&nbsp;</td>
+										<td id="stmTotal"></td>
+										<td id="stmNgt"></td>
+										<td id="stmMngt"></td>
+										<td id="stmBase" style="display:none"></td>
+									</tr>
+								</table>
+								<table id="tbl_service_amount">
+								<caption><input type="checkbox" id="chk_amount_add" name="chk_amount_add" style="margin-top:-4px;"><label for="chk_amount_add">수가가산(X)</label></caption>
+									<col>
+									<col>
+									<col style="width:45px">
+									<col style="width:45px">
+									<tr align=center>
+										<th>적용수가=</th>
+										<th>원수가</th>
+										<th>+야간</th>
+										<th>+심야</th>
+									</tr>
+									<tr align=center>
+										<td><input type="text" id="tAmount" name="tAmount" class="amt"></td>
+										<td><input type="text" id="otAmount" name="otAmount" class="amt" readonly></td>
+										<td><input type="text" id="atAmount_20" name="atAmount_20" class="amt" readonly></td>
+										<td><input type="text" id="atAmount_30" name="atAmount_30" class="amt" readonly></td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				<li style="width:115px">
+					<h6 style="border-radius: 0 7px 0 0">급여제공자.수당</h6>
+					<div>
+						<div id="appointed_worker">
+							<div style="border-bottom:1px dotted #ccc"><button type="button" id="btn_appointed_worker" class="small border_blink">선택/변경 하기</button></div>
+							<div id="choose_worker">▲▲▲<br>급여제공자를 선택하세요.</div>
+							<ul arr="1">
+								<li class="wName"></li>
+								<li class="spaper"><span class="icon spaper"></span></li>
+								<li class="family"><span class="icon fC"></span></li>
+								<li class="allowance amt"></li>
+								<li class="pType"><span class="icon si"></span></li>
+								<li class="allowance_base amt"></li>
+							</ul>
+							<ul arr="2">
+								<li class="wName"></li>
+								<li class="spaper"><span class="icon spaper"></span></li>
+								<li class="family"><span class="icon fC"></span></li>
+								<li class="allowance amt"></li>
+								<li class="pType"><span class="icon si"></span></li>
+								<li class="allowance_base amt"></li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div id="div_day_memo"></div>
+		</div>
+	</div>
+
+	<ul id="toolbar_A">
+		<li id="selYm" class="selYm">0000-00</li>
+		<li>
+			<button type="button" class="small border_blink" id="btn_list_sData" toggle="달력일정 보기(관리)">목록일정 및 공단비교</button>
+			<button class="small icon print btn_print_schedule" class="" sw="B" form="patient.schedule_wide.html">일정표(가로)</button>
+			<button class="small icon print btn_print_schedule" sw="A" form="patient.schedule.html">일정표(세로)</button>
+			<button type="button" class="small" id="btn_month_memo">욕구평가/기타</button>
+			<!-- <button type="button" id="btn_prevMonth_schedule">전월패턴</button> -->
+		</li>
+		<li></li>
+				<li class="fix_no"><button type="button" class="small border_blink" style="border-color:red" id="btn_worker_allowance">수당 확인/수정</button></li>
+		<li class="fix_no"><button type="button" class="small" id="btn_schedule_arrange_reset">배정 취소</button> <button type="button" class="small" id="btn_plan_data">급여제공계획으로 일정배정</button></li>
+	</ul>
+
+	<!-- 목록형 일정표 - 공단일정비교 목록 -->
+	<div id="list_sData_overLap">
+		<table id="list_sData"></table>
+	</div>
+
+	<div style="position:relative; display:inline-block;">
+		<!-- 달력 영역 시작 -->
+		<div id="calendar"></div>
+		<!-- 달력 영역 끝 -->
+		<div id="arranged_worker"></div>
+		<!-- 급여제공자 -->
+	</div>
+
+	<ul id="toolbar_B">
+		<li class="fix_no" style="width:180px; border:0px;">
+			<button type="button" class="small" id="btn_schedule_reset">일정<br>초기화</button>
+			<button type="button" class="small" id="btn_schedule_fix">일정<br>확정하기</button>
+		</li>
+		<li class="fix_no" style="float:right; margin-right:0px; display:none">
+			<div id="save_btn_ezc">
+				<button type="button" id="btn_schedule_arrange_save" class="small border_blink">배정한 일정<br>이지케어에 저장하기</button>
+			</div>
+			<div id="save_btn_ltm" style="display:none">
+				<div style="float:left; padding-right:5px;">
+					확인번호 <input type="text" size="5" maxlength="4" name="confirmNum_a" id="confirmNum_a"><span class="confirmNum_org"></span>
+
+				</div>
+				<button type="butotn" id="btn_ltm_overwrite" class="small border_blink">공단<span class='ltm_data_name'></span>일정을<br>이지케어에 재등록하기</button>
+			</div>
+		</li>
+
+		<li class="fix" style="display:none; width:180px; border:0px">
+			<div>
+				<div style="display:inline-block; margin-right:5px; float:left">
+					확인번호
+					<input type="text" id="confirmNum" maxlength="4"><span class="confirmNum_org"></span>
+				</div>
+				<button type="button" class="small" id="btn_schedule_fix_cancel">일정확정<br>취소하기</button>
+			</div>
+		</li>
+		<li id="btn_action_log">
+			<span id="action_log" style='font-size:11px'></span>
+		</li>
+		<li style="width:215px;" style="display:none;">
+			<span class="ltm_ezc_match">공단<span class='ltm_data_name'></span> 일치</span>
+			<span class="ltm_ezc_no_match">공단<span class='ltm_data_name'></span> 불일치</span><br>
+			<span id="remaining_schedule_result"></span>
+		</li>
+		<li>
+			<button type="button" class="small" id="btn-toggle-arranged_worker">담당요원<br>보기</button>
+		</li>
+		<li class="fix" style="display:none;">
+			<div style="color:red; font-size:20px; font-weight:bold">확정된 일정입니다.</div>
+		</li>
+	</ul>
+</div>
+
+<script type="text/javascript">
+<!--
+	if($.cookie("show_arranged_worker")) $("#btn-toggle-arranged_worker").html("담당요원<br>닫기");
+	else $("#btn-toggle-arranged_worker").html("담당요원<br>보기");
+	$("#btn-toggle-arranged_worker").click(function(){
+		$('#arranged_worker').toggle(0,function(){
+			if($("#arranged_worker").css('display') === 'none') {
+				$("#btn-toggle-arranged_worker").html("담당요원<br>보기");
+				$.removeCookie("show_arranged_worker");
+			}else{
+				$.cookie("show_arranged_worker","1" , {expires:100});
+				$("#btn-toggle-arranged_worker").html("담당요원<br>닫기");
+			}
+		});
+	})
+//-->
+</script>
+<div id="ignore_schedule_table">
+	<div id="ignore_schedule_table_Ym" style="font-size:20px; font-weight:bold; margin-bottom:20px">2026-10</div>데이터베이스가 생성되지 않아
+	해당 년도의 일정관리를 진행할 수 없습니다.<br><br>
+	매해 관련 법 및 고시 개정에 따라 <span style="font-weight:bold; color:red">수가 변동이 발생할 수 있어</span> <br>
+	일정관리를 제한적으로 오픈하고 있습니다.<br><br>
+	보건복지부 <!-- <a href="https://www.epeople.go.kr/jsp/user/frame/po/policy/UPoFrPolicyView.paid?flag=&flag2=&app_no_c=1AC-1811-022530&pageNo=2&s_pageNo=2&urlGubun=puhe&increaseCnt=ok&s_show_sele=10&anc_code=1352000&channel=1352000&menu_code=PO002&orderCon=&deptCode=&s_discuss_gubun=&s_statute_c=&s_plan_gubun=&s_date_condi=&s_start_date=&s_end_date=&sltSearch=&txtSearch=&show_sele=10" target="_blank">241219.24년 고시로 바꿀수있으나 현재 나오지 않았기때문에 일단 주석처리</a> -->"장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시 일부개정안"에 따라<br> <strong style="text-decoration:underline">2025년 일정등록은 수가 확정 고시 후 가능할 것</strong>으로 보입니다.<br><br>
+
+	이용에 불편을 드려 죄송합니다.
+</div>
+
+<!-- dialog(일정확정) -->
+<div id="dialog_schedule_fix" style="display:none">
+	일정 확정시 현재의 일정이 본인 부담금, 직원 급여 산정의 기초 자료가 됩니다.<br>
+	<span style="color:red">확정 후 일정 수정이 안되므로 반드시 이상 유무를 확인 하시기 바랍니다.</span>
+	<br><br>
+	일정을 확정하시겠습니까?
+</div>
+
+
+<!-- dialog(일정확정 취소) -->
+<div id="btn_schedule_fix_cancel" style="display:none">
+	※주의※!!!<br>
+	<span style='color:red'>해당 월의 본인부담 서류, 연관 급여제공자의 급여명세서가 모두 삭제됩니다.</span><br>
+	단, 배정된 일정은 삭제되지 않습니다.<br>
+	<br>
+	<br>
+	일정 확정취소를 실행하시겠습니까?<br>
+	<span style="color:#2d45c3; letter-spacing:-1px">(본인부담금 수납내역은 초기화되지 않습니다)</span>
+</div>
+
+
+<!-- dialog(일정메모) -->
+<div id="dialog_day_memo" style="display:none">
+	<div id="sel_day_memo_wrap" style="margin-bottom:5px;">
+		<select id="sel_day_memo">
+			<option class="new_memo_insert">새로운 메모 등록하기</option>
+			<option data={}>김복지가 0000-00-00 00:00:00에 최종적으로 등록(수정)한 메모</option>
+		</select>
+		<div class="message" style="float:right">◀◀ 메모선택 및 신규등록</div>
+	</div>
+	<textarea name="day_memo" id="day_memo" style="width:100%; height:200px;"></textarea>
+	<div id="div_memo_btn" style="text-align:right; border-top:1px solid #CCC; margin-top:5px; padding-top:5px;">
+		<button id="btn_dialog_day_memo_delete">삭제</button>
+		<button id="btn_dialog_day_memo_save">저장</button>
+		<button id="btn_dialog_day_memo_close">닫기</button>
+	</div>
+</div>
+
+<!-- dialog(욕구평가 등 기타사항) -->
+<div id="dialog_month_memo" style="display:none">
+	<table id="tbl_month_memo">
+		<tr>
+			<th width="25%">수급자 현재상태/욕구평가</th>
+			<th width="25%">수급자 요구내용</th>
+			<th width="25%">급여제공자 서비스내용</th>
+			<th width="25%">기타(전달사항)</th>
+		</tr>
+		<tr height=200>
+			<td><textarea name="memo_A" id="memo_A"></textarea></td>
+			<td><textarea name="memo_B" id="memo_B"></textarea></td>
+			<td><textarea name="memo_C" id="memo_C"></textarea></td>
+			<td><textarea name="memo_D" id="memo_D"></textarea></td>
+		</tr>
+	</table>
+	<p align="right">작성하신 내용은 일정표(세로)에 반영 및 출력 됩니다.</p>
+</div>
+
+<!-- dialog(이지케어 일정초기하기) -->
+<div id="dialog_schedule_RESET" style="display:none;">
+	<input type="hidden" name="confirmNum" id="confirmNum" value="">
+	<div>
+		일정 초기화를 실행하면 일정 및 저장된 수당이 초기화되며<br>
+		해당작업은 다시 해야합니다.<br><br>
+		일정을 초기화 하시겠습니까?
+	</div>
+</div>
+
+
+<!-- dialog(공단일정에서 이지케어에 등록되지 않은 수급자 등록 화면 )  -->
+<div id="dialog_not_patient" style="display:none;">
+	<div>
+		공단일정을 토대로 비교된 내용이며, 검토 후 등록하시기 바랍니다.
+	</div>
+	<div style="padding:15px 10px;">
+		<ul id="not_patient_list">
+			<li>
+				<input type="text" name="pName" value="" readonly>
+				<input type="text" name="longTermMgmtNo" value="" readonly>
+				<input type="text" name="birthdate" maxlength="6" placeholder="생년월일">
+				<select name="sex">
+					<option value="">성별</option>
+					<option value="남">남</option>
+					<option value="여">여</option>
+				</select>
+				<select name="dLevel">
+					<option value="">등급</option>
+				</select>
+				<select name="pRate">
+					<option value="">본인부담율</option>
+				</select>
+				<button type="button" name="btn_save" class="icon plus small">등록</button>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="dialog_healthCare_overAlert" style="display:none;">
+	<p><!-- 다음의 경우를 제외하고는  -->방문간호 건강관리는 월 1회 이상을 제공할 수 없습니다.</p>
+	<!-- <p style="padding:10px; color:#999; font-size:11px;">등급을 처음 판정받은 1~5등급 치매수급자는 등급을 받은 날부터 60일 이내에 월 한도액과 관계없이 <br>방문간호급여를 총 4회 범위 내에서 월 2회까지 이용할 수 있다.<br> <span style="color:#999; font-size:11px;text-decoration:underline">(장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시, 제27조(방문간호급여 제공기준), 제5항)</span></p> -->
+
+	<p>방문간호(건강관리) 일정을 <span id="health_cnt">00</span>회 배정하시겠습니까?</p>
+</div>
+
+<!-- dialog(공단일정에서 이지케어에 등록되지 않은 급여제공자 등록 화면 )  -->
+<div id="dialog_not_worker" style="display:none;">
+	<div>
+		공단일정을 토대로 비교된 내용이며, 검토 후 등록하시기 바랍니다.
+	</div>
+	<div style="padding:15px 10px;">
+		<ul id="not_worker_list">
+			<li>
+				<input type="text" name="wName" value="김요양" readonly>
+				<input type="text" name="jumin1" maxlength="6" readonly>
+				<select name="worker_kind">
+					<option value="">=직종</option>
+				</select>
+				<input type="hidden" name="hAmount_base" placeholder="근로계약시급" value="10320" title="근로계약시급" readonly>
+				<!-- <input type="text" name="meal_amount" placeholder="식대/시간당">  -->
+				<input type="text" name="hAmount" placeholder="포괄시급">
+				<button type="button" name="btn_save" class="icon plus small">등록</button>
+			</li>
+		</ul>
+		<!-- 포괄시급 일괄 변경 : <input type="text" name="hAmount_all" id="hAmount_all">
+		<button type="button" id="btn_save_all" name="btn_save_all" class="icon plus small">일괄등록</button> -->
+	</div>
+</div>
+
+
+
+<!-- 수급자 선택창 [ -->
+<div id="pList" style="display:none;">
+	<h5 style="background:#efefef; padding:4px; border-bottom:1px solid #ccc; border-radius:0 10px 0 0">
+		수급자 목록 <button type="button" class="small" style="float:right" id="btn_pList_close">닫기</button>
+	</h5>
+
+
+	<div style="padding:5px 10px;">
+		<form id="searchForm" METHOD=GET onsubmit="get_jData.pList(); return false;">
+			<ul style="height:23px;">
+				<li class="search_big">
+					<div class="checkbox-btn small jsSearch" style="margin-right:2px !important">
+						<input type="checkbox" name="plan" class="plan_ox" id="plan_o" value="o"><label for="plan_o">일정 O</label>
+						<input type="checkbox" name="plan" class="plan_ox" id="plan_x" value="x"><label for="plan_x">일정 X</label>
+					</div>
+				</li>
+				<li style="margin-left:20px">
+					<div id="btn_state" class="checkbox-btn small">
+						<input type='checkbox' name='state' id='s_0' value=''><label for='s_0'>전체</label>
+						<input type='checkbox' name='state' id='s_01' value='01' checked><label for='s_01'>수급중</label>
+						<input type='checkbox' name='state' id='s_07' value='07'><label for='s_07'>입원</label>
+						<input type='checkbox' name='state' id='s_03' value='03'><label for='s_03'>보류</label>
+						<input type='checkbox' name='state' id='s_06' value='06'><label for='s_06'>등급외</label>
+						<input type='checkbox' name='state' id='s_04' value='04'><label for='s_04'>사망</label>
+						<input type='checkbox' name='state' id='s_02' value='02'><label for='s_02'>해지</label>
+						<input type='checkbox' name='state' id='s_05' value='05'><label for='s_05'>타기관</label>
+					</div>
+				</li>
+				<li class="search_big" style="float:right; margin-right:-5px !important;">
+					<div class="checkbox-btn small jsSearch"><input type="checkbox" name="familyCare" id="familyCare" value="checked"><label for="familyCare">친족</label></div>
+				</li>
+			</ul>
+
+			<ul style="height:25px;">
+				<li class="search_big" id="total_row" style="width:30px; text-align:right; margin-right:10px; font-size:11px !important; letter-spacing: -1px;">0명</li>
+				<li>
+					<select name="dLevel" style="font-size:11px;">
+						<option value="">등급</option>
+					</select>
+				</li>
+				<li>
+					<select name="pRate" style="font-size:11px; width:70px;">
+						<option value="">본인부담</option>
+					</select>
+				</li>
+				<li class="search_big">
+					<select name="service" style="font-size:11px">
+						<option value="">서비스</option>
+						<option value="001">요양</option>
+						<option value="003">목욕</option>
+						<option value="002">간호</option>
+					</select>
+				</li>
+				<li style="margin-left:10px">
+					<div class="checkbox-btn small jsSearch"><input type="checkbox" name="inji_chk" id="inji_chk" value="checked"><label for="inji_chk" title="수급자정보관리창-기타(탭)-인지활동 체크여부에 따라 검색됩니다.">인지</label></div>
+				</li>
+				<li><button type="button" id="btn_pGroup_select" name="pGroup" class="small" style="max-width:40px">그룹</button></li>
+				<li style="float:right">
+					<input type="text" name="keyword" id="keyword" style="width:60px;"> <button type="submit" class="small" style="margin-right:-1px !important">검색</button>
+				</li>
+			</ul>
+			<p style="clear:both"></p>
+		</form>
+
+		<div id='not_patient_status'>
+			<button type='button' id='btn_not_persion' class="small" style="height:40px; float:right;">미등록 수급자/급여제공자<br>확인 및 등록하기</button>
+			이지케어에 등록 안된<br> 수급자 <span id="not_patient_cnt">00</span>명, 급여제공자 <span id="not_worker_cnt">00</span>명이 있습니다.<br>
+		</div>
+
+		<table id="patientList"></table>
+		<div id="patientList_pager"></div>
+
+		<div id="div_ltm_sDataUpload">
+			<h5 class="search_big">공단일정(엑셀파일) 이지케어에 올리기
+			<input type="text"  id="tmp_ltmNo" value="24211000502" style="display:none;" size="12">
+			<!-- <button type="button" class="icon help small btn_help_ltm_excel_upload">엑셀 다운로드 방법</button> --></h5>
+			<div class="border_blink">
+				<ul class="search_big">
+					<li class="upltm" upkind="plan">
+						계획일정 <span class="delLtm" delKind="plan">X</span>
+						<div class="show_ltm_log" style='font-weight:bold'>&nbsp;</div>
+					</li>
+					<li class="upltm" upkind="done">
+						청구일정 <span class="delLtm" delKind="done">X</span>
+						<div class="show_ltm_log" style='font-weight:bold'>&nbsp;</div>
+					</li>
+				</ul>
+				<!-- <button class="get_ltmData" value="plan" id="btn_get_plan" style="height:40px;">계획<br>가져오기</button>
+				<button class="get_ltmData" value="done" id="btn_get_done" style="height:40px;">청구<br>가져오기</button> -->
+				<div style="border:2px solid red; position:absolute; width:1000px; display:none">
+					<textarea id="inResult" style=" width:30%; display:inline-block; height:100px"></textarea>
+					<textarea id="outResult" style="width:30%; display:none; height:100px"></textarea>
+					<textarea id="outJsonResult" style="width:30%; display:none; height:100px"></textarea>
+				</div>
+
+				<script>
+					Object.assign(smartScrap, {
+						oCode			: "DEMO",
+						ltmNo			: "24211000502",
+						loadingMsg		: "요청 처리중입니다.<br>잠시만 기다려주세요."
+					});
+
+					let chk_alert = 0;
+					var alert = function (opt, title, close){
+						if(typeof opt == "string"){
+							opt = { title: title || "알림", message: opt, close:close || function(){} }
+						}
+						chk_alert++;
+						let tmp_dialog = $("<div id='dialog_alert'>");
+						tmp_dialog.dialog({
+							modal:true,
+							open:function(){
+							
+							},
+							close: function(){
+								if(opt.close) opt.close();
+								$(this).dialog("destroy");
+								setTimeout(function(){chk_alert--;}, 50);
+							},
+							width: opt.width || "auto",
+							height: opt.height || "auto",
+							title: opt.title || "알림",
+							message: opt.message || "",
+							position: opt.position || { my:"center", at:"center", of:"body"},
+
+							buttons: opt.buttons || {
+								"확인": function(){
+									if(opt.action) opt.action();
+									$(this).dialog("close");
+								}
+							}
+						}).append(opt.message);
+
+						if(opt["zIndex"]){
+							tmp_dialog.closest(".ui-dialog").css("z-index", opt["zIndex"]*1+1);
+							tmp_dialog.closest(".ui-dialog").next(".ui-widget-overlay").css("z-index", opt["zIndex"]);
+						}
+					}
+
+					Date.prototype.format = function(f) {
+						if (!this.valueOf()) return " ";
+
+						var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+						var d = this;
+
+						return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+							switch ($1) {
+								case "yyyy": return d.getFullYear();
+								case "yy": return (d.getFullYear() % 1000).zf(2);
+								case "MM": return (d.getMonth() + 1).zf(2);
+								case "dd": return d.getDate().zf(2);
+								case "E": return weekName[d.getDay()];
+								case "HH": return d.getHours().zf(2);
+								case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+								case "mm": return d.getMinutes().zf(2);
+								case "ss": return d.getSeconds().zf(2);
+								case "a/p": return d.getHours() < 12 ? "오전" : "오후";
+								default: return $1;
+							}
+						});
+					};
+
+					String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+					String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+					Number.prototype.zf = function(len){return this.toString().zf(len);};
+
+					$(document).on("click", "#btn-scrap-plan", function(){
+						if("DEMO"=='DEMO'){ alert('데모 체험 중에는 공단 조회 기능을 이용하실 수 없습니다.'); return; }
+						if("03"=='10'){ alert('자료보관 중에는 공단 조회 기능을 이용하실 수 없습니다.'); return; }
+
+						var _that = this;
+						let now_Ym = new Date(Ym),
+							before_Ym = new Date(now_Ym.setMonth( now_Ym.getMonth()-1 )).format("yyyyMM"),
+							before_Ym2 = new Date(now_Ym.setMonth( now_Ym.getMonth()-1 )).format("yyyyMM");
+
+						smartScrap.action([
+							{
+								MODULE		: "1",
+								ACNTYYMM	: Ym.replace(/[^0-9]/g, "")
+							},
+							{
+								MODULE		: "11",
+								STARTDATE	: before_Ym,
+								ENDDATE		: before_Ym,
+								SEARCHKIND	: "1"
+							},
+							{
+								MODULE		: "12",
+								ACNTYYMM	: before_Ym,
+								LTCPCLSFCCD	: "3"
+							},
+							{
+								MODULE		: "11",
+								STARTDATE	: before_Ym2,
+								ENDDATE		: before_Ym2,
+								SEARCHKIND	: "1"
+							},
+							{
+								MODULE		: "12",
+								ACNTYYMM	: before_Ym2,
+								LTCPCLSFCCD	: "3"
+							},
+
+							{
+								MODULE		: "13",
+								ACNTYYMM	: before_Ym2,
+								LTCPCLSFCCD	: "3" 
+							},
+							{
+								MODULE		: "14",
+								ACNTYYMM	: before_Ym2,
+								LTCPCLSFCCD	: "3"
+							},
+							{
+								MODULE		: "14",
+								ACNTYYMM	: before_Ym2,
+								LTCPCLSFCCD	: "4"
+							},
+							{
+								MODULE		: "14",
+								ACNTYYMM	: before_Ym2,
+								LTCPCLSFCCD	: "5"
+							}
+						], "계획일정 조회중입니다.",
+						function(result){
+							console.log('======= module_result ========',result);
+							if(result[0]){
+								if(result[0].ERRMSG){
+									dialog_alert(result[0].ERRMSG);
+								}else{
+									$("#front_message").hide();
+									module_save({ mode:"giwoong_plan", Ym:Ym, data:JSON.stringify(result[0])}, "plan");
+								}
+							}
+							//1달전 가산 데이터
+							if(result[1]){
+								if(result[1].ERRMSG){
+									console.log(result[1].ERRMSG);
+								}else{
+									addAmt_save(before_Ym, result[1]["PAYCOSTLIST"]);
+								}
+							}
+							//1달전 가산 인력 방문 데티어
+							if(result[2]){
+								if(result[2].ERRMSG){
+									console.log(result[2].ERRMSG);
+								}else{
+									addWorker_save(before_Ym, result[2]["VISITINFOLIST"]);
+								}
+							}
+
+							//2달전 가산 데이터
+							if(result[3]){
+								if(result[3].ERRMSG){
+									console.log(result[3].ERRMSG);
+								}else{
+									addAmt_save(before_Ym2, result[3]["PAYCOSTLIST"]);
+								}
+							}
+							//2달전 가산 인력 방문 데티어
+							if(result[4]){
+								if(result[4].ERRMSG){
+									console.log(result[4].ERRMSG);
+								}else{
+									addWorker_save(before_Ym2, result[4]["VISITINFOLIST"]);
+								}
+							}
+							
+							try{
+								//2달전 데이터
+								if(result[5]){
+									if(result[5].ERRMSG){
+										console.log(result[5].ERRMSG);
+									}else{
+										ltmDecision_save(before_Ym2, result[5]["DECISIONINFOLIST"]);
+									}
+								}
+								//2달전 데이터
+								if(result[6]){
+									if(result[6].ERRMSG){
+										console.log(result[6].ERRMSG);
+									}else{
+										ltmEmpwork_save(before_Ym2, result[6]["EMPWORKINFOLIST"], 3);
+									}
+								}
+								if(result[7]){
+									if(result[7].ERRMSG){
+										console.log(result[7].ERRMSG);
+									}else{
+										ltmEmpwork_save(before_Ym2, result[7]["EMPWORKINFOLIST"], 4);
+									}
+								}
+								if(result[8]){
+									if(result[8].ERRMSG){
+										console.log(result[8].ERRMSG);
+									}else{
+										ltmEmpwork_save(before_Ym2, result[8]["EMPWORKINFOLIST"], 5);
+									}
+								}
+							}catch (e){
+								console.log(e);
+							}
+						});
+					});
+
+					$(document).on("click", "#btn-scrap-done", function(){
+						if("DEMO"=='DEMO'){ alert('데모 체험 중에는 공단 조회 기능을 이용하실 수 없습니다.'); return; }
+						if("03"=='10'){ alert('자료보관 중에는 공단 조회 기능을 이용하실 수 없습니다.'); return; }
+						let now_Ym = new Date(Ym),
+							before_Ym = new Date(now_Ym.setMonth( now_Ym.getMonth()-1 )).format("yyyyMM");
+
+						smartScrap.action([
+								{
+									MODULE		: "2",
+									ACNTYYMM	: Ym.replace(/[^0-9]/g, "")
+								},
+								{
+									MODULE		: "3",
+									ACNTYYMM	: Ym.replace(/[^0-9]/g, "")
+								},
+								{
+									MODULE		: "11",
+									STARTDATE	: before_Ym,
+									ENDDATE		: before_Ym,
+									SEARCHKIND	: "1"
+								},
+								{
+									MODULE		: "12",
+									ACNTYYMM	: before_Ym,
+									LTCPCLSFCCD	: "3"
+								},
+
+								{
+									MODULE		: "13",
+									ACNTYYMM	: before_Ym,
+									LTCPCLSFCCD	: "3" 
+								},
+								{
+									MODULE		: "14",
+									ACNTYYMM	: before_Ym,
+									LTCPCLSFCCD	: "3"
+								},
+								{
+									MODULE		: "14",
+									ACNTYYMM	: before_Ym,
+									LTCPCLSFCCD	: "4"
+								},
+								{
+									MODULE		: "14",
+									ACNTYYMM	: before_Ym,
+									LTCPCLSFCCD	: "5"
+								}
+							], "청구일정.청구-상세 조회중입니다.",
+						function(result){
+							//console.log('result',result);
+
+							if(result[0]){
+								if(result[0].ERRMSG || result[1].ERRMSG ){
+									dialog_alert("청구내역 : "+result[0].ERRMSG+"<br/>"+"청구상세내역 : " + result[1].ERRMSG);
+								}else{
+									//console.log("청구내역", result[0], "청구내역상세", result[1]);
+									$("#front_message").hide();
+									module_save({ mode:"giwoong_done", Ym:Ym, doneData:JSON.stringify(result[0]), doneDetail:JSON.stringify(result[1])}, "done");
+								}
+							}
+
+							//1달전 가산 데이터
+							if(result[2]){
+								if(result[2].ERRMSG){
+									console.log(result[2].ERRMSG);
+								}else{
+									addAmt_save(before_Ym, result[2]["PAYCOSTLIST"]);
+								}
+							}
+							//1달전 가산 인력 방문 데티어
+							if(result[3]){
+								if(result[3].ERRMSG){
+									console.log(result[3].ERRMSG);
+								}else{
+									addWorker_save(before_Ym, result[3]["VISITINFOLIST"]);
+								}
+							}
+
+							try{
+								//1달전 데이터
+								if(result[4]){
+									if(result[4].ERRMSG){
+										console.log(result[4].ERRMSG);
+									}else{
+										ltmDecision_save(before_Ym, result[4]["DECISIONINFOLIST"]);
+									}
+								}
+								//1달전 데이터
+								if(result[5]){
+									if(result[5].ERRMSG){
+										console.log(result[5].ERRMSG);
+									}else{
+										ltmEmpwork_save(before_Ym, result[5]["EMPWORKINFOLIST"], 3);
+									}
+								}
+								if(result[6]){
+									if(result[6].ERRMSG){
+										console.log(result[6].ERRMSG);
+									}else{
+										ltmEmpwork_save(before_Ym, result[6]["EMPWORKINFOLIST"], 4);
+									}
+								}
+								if(result[7]){
+									if(result[7].ERRMSG){
+										console.log(result[7].ERRMSG);
+									}else{
+										ltmEmpwork_save(before_Ym, result[7]["EMPWORKINFOLIST"], 5);
+									}
+								}
+
+							}catch (e){
+								console.log(e);
+							}
+						});
+					});
+
+					function module_save(postData, kind){
+						$.ajax({
+							type:"POST",
+							url:"./run.php",
+							data:postData,
+							success:function(data){
+								if(data == "0000"){
+									get_jData.base(Ym, callBack);
+									$("#ltm_type_"+kind).prop("checked", true);
+									$("#scraping_step_wrap").hide();
+									$("#fileUp_progressBar").hide();
+									$("#fileUp_action_button").hide();
+									$("#fileUp_ltm_overwrite_all_confirm").show();
+								}else{
+									sPinner.error(data);
+								}
+							}
+						});
+					}
+				</script>
+
+				<style>
+					.loading_wrp{z-index:20;}
+				</style>
+				<button type="button" id="btn_xls_upload" class="small border_blink ">공단일정(자동/엑셀)<br>이지케어에 올리기</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- ] 수급자 선택창 -->
+
+<div id="dialog_ltm_schedule_OVERWRITE_ALL" style="display:none">
+  <input type="radio" name="ltm_type" value="plan">계획일정,
+  <input type="radio" name="ltm_type" value="done">청구일정
+  <p>주의사항: 기존 일정은 모두 리셋 됩니다.</p>
+  <p>등록되지 않은 수급자, 등록되지 않은 급여제공자 알림 처리</p>
+  <button type="button" id="btn_ltm_schedule_OVERWRITE_ALL_action">공단일정 이지케어에 일괄 등록하기</button>
+</div>
+
+<div id="dialog_message_overwrite_all_confirm">
+	<ul id="message_overwrite_all_confirm">
+		<li>이지케어에 일정이 확정되어 있거나, 미등록 수급자 및 급여제공자가 있을 경우 일정 등록이 되지 않습니다.</li>
+		<li style='color:red'>일괄 등록 시 기존 일정을 무시하고 새롭게 재등록 되며, 연관된 수당 자료도 초기화됩니다.</li>
+		<li>야간. 심야 서비스 제공 시간대 공단과 이지케어의 계산 수가 가 일치하지 않을 수 있습니다.</li>
+		<li>기타 공단의 프로그램 변경으로 인한 일괄 등록이 올바르게 실행되지 않을 수 있습니다.</li>
+	</ul>
+</div>
+
+<div id="dropFile">
+	<!-- <p>공단(계획,청구,청구상세)엑셀 파일을 등록 하세요.<br><span style="font-size:12px; font-weight:normal;">청구일정은 청구내역과 청구내역상세 파일을 동시에 등록해야 됩니다.</span></p> -->
+	<!-- <h3>(<em class="selYm">0000-00</em>) 공단일정 → 이지케어에 등록하기</h3> -->
+
+	<!-- ################################## 
+	<div id="front_message"  class="newalert">
+		<h3>공단일정 자동 조회 및 등록하기</h3>
+	</div>-->
+
+	<!-- ################################## -->
+	<div id="fileUp_action_button"  class="newalert">
+		<form style="display:none;"><input type="file" id="ltm_file_upload" multiple></form>
+		<div class="first-box">
+			<h3>공단일정 자동 조회하여 등록하기</h3>
+			<ul>
+				<li>
+					<button type="button" id="btn-scrap-plan" class="ltmScrap">계획일정 가져오기</button>
+					<!-- <div><span class="text-badge">계획일정</span> 수급자의 급여계약 등록일정</div> -->
+				</li>
+				<li>
+					<button type="button" id="btn-scrap-done" class="ltmScrap">청구일정 가져오기</button>
+					<!-- <div><span class="text-badge">청구일정</span>실제 기관에서 공단에 청구한 일정</div> -->
+				</li>
+			</ul>
+			<p style="font-size:14px;background:#FFFDE7; border-radius:5px; padding:3px; display:inline-block;">계획일정 등록 후 정확한 본인부담금, 직원급여를 위해 <b style="font-size:14px;">청구일정 가져오기로 최종 반영</b>하시기 바랍니다.</p>
+		</div>
+
+		<div class="second-box btn-wrap">
+			<h4>공단 일정 직접 올리기 <button type="button" class="icon help small btn_help_ltm_excel_upload">엑셀 다운로드 방법</button></h4>
+			<button type="button" id="btn_setFile" class="ez-dropFile-btn setfile">엑셀 파일 직접 올리기</button>
+			<button type="button" id="btn_ltm_upload" class="ez-dropFile-btn upload" style="width:100px;">업로드 하기</button>
+		</div>
+	</div>
+
+	<!-- ################################## -->
+	<div id="Wrap_fileUp_progressBar">
+		<!-- <p id="progressBar_notice">계획일정 등록 후 정확한 본인부담금, 직원 급여를 위해서<br/> 청구일정 가져오기로 최종 반영하시기 바랍니다.</p> -->
+		<div id="fileUp_progressBar">
+			<div id="bar"></div>
+			<p id="msg_uploading">일괄 등록 중 입니다! 잠시만 기다려주세요...</p>
+		</div>
+		<button class="ez-dropFile-btn close btn-wrap" style="width:80px; height:40px; margin-top:10px" type="button" class="btn-wrap">닫기</button>
+	</div>
+	
+	<!-- ################################## -->
+	<div id="fileUp_ltm_overwrite_all_confirm">
+		<p>공단
+		<input type="radio" name="ltm_type" value="plan" id="ltm_type_plan"><label for="ltm_type_plan">계획일정</label>
+		<input type="radio" name="ltm_type" value="done" id="ltm_type_done"><label for="ltm_type_done">청구일정</label>
+		을 이지케어로 등록시 필수 동의 및 선택사항</p>
+
+		<ul id="ltm_overwrite_attention">
+			<li>
+				<input type="checkbox" id="chk_upload_agree" value="checked"/> <label for="chk_upload_agree"> 이지케어에 등록된 기존 일정을 삭제하고 새롭게 재 등록합니다. 공단과 이지케어의 수가가 일치하지 않을 수 있으며 직원의 수당을 다시 확인, 점검하고 진행합니다.(필수)</label>
+			</li>
+			<li>
+				<input type="checkbox" id="chk_reset_before_upload" value="checked"/> <label for="chk_reset_before_upload">확정된 일정은 제외하고 모든일정 초기화 하기(선택)</label>
+			</li>
+			<li id="chk_add_allowance_wrap">
+				<input type="checkbox" id="chk_add_allowance" value="checked"/> <label for="chk_add_allowance">방문당 간호 야간수당 가산하기(선택)</label>
+			</li>
+		</ul>
+		<div class="btn-wrap" style="position:absolute; bottom:40px; margin:0 auto; display:inline-block;">
+			<button type="button" id="btn_overwrite_all_yes" style="width:150px; height:40px;">일괄 등록 실행하기</button>
+			<button type="button" id="btn_overwrite_all_no" style="width:110px; height:40px;">실행취소(닫기)</button>
+		</div>	
+	</div>
+
+	
+</div>
+
+<div id="rowVersion_file" style="display:none;">
+	<p>공단일정 엑셀 파일 직접 선택하세요.<br>최대 3개 파일 등록가능</p>
+	<form  action="./run.php" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="mode" value="ltm_sDataUpload" />
+		<input type="hidden" name="pCode" value="" />
+		<input type="hidden" name="Ym" value="" />
+		<input name="files[]" type="file"/>
+		<input name="files[]" type="file"/>
+		<input name="files[]" type="file"/>
+		<button type="submit" id="btn_ltm_upload_row">올리기</button>
+	</form>
+</div>
+
+
+
+
+<!--2026년 일정등록 안내
+<div id="2026_open_dialog" style="display:none;">
+	<h2 style="font-size: 23px; text-align:center; margin-bottom:.5em;">2026년 일정 재등록 안내</h2>
+	<div class="inner" style="margin-top:1rem; margin-bottom:2rem;">
+		<p style="font-size:15px;margin-top:.5rem;">2026년 고시 발표로 공단 전산에 2026년도 수가가 반영되었습니다.<br/> 이에 따라 공단에서<b style="font-size:15px;">"월금액 재산정"</b> 후, 1월 일정을 다시 업로드 해주시기 바랍니다.</p>
+		<br/>
+		<hr>
+		<h3 style="font-size:15px;margin:1rem 0;">⚠️일정 재업로드 전 꼭 확인</h3>
+		<p style="font-size:14px; letter-spacing:-1px;">최종 고시 발표 이후 <strong style="font-size:14px">일정 재업로드</strong>를 아래내용으로 진행해주시기 바랍니다</p><br/>
+		<div class="txt-box">
+			<span style="color:#e74c3c;font-size:14px;font-weight: bold;">
+				&#9312; 공단 "월금액 재산정" 경로 <br/> 
+					&nbsp;&nbsp;&nbsp; 급여계약통보서 > 급여계약내용 등록변경해지 >  <br/>  
+					&nbsp;&nbsp;&nbsp; 수급자별로 '월금액 재산정" 클릭 > 저장 및 통보 후 26년 수가 반영 확인<br/><br/>
+
+				&#9313; 이지케어에 일정을 재 업로드 &#11106; 2026년 수가로 반영되었는지 최종 확인!
+			</span>
+		</div>
+	</div>
+	<button id="btn-close-2026_open_dialog" style="float:right;">닫기</button><button id="btn-close-2026_open_dialog-long" style="float:right;">그만보기</button>
+</div>
+
+<script type="text/javascript">
+	if($.cookie("hide_2026_open_dialog") != "hide"){
+		$("#2026_open_dialog").dialog({
+			modal:true,
+			width:"630",
+			height:"auto",
+			title:"2026 일정 등록 안내"
+		});
+	}
+
+	$("#btn-close-2026_open_dialog").on("click", function(){
+		$("#2026_open_dialog").dialog("close");
+	});
+
+	$("#btn-close-2026_open_dialog-long").on("click", function(){
+		$.cookie("hide_2026_open_dialog","hide" , {expires:9999});
+		$("#2026_open_dialog").dialog("close");
+	});
+</script> -->
+
+
+
+
+
+
+
+
+
+<!-- 이지케어 분석 -->
+<script src="/assets/accessClick.log.js?20220906_1" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	accessClick.hit(4100, "schedule_plan");
+//-->
+</script>
+
+
+
+<link type="text/css" rel="stylesheet" href="/help/ckeditor.custom.help.css?20240715">
+<script type="text/javascript">
+<!--
+/*
+	$(document).on("click", "[faqNo]", function(){
+		var No = $(this).attr("faqNo");
+		window.open("/help/faq.ez?rowid="+No+"&list=1", "faq-"+No, "width=1000, height=900, top=10, left=10")
+	});
+*/
+	if($.cookie('tostBOX-277')!='hide') $('.tostBOX').fadeIn(200);
+
+	$(document).on("click", ".btn-popup-overlap-close", function(){
+		var days = parseInt($(this).val());
+		var _popup = $(this).closest("[popup-id]");
+		var popup_id = _popup.attr("popup-id");
+		$.cookie(popup_id, "hide", { expires : days } );
+
+		if (_popup.hasClass("ui-dialog-content")) {
+			_popup.dialog("close");
+		} else {
+			_popup.fadeOut();
+		}
+	});
+
+	$(document).on("click", ".btn-tost-open", function () {
+		var popup_id = $(this).attr("popup-id");
+
+		if (!popup_id) return;
+
+		// 해당 팝업 그만보기 쿠키만 삭제
+		//$.removeCookie(popup_id);
+		//$.removeCookie(popup_id, { path: "/" });
+
+		// 현재 페이지에 팝업 HTML이 있으면 다시 열기
+		$("[popup-id='" + popup_id + "']").fadeIn(200);
+	});
+//-->
+
+	
+</script>
+
+</body>
+</html>
+
+
+
+<script>
+	/*let hit_ChannelIO_btn = false;
+	$(document).on("click",".btn-ChannelIO, #btn-ChannelIO", function(){
+		hit_ChannelIO_btn = true;
+		
+	});
+	(function(){var w=window;if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};w.ChannelIO=ch;function l(){if(w.ChannelIOInitialized){return;}w.ChannelIOInitialized=true;var s=document.createElement("script");s.type="text/javascript";s.async=true;s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";var x=document.getElementsByTagName("script")[0];if(x.parentNode){x.parentNode.insertBefore(s,x);}}if(document.readyState==="complete"){l();}else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}})();
+	
+	ChannelIO('boot', {
+		"pluginKey": "d9f83e86-3660-47b3-afef-ca8b237798cb",
+		"memberId": "DEMO",
+		"customLauncherSelector": ".btn-ChannelIO, #btn-ChannelIO",
+		"hideChannelButtonOnBoot": true,
+		"profile": {
+			"name": "DEMO-\uccb4\ud5d8 \uc774\uc9c0\ucf00\uc5b4 \uc7ac\uac00\ubcf5\uc9c0\uc13c\ud130",
+			"CUSTOM_VALUE_1": "CC",
+			"CUSTOM_VALUE_2": ""
+		}
+	});
+	ChannelIO('onShowMessenger', function(){
+		accessClick.hit(50220);
+		setTimeout(function(){
+			if(!hit_ChannelIO_btn) accessClick.hit(50210);
+		},100)
+	});
+	ChannelIO('onHideMessenger', function(){
+		$("#btn-ChannelIO").addClass("close");
+	});
+	ChannelIO('setPage', 'schedule-plan');*/
+</script>

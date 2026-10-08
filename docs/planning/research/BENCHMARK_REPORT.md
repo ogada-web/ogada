@@ -1,9 +1,88 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T11:48:27Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T12:29:27Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일명(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
 
 
+
+## §965 BNK-965 — 이지케어 역공학 2-4h · ★★★ **청구일정은 청구내역·청구내역상세를 같이 올린다** · ★★★ **확정 중에는 수정·삭제가 막히고, 원천세 마감이면 취소도 막힌다** · ★★ **RFID 팝업은 코드 8개·02 없음 · PGID `schedule-form` 은 NotFound** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
+
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-10-08T12:29:27Z -->
+
+**조사일**: 2026-10-08T12:29:27Z | **rotation**: 이지케어 역공학 2-4h. BNK-964(2026-10-08T11:48:27Z) 이후 약 41분. 초점: (1) 가격·도입 기관 수 (§965-1) · (2) 일정 수정 칸·청구 엑셀 짝 (§965-2) · (3) RFID 그룹·관리자 일정·명세서 확정 (§965-3) · (4) planner 액션 (§965-4).
+
+### §965-0 · Baseline — git 실측 우선
+
+- ogada frontend develop = `29c2304d479f317acff6344d114f7fb88115c3a9` (**local develop = test** · origin = `5cf667b` · **ahead 1** · WT CLEAN · BNK-964와 동일 SHA)
+- ogada backend develop = `92466cfb0afc62dec318bb0aa9fef47a7e407600` (origin = `1e8857b4` · **ahead 3** · local `test` = `4aad7cc2` · develop 은 test 보다 **2**커밋 앞 · WT CLEAN · BNK-964와 동일 SHA)
+- merge gate **4**(FE 1 + BE 3). Route **133** · Page **106** · HTTP **450** · strict `@Test` **2485** · surefire **2505** · npm **2865** · 모듈 **97.41%**(28.25/29) 는 같은 SHA 의 BNK-963 실행값이다. `npm test` / `mvn test` 는 이번 사이클 **미실행**.
+- 데모 로그인 code=**0000**. 비로그인 `/new.ez` 는 **70B** `e1d52bd5`. 내비 `top-nav-item-V2.js?20260428` `95286775` / 25,470B 는 **BYTE-IDENTICAL**. Channel 색인 `71ca632d` / 218,877B · 글 **222** 도 **BYTE-IDENTICAL**.
+
+### §965-1 · ★★ 홈 다섯 칸은 그대로고, 헤더만 9,624다
+
+| URL | 실측 | BNK-961 대비 |
+|---|---|---|
+| [홈](https://ezcare.easyms.co.kr/) | HTTP **200** · 72,704B · `ad74f098` | `data-count` **53.9 / 9,514 / 4,904 / 2,353 / 1,820** · 집계일 **2026.09.30**. 후기 날짜 20건이 빠지고 20건이 들어왔다 |
+| [주요기능](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | HTTP **200** · 17,870B · `a77f9bf8` | 헤더만 **9,623 → 9,624**. `<dt>` 7개의 본문은 같다 |
+| [이용요금](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | HTTP **200** · 22,979B · `9db928f9` | 같은 헤더 **9,624**. 셋팅 **33,000원** · 문구는 「**2026년 10월 31일까지**」 |
+| [요금](https://ezcare.easyms.co.kr/index.html?PG=price) | HTTP **200** · 64,928B · `b4cdd841` | CSS 쿼리만. D1 「**2028년까지**」 전액 무료 · D2 **70,000원** · 프로모션 **33,000원** |
+| [FAQ 목록](https://ezcare.easyms.co.kr/help/faq.ez) | HTTP **200** · 80,058B · `49a81d71` | 제목 **233** · max **21781** · 추가 0 · 삭제 0 · 조회수가 오른 제목 **15**건 |
+
+엑셀 제목은 [21563](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21563&type=web) 엣지 · [21534](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21534&type=web) 크롬뿐이다. 가져오기 컬럼 변경은 **0**이다. [FAQ 21298](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21298&type=web) 는 16,644B · `56f80ab6` 로 BNK-648 과 **BYTE-IDENTICAL** 이다.
+
+fnc 4번 문장은 RFID 실시간 모니터링 뒤에 「**2016.03.28 서비스종료(엑셀파일 연동으로 변경)**」가 그대로다. 그 문장을 현재 실시간 연동으로 읽지 않는다.
+
+### §965-2 · ★★★ 수정 칸은 네 개고, 청구 엑셀은 파일 둘을 같이 올린다
+
+**신규 증거**: [배정된 일정 수정/삭제법](https://docs.channel.io/ezcare/ko/articles/%EB%B0%B0%EC%A0%95%EB%90%9C-%EC%9D%BC%EC%A0%95-%EC%88%98%EC%A0%95%EC%82%AD%EC%A0%9C%EB%B2%95-0bf7689d) HTTP **200** · 245,119B · `0b94049c`. 경로는 `[ 3 방문일정 관리]`. 더블클릭 팝업 이름은 「**선택일정 수정하기**」다.
+
+| 동작 | 칸·버튼 | 잠금 |
+|---|---|---|
+| 수정 | 서비스 구분 · 방문시간 및 제공서비스 · 급여제공자 · 수당 | 확정 중에는 수정·삭제 불가. 일정확정 취소가 먼저 |
+| 월 전체 삭제 | 좌측 하단 빨간 「**일정 초기화**」 | 그 수급자의 그 달 전체 |
+| 하루 삭제 | 날짜 위 아이콘 뒤 「**배정한 일정 이지케어에 저장하기**」 | 저장 버튼이 있어야 반영 |
+| 일괄확정 | `[4 일정확정]` 「일정 일괄확정하기」 + 「일정 확정 전, 공단 청구명세서와 비교하기」 | 급여명세서가 만들어지고 원천세 신고까지 끝나면 취소가 막힌다. 안내는 **1644-0340** 내선 **3** |
+
+**신규 증거**: [방문일정 직접등록 방법](https://docs.channel.io/ezcare/ko/articles/%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EC%A7%81%EC%A0%91%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-59244cb3) HTTP **200** · 229,681B · `862b7090`. 같은 화면에서 고르는 칸은 서비스 구분 · 방문시간 · 제공서비스 · 급여제공자다. 「**+ 배정하기**」는 하루, 요일 이름 옆 「**↓배정**」은 그 요일 전체다. 직접 배정도 급여와 본인부담 계산에 들어간다. 공단 연동이 안 되는 신규·미승인 인력은 수기다.
+
+**신규 증거**: 데모 팝업 [일정관리](https://ezcare.easyms.co.kr/schedule_plan/) HTTP **200** · 64,141B · `5c58cd34`. 제목은 「[DEMO] 일정관리」. 공단 블록은 「계획일정」과 「청구일정」이 갈라져 있고 버튼은 「**계획 가져오기**」·「**청구 가져오기**」다. 문장: 「**청구일정은 청구내역과 청구내역상세 파일을 동시에 등록해야 됩니다.**」 일정이 확정이거나 미등록 수급자·급여제공자가 있으면 등록이 되지 않는다. 일괄 등록은 기존 일정과 연관 수당을 초기화한다. 라디오 `sKind` 는 `001` 요양 · `003` 목욕 · `002` 간호. `timeOverlap` 은 중복배정. `familyYn` 은 가족케어. `family90` 은 **90분가능**이다. 엑셀 **열 이름**은 이 HTML에 없다. **미확인**.
+
+로그인 셸의 `PGID=schedule-form` 은 「**페이지를 찾을 수 없습니다.**」다. 75,428B · `c86e2f91`. 지금 수정 화면은 그 PGID가 아니라 `/schedule_plan/` 팝업이다.
+
+### §965-3 · ★★ RFID 그룹은 세 덩어리고, 관리자 일정은 수급자 일정과 다른 화면이다
+
+**신규 증거**: [태그점검](https://ezcare.easyms.co.kr/schedule_plan/rfid_compare.html) HTTP **200** · 45,996B · `c1051f04`. 제목은 「태그점검(공단계획 비교)」.
+
+| 그룹 (`<dt>`) | `name=detail` | 라벨 |
+|---|---|---|
+| 전체 | `all` | 전체. `name=type` 은 전체 / **불일치만 보기** |
+| 태그 안함 | `01` · `03` | 모두 · 종료태그 |
+| 태그(인정) 시간차 | `04` · `05` · `06` | 시작 **60분이상** · 종료 **60분이상** · 인정시간 **30분이상** |
+| 기타 | `08` · `07` · `09` | 직접 입력 · 급여제공자 다름 · 계획없음 |
+
+계획 폼은 `form_plan_upload` · `mode=ltm_sDataUpload` · `file_excel_plan`. RFID 폼은 `mode=rfid_upload` · `file_excel`. action 은 `./run.php`. `02` 라디오는 **0**이다. ogada `VISIT_RFID_DIFF_CODES` 는 `COMP_01`~`COMP_09` 이고 `02` 가 없다. 코드 집합은 같다. 화면 라벨 「시작 60분이상」과 ogada 라벨 「시작 시각 차이」는 문구가 다르다. 새 코드를 만들지 않는다.
+
+**신규 증거**: [사회복지사 방문일정 직접 등록법](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EC%A7%81%EC%A0%91-%EB%93%B1%EB%A1%9D%EB%B2%95-2b29f7fe) HTTP **200** · 233,430B · `3400525e`. 경로는 `[ 3 방문일정] > [ 3.2 관리자 일정관리]`. 이름을 달력으로 드래그하고 시간을 넣은 뒤 「시간입력(수정)」과 「방문일정 저장」이다. 방문자 직종은 **사회복지사** 또는 **팀장급 요양보호사**다. 월 1회 이상이라고 적는다.
+
+**신규 증거**: [사회복지사 방문일정 삭제법](https://docs.channel.io/ezcare/ko/articles/%EC%82%AC%ED%9A%8C%EB%B3%B5%EC%A7%80%EC%82%AC-%EB%B0%A9%EB%AC%B8%EC%9D%BC%EC%A0%95-%EC%82%AD%EC%A0%9C%EB%B2%95-a0a11371) HTTP **200** · 237,039B · `316d7272`. 우클릭이거나, 이름을 왼쪽 목록으로 드래그한 뒤 「**방문일정 저장**」을 눌러야 지워진다. 수급자 일정표에서는 이 삭제가 안 된다. [FAQ 21176](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21176&type=web) `fdc54686` 가 같은 네 줄이다. [FAQ 21174](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21174&type=web) `195acdb1` 는 이름이 안 보이면 직원 카드의 「팀장」을 더블클릭하라고 한다. [FAQ 21188](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21188&type=web) `deb013c5` 의 출력은 「일정표(달력)」와 「일정표(목록)」다.
+
+데모 [관리자 방문 일정관리](https://ezcare.easyms.co.kr/social_worker/schedule.html) HTTP **200** · 18,794B · `b7a1ec5b`. `plan` 은 `o`/`x`. `worker_select_type` 은 `assign`/`view`. `wCode` 라디오 값 `DEMO001`. 시간 칸은 `sTime1` · `sTime2`. 버튼은 「실시간 방문내용 가져오기」와 「청구 제출이력 가져오기」다.
+
+**신규 증거**: [급여 확정 후 수정 방법](https://docs.channel.io/ezcare/ko/articles/%EA%B8%89%EC%97%AC-%ED%99%95%EC%A0%95-%ED%9B%84-%EC%88%98%EC%A0%95-%EB%B0%A9%EB%B2%95-4b8e1d3c) HTTP **200** · 233,454B · `3c597414`. 경로는 `[6 직원급여 관리]` 탭 「임금산정 및 명세서작성」. 휴지통의 「삭제(초기화)」는 복구가 안 되고, 「임시저장(수정)」은 적은 내용이 남는다. 「명세서 확정」이면 직원 이름이 주황이다. 일정이 확정되지 않으면 그 버튼이 비활성이다.
+
+### §965-4 · planner 액션
+
+1. 홈 **9,514**, 헤더 **9,624**, 재무회계 대행 **4,904** 를 한 칸에 적지 않는다. 집계일은 **2026.09.30** 이다. D1·D2·셋팅 문장은 유지한다. 마감 문구는 「2026년 10월 31일까지」다.
+2. 청구 가져오기는 **청구내역**과 **청구내역상세**를 한 번에 받는다. 열 헤더는 **미확인**이다. SEC-D34 를 열지 않는다. 엑셀 컬럼 변경은 0이다.
+3. 확정 잠금은 ogada `VisitBatchUnconfirmPanel` 과 같은 축이다. 원천세 마감 해제는 재무 대행 전화다. 주야간 수가에 넣지 않는다. P0 로 열지 않는다.
+4. `family90` 라벨은 **90분가능**이다. `family-care-90` 의 90% 산정과 한 칸으로 적지 않는다.
+5. RFID 코드는 `01·03·04·05·06·07·08·09` 다. `02` 는 없다. id=10 은 **0.85**. 라벨을 「시작 60분이상」으로 바꾸라는 요청으로 읽지 않는다.
+6. 3.2 관리자 라운딩은 방문요양이다. 주야간 Route 로 만들지 않는다. 팀장 더블클릭과 ogada 팀장급 경력 5년을 한 규칙으로 적지 않는다.
+7. `PGID=schedule-form` 으로 화면을 만들지 않는다. 지금 셸은 NotFound 다. git 은 BNK-964 와 같다. yaml `4aad7cc2` 를 develop 으로 체크아웃하지 않는다.
+
+**가정 해소 1**(청구 파일 짝은 청구내역+청구내역상세) · **미확인 1**(엑셀 열 헤더) · 신규 진성갭 0 · P0 재오픈 0.
+
+주력 `ezcare_schedule_edit_rfid_bnk965.txt` + `channelio_0bf7689d_bnk965.html` + `ezcare_schedule_plan_bnk965.html` + `ezcare_rfid_compare_bnk965.html` + `channelio_4b8e1d3c_bnk965.html`. 신규 증거 URL 11(Channel 5 · FAQ 3 · 팝업 3). `schedule-form` 은 NotFound 재실측. 재실측은 홈 · fnc · charge · 요금 · FAQ · 21298 IDENTICAL · nav · 색인. per-cycle minimum 4종 충족.
 
 ## §964 BNK-964 — 케어포 역공학 0-2h · ★★★ **PDF 메뉴위치 4-2는 물리 제공기록 · 4-7은 제공 리포트** · ★★★ **시설 7-4~7-9 주석은 보이는 번호보다 하나 큼** · ★★ **`position_YC_nursing` 과 `position_YC_report` 는 다른 view** · FE `@29c2304` · BE `@92466cfb` · HTTP **450** · 신규 진성갭 0 · merge gate **4**
 
