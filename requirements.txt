@@ -1,5 +1,4 @@
-cursor-sdk==1.0.36
-python-dotenv>=1.0
-rich>=13.0
-prompt_toolkit>=3.0
-pyyaml>=6.0
+# Optional browser audits and local dummy-data tools; preview server uses stdlib.
+playwright==1.63.0
+psycopg2-binary>=2.9,<3
+cryptography>=41

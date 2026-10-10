@@ -42,7 +42,7 @@ fi
 
 if ! curl -sf "${VITE_API_BASE}/api/v1/health" >/dev/null; then
   echo "[live-e2e] fatal: API가 응답하지 않습니다 — ${VITE_API_BASE}" >&2
-  echo "[live-e2e] hint: backend 기동 후 다시 실행 (docs/ops/DEPLOYMENT_GUIDE.md §3-4)" >&2
+  echo "[live-e2e] hint: backend 기동 후 다시 실행 (docs/DEVELOPMENT.md)" >&2
   exit 2
 fi
 

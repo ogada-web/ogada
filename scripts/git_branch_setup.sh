@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# submodule별 develop · test · operation 브랜치 생성.
+# 과거 병렬 worktree용 수동 도구. 현재 단일 develop 흐름에서는 실행하지 않습니다.
 #
 # 루트 monorepo 가 아닌 src/backend, src/frontend 각각의 git 저장소에
 # 3단계 브랜치를 만든다. 루트(.) 는 docs·transfer·agents 메타용 main 유지.

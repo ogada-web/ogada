@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ezCare ERP shell fetch via public homepage demo flow (demoAction → POST /page/login.php → /new.ez).
-# Used by benchmark_researcher (BNK) for authenticated /new.ez reverse-engineering.
+# Legacy manual research tool; not part of the current workflow or an automatic loop.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SNAP_DIR="${ROOT}/docs/planning/research/snapshots"
+SNAP_DIR="${EZCARE_SNAPSHOT_DIR:-${TMPDIR:-/tmp}/ogada-legacy-research}"
 BASE_URL="${EZCARE_BASE_URL:-https://ezcare.easyms.co.kr}"
 COOKIE_JAR="${TMPDIR:-/tmp}/ezcare-demo-cookies-$$.txt"
 OUT_SUMMARY="${TMPDIR:-/tmp}/ezcare-demo-summary-$$.json"

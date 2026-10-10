@@ -1,4 +1,4 @@
-"""HTTP regression checks for forwarding vehicle writes while limiting the demo."""
+"""HTTP checks for authenticated vehicle, dispatch and attendance forwarding."""
 import importlib.util
 import json
 import tempfile
@@ -29,6 +29,7 @@ class Backend(BaseHTTPRequestHandler):
         self.wfile.write(payload)
 
     do_PATCH = do_POST
+    do_PUT = do_POST
 
     def log_message(self, *args):
         pass
@@ -40,7 +41,7 @@ class QuietPreview(preview.DemoPreview):
 
 
 class PreviewHttpTest(unittest.TestCase):
-    def test_vehicle_authorization_forwarding_and_unsupported_writes(self):
+    def test_authorization_forwarding_and_unsupported_writes(self):
         with tempfile.TemporaryDirectory() as folder:
             preview.ROOT = Path(folder)
             (preview.ROOT / 'index.html').write_text('Compiled preview')
@@ -75,9 +76,14 @@ class PreviewHttpTest(unittest.TestCase):
                     vehicle = '/api/v1/transport/vehicles/00000000-0000-4000-8000-000000000001'
                     self.assertEqual(request('PATCH', vehicle, True), 200)
                     self.assertEqual(request('PATCH', vehicle), 403)
-                    count = len(Backend.calls)
                     for method, path in [('POST', '/api/v1/transport/runs/suggest'),
                                          ('PUT', '/api/v1/transport/settings'),
+                                         ('POST', '/api/v1/staff/work-attendance/check-in')]:
+                        self.assertEqual(request(method, path), 403)
+                        self.assertEqual(request(method, path, True), 200)
+                    count = len(Backend.calls)
+                    for method, path in [('POST', '/api/v1/users'),
+                                         ('PUT', '/api/v1/staff/payroll/settings'),
                                          ('DELETE', vehicle), ('PATCH', vehicle + '/extra')]:
                         self.assertEqual(request(method, path, True), 405)
                     self.assertEqual(len(Backend.calls), count)

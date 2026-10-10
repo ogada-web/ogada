@@ -18,10 +18,10 @@ if ! flock -n 9; then
   echo "vitest: another npm test is already running (lock: $LOCK_FILE${holder:+, pid $holder})" >&2
   echo "  status: ps aux | grep -E '[v]itest run'" >&2
   echo "  stop:   $SCRIPT_DIR/vitest-stop.sh" >&2
-  echo "  doc:    docs/qa/VITEST_CONCURRENCY.md" >&2
+  echo "  doc:    docs/DEVELOPMENT.md" >&2
   exit 75
 fi
 
 cd "$FRONTEND_DIR"
-echo "vitest: locked run started at $(date -u +%H:%M:%S)Z — full suite ~6–8 min; 15min+ no output = hang (docs/qa/VITEST_CONCURRENCY.md)" >&2
+echo "vitest: locked run started at $(date -u +%H:%M:%S)Z (docs/DEVELOPMENT.md)" >&2
 exec npx vitest run "$@"

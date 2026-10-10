@@ -22,7 +22,7 @@ dist/
 build/
 .vite/
 
-# Submodule test worktrees (git worktree add — ./scripts/git_branch_setup.sh)
+# Existing legacy test worktrees
 src/backend-test/
 src/frontend-test/
 
@@ -39,10 +39,6 @@ src/backend-test/target/
 .vscode/
 *.swp
 .DS_Store
-
-# Agent session (local)
-.agents/.planner_session.json
-.agents/.planner_history
 
 # Accidental / disabled git backups (do not commit)
 .git.accidental-*/

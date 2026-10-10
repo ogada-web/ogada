@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # submodule develop → test merge (test worktree 에서 수행).
-# ROADMAP merge_status=ready 일 때 run_agent.py 가 자동 merge 하므로 보통은 불필요.
+# 과거 test worktree용 수동 도구. 현재 단일 develop·로컬 커밋 흐름에서는 실행하지 않습니다.
 #
 # 사용:
 #   ./scripts/git_merge_to_test.sh backend
