@@ -22,7 +22,9 @@ class PreviewDispatchRoutesTest(unittest.TestCase):
         run = '/api/v1/transport/runs/00000000-0000-4000-8000-000000000001'
         for method, path in [('POST', '/api/v1/transport/runs'), ('POST', '/api/v1/transport/runs/suggest'),
                              ('POST', run + '/confirm'), ('PATCH', run), ('PATCH', run + '/unconfirm'),
-                             ('PUT', '/api/v1/transport/settings')]:
+                             ('PUT', '/api/v1/transport/settings'),
+                             ('POST', '/api/v1/staff/work-attendance/check-in'),
+                             ('POST', '/api/v1/staff/work-attendance/check-out')]:
             with self.subTest(method=method, path=path):
                 handler = self.handler(method, path)
                 getattr(handler, 'do_' + method)()

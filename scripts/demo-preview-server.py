@@ -61,7 +61,7 @@ class DemoPreview(SimpleHTTPRequestHandler):
 
     def reject_preview_write(self):
         # Writes outside the explicitly supported demo workflows stay blocked.
-        payload = json.dumps({"message": "이 미리보기에서는 배차·차량 업무의 저장을 지원합니다. 다른 저장 작업은 운영 환경에서 진행하세요.",
+        payload = json.dumps({"message": "이 미리보기에서는 배차·차량 업무와 본인 출퇴근 처리를 지원합니다. 다른 저장 작업은 운영 환경에서 진행하세요.",
                               "code": "PREVIEW_WRITE_DISABLED"}, ensure_ascii=False).encode('utf-8')
         self.send_response(405)
         self.send_header('Content-Type', 'application/json; charset=utf-8')
@@ -74,7 +74,8 @@ class DemoPreview(SimpleHTTPRequestHandler):
         if self.command == 'POST' and name in {
             '/api/v1/auth/login', '/api/v1/auth/refresh', '/api/v1/auth/logout',
             '/api/v1/transport/route-preview', '/api/v1/transport/vehicles',
-            '/api/v1/transport/runs', '/api/v1/transport/runs/suggest'
+            '/api/v1/transport/runs', '/api/v1/transport/runs/suggest',
+            '/api/v1/staff/work-attendance/check-in', '/api/v1/staff/work-attendance/check-out'
         } or (self.command == 'POST' and RUN_CONFIRM_PATH.fullmatch(name)):
             self.proxy_demo_api()
         else:
