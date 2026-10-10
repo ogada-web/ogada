@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 os.environ['TMPDIR']='/dev/shm/ogada-mobile-ui-check'
 from playwright.async_api import async_playwright
-ROOT=Path(__file__).resolve().parents[1];STATE=ROOT/'.venv/phone-preview';S=json.loads((STATE/'settings.json').read_text());OUT=Path(os.environ.get('OGADA_UI_AUDIT_DIR', '/tmp/ogada-workspace-ui-audit'));OUT.mkdir(exist_ok=True);BASE=os.environ.get('OGADA_UI_AUDIT_BASE', 'http://127.0.0.1:4174');assert urlsplit(BASE).hostname in {'127.0.0.1','localhost'}, 'Use a local preview origin' 
+ROOT=Path(__file__).resolve().parents[1];STATE=ROOT/'.venv/phone-preview';S=json.loads((STATE/'settings.json').read_text());OUT=Path(os.environ.get('OGADA_UI_AUDIT_DIR', '/tmp/ogada-workspace-ui-audit'));OUT.mkdir(exist_ok=True);BASE=os.environ.get('OGADA_UI_AUDIT_BASE', 'http://127.0.0.1:4174');assert urlsplit(BASE).hostname in {'127.0.0.1','localhost'}, 'Use a local preview origin'
 METRICS='''() => {
  const main=document.querySelector('.ds-main');if(!main)return {missingMain:true};
  const r=main.getBoundingClientRect();
