@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Serve compiled demo assets. Forward auth, route queries, and vehicle registration.
+"""Serve compiled demo assets and scoped vehicle/dispatch operations.
 
-Vehicle writes are still authorized by Spring; dispatch writes remain blocked.
+Spring retains authentication, manager-role and tenant/branch checks for every forwarded operation. Other writes and dispatch deletion remain blocked.
 """
 from http.client import HTTPConnection
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
@@ -12,6 +12,11 @@ import re
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1] / 'src/frontend/dist'
+UUID_SEGMENT = r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}'
+RUN_PATH = re.compile(r'/api/v1/transport/runs/' + UUID_SEGMENT)
+RUN_CONFIRM_PATH = re.compile(r'/api/v1/transport/runs/' + UUID_SEGMENT + r'/confirm')
+RUN_UNCONFIRM_PATH = re.compile(r'/api/v1/transport/runs/' + UUID_SEGMENT + r'/unconfirm')
+ROSTER_DAY_STATUS_PATH = re.compile(r'/api/v1/transport/roster/' + UUID_SEGMENT + r'/day-status')
 VEHICLE_PATH = re.compile(r'/api/v1/transport/vehicles/[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}')
 
 
@@ -55,8 +60,8 @@ class DemoPreview(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def reject_preview_write(self):
-        # Keep the existing write allowlist; return a message the app can display.
-        payload = json.dumps({"message": "이 미리보기에서는 조회와 차량 등록·수정만 지원합니다. 다른 저장 작업은 운영 환경에서 진행하세요.",
+        # Writes outside the explicitly supported demo workflows stay blocked.
+        payload = json.dumps({"message": "이 미리보기에서는 배차·차량 업무의 저장을 지원합니다. 다른 저장 작업은 운영 환경에서 진행하세요.",
                               "code": "PREVIEW_WRITE_DISABLED"}, ensure_ascii=False).encode('utf-8')
         self.send_response(405)
         self.send_header('Content-Type', 'application/json; charset=utf-8')
@@ -68,20 +73,27 @@ class DemoPreview(SimpleHTTPRequestHandler):
         name = unquote(urlsplit(self.path).path)
         if self.command == 'POST' and name in {
             '/api/v1/auth/login', '/api/v1/auth/refresh', '/api/v1/auth/logout',
-            '/api/v1/transport/route-preview', '/api/v1/transport/vehicles'
-        }:
+            '/api/v1/transport/route-preview', '/api/v1/transport/vehicles',
+            '/api/v1/transport/runs', '/api/v1/transport/runs/suggest'
+        } or (self.command == 'POST' and RUN_CONFIRM_PATH.fullmatch(name)):
             self.proxy_demo_api()
         else:
             self.reject_preview_write()
 
     def do_PATCH(self):
         # Spring retains all JWT, tenant and manager-role authorization checks.
-        if VEHICLE_PATH.fullmatch(unquote(urlsplit(self.path).path)):
+        name = unquote(urlsplit(self.path).path)
+        if any(pattern.fullmatch(name) for pattern in [VEHICLE_PATH, RUN_PATH, RUN_UNCONFIRM_PATH, ROSTER_DAY_STATUS_PATH]):
             self.proxy_demo_api()
         else:
             self.reject_preview_write()
 
-    do_PUT = do_POST
+    def do_PUT(self):
+        if unquote(urlsplit(self.path).path) == '/api/v1/transport/settings':
+            self.proxy_demo_api()
+        else:
+            self.reject_preview_write()
+
     do_DELETE = do_POST
 
 
