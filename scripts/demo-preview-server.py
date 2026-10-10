@@ -7,6 +7,7 @@ from http.client import HTTPConnection
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 import argparse
+import json
 import re
 from urllib.parse import unquote, urlsplit
 
@@ -53,6 +54,16 @@ class DemoPreview(SimpleHTTPRequestHandler):
             self.path = '/index.html'
         super().do_GET()
 
+    def reject_preview_write(self):
+        # Keep the existing write allowlist; return a message the app can display.
+        payload = json.dumps({"message": "이 미리보기에서는 조회와 차량 등록·수정만 지원합니다. 다른 저장 작업은 운영 환경에서 진행하세요.",
+                              "code": "PREVIEW_WRITE_DISABLED"}, ensure_ascii=False).encode('utf-8')
+        self.send_response(405)
+        self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('Content-Length', str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
     def do_POST(self):
         name = unquote(urlsplit(self.path).path)
         if self.command == 'POST' and name in {
@@ -61,14 +72,14 @@ class DemoPreview(SimpleHTTPRequestHandler):
         }:
             self.proxy_demo_api()
         else:
-            self.send_error(405, 'This preview does not support this write operation')
+            self.reject_preview_write()
 
     def do_PATCH(self):
         # Spring retains all JWT, tenant and manager-role authorization checks.
         if VEHICLE_PATH.fullmatch(unquote(urlsplit(self.path).path)):
             self.proxy_demo_api()
         else:
-            self.send_error(405, 'This preview does not support this write operation')
+            self.reject_preview_write()
 
     do_PUT = do_POST
     do_DELETE = do_POST
